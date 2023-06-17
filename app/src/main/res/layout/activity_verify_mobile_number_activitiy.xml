@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        tools:context=".view.ui.mainView.ui.fragment.survey_info.pager.validations.VerifyMobileNumberActivitiy">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="18dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_marginTop="60dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/otp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verify_your_mobile_number"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    style="@style/head_text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/please_enter_the_4_digit_code_send"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    style="@style/med_text3" />
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextInputLayout_theme">
+
+                        <EditText
+                            android:id="@+id/digit_code_value"
+                            android:layout_width="match_parent"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            style="@style/Edittext_theme"
+                            android:singleLine="true"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_the_4_digit_code" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/resend_otp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/resend_code"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        style="@style/med_text2"
+                        android:layout_marginEnd="4dp" />
+
+                    <Button
+                        android:id="@+id/confirm_otp"
+                        android:layout_marginTop="32dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/confirm"
+                        style="@style/text_button" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

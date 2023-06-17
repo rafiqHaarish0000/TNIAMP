@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        tools:context=".view.ui.mainView.ui.fragment.survey_info.pager.validations.VerifyMobileNumberActivitiy">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="18dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_marginTop="60dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/smartphone" />
+
+                <TextView
+                    android:id="@+id/m_random_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_up"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    style="@style/head_text" />
+
+                <TextView
+                    android:id="@+id/m_code_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/we_will_send_you_the_4_digit"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:textSize="18dp"
+                    android:visibility="gone"
+                    style="@style/med_text2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mobile_number"
+                    android:textColor="@color/black"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="12dp"
+                    android:textStyle="bold"
+                    style="@style/med_text3" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextInputLayout_theme">
+
+                        <EditText
+                            android:id="@+id/mobile_values"
+                            android:layout_width="match_parent"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            style="@style/Edittext_theme"
+                            android:singleLine="true"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/mobile_number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/m_verify_mobile_number"
+                        android:layout_marginTop="32dp"
+                        android:layout_height="wrap_content"
+                        android:text="Verify"
+                        style="@style/text_button" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

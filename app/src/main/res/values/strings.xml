@@ -1,0 +1,129 @@
+<resources>
+    <string name="app_name">TNIAMP</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="login_to_your_account">login to your account</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forget_password">Forget Password ?</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="password">Password</string>
+
+
+    //test array
+    <array name="districts">
+        <item>Coimbatore</item>
+        <item>Chennai</item>
+        <item>Cuddalore</item>
+        <item>Trichy</item>
+        <item>Thanjavur</item>
+    </array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="confirm">Confirm</string>
+    <string name="please_enter_the_4_digit_code_send">Please enter the 4 digit code send \n            to your mobile number</string>
+    <string name="verify_your_mobile_number">Verify Your Mobile Number</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="verify">Verify</string>
+    <string name="submit">Submit</string>
+    <string name="please_enter_the_following_details">Please enter the following details</string>
+    <string name="registration_level">Registration Level</string>
+    <string name="name">Name</string>
+    <string name="email_id">Email ID</string>
+    <string name="district">District</string>
+    <string name="taluk">Taluk</string>
+    <string name="village">Village</string>
+    <string name="phone_no">Phone No.</string>
+    <string name="we_will_send_you_the_4_digit">  We will send you the 4 digit\nverification code to this mobile\n                      number</string>
+    <string name="already_have_an_account_sign_in_now">Already have an account?</string>
+    <string name="try_Again">Try again.!</string>
+    <string name="noInternet">No Internet Connection</string>
+    <string name="title_activity_dasboard">DasboardActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">unknown123@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Survey Info</string>
+    <string name="menu_gallery">Help</string>
+    <string name="dashboard"> </string>
+    <string name="menu_slideshow">About</string>
+    <string name="menu_log_out">Logout</string>
+    <string name="cce_survey">CCE Survey</string>
+    <string name="cce_location">CCE Location</string>
+    <string name="active_cce">Active CCE</string>
+    <string name="completed_cce">Completed CCE</string>
+    <string name="uncompleted_cce">Uncompleted CCE</string>
+    <string name="survey_no">Survey no</string>
+    <string name="father_name">Father Name</string>
+    <string name="primary_worker_name">Primary Worker Name</string>
+    <string name="next">Next</string>
+    <string name="name_of_the_crop">Name of the crop</string>
+    <string name="soil_type">Soil type</string>
+    <string name="soil_surface_wetness">Soil Surface Wetness</string>
+    <string name="variety_of_crop">Variety of Crop</string>
+    <string name="date_of_sowing">Date of Sowing</string>
+    <string name="expected_date_of_harvesting">Expected Date of Harvesting</string>
+    <string name="acreage">Acreage</string>
+    <string name="water_source">Water Source</string>
+    <string name="stress">Stress</string>
+    <string name="date_of_harvesting">Date of Harvesting</string>
+    <string name="expected_yield">Expected Yield</string>
+    <string name="source_of_seed">Source of Seed</string>
+    <string name="whether_manure_fym_used_in_the_plot">Whether Manure/FYM used in the Plot</string>
+    <string name="irrigation_info">Irrigation info</string>
+    <string name="land_type">Land Type</string>
+    <string name="weather_condition_during_crop_season">Weather Condition during Crop Season</string>
+    <string name="no_of_irrigation">No of irrigation</string>
+    <string name="pest_damage">Pest Damage</string>
+    <string name="average_yield_kgs">Average Yield (kgs)</string>
+    <string name="size_of_cce">Size of CCE</string>
+    <string name="enter_the_4_digit_code">Enter the 4 digit code</string>
+    <string name="sig_in_now">Sig In now</string>
+    <string name="add_image">Add Images</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="please_take_at_least_3_pictures_2_horizontal_1_vertical">(Please take at least 3 pictures 2 horizontal 1 Vertical)</string>
+    <string name="instructions">Instructions</string>
+    <string name="open_the_video_feature_from_option_to_capture_the_live_recording_of_cce">Open the Video Feature from option to capture the\n Live Recording of CCE.</string>
+    <string name="make_sure_you_have_opted_the_maximum_resolution_available_before_commencing_the_live_stream">Make sure you have opted the maximum resolution\navailable before commencing the live stream.</string>
+    <string name="adjust_or_select_an_appropriate_magnification_ratio_so_that_it_would_not_intervene_with_the_recording">Adjust or select an appropriate magnification\nratio so that it would not intervene with the recording</string>
+    <string name="try_to_cover_different_areas_within_the_cce_plot_to_see_the_progress_of_the_persons_engaged">Try to cover different areas within the CCE plot\nto see the progress of the persons engaged</string>
+    <string name="mount_or_fix_the_camera_to_assure_that_there_will_not_be_any_issue_of_shaking_or_blocking_the_camera_while_streaming_the_live_video">Mount or Fix the camera to assure that there\nwill not be any issue of shaking or\nblocking the camera while streaming the live video.</string>
+    <string name="stream_later">Stream Later</string>
+    <string name="proceed_to_n_live_stream">Proceed to\nLive Stream</string>
+    <string name="unknown">Unknown</string>
+    <string name="ins_1">1.Open the Video Feature from option to capture the Live Recording of CCE.</string>
+    <string name="ins_2">2.Make sure you have opted the maximum resolution available before commencing the live stream.</string>
+    <string name="ins_3">3.Adjust or select an appropriate magnification ratio so that it would not intervene with the recording.</string>
+    <string name="ins_4">4.Try to cover different areas within the CCE plot to see the progress of the persons engaged.</string>
+    <string name="ins_5">5.Mount or Fix the camera to assure that there will not be any issue of shaking or blocking the camera while streaming the live video.</string>
+    <string name="type_here">Type Here</string>
+    <string name="stable_version">Stable Version</string>
+    <string name="summary">Summary</string>
+    <string name="cce_info">CCE info</string>
+    <string name="paddy">Paddy</string>
+    <string name="crop_name">Crop Name</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+    <string name="department">Department</string>
+    <string name="block">Block</string>
+    <string name="sub_basin">Sub basin</string>
+    <string name="agriculture">Agriculture</string>
+    <string name="phases">Phases</string>
+    <string name="component">Component</string>
+    <string name="sub_components">Sub-Components</string>
+    <string name="stages">Stages</string>
+    <string name="farmer_name">Farmer Name</string>
+    <string name="date_of_sowing_planting">Date of Sowing/Planting</string>
+    <string name="category">Category</string>
+    <string name="area_ha">Area(ha)</string>
+    <string name="remarks">Remarks</string>
+    <string name="gender">Gender</string>
+    <string name="near_by_tank_name">Near by Tank Name</string>
+
+</resources>

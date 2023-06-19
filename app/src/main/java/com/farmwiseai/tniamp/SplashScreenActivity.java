@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
 
 import java.util.Timer;
@@ -18,7 +20,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreenActivity.this, MobileValidationActivity.class);
+                Intent i = new Intent(SplashScreenActivity.this, DashboardActivity.class);
                 startActivity(i);
                 finish();
             }

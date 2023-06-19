@@ -21,12 +21,8 @@ dev_api = http://172.16.40.207:3000
     @GET("lookup?type=inv_tnau")
     Call<List<ListOfTNAU>> getAllData();
 
-    @GET("lookup?type=inv_tnau")
-    Call<ListOfTNAU> getData();
 
 
-    @GET("lookup?type=inv_tnau")
-    Call<List<ListOfTNAU>> getAllDatas(@Query("PARENT_ID") int PARENT_ID);
 
 
 }

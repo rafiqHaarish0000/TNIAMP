@@ -3,44 +3,65 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
-import com.farmwiseai.tniamp.Retrofit.BaseApi;
-import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.Request.ListOfTNAU;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
+import com.farmwiseai.tniamp.utils.CallApi;
+import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.adapters.CustomAdapter;
 
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Locale;
 
 public class TNAUFragment extends Fragment implements View.OnClickListener {
     FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, date;
-    private static final int CAMERA_REQUEST = 1888;
+    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
+    private static final int PERMISSION_REQUEST_CODE = 200;
+    private static final int pic_id = 123;
+    List<ListOfTNAU> spinnerPos1;
+    CharSequence myString = "0";
+    CustomAdapter adapter, adapter2;
+    Spinner firstSpinner, secondSpinner, thirdSpinner;
+    EditText datePicker;
+    private CallApi callApi;
+    final Calendar myCalendar = Calendar.getInstance();
+    private boolean takePicture;
+    private int valueofPic;
+    CommonFunction mCommonFunction;
 
     @Override
     public void onAttach(Context context) {
@@ -51,26 +72,36 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mCommonFunction = new CommonFunction(getActivity());
+
         tnauBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_t_n_a_u, container, false);
 
 
         tnauBinding.popBackImage.setOnClickListener(this);
         tnauBinding.submissionBtn.setOnClickListener(this);
-        tnauBinding.takePic.setOnClickListener(this);
+        tnauBinding.image1.setOnClickListener(this);
+        tnauBinding.image2.setOnClickListener(this);
+        tnauBinding.dateTxt.setOnClickListener(this);
 
-        phases = tnauBinding.phaseTxt.getText().toString();
-        sub_basin = tnauBinding.subBasinTxt.getText().toString();
-        district = tnauBinding.districtTxt.getText().toString();
-        village = tnauBinding.villageTxt.getText().toString();
-        component = tnauBinding.componentTxt.getText().toString();
-        sub_components = tnauBinding.subComponentsTxt.getText().toString();
+
         farmerName = tnauBinding.farmerTxt.getText().toString();
-        category = tnauBinding.categoryTxt.getText().toString();
         survey_no = tnauBinding.surveyTxt.getText().toString();
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
-        date = tnauBinding.dateTxt.getText().toString();
+        dateField = tnauBinding.dateTxt.getText().toString();
+
+
+        firstSpinner = tnauBinding.componentTxt;
+        secondSpinner = tnauBinding.subComponentsTxt;
+        thirdSpinner = tnauBinding.stagesTxt;
+        datePicker = tnauBinding.dateTxt;
+
+        callApi = new CallApi(getActivity(), getContext(), spinnerPos1, adapter, adapter2, myString);
+        callApi.firstSpinnerPhrase(firstSpinner, secondSpinner, thirdSpinner, datePicker);
+
+
 
         return tnauBinding.getRoot();
 
@@ -80,30 +111,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                                     String district, String village, String component, String sub_components, String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date) {
 
-
-        if (phases.length() == 0) {
-            tnauBinding.phaseTxt.setError("Phases not found");
-            return false;
-        } else if (sub_basin.length() == 0) {
-            tnauBinding.subBasinTxt.setError("Sub basin not found");
-            return false;
-        } else if (district.length() == 0) {
-            tnauBinding.districtTxt.setError("Sub basin not found");
-            return false;
-        } else if (village.length() == 0) {
-            tnauBinding.villageTxt.setError("Sub basin not found");
-            return false;
-        } else if (component.length() == 0) {
-            tnauBinding.componentTxt.setError("Sub basin not found");
-            return false;
-        } else if (sub_components.length() == 0) {
-            tnauBinding.subComponentsTxt.setError("Sub basin not found");
-            return false;
-        } else if (farmerName.length() == 0) {
-            tnauBinding.farmerTxt.setError("Sub basin not found");
-            return false;
-        } else if (category.length() == 0) {
-            tnauBinding.categoryTxt.setError("Sub basin not found");
+        if (farmerName.length() == 0) {
+            tnauBinding.farmerTxt.setError("farmer name not found");
             return false;
         } else if (survey_no.length() == 0) {
             tnauBinding.surveyTxt.setError("Sub basin not found");
@@ -126,28 +135,21 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         return true;
     }
 
-    private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            ActivityCompat.requestPermissions(getActivity(), new String[]{
-                    Manifest.permission.CAMERA
-            }, CAMERA_REQUEST);
-        }
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            tnauBinding.pic1.setImageBitmap(photo);
-        }
-
-    }
-
-
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
+
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                updateLabel();
+            }
+        };
+
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
@@ -155,41 +157,161 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(phases, sub_basin, district, village, component, sub_components, farmerName,
-                        category, survey_no, area, near_tank, remarks, date);
+                        category, survey_no, area, near_tank, remarks, dateField);
                 if (!checkValidaiton) {
                     Toast.makeText(context, "Data not found.!", Toast.LENGTH_SHORT).show();
                 } else {
+                    //do the code for save all data
                     Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.take_pic:
-                Intent i = new Intent(getActivity(), TestActivity.class);
-                startActivity(i);
+            case R.id.image_1:
+                if (checkPermission()) {
+                    Log.i(TAG, "onClick: " + "granded.!");
+                    valueofPic = 1;
+                    takePicture = true;
+                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Start the activity with camera_intent, and request pic id
+                    startActivityForResult(camera_intent, pic_id);
+                } else {
+                    requestPermission();
+                }
+                break;
+
+            case R.id.image_2:
+                if (checkPermission()) {
+                    Log.i(TAG, "onClick: " + "granded.!");
+                    valueofPic = 2;
+                    takePicture = false;
+                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Start the activity with camera_intent, and request pic id
+                    startActivityForResult(camera_intent, pic_id);
+                } else {
+                    requestPermission();
+                }
+                break;
+
+            case R.id.date_txt:
+                new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                break;
+
+        }
+    }
+
+    private void updateLabel() {
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        tnauBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
+    }
+
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            return false;
+        }
+        return true;
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.CAMERA},
+                PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+
+                    // main logic
+                } else {
+                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            showMessageOKCancel("You need to allow access permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermission();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }
                 break;
         }
     }
 
-
-    private void getTnauList() {
-        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-        Call<List<ListOfTNAU>> userDataCall = call.getAllData();
-
-        userDataCall.enqueue(new Callback<List<ListOfTNAU>>() {
-            @Override
-            public void onResponse(Call<List<ListOfTNAU>> call, Response<List<ListOfTNAU>> response) {
-                if (response.body() != null) {
-                    response.body();
-                    Log.i(TAG, "onResponse: " + response.body());
-                } else {
-                    Log.i(TAG, "onResponse: " + "no data found..!");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ListOfTNAU>> call, Throwable t) {
-
-            }
-        });
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(getContext())
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .create()
+                .show();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == pic_id) {
+            if (takePicture && valueofPic == 1) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                // Set the image in imageview for display
+                tnauBinding.image1.setImageBitmap(photo);
+                // BitMap is data structure of image file which store the image in memory
+                getEncodedString(photo);
+            } else if (!takePicture && valueofPic == 2) {
+                Bitmap photo2 = (Bitmap) data.getExtras().get("data");
+                // Set the image in imageview for display
+                tnauBinding.image2.setImageBitmap(photo2);
+                // BitMap is data structure of image file which store the image in memory
+                getEncodedString(photo2);
+            }
+        }
+
+    }
+
+    private String getEncodedString(Bitmap bitmap) {
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+
+  /* or use below if you want 32 bit images
+
+   bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);*/
+
+        byte[] imageArr = os.toByteArray();
+
+        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
+
+
+    }
+
+    private void finalSubmission(){
+
+        if(mCommonFunction.isNetworkAvailable() == true){
+            //data should saved in post api
+
+        }else{
+            String offlineText = "Data saved successfully in offline data";
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA,offlineText);
+                    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                }
+            });
+        }
+    }
+
 
 }

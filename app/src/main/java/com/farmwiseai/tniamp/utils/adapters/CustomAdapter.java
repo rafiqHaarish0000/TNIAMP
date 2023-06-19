@@ -21,7 +21,6 @@ public class CustomAdapter extends BaseAdapter {
     public List<ListOfTNAU> SubjectListTemp;
     public List<ListOfTNAU> MainList;
     public CustomAdapter.SubjectDataFilter subjectDataFilter;
-//    public CustomAdapter.SubjectDataFilter1 subjectDataFilter1;
     Context context;
 
     public CustomAdapter(Context context, List<ListOfTNAU> data) {
@@ -43,17 +42,6 @@ public class CustomAdapter extends BaseAdapter {
         return subjectDataFilter;
 
     }
-
-    //getIDfilter
-//    public Filter getIdFilter() {
-//
-//        if (subjectDataFilter1 == null) {
-//
-//            subjectDataFilter1 = new CustomAdapter.SubjectDataFilter1();
-//        }
-//        return subjectDataFilter1;
-//
-//    }
 
     @Override
     public int getCount() {
@@ -122,63 +110,6 @@ public class CustomAdapter extends BaseAdapter {
         }
 
     }
-
-
-
-    //id filter
-//    private class SubjectDataFilter1 extends Filter {
-//
-//        @Override
-//        protected FilterResults performFiltering(CharSequence charParentID) {
-//
-//            charParentID = charParentID.toString().toLowerCase();
-//
-//
-//            FilterResults filterResults = new FilterResults();
-//
-//            if (charParentID != null && charParentID.toString().length() > 0) {
-//                ArrayList<ListOfTNAU> arrayList1 = new ArrayList<ListOfTNAU>();
-//
-//                for (int i = 0, l = MainList.size(); i < l; i++) {
-//                    ListOfTNAU subject = MainList.get(i);
-//
-//                    if(subject.getPARENT_ID() == subject.getID())
-//                    {
-//                        arrayList1.add(subject);
-//                    }
-//
-//
-//                }
-//                filterResults.count = arrayList1.size();
-//
-//                filterResults.values = arrayList1;
-//            } else {
-//                synchronized (this) {
-//                    filterResults.values = MainList;
-//
-//                    filterResults.count = MainList.size();
-//                }
-//            }
-//            return filterResults;
-//        }
-//
-//
-//        @Override
-//        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//
-//            SubjectListTemp = (ArrayList<ListOfTNAU>) filterResults.values;
-//
-//            notifyDataSetChanged();
-//
-//            data.clear();
-//
-//            for (int i = 0, l = SubjectListTemp.size(); i < l; i++)
-//                data.add(SubjectListTemp.get(i));
-//
-//            //subjectDataFilter.notifyDataSetInvalidated();
-//        }
-//
-//    }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {

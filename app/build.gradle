@@ -49,4 +49,5 @@ dependencies {
     //spinner
     implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
     implementation "com.github.skydoves:powerspinner:1.2.6"
+
 }

@@ -1,6 +1,5 @@
 package com.farmwiseai.tniamp.utils.adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,24 +10,24 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import com.farmwiseai.tniamp.R;
-import com.farmwiseai.tniamp.Retrofit.Request.ListOfTNAU;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomAdapter extends BaseAdapter {
-    List<ListOfTNAU> data;
-    public List<ListOfTNAU> SubjectListTemp;
-    public List<ListOfTNAU> MainList;
-    public CustomAdapter.SubjectDataFilter subjectDataFilter;
+public class ComponentAdapter extends BaseAdapter {
+    List<ComponentData> data;
+    public List<ComponentData> SubjectListTemp;
+    public List<ComponentData> MainList;
+    public ComponentAdapter.SubjectDataFilter subjectDataFilter;
     Context context;
 
-    public CustomAdapter(Context context, List<ListOfTNAU> data) {
+    public ComponentAdapter(Context context, List<ComponentData> data) {
         this.context = context;
         this.data = data;
-        this.SubjectListTemp = new ArrayList<ListOfTNAU>();
+        this.SubjectListTemp = new ArrayList<ComponentData>();
         this.SubjectListTemp.addAll(data);
-        this.MainList = new ArrayList<ListOfTNAU>();
+        this.MainList = new ArrayList<ComponentData>();
         this.MainList.addAll(data);
     }
 
@@ -37,7 +36,7 @@ public class CustomAdapter extends BaseAdapter {
 
         if (subjectDataFilter == null) {
 
-            subjectDataFilter = new CustomAdapter.SubjectDataFilter();
+            subjectDataFilter = new ComponentAdapter.SubjectDataFilter();
         }
         return subjectDataFilter;
 
@@ -69,10 +68,10 @@ public class CustomAdapter extends BaseAdapter {
             FilterResults filterResults = new FilterResults();
 
             if (charParentID != null && charParentID.toString().length() > 0) {
-                ArrayList<ListOfTNAU> arrayList1 = new ArrayList<ListOfTNAU>();
+                ArrayList<ComponentData> arrayList1 = new ArrayList<ComponentData>();
 
                 for (int i = 0, l = MainList.size(); i < l; i++) {
-                    ListOfTNAU subject = MainList.get(i);
+                    ComponentData subject = MainList.get(i);
 
                     String valueOfParet = String.valueOf(subject.getPARENT_ID());
 
@@ -97,7 +96,7 @@ public class CustomAdapter extends BaseAdapter {
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
 
-            SubjectListTemp = (ArrayList<ListOfTNAU>) filterResults.values;
+            SubjectListTemp = (ArrayList<ComponentData>) filterResults.values;
 
             notifyDataSetChanged();
 

@@ -7,11 +7,14 @@
     </data>
 
     <TextView
+        android:layout_marginTop="4dp"
         android:id="@+id/data_values"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:layout_margin="2dp"
         android:textStyle="bold"
         android:textSize="18dp"
+        android:padding="8dp"
         android:layout_marginStart="18dp"/>
 </layout>

@@ -1,6 +1,6 @@
-package com.farmwiseai.tniamp.Retrofit.Request;
+package com.farmwiseai.tniamp.Retrofit.DataClass;
 
-public class ListOfTNAU {
+public class ComponentData {
     public int ID;
     public String Name;
     public int PARENT_ID;

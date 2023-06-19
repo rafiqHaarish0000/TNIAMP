@@ -2,7 +2,6 @@ package com.farmwiseai;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,19 +21,16 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.farmwiseai.tniamp.R;
-import com.farmwiseai.tniamp.Retrofit.BaseApi;
-import com.farmwiseai.tniamp.Retrofit.Interface_Api;
-import com.farmwiseai.tniamp.Retrofit.Request.ListOfTNAU;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.databinding.ActivityTestBinding;
 import com.farmwiseai.tniamp.utils.CallApi;
-import com.farmwiseai.tniamp.utils.adapters.CustomAdapter;
+import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -42,15 +38,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class TestActivity extends AppCompatActivity {
     ActivityTestBinding testBinding;
-    List<ListOfTNAU> spinnerPos1;
+    List<ComponentData> spinnerPos1;
     CharSequence myString = "0";
-    CustomAdapter adapter, adapter2;
+    ComponentAdapter adapter, adapter2;
     Spinner firstSpinner, secondSpinner, thirdSpinner;
     EditText datePicker;
     private CallApi callApi;

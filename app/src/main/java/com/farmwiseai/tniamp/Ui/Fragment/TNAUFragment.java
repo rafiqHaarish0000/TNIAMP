@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,48 +32,58 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.farmwiseai.tniamp.R;
-import com.farmwiseai.tniamp.Retrofit.Request.ListOfTNAU;
+import com.farmwiseai.tniamp.Retrofit.BaseApi;
+import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
 import com.farmwiseai.tniamp.utils.CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
-import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
-import com.farmwiseai.tniamp.utils.adapters.CustomAdapter;
+import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
+import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
+import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
+import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TNAUFragment extends Fragment implements View.OnClickListener {
-    FragmentTNAUBinding tnauBinding;
+    private FragmentTNAUBinding tnauBinding;
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    List<ListOfTNAU> spinnerPos1;
-    CharSequence myString = "0";
-    CustomAdapter adapter, adapter2;
-    Spinner firstSpinner, secondSpinner, thirdSpinner;
-    EditText datePicker;
+    private List<ComponentData> componentDropDown;
+    private List<Sub_Basin_Data> sub_basin_DropDown;
+    private List<DistrictData> districtDropDown;
+    private List<BlockData> blockDropDown;
+    private CharSequence myString = "0";
+    private CharSequence posValue = "0";
+    private ComponentAdapter adapter, adapter2;
+    private SubBasinAdapter subAdapter;
+    private DistrictAdapter districtAdapter;
+    private BlockAdapter blockAdapter;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner;
+    private EditText datePicker;
     private CallApi callApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
-    CommonFunction mCommonFunction;
+    private CommonFunction mCommonFunction;
+    private List<String> phraseList, genderList, categoryList;
 
     @Override
     public void onAttach(Context context) {
@@ -93,41 +115,65 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         dateField = tnauBinding.dateTxt.getText().toString();
 
 
-        firstSpinner = tnauBinding.componentTxt;
-        secondSpinner = tnauBinding.subComponentsTxt;
-        thirdSpinner = tnauBinding.stagesTxt;
+        componentSpinner = tnauBinding.componentTxt;
+        sub_componentSpinner = tnauBinding.subComponentsTxt;
+        stagesSpinner = tnauBinding.stagesTxt;
         datePicker = tnauBinding.dateTxt;
 
-        callApi = new CallApi(getActivity(), getContext(), spinnerPos1, adapter, adapter2, myString);
-        callApi.firstSpinnerPhrase(firstSpinner, secondSpinner, thirdSpinner, datePicker);
+        callApi = new CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
+        callApi.firstSpinnerPhrase(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker);
 
+        setAllDropDownData();
 
 
         return tnauBinding.getRoot();
 
     }
 
-    private boolean fieldValidation(String phases, String sub_basin,
-                                    String district, String village, String component, String sub_components, String farmerName, String category,
+    private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date) {
 
+        farmerName = tnauBinding.farmerTxt.getText().toString();
+        survey_no = tnauBinding.surveyTxt.getText().toString();
+        area = tnauBinding.areaTxt.getText().toString();
+        near_tank = tnauBinding.tankTxt.getText().toString();
+        remarks = tnauBinding.remarksTxt.getText().toString();
+        date = tnauBinding.dateTxt.getText().toString();
+
+
+        if (tnauBinding.phase1.getSelectedItem() == null
+                && subBasinSpinner.getSelectedItem() == null
+                && districtSpinner.getSelectedItem() == null
+                && blockSpinner.getSelectedItem() == null
+                && componentSpinner.getSelectedItem() == null
+                && sub_componentSpinner.getSelectedItem() == null
+                && stagesSpinner.getSelectedItem() == null
+                && genderSpinner.getSelectedItem() == null
+                && categorySpinner.getSelectedItem() == null) {
+            mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
+        }
+
+        if(valueofPic != 0 && valueofPic != 1 && valueofPic != 2){
+            mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
+        }
+
         if (farmerName.length() == 0) {
-            tnauBinding.farmerTxt.setError("farmer name not found");
+            tnauBinding.farmerTxt.setError("Please enter farmer name");
             return false;
         } else if (survey_no.length() == 0) {
-            tnauBinding.surveyTxt.setError("Sub basin not found");
+            tnauBinding.surveyTxt.setError("Please enter survey no");
             return false;
         } else if (area.length() == 0) {
-            tnauBinding.areaTxt.setError("Sub basin not found");
+            tnauBinding.areaTxt.setError("Please enter area");
             return false;
         } else if (near_tank.length() == 0) {
-            tnauBinding.tankTxt.setError("Sub basin not found");
+            tnauBinding.tankTxt.setError("Please enter near by tank name");
             return false;
         } else if (remarks.length() == 0) {
-            tnauBinding.remarksTxt.setError("Sub basin not found");
+            tnauBinding.remarksTxt.setError("Remarks not found");
             return false;
         } else if (date.length() == 0) {
-            tnauBinding.dateTxt.setError("Sub basin not found");
+            tnauBinding.dateTxt.setError("Please enter the date");
             return false;
         }
 
@@ -149,22 +195,23 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 updateLabel();
             }
         };
-
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
                 startActivity(intent);
                 break;
+
             case R.id.submission_btn:
-                boolean checkValidaiton = fieldValidation(phases, sub_basin, district, village, component, sub_components, farmerName,
+                boolean checkValidaiton = fieldValidation(farmerName,
                         category, survey_no, area, near_tank, remarks, dateField);
-                if (!checkValidaiton) {
-                    Toast.makeText(context, "Data not found.!", Toast.LENGTH_SHORT).show();
+                if (checkValidaiton) {
+                    finalSubmission();
                 } else {
                     //do the code for save all data
                     Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
             case R.id.image_1:
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
@@ -197,6 +244,209 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
         }
     }
+
+
+    private void setAllDropDownData() {
+
+        //binding all the spinner field without component dropdowns
+        subBasinSpinner = tnauBinding.subBasinTxt;
+        districtSpinner = tnauBinding.districtTxt;
+        blockSpinner = tnauBinding.blockTxt;
+        genderSpinner = tnauBinding.genderTxt;
+        categorySpinner = tnauBinding.categoryTxt;
+
+
+        //phase data
+        phraseList = new ArrayList<>();
+        phraseList.add("Choose phase");
+        phraseList.add("Phase 1");
+        phraseList.add("Phase 2");
+        phraseList.add("Phase 3");
+        phraseList.add("Phase 4");
+        tnauBinding.phase1.setItem(phraseList);
+
+
+//phase drop down spinner
+        tnauBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<Sub_Basin_Data>> userDataCall = null;
+                        userDataCall = call.getSub_basinData();
+                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
+                            @Override
+                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    sub_basin_DropDown = response.body();
+                                    Log.i(TAG, "onResponse: " + tnauBinding.phase1.getSelectedItemPosition());
+                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                                    myString = String.valueOf(tnauBinding.phase1.getSelectedItemPosition());
+                                    subAdapter.getFilter().filter(myString);
+                                    subBasinSpinner.setAdapter(subAdapter);
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), e.toString());
+                    }
+
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //district dropdown spinner
+        subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<DistrictData>> userDataCall = null;
+                        userDataCall = call.getDistrictData();
+                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
+                            @Override
+                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+
+                                    districtDropDown = response.body();
+                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    districtAdapter.getFilter().filter(posValue);
+                                    districtSpinner.setAdapter(districtAdapter);
+
+                                } else {
+                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
+                                mLoadCustomToast(getActivity(), t.toString());
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), e.toString());
+                    }
+
+
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //blockSpinner
+        districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<BlockData>> userDataCall = null;
+                        userDataCall = call.getBlockData();
+                        userDataCall.enqueue(new Callback<List<BlockData>>() {
+                            @Override
+                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    blockDropDown = response.body();
+                                    posValue = String.valueOf(districtDropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    blockAdapter.getFilter().filter(posValue);
+                                    blockSpinner.setAdapter(blockAdapter);
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                    }
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //gender dropdown list
+        genderList = new ArrayList<>();
+        genderList.add("Male");
+        genderList.add("Female");
+        tnauBinding.genderTxt.setItem(genderList);
+
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //category dropdown spinner
+        categoryList = new ArrayList<>();
+        categoryList.add("SC");
+        categoryList.add("ST");
+        categoryList.add("Others");
+        tnauBinding.categoryTxt.setItem(categoryList);
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
 
     private void updateLabel() {
         String myFormat = "MM/dd/yy";
@@ -296,21 +546,26 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void finalSubmission(){
+    private void finalSubmission() {
 
-        if(mCommonFunction.isNetworkAvailable() == true){
+        if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
 
-        }else{
+
+        } else {
             String offlineText = "Data saved successfully in offline data";
             showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA,offlineText);
-                    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                 }
             });
         }
+    }
+
+    public void mLoadCustomToast(Activity mcontaxt, String message) {
+        CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
 
 

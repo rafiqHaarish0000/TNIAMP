@@ -9,13 +9,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
-import com.farmwiseai.tniamp.Retrofit.Request.ListOfTNAU;
-import com.farmwiseai.tniamp.utils.adapters.CustomAdapter;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
 
@@ -26,18 +25,18 @@ import retrofit2.Response;
 public class CallApi {
     private Activity activity;
     private Context context;
-    private List<ListOfTNAU> getAllListOfTNAU, stagesList;
-    private CustomAdapter adapters, customAdapter;
+    private List<ComponentData> getAllComponentData, stagesList;
+    private ComponentAdapter adapters, componentAdapter;
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
 
-    public CallApi(Activity activity,Context context, List<ListOfTNAU> getAllListOfTNAU, CustomAdapter adapters, CustomAdapter customAdapter, CharSequence positionValue) {
+    public CallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
         this.context = context;
-        this.getAllListOfTNAU = getAllListOfTNAU;
+        this.getAllComponentData = getAllComponentData;
         this.adapters = adapters;
         this.positionValue = positionValue;
-        this.customAdapter = customAdapter;
+        this.componentAdapter = componentAdapter;
         this.activity = activity;
     }
 
@@ -52,15 +51,15 @@ public class CallApi {
         if(commonFunction.isNetworkAvailable() == true){
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                Call<List<ListOfTNAU>> userDataCall = null;
-                userDataCall = call.getAllData();
-                userDataCall.enqueue(new Callback<List<ListOfTNAU>>() {
+                Call<List<ComponentData>> userDataCall = null;
+                userDataCall = call.getComponentData();
+                userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
-                    public void onResponse(Call<List<ListOfTNAU>> call, Response<List<ListOfTNAU>> response) {
+                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            getAllListOfTNAU = response.body();
+                            getAllComponentData = response.body();
 
-                            adapters = new CustomAdapter(context, getAllListOfTNAU);
+                            adapters = new ComponentAdapter(context, getAllComponentData);
                             positionValue = "0";
                             adapters.getFilter().filter(positionValue);
                             firstSpinner.setAdapter(adapters);
@@ -70,9 +69,10 @@ public class CallApi {
                             firstSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                                     secondSpinner.setVisibility(View.VISIBLE);
                                     thirdSpinner.setVisibility(View.GONE);
-                                    Log.i(TAG, "itemSelected: " + String.valueOf(getAllListOfTNAU.get(i).getID()));
+                                    Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
                                     //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
@@ -94,7 +94,7 @@ public class CallApi {
                     }
 
                     @Override
-                    public void onFailure(Call<List<ListOfTNAU>> call, Throwable t) {
+                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
                         Log.d(TAG, "onFailure: " + t);
                     }
                 });
@@ -118,21 +118,21 @@ public class CallApi {
         if(commonFunction.isNetworkAvailable()==true){
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                Call<List<ListOfTNAU>> userDataCall = null;
-                userDataCall = call.getAllData();
-                userDataCall.enqueue(new Callback<List<ListOfTNAU>>() {
+                Call<List<ComponentData>> userDataCall = null;
+                userDataCall = call.getComponentData();
+                userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
-                    public void onResponse(Call<List<ListOfTNAU>> call, Response<List<ListOfTNAU>> response) {
+                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            getAllListOfTNAU = response.body();
+                            getAllComponentData = response.body();
 
-                            adapters = new CustomAdapter(context, getAllListOfTNAU);
+                            adapters = new ComponentAdapter(context, getAllComponentData);
 
 
-                            Log.d(TAG, "onItemSelected: " + getAllListOfTNAU.get(posVal).getID());
+                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
 
                             //get id position for second filters
-                            positionValue = String.valueOf(getAllListOfTNAU.get(posVal).getID());
+                            positionValue = String.valueOf(getAllComponentData.get(posVal).getID());
                             adapters.getFilter().filter(positionValue);
                             secondSpinner.setAdapter(adapters);
 
@@ -144,7 +144,7 @@ public class CallApi {
                                     //save data for offline
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SUB_COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                    positionValue2 = String.valueOf(getAllListOfTNAU.get(posVal).getID());
+                                    positionValue2 = String.valueOf(getAllComponentData.get(posVal).getID());
                                     Log.i(TAG, "posvalue2: " + positionValue);
                                     thirdSpinnerPhrase(i, thirdSpinner,editText);
                                 }
@@ -162,7 +162,7 @@ public class CallApi {
                     }
 
                     @Override
-                    public void onFailure(Call<List<ListOfTNAU>> call, Throwable t) {
+                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
                         Log.d(TAG, "onFailure: " + t);
                     }
                 });
@@ -181,17 +181,17 @@ public class CallApi {
         if(commonFunction.isNetworkAvailable()==true){
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                Call<List<ListOfTNAU>> userDataCall = null;
-                userDataCall = call.getAllData();
-                userDataCall.enqueue(new Callback<List<ListOfTNAU>>() {
+                Call<List<ComponentData>> userDataCall = null;
+                userDataCall = call.getComponentData();
+                userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
-                    public void onResponse(Call<List<ListOfTNAU>> call, Response<List<ListOfTNAU>> response) {
+                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                         if (response.isSuccessful() && response.body() != null) {
 
                             stagesList = response.body();
-                            customAdapter = new CustomAdapter(context, stagesList);
-                            customAdapter.getFilter().filter(positionValue2);
-                            thirdSpinner.setAdapter(customAdapter);
+                            componentAdapter = new ComponentAdapter(context, stagesList);
+                            componentAdapter.getFilter().filter(positionValue2);
+                            thirdSpinner.setAdapter(componentAdapter);
 
                             thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
@@ -220,7 +220,7 @@ public class CallApi {
                     }
 
                     @Override
-                    public void onFailure(Call<List<ListOfTNAU>> call, Throwable t) {
+                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
                         Log.d(TAG, "onFailure: " + t);
                     }
                 });

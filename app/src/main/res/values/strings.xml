@@ -125,5 +125,7 @@
     <string name="remarks">Remarks</string>
     <string name="gender">Gender</string>
     <string name="near_by_tank_name">Near by Tank Name</string>
+    <string name="network_error">Network connection lost,Please try again.!</string>
+    <string name="server_error">Server error</string>
 
 </resources>

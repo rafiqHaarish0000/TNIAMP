@@ -1,0 +1,366 @@
+[
+  {
+    "ID": 2,
+    "NAME": "Cauvery Delta",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 3,
+    "NAME": "Gadananadhi",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 4,
+    "NAME": "Kousiganadhi",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 5,
+    "NAME": "Krishnagiri to Pambar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 6,
+    "NAME": "Lower Vaigai",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 7,
+    "NAME": "Lower Bhavani",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 8,
+    "NAME": "Lower Palar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 9,
+    "NAME": "Lower Tamiraparani",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 10,
+    "NAME": "Lower Vellar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 11,
+    "NAME": "Manjalar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 12,
+    "NAME": "Nagariyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 13,
+    "NAME": "Ponnaniyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 14,
+    "NAME": "Sathaiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 15,
+    "NAME": "Sirumalaiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 16,
+    "NAME": "Suruliyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 17,
+    "NAME": "Varahanadhi",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 18,
+    "NAME": "Kallar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 19,
+    "NAME": "Upper Bhavani",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 1,
+    "phase": 1
+  },
+  {
+    "ID": 20,
+    "NAME": "Agaramaru",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 21,
+    "NAME": "Aliyar_Pennaiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 22,
+    "NAME": "Ayiaar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 23,
+    "NAME": "Chittar_Tamiraparani",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 24,
+    "NAME": "Karaipottanar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 25,
+    "NAME": "Lower Coleroon",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 26,
+    "NAME": "Lower Pennaiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 27,
+    "NAME": "Mettur Reservoir to Noyel confluence",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 28,
+    "NAME": "Nandhiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 29,
+    "NAME": "Nandiyar_Kulaiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 30,
+    "NAME": "Pachaiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 31,
+    "NAME": "Pambar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 32,
+    "NAME": "Pungar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 33,
+    "NAME": "Tirumanimuttar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 34,
+    "NAME": "Uppar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 35,
+    "NAME": "Vaniyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 2,
+    "phase": 2
+  },
+  {
+    "ID": 36,
+    "NAME": "Cheyyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 37,
+    "NAME": "Chinnar_Cauvery",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 38,
+    "NAME": "Gummidipoondi",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 39,
+    "NAME": "Manimukdhanadhi",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 40,
+    "NAME": "Marudaiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 41,
+    "NAME": "Musukundanadhi",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 42,
+    "NAME": "Nambiyar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 43,
+    "NAME": "Paravanar",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 44,
+    "NAME": "Vegavati",
+    "REVISION_NO": 1549215974,
+    "PHASE1": 3,
+    "phase": 3
+  },
+  {
+    "ID": 45,
+    "NAME": "Aliyar_PAP",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 46,
+    "NAME": "Cauvery Delta",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 47,
+    "NAME": "Lower Vaigai",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 48,
+    "NAME": "Lower Vellar",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 49,
+    "NAME": "Nandiyar_Kulaiyar",
+    "REVISION_NO": 1671180978,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 50,
+    "NAME": "Ponnai",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 51,
+    "NAME": "Sathaiyar",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 52,
+    "NAME": "Therkar",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  },
+  {
+    "ID": 53,
+    "NAME": "Thurinjalar",
+    "REVISION_NO": 1670163828,
+    "PHASE1": 4,
+    "phase": 4
+  }
+]

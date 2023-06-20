@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.farmwiseai.tniamp.R;
+import com.farmwiseai.tniamp.Ui.Fragment.AgricultureFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.TNAUFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -28,14 +29,16 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         setContentView(binding.getRoot());
 
         mCommonFunction = new CommonFunction(DashboardActivity.this);
-
+binding.naviAgri.setOnClickListener(this);
         binding.naviTnau.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 setAddFragment(new TNAUFragment());
             }
         });
     }
+
 
 
     private void setAddFragment(Fragment addFragment) {
@@ -49,6 +52,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.navi_tnau:
                 setAddFragment(new TNAUFragment());
+                break;
+            case R.id.navi_agri:
+                setAddFragment(new AgricultureFragment());
                 break;
         }
     }

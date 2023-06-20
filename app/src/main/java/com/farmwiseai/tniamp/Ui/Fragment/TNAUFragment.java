@@ -94,7 +94,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+q
         mCommonFunction = new CommonFunction(getActivity());
 
         tnauBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_t_n_a_u, container, false);

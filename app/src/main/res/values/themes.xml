@@ -153,6 +153,20 @@
 
     </style>
 
+    <style name="AppEdittext2" parent="Widget.AppCompat.EditText">
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:padding">18dp</item>
+
+    </style>
+
 
     //all_text_buttons
 

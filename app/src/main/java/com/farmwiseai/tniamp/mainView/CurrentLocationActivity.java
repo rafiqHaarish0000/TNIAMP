@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class CurrentLocationActivity extends AppCompatActivity implements Locati
     private ActivityCurrentLocationBinding binding;
     LocationManager locationManager;
     private static final int PERMISSION_REQUEST_CODE = 1000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

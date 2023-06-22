@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.farmwiseai.tniamp.R;
+import com.farmwiseai.tniamp.Ui.Fragment.AEDFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AgricultureFragment;
+import com.farmwiseai.tniamp.Ui.Fragment.AnimalFragment;
+import com.farmwiseai.tniamp.Ui.Fragment.HorticultureFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.TNAUFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -29,16 +32,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         setContentView(binding.getRoot());
 
         mCommonFunction = new CommonFunction(DashboardActivity.this);
-binding.naviAgri.setOnClickListener(this);
-        binding.naviTnau.setOnClickListener(new View.OnClickListener() {
+        binding.naviTnau.setOnClickListener(this);
+        binding.naviAgri.setOnClickListener(this);
+        binding.naviAed.setOnClickListener(this);
+        binding.naviAnimal.setOnClickListener(this);
 
-            @Override
-            public void onClick(View view) {
-                setAddFragment(new TNAUFragment());
-            }
-        });
     }
-
 
 
     private void setAddFragment(Fragment addFragment) {
@@ -56,6 +55,12 @@ binding.naviAgri.setOnClickListener(this);
             case R.id.navi_agri:
                 setAddFragment(new AgricultureFragment());
                 break;
+            case R.id.navi_aed:
+                setAddFragment(new AEDFragment());
+                break;
+            case R.id.navi_animal:
+                setAddFragment(new AnimalFragment());
+                break;
         }
     }
 
@@ -70,7 +75,7 @@ binding.naviAgri.setOnClickListener(this);
     private void checkOfflineDataPresent() {
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should send to api and notification should be cleared accordingly
-            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
             if (checkDataIsPresentOrNot.length() != 0) {
                 showMessageOKCancel("Please update the offline data", new DialogInterface.OnClickListener() {
                     @Override
@@ -85,7 +90,7 @@ binding.naviAgri.setOnClickListener(this);
                 binding.notificationBadge.setVisibility(View.GONE);
             }
         } else {
-            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
             if (checkDataIsPresentOrNot.length() != 0) {
                 binding.notificationBadge.setVisibility(View.VISIBLE);
             }

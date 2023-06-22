@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,7 +43,8 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAgricultureBinding;
-import com.farmwiseai.tniamp.utils.CallApi;
+import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
+import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
@@ -77,14 +79,18 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private SubBasinAdapter subAdapter;
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner;
+    private Spinner subBasinSpinner, districtSpinner,
+            blockSpinner, componentSpinner,
+            sub_componentSpinner, stagesSpinner,
+            genderSpinner, categorySpinner;
     private EditText datePicker;
-    private CallApi callApi;
+    private AgriCallApi agriCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
+    private LinearLayout vis_lyt;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -117,9 +123,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         sub_componentSpinner = agricultureBinding.subComponentsTxt;
         stagesSpinner = agricultureBinding.stagesTxt;
         datePicker = agricultureBinding.dateTxt;
+        vis_lyt = agricultureBinding.visibilityLyt;
 
-        callApi = new CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        callApi.firstSpinnerPhrase(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker);
+        agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
+        agriCallApi.ComponentValues(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
 
         setAllDropDownData();
 
@@ -253,6 +260,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         blockSpinner = agricultureBinding.blockTxt;
         genderSpinner = agricultureBinding.genderTxt;
         categorySpinner = agricultureBinding.categoryTxt;
+        componentSpinner = agricultureBinding.componentTxt;
+        sub_componentSpinner = agricultureBinding.subComponentsTxt;
+        stagesSpinner = agricultureBinding.stagesTxt;
+        datePicker = agricultureBinding.dateTxt;
 
 
         //phase data

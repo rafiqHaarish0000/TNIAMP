@@ -1,4 +1,4 @@
-package com.farmwiseai.tniamp.utils;
+package com.farmwiseai.tniamp.utils.componentCallApis;
 
 import static android.content.ContentValues.TAG;
 
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CallApi {
+public class TNAU_CallApi {
     private Activity activity;
     private Context context;
     private List<ComponentData> getAllComponentData, stagesList;
@@ -31,7 +32,7 @@ public class CallApi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
 
-    public CallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
+    public TNAU_CallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
         this.context = context;
         this.getAllComponentData = getAllComponentData;
         this.adapters = adapters;
@@ -43,7 +44,7 @@ public class CallApi {
 
     //first spinner phrase;
 
-    public void firstSpinnerPhrase(Spinner firstSpinner, Spinner secondSpinner, Spinner thirdSpinner,EditText text) {
+    public void firstSpinnerPhrase(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner,EditText datePicker) {
 
         commonFunction = new CommonFunction(activity);
 
@@ -52,7 +53,7 @@ public class CallApi {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getComponentData();
+                userDataCall = call.getTNAUComponents();
                 userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
@@ -62,21 +63,28 @@ public class CallApi {
                             adapters = new ComponentAdapter(context, getAllComponentData);
                             positionValue = "0";
                             adapters.getFilter().filter(positionValue);
-                            firstSpinner.setAdapter(adapters);
+                            componentSpinner.setAdapter(adapters);
 
                             //position handling
 
-                            firstSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                    secondSpinner.setVisibility(View.VISIBLE);
-                                    thirdSpinner.setVisibility(View.GONE);
-                                    Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
-                                    //save data for offline data..
+                                    if(getAllComponentData.get(i).getName().equals("Model Village")){
+                                        subComponentSpinner.setVisibility(View.GONE);
+                                        stageSpinner.setVisibility(View.GONE);
+                                    }else{
+                                        subComponentSpinner.setVisibility(View.VISIBLE);
+                                        stageSpinner.setVisibility(View.GONE);
+                                        datePicker.setVisibility(View.GONE);
+                                        Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
+                                        //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                    secondSpinnerPhrase(i, secondSpinner, thirdSpinner,text);
+                                        secondSpinnerPhrase(i, subComponentSpinner, stageSpinner,datePicker);
+                                    }
+
+
                                 }
 
                                 @Override
@@ -119,7 +127,7 @@ public class CallApi {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getComponentData();
+                userDataCall = call.getTNAUComponents();
                 userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
@@ -182,7 +190,7 @@ public class CallApi {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getComponentData();
+                userDataCall = call.getTNAUComponents();
                 userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {

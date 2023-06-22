@@ -29,7 +29,8 @@ import android.widget.Toast;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.databinding.ActivityTestBinding;
-import com.farmwiseai.tniamp.utils.CallApi;
+import com.farmwiseai.tniamp.mainView.GPSTracker;
+import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.io.ByteArrayOutputStream;
@@ -45,12 +46,13 @@ public class TestActivity extends AppCompatActivity {
     ComponentAdapter adapter, adapter2;
     Spinner firstSpinner, secondSpinner, thirdSpinner;
     EditText datePicker;
-    private CallApi callApi;
+    private TNAU_CallApi TNAUCallApi;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
+    private GPSTracker gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,18 @@ public class TestActivity extends AppCompatActivity {
         secondSpinner = testBinding.phase2;
         thirdSpinner = testBinding.phase3;
         datePicker = testBinding.sowingDatepicker;
+
+        testBinding.clickable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!testBinding.image1.isSelected()){
+                    Log.i(TAG, "clickable: "+"false");
+                }else{
+                    Log.i(TAG, "clickable: "+"true");
+                }
+            }
+        });
+
 
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -85,6 +99,7 @@ public class TestActivity extends AppCompatActivity {
         testBinding.image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                testBinding.image1.setSelected(true);
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
@@ -115,10 +130,39 @@ public class TestActivity extends AppCompatActivity {
         });
 
 
-        callApi = new CallApi(TestActivity.this,TestActivity.this, spinnerPos1, adapter, adapter2, myString);
-        callApi.firstSpinnerPhrase(firstSpinner, secondSpinner, thirdSpinner, datePicker);
+        testBinding.getLatLong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                        ActivityCompat.requestPermissions(TestActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                    }else{
+                        getLocation(view);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
+        TNAUCallApi = new TNAU_CallApi(TestActivity.this,TestActivity.this, spinnerPos1, adapter, adapter2, myString);
+        TNAUCallApi.firstSpinnerPhrase(firstSpinner, secondSpinner, thirdSpinner, datePicker);
+
+
+    }
+
+
+    private void getLocation(View view){
+        gpsTracker = new GPSTracker(TestActivity.this);
+        if(gpsTracker.canGetLocation()){
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+            testBinding.latValue.setText(String.valueOf(latitude));
+            testBinding.longValue.setText(String.valueOf(longitude));
+        }else{
+            gpsTracker.showSettingsAlert();
+        }
     }
 
     private void updateLabel() {

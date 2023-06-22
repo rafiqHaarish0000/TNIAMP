@@ -127,5 +127,9 @@
     <string name="near_by_tank_name">Near by Tank Name</string>
     <string name="network_error">Network connection lost,Please try again.!</string>
     <string name="server_error">Server error</string>
+    <string name="used_for_fish_culture">Used for Fish Culture</string>
+    <string name="no_of_farmers">No.of Farmers</string>
+    <string name="venue">Venue</string>
+    <string name="no_of_calves">No of Calves</string>
 
 </resources>

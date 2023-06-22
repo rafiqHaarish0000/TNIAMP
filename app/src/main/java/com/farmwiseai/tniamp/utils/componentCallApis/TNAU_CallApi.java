@@ -70,6 +70,7 @@ public class TNAU_CallApi {
                             componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                     if(getAllComponentData.get(i).getName().equals("Model Village")){
                                         subComponentSpinner.setVisibility(View.GONE);
                                         stageSpinner.setVisibility(View.GONE);
@@ -81,7 +82,7 @@ public class TNAU_CallApi {
                                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                        secondSpinnerPhrase(i, subComponentSpinner, stageSpinner,datePicker);
+                                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner,datePicker);
                                     }
 
 
@@ -120,7 +121,7 @@ public class TNAU_CallApi {
     }
 
     //second spinner phrase;
-    public void secondSpinnerPhrase(int posVal, Spinner secondSpinner, Spinner thirdSpinner,EditText editText) {
+    public void subComponenetDropDown(String posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
 
         commonFunction = new CommonFunction(activity);
         if(commonFunction.isNetworkAvailable()==true){
@@ -137,11 +138,12 @@ public class TNAU_CallApi {
                             adapters = new ComponentAdapter(context, getAllComponentData);
 
 
-                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
+//                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
 
                             //get id position for second filters
-                            positionValue = String.valueOf(getAllComponentData.get(posVal).getID());
-                            adapters.getFilter().filter(positionValue);
+//                            positionValue = String.valueOf(getAllComponentData.get(posVal).getID());
+
+                            adapters.getFilter().filter(posVal);
                             secondSpinner.setAdapter(adapters);
 
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -152,9 +154,9 @@ public class TNAU_CallApi {
                                     //save data for offline
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SUB_COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                    positionValue2 = String.valueOf(getAllComponentData.get(posVal).getID());
-                                    Log.i(TAG, "posvalue2: " + positionValue);
-                                    thirdSpinnerPhrase(i, thirdSpinner,editText);
+                                    positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
+                                    Log.i(TAG, "posvalue2: " + positionValue2);
+                                    stagesDropDown(positionValue2, thirdSpinner,editText);
                                 }
 
                                 @Override
@@ -184,7 +186,7 @@ public class TNAU_CallApi {
 
     }
 
-    public void thirdSpinnerPhrase(int posVal, Spinner thirdSpinner,EditText editText) {
+    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
         commonFunction = new CommonFunction(activity);
         if(commonFunction.isNetworkAvailable()==true){
             try {
@@ -198,22 +200,22 @@ public class TNAU_CallApi {
 
                             stagesList = response.body();
                             componentAdapter = new ComponentAdapter(context, stagesList);
-                            componentAdapter.getFilter().filter(positionValue2);
+                            componentAdapter.getFilter().filter(stagePosVal);
                             thirdSpinner.setAdapter(componentAdapter);
+
 
                             thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     Log.i(TAG, "names: " + stagesList.get(i).getName());
+                                    subviewVisibilite(0,"name");
+//                                    positionValue2 = String.valueOf(getAllComponentData.get(Integer.parseInt(stagePosVal)).getID());
+//                                    Log.i(TAG, "posvalue2: " + positionValue);
+//                                    stagesDropDown(positionValue2, thirdSpinner,editText);
 
-                                    //save data for offline data..
-//                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.STAGE,String.valueOf(stagesList.get(i).getName()));
+                                }
 
-                                    if (stagesList.get(i).getName().contains("Sowing")) {
-                                        editText.setVisibility(View.VISIBLE);
-                                    }else{
-                                        editText.setVisibility(View.GONE);
-                                    }
+                                private void subviewVisibilite(int i, String name) {
                                 }
 
                                 @Override

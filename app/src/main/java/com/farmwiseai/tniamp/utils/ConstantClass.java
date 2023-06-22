@@ -20,7 +20,8 @@ public class ConstantClass
     public static SimpleDateFormat ChangeformatThree = new SimpleDateFormat("dd MMM yyyy hh:mm aa");
 
 
-    public static final String BASE_URL = "https://imzygu1wma.execute-api.ap-south-1.amazonaws.com/dev/api/";
+//    public static final String BASE_URL = "https://imzygu1wma.execute-api.ap-south-1.amazonaws.com/dev/api/";
+    public static final String BASE_URL1 = "https://umlwwu5xq3.execute-api.ap-south-1.amazonaws.com/dev/api/";
 
 
     public static final String LoginText = "Login!";

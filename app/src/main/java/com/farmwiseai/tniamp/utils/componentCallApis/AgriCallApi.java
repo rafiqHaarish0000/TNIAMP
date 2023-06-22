@@ -90,7 +90,7 @@ public class AgriCallApi {
                                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                        secondSpinnerPhrase(i, subComponentSpinner, stageSpinner,datePicker);
+                                        subComponent(i, subComponentSpinner, stageSpinner,datePicker);
                                     }
 
                                 }
@@ -125,7 +125,7 @@ public class AgriCallApi {
     }
 
     //second spinner phrase;
-    public void secondSpinnerPhrase(int posVal, Spinner secondSpinner, Spinner thirdSpinner,EditText editText) {
+    public void subComponent(int posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
 
         commonFunction = new CommonFunction(activity);
         if(commonFunction.isNetworkAvailable()==true){
@@ -153,12 +153,13 @@ public class AgriCallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     thirdSpinner.setVisibility(View.VISIBLE);
-
+                                    if(getAllComponentData.get(posVal).getName().equals("")){}
                                     //save data for offline
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SUB_COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
                                     positionValue2 = String.valueOf(getAllComponentData.get(posVal).getID());
                                     Log.i(TAG, "posvalue2: " + positionValue);
+
                                     stagesValues(i, thirdSpinner,editText);
                                 }
 

@@ -38,10 +38,12 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
@@ -72,13 +74,15 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
     private ComponentAdapter adapter, adapter2;
     private SubBasinAdapter subAdapter;
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner;
+    private VillageAdaapter villageAdaapter;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner;
     private EditText datePicker;
     private TNAU_CallApi TNAUCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -165,17 +169,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         }
 
 
-        if(tnauBinding.componentTxt.getSelectedItem().equals(getModelVillage)){
-
-            tnauBinding.farmerTxt.setVisibility(View.GONE);
-            tnauBinding.genderTxt.setVisibility(View.GONE);
-            tnauBinding.categoryTxt.setVisibility(View.GONE);
-            tnauBinding.surveyTxt.setVisibility(View.GONE);
-            tnauBinding.areaTxt.setVisibility(View.GONE);
-            tnauBinding.tankTxt.setVisibility(View.GONE);
-            return false;
-        }
-
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
@@ -233,7 +226,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.submission_btn:
-                Log.i(TAG, "componentTxt: "+componentSpinner.getSelectedItem());
+                Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
 
                     try {
@@ -297,6 +290,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         blockSpinner = tnauBinding.blockTxt;
         genderSpinner = tnauBinding.genderTxt;
         categorySpinner = tnauBinding.categoryTxt;
+        villageSpinner = tnauBinding.villageTxt;
 
 
         //phase data
@@ -324,7 +318,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                             public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
                                 if (response.isSuccessful() && response.body() != null) {
                                     sub_basin_DropDown = response.body();
-                                    Log.i(TAG, "onResponse: " + tnauBinding.phase1.getSelectedItemPosition());
+                                    Log.i(TAG, "onBody: " + response.code());
                                     subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
                                     myString = String.valueOf(tnauBinding.phase1.getSelectedItemPosition());
                                     subAdapter.getFilter().filter(myString);
@@ -369,8 +363,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
                                 if (response.isSuccessful() && response.body() != null) {
-
                                     districtDropDown = response.body();
+                                    Log.i(TAG, "onBody: " + response.code());
                                     posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
                                     Log.i(TAG, "posValue: " + posValue);
                                     districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
@@ -450,6 +444,65 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+
+        blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<VillageData>> userDataCall = null;
+                        userDataCall = call.getVillageData();
+                        userDataCall.enqueue(new Callback<List<VillageData>>() {
+                            @Override
+                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    villageDataList = response.body();
+                                    posValue = String.valueOf(blockDropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    villageAdaapter.getFilter().filter(posValue);
+                                    villageSpinner.setAdapter(villageAdaapter);
+
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                    }
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "onValue: "+villageDataList.get(i).getNAME());
+                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME,villageDataList.get(i).getNAME());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         //gender dropdown list
         genderList = new ArrayList<>();

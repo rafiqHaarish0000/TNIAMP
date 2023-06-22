@@ -5,6 +5,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ dev_api = http://172.16.40.207:3000
     Call<List<DistrictData>> getDistrictData();
     @GET("lookup?type=block")
     Call<List<BlockData>> getBlockData();
+    @GET("lookup?type=village_det")
+    Call<List<VillageData>> getVillageData();
 
     @POST("/api/tnau")
     Call<List<TNAU_Response>> mTnauAllListItems(@Body TNAU_Request tnau_request);

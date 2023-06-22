@@ -22,7 +22,7 @@ public class BaseApi
                 .build();
 
 
-        retrofit = new Retrofit.Builder().baseUrl(ConstantClass.BASE_URL)
+        retrofit = new Retrofit.Builder().baseUrl(ConstantClass.BASE_URL1)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
@@ -40,7 +40,7 @@ public class BaseApi
                 .build();
 
 
-        retrofit = new Retrofit.Builder().baseUrl(ConstantClass.BASE_URL)
+        retrofit = new Retrofit.Builder().baseUrl(ConstantClass.BASE_URL1)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

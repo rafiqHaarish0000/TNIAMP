@@ -13,8 +13,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
-import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
@@ -24,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AgriCallApi {
+public class HortiCallApi {
     private Activity activity;
     private Context context;
     private List<ComponentData> getAllComponentData, stagesList;
@@ -33,7 +33,7 @@ public class AgriCallApi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
 
-    public AgriCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
+    public HortiCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
         this.context = context;
         this.getAllComponentData = getAllComponentData;
         this.adapters = adapters;
@@ -53,7 +53,7 @@ public class AgriCallApi {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getAgriComponents();
+                userDataCall = call.getHortiComponents();
                 userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
@@ -132,7 +132,7 @@ public class AgriCallApi {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getAgriComponents();
+                userDataCall = call.getHortiComponents();
                 userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
@@ -195,7 +195,7 @@ public class AgriCallApi {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getAgriComponents();
+                userDataCall = call.getHortiComponents();
                 userDataCall.enqueue(new Callback<List<ComponentData>>() {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {

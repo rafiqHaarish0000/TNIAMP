@@ -34,6 +34,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         binding.naviTnau.setOnClickListener(this);
         binding.naviAgri.setOnClickListener(this);
+        binding.naviHorti.setOnClickListener(this);
         binding.naviAed.setOnClickListener(this);
         binding.naviAnimal.setOnClickListener(this);
 
@@ -57,6 +58,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.navi_aed:
                 setAddFragment(new AEDFragment());
+                break;
+            case R.id.navi_horti:
+                setAddFragment(new HorticultureFragment());
                 break;
             case R.id.navi_animal:
                 setAddFragment(new AnimalFragment());

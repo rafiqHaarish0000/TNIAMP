@@ -31,7 +31,7 @@ import android.widget.Toast;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAEDBinding;
-import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
+
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
 

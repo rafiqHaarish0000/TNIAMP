@@ -14,8 +14,11 @@ import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Ui.Fragment.AEDFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AgricultureFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AnimalFragment;
+import com.farmwiseai.tniamp.Ui.Fragment.FisheriesFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.HorticultureFragment;
+import com.farmwiseai.tniamp.Ui.Fragment.MarketingFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.TNAUFragment;
+import com.farmwiseai.tniamp.Ui.Fragment.WRDFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
@@ -37,6 +40,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.naviHorti.setOnClickListener(this);
         binding.naviAed.setOnClickListener(this);
         binding.naviAnimal.setOnClickListener(this);
+        binding.naviWrd.setOnClickListener(this);
+        binding.naviMarketing.setOnClickListener(this);
+        binding.navFish.setOnClickListener(this);
+
 
     }
 
@@ -64,6 +71,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.navi_animal:
                 setAddFragment(new AnimalFragment());
+                break;
+            case R.id.navi_wrd:
+                setAddFragment(new WRDFragment());
+                break;
+            case R.id.navi_marketing:
+                setAddFragment(new MarketingFragment());
+                break;
+            case R.id.nav_fish:
+                setAddFragment(new FisheriesFragment());
                 break;
         }
     }

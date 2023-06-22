@@ -41,9 +41,11 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
-import com.farmwiseai.tniamp.utils.CallApi;
+import com.farmwiseai.tniamp.mainView.GPSTracker;
+import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -63,7 +65,7 @@ import retrofit2.Response;
 public class TNAUFragment extends Fragment implements View.OnClickListener {
     private FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -78,12 +80,13 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     private BlockAdapter blockAdapter;
     private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner;
     private EditText datePicker;
-    private CallApi callApi;
+    private TNAU_CallApi TNAUCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
+    private GPSTracker gpsTracker;
 
     @Override
     public void onAttach(Context context) {
@@ -114,14 +117,19 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         remarks = tnauBinding.remarksTxt.getText().toString();
         dateField = tnauBinding.dateTxt.getText().toString();
 
+        /*
+        below component spinner is vary for all the department so please refer the callApi class
+        component spinner visible the other two dropdowns according to the data
+        date picker functionalities will only shown while user choose to sowing their crops
+         */
 
         componentSpinner = tnauBinding.componentTxt;
         sub_componentSpinner = tnauBinding.subComponentsTxt;
         stagesSpinner = tnauBinding.stagesTxt;
         datePicker = tnauBinding.dateTxt;
 
-        callApi = new CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        callApi.firstSpinnerPhrase(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker);
+        TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
+        TNAUCallApi.firstSpinnerPhrase(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker);
 
         setAllDropDownData();
 
@@ -130,6 +138,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    // validation for all mandatory fields
     private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date) {
 
@@ -140,6 +149,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         remarks = tnauBinding.remarksTxt.getText().toString();
         date = tnauBinding.dateTxt.getText().toString();
 
+        String getModelVillage = SharedPrefsUtils.getString(getContext(), SharedPrefsUtils.PREF_KEY.MODEL_VILLAGE);
 
         if (tnauBinding.phase1.getSelectedItem() == null
                 && subBasinSpinner.getSelectedItem() == null
@@ -150,11 +160,25 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
                 && categorySpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
+            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+            return false;
         }
 
-        if(valueofPic != 0 && valueofPic != 1 && valueofPic != 2){
-            mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
+
+        if(tnauBinding.componentTxt.getSelectedItem().equals(getModelVillage)){
+
+            tnauBinding.farmerTxt.setVisibility(View.GONE);
+            tnauBinding.genderTxt.setVisibility(View.GONE);
+            tnauBinding.categoryTxt.setVisibility(View.GONE);
+            tnauBinding.surveyTxt.setVisibility(View.GONE);
+            tnauBinding.areaTxt.setVisibility(View.GONE);
+            tnauBinding.tankTxt.setVisibility(View.GONE);
+            return false;
+        }
+
+        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
 
         if (farmerName.length() == 0) {
@@ -175,13 +199,16 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         } else if (date.length() == 0) {
             tnauBinding.dateTxt.setError("Please enter the date");
             return false;
+        } else if (!tnauBinding.image1.isSelected() && !tnauBinding.image2.isSelected()) {
+            Toast.makeText(getActivity(), "Please capture photo", Toast.LENGTH_LONG).show();
+            return false;
         }
-
 
         return true;
     }
 
 
+    // click event for finalSubmission button and others
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -195,6 +222,10 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 updateLabel();
             }
         };
+
+        boolean checkValidaiton = fieldValidation(farmerName,
+                category, survey_no, area, near_tank, remarks, dateField);
+
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
@@ -202,18 +233,28 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.submission_btn:
-                boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField);
+                Log.i(TAG, "componentTxt: "+componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
-                    finalSubmission();
+
+                    try {
+                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        } else {
+                            getLocation(view);
+                            finalSubmission();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case R.id.image_1:
                 if (checkPermission()) {
+                    tnauBinding.image1.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
                     takePicture = true;
@@ -227,6 +268,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
             case R.id.image_2:
                 if (checkPermission()) {
+                    tnauBinding.image2.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
                     takePicture = false;
@@ -246,6 +288,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    // here are all the spinner dropdown except components
     private void setAllDropDownData() {
 
         //binding all the spinner field without component dropdowns
@@ -266,7 +309,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         tnauBinding.phase1.setItem(phraseList);
 
 
-//phase drop down spinner
+        //phase drop down spinner
         tnauBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -448,12 +491,14 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    //calender updates
     private void updateLabel() {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         tnauBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
     }
 
+    //check Permission for camera intents
     private boolean checkPermission() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -500,6 +545,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    // alert pop up
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())
                 .setMessage(message)
@@ -511,7 +557,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == pic_id) {
+
             if (takePicture && valueofPic == 1) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
@@ -529,6 +577,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    //save the image in base64 format for fetch in backend data
     private String getEncodedString(Bitmap bitmap) {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -546,11 +595,25 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void getLocation(View view) {
+        gpsTracker = new GPSTracker(getContext());
+        if (gpsTracker.canGetLocation()) {
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+
+            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
+
+        } else {
+            gpsTracker.showSettingsAlert();
+        }
+    }
+
+    // final submission button validation for online and save data for offline data through database..
     private void finalSubmission() {
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
-
+            Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
 
         } else {
             String offlineText = "Data saved successfully in offline data";

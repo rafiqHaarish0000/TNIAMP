@@ -30,4 +30,22 @@ public class BaseApi
         return retrofit;
     }
 
+    public static Retrofit getVillageCall() {
+        Retrofit retrofit = null;
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+
+        retrofit = new Retrofit.Builder().baseUrl(ConstantClass.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        return retrofit;
+    }
+
 }

@@ -95,7 +95,37 @@
 
         </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="18dp">
+                <TextView
+                    android:id="@+id/latValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"/>
+                <TextView
+                    android:id="@+id/longValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:text="0"/>
+            </LinearLayout>
 
+        <Button
+            android:id="@+id/getLatLong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get location" />
+
+        <Button
+            android:id="@+id/clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get click" />
 
 
     </LinearLayout>

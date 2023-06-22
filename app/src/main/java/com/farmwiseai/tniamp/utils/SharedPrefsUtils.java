@@ -99,7 +99,7 @@ public class SharedPrefsUtils
         return value;
     }
 
-    private static void putBoolean(Context context, PREF_KEY key, boolean value) {
+    public static void putBoolean(Context context, PREF_KEY key, boolean value) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(key.KEY, value);

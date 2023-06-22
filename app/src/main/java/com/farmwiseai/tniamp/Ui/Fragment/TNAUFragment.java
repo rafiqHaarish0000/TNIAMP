@@ -150,11 +150,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
                 && categorySpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
+            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
         }
 
-        if(valueofPic != 0 && valueofPic != 1 && valueofPic != 2){
-            mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
+        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
         if (farmerName.length() == 0) {
@@ -197,8 +197,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         };
         switch (view.getId()) {
             case R.id.pop_back_image:
-                Intent intent = new Intent(context, DashboardActivity.class);
-                startActivity(intent);
+                getActivity().finish();
                 break;
 
             case R.id.submission_btn:
@@ -567,6 +566,4 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
-
-
 }

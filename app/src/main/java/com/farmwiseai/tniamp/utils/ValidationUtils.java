@@ -57,7 +57,7 @@ public class ValidationUtils {
         {
             return false;
         }
-        else if(mobile.length() != 6)
+        else if(mobile.length() != 4)
         {
             return false;
         }

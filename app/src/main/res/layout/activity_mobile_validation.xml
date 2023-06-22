@@ -36,7 +36,7 @@
                     android:id="@+id/m_random_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sign_up"
+                    android:text="LOGIN"
                     android:textColor="@color/black"
                     android:layout_gravity="center"
                     android:layout_marginTop="12dp"

@@ -6,8 +6,10 @@ import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
 import com.farmwiseai.tniamp.R;
+import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.ActivityVerifyMobileNumberActivitiyBinding;
 import com.farmwiseai.tniamp.utils.BaseActivity;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
 public class VerifyMobileNumberActivitiy extends BaseActivity {
     ActivityVerifyMobileNumberActivitiyBinding mBinding;
@@ -27,7 +29,9 @@ public class VerifyMobileNumberActivitiy extends BaseActivity {
                     mBinding.digitCodeValue.setError("otp is not found");
 
                 }else{
-                    Intent i = new Intent(VerifyMobileNumberActivitiy.this,UserValidationActivity.class);
+                    SharedPrefsUtils.putBoolean(VerifyMobileNumberActivitiy.this,SharedPrefsUtils.PREF_KEY.LOGIN_SESSION,true);
+                    Intent i = new Intent(VerifyMobileNumberActivitiy.this, DashboardActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                     finish();
                 }

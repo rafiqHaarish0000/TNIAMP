@@ -91,4 +91,10 @@ binding.naviAgri.setOnClickListener(this);
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+         finish();
+        super.onBackPressed();
+    }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -44,12 +45,12 @@ public class TNAU_CallApi {
 
     //first spinner phrase;
 
-    public void firstSpinnerPhrase(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner,EditText datePicker) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt) {
 
         commonFunction = new CommonFunction(activity);
 
 
-        if(commonFunction.isNetworkAvailable() == true){
+        if (commonFunction.isNetworkAvailable() == true) {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
@@ -70,21 +71,26 @@ public class TNAU_CallApi {
                             componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    positionValue = String.valueOf(getAllComponentData.get(i).getID());
-                                    if(getAllComponentData.get(i).getName().equals("Model Village")){
-                                        subComponentSpinner.setVisibility(View.GONE);
-                                        stageSpinner.setVisibility(View.GONE);
-                                    }else{
-                                        subComponentSpinner.setVisibility(View.VISIBLE);
-                                        stageSpinner.setVisibility(View.GONE);
-                                        datePicker.setVisibility(View.GONE);
-                                        Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
-                                        //save data for offline data..
+                                    try {
+                                        positionValue = String.valueOf(getAllComponentData.get(i).getID());
+                                        if (getAllComponentData.get(i).getName().equals("Model Village")) {
+                                            subComponentSpinner.setVisibility(View.GONE);
+                                            stageSpinner.setVisibility(View.GONE);
+                                            hideLyt.setVisibility(View.GONE);
+                                        } else {
+                                            subComponentSpinner.setVisibility(View.VISIBLE);
+                                            stageSpinner.setVisibility(View.GONE);
+                                            datePicker.setVisibility(View.GONE);
+                                            hideLyt.setVisibility(View.VISIBLE);
+                                            Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
+                                            //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner,datePicker);
+                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-
 
                                 }
 
@@ -111,11 +117,9 @@ public class TNAU_CallApi {
             } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
                 Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        }else{
-            Toast.makeText(context,"Connection lost,Please check your internet connectivity",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
         }
-
-
 
 
     }
@@ -124,7 +128,7 @@ public class TNAU_CallApi {
     public void subComponenetDropDown(String posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
 
         commonFunction = new CommonFunction(activity);
-        if(commonFunction.isNetworkAvailable()==true){
+        if (commonFunction.isNetworkAvailable() == true) {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
@@ -136,8 +140,6 @@ public class TNAU_CallApi {
                             getAllComponentData = response.body();
 
                             adapters = new ComponentAdapter(context, getAllComponentData);
-
-
 //                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
 
                             //get id position for second filters
@@ -151,12 +153,14 @@ public class TNAU_CallApi {
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     thirdSpinner.setVisibility(View.VISIBLE);
 
-                                    //save data for offline
-//                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SUB_COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
+                                    try {
+                                        positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
+                                        Log.i(TAG, "posvalue2: " + positionValue2);
+                                        stagesDropDown(positionValue2, thirdSpinner, editText);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
-                                    positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
-                                    Log.i(TAG, "posvalue2: " + positionValue2);
-                                    stagesDropDown(positionValue2, thirdSpinner,editText);
                                 }
 
                                 @Override
@@ -180,15 +184,15 @@ public class TNAU_CallApi {
             } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
                 Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        }else{
-            Toast.makeText(context,"Connection lost,Please check your internet connectivity",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
         }
 
     }
 
     public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
         commonFunction = new CommonFunction(activity);
-        if(commonFunction.isNetworkAvailable()==true){
+        if (commonFunction.isNetworkAvailable() == true) {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
@@ -207,15 +211,22 @@ public class TNAU_CallApi {
                             thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    Log.i(TAG, "names: " + stagesList.get(i).getName());
-                                    subviewVisibilite(0,"name");
+                                    try {
+                                        Log.i(TAG, "names: " + stagesList.get(i).getName());
+                                        String names = stagesList.get(i).getName();
+                                        if (names.contains("Sowing")) {
+                                            editText.setVisibility(View.VISIBLE);
+                                        } else if (names.contains("Planting")) {
+                                            editText.setVisibility(View.VISIBLE);
+                                        } else {
+                                            editText.setVisibility(View.GONE);
+                                        }
+                                    } catch (Exception e) {
+
+                                    }
 //                                    positionValue2 = String.valueOf(getAllComponentData.get(Integer.parseInt(stagePosVal)).getID());
 //                                    Log.i(TAG, "posvalue2: " + positionValue);
 //                                    stagesDropDown(positionValue2, thirdSpinner,editText);
-
-                                }
-
-                                private void subviewVisibilite(int i, String name) {
                                 }
 
                                 @Override
@@ -238,8 +249,8 @@ public class TNAU_CallApi {
             } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
                 Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        }else{
-            Toast.makeText(context,"Connection lost,Please check your internet connectivity",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
         }
 
     }

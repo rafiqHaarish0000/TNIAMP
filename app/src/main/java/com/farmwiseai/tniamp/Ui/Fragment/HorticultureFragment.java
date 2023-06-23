@@ -126,7 +126,7 @@ FragmentHorticultureBinding horticultureBinding;
         vis_lyt = horticultureBinding.visibilityLyt;
 
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        hortiCallApi.ComponentValues(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
+        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
 
         setAllDropDownData();
 

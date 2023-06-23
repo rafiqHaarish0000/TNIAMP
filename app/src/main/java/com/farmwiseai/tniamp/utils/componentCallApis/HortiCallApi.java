@@ -13,8 +13,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
-import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
@@ -42,14 +42,15 @@ public class HortiCallApi {
         this.activity = activity;
     }
 
+
     //first spinner phrase;
 
-    public void ComponentValues(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLayout) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt) {
 
         commonFunction = new CommonFunction(activity);
 
 
-        if(commonFunction.isNetworkAvailable() == true){
+        if (commonFunction.isNetworkAvailable() == true) {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
@@ -70,27 +71,25 @@ public class HortiCallApi {
                             componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                                    if(getAllComponentData.get(i).getName().equals("IPM village-Vermicompost") &&
-//                                            getAllComponentData.get(i).getName().equals("Cono Weeding")){
-//                                        subComponentSpinner.setVisibility(View.VISIBLE);
-//                                        stageSpinner.setVisibility(View.GONE);
-//                                        datePicker.setVisibility(View.GONE);
-//                                    }
-//                                    else
-
-                                    if(getAllComponentData.get(i).getName().equals("Model Village")){
-                                        hideLayout.setVisibility(View.GONE);
-                                    }else{
-                                        subComponentSpinner.setVisibility(View.VISIBLE);
-                                        stageSpinner.setVisibility(View.GONE);
-                                        datePicker.setVisibility(View.GONE);
-                                        hideLayout.setVisibility(View.VISIBLE);
-                                        Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
-                                        //save data for offline data..
+                                    try {
+                                        positionValue = String.valueOf(getAllComponentData.get(i).getID());
+                                        if (getAllComponentData.get(i).getName().equals("Model Village")) {
+                                            subComponentSpinner.setVisibility(View.GONE);
+                                            stageSpinner.setVisibility(View.GONE);
+                                            hideLyt.setVisibility(View.GONE);
+                                        } else {
+                                            subComponentSpinner.setVisibility(View.VISIBLE);
+                                            stageSpinner.setVisibility(View.GONE);
+                                            datePicker.setVisibility(View.GONE);
+                                            hideLyt.setVisibility(View.VISIBLE);
+                                            Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
+                                            //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                        secondSpinnerPhrase(i, subComponentSpinner, stageSpinner,datePicker);
+                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
 
                                 }
@@ -118,17 +117,18 @@ public class HortiCallApi {
             } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
                 Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        }else{
-            Toast.makeText(context,"Connection lost,Please check your internet connectivity",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
         }
+
 
     }
 
     //second spinner phrase;
-    public void secondSpinnerPhrase(int posVal, Spinner secondSpinner, Spinner thirdSpinner,EditText editText) {
+    public void subComponenetDropDown(String posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
 
         commonFunction = new CommonFunction(activity);
-        if(commonFunction.isNetworkAvailable()==true){
+        if (commonFunction.isNetworkAvailable() == true) {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
@@ -140,13 +140,12 @@ public class HortiCallApi {
                             getAllComponentData = response.body();
 
                             adapters = new ComponentAdapter(context, getAllComponentData);
-
-
-                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
+//                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
 
                             //get id position for second filters
-                            positionValue = String.valueOf(getAllComponentData.get(posVal).getID());
-                            adapters.getFilter().filter(positionValue);
+//                            positionValue = String.valueOf(getAllComponentData.get(posVal).getID());
+
+                            adapters.getFilter().filter(posVal);
                             secondSpinner.setAdapter(adapters);
 
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -154,12 +153,14 @@ public class HortiCallApi {
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     thirdSpinner.setVisibility(View.VISIBLE);
 
-                                    //save data for offline
-//                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SUB_COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
+                                    try {
+                                        positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
+                                        Log.i(TAG, "posvalue2: " + positionValue2);
+                                        stagesDropDown(positionValue2, thirdSpinner, editText);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
-                                    positionValue2 = String.valueOf(getAllComponentData.get(posVal).getID());
-                                    Log.i(TAG, "posvalue2: " + positionValue);
-                                    stagesValues(i, thirdSpinner,editText);
                                 }
 
                                 @Override
@@ -183,15 +184,81 @@ public class HortiCallApi {
             } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
                 Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        }else{
-            Toast.makeText(context,"Connection lost,Please check your internet connectivity",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    public void stagesValues(int posVal, Spinner stageSpinner, EditText datePicker) {
+    public void cropStageDropDown(String posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
+
         commonFunction = new CommonFunction(activity);
-        if(commonFunction.isNetworkAvailable()==true){
+        if (commonFunction.isNetworkAvailable() == true) {
+            try {
+                Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                Call<List<ComponentData>> userDataCall = null;
+                userDataCall = call.getHortiComponents();
+                userDataCall.enqueue(new Callback<List<ComponentData>>() {
+                    @Override
+                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            getAllComponentData = response.body();
+
+                            adapters = new ComponentAdapter(context, getAllComponentData);
+//                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
+
+                            //get id position for second filters
+//                            positionValue = String.valueOf(getAllComponentData.get(posVal).getID());
+
+                            adapters.getFilter().filter(posVal);
+                            secondSpinner.setAdapter(adapters);
+
+                            secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    thirdSpinner.setVisibility(View.VISIBLE);
+
+                                    try {
+                                        positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
+                                        Log.i(TAG, "posvalue2: " + positionValue2);
+                                        stagesDropDown(positionValue2, thirdSpinner, editText);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                }
+                            });
+
+
+                        } else {
+                            Toast.makeText(context, "Data not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
+                        Log.d(TAG, "onFailure: " + t);
+                    }
+                });
+
+            } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+                Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
+            }
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
+    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
+        commonFunction = new CommonFunction(activity);
+        if (commonFunction.isNetworkAvailable() == true) {
             try {
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<List<ComponentData>> userDataCall = null;
@@ -203,20 +270,29 @@ public class HortiCallApi {
 
                             stagesList = response.body();
                             componentAdapter = new ComponentAdapter(context, stagesList);
-                            componentAdapter.getFilter().filter(positionValue2);
-                            stageSpinner.setAdapter(componentAdapter);
+                            componentAdapter.getFilter().filter(stagePosVal);
+                            thirdSpinner.setAdapter(componentAdapter);
 
-                            stageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    Log.i(TAG, "names: " + stagesList.get(i).getName());
+                                    try {
+                                        Log.i(TAG, "names: " + stagesList.get(i).getName());
+                                        String names = stagesList.get(i).getName();
+                                        if (names.contains("Sowing")) {
+                                            editText.setVisibility(View.VISIBLE);
+                                        } else if (names.contains("Planting")) {
+                                            editText.setVisibility(View.VISIBLE);
+                                        } else {
+                                            editText.setVisibility(View.GONE);
+                                        }
+                                    } catch (Exception e) {
 
-                                    if (stagesList.get(i).getName().contains("Sowing") && stagesList.get(i).getName().contains("Planting") ) {
-                                        datePicker.setVisibility(View.VISIBLE);
                                     }
-                                    else{
-                                        datePicker.setVisibility(View.GONE);
-                                    }
+//                                    positionValue2 = String.valueOf(getAllComponentData.get(Integer.parseInt(stagePosVal)).getID());
+//                                    Log.i(TAG, "posvalue2: " + positionValue);
+//                                    stagesDropDown(positionValue2, thirdSpinner,editText);
                                 }
 
                                 @Override
@@ -239,8 +315,8 @@ public class HortiCallApi {
             } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
                 Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        }else{
-            Toast.makeText(context,"Connection lost,Please check your internet connectivity",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
         }
 
     }

@@ -29,6 +29,8 @@ dev_api = http://172.16.40.207:3000
     Call<List<ComponentData>> getAgriComponents();
     @GET("lookup?type=inv_horti")
     Call<List<ComponentData>> getHortiComponents();
+    @GET("lookup?type=inv_aed")
+    Call<List<ComponentData>> getAEDComponets();
 
     @GET("lookup?type=sub_basin")
     Call<List<Sub_Basin_Data>> getSub_basinData();

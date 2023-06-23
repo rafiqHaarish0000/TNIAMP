@@ -40,11 +40,13 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAgricultureBinding;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
-import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
@@ -73,16 +75,15 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
     private ComponentAdapter adapter, adapter2;
     private SubBasinAdapter subAdapter;
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
-    private Spinner subBasinSpinner, districtSpinner,
-            blockSpinner, componentSpinner,
-            sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner;
+    private VillageAdaapter villageAdaapter;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner;
     private EditText datePicker;
     private AgriCallApi agriCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -126,7 +127,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         vis_lyt = agricultureBinding.visibilityLyt;
 
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        agriCallApi.ComponentValues(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
+        agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
 
         setAllDropDownData();
 
@@ -155,7 +156,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 && sub_componentSpinner.getSelectedItem() == null
                 && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null) {
+                && categorySpinner.getSelectedItem() == null
+                && villageSpinner.getSelectedItem() == null) {
             mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
         }
 
@@ -263,6 +265,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         componentSpinner = agricultureBinding.componentTxt;
         sub_componentSpinner = agricultureBinding.subComponentsTxt;
         stagesSpinner = agricultureBinding.stagesTxt;
+        villageSpinner = agricultureBinding.villageTxt;
         datePicker = agricultureBinding.dateTxt;
 
 
@@ -418,6 +421,65 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             }
         });
 
+
+        blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<VillageData>> userDataCall = null;
+                        userDataCall = call.getVillageData();
+                        userDataCall.enqueue(new Callback<List<VillageData>>() {
+                            @Override
+                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    villageDataList = response.body();
+                                    posValue = String.valueOf(blockDropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    villageAdaapter.getFilter().filter(posValue);
+                                    villageSpinner.setAdapter(villageAdaapter);
+
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                    }
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
+//                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         //gender dropdown list
         genderList = new ArrayList<>();
         genderList.add("Male");
@@ -553,14 +615,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         return Base64.encodeToString(imageArr, Base64.URL_SAFE);
 
-
     }
 
     private void finalSubmission() {
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
-
+            Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+            mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
         } else {
             String offlineText = "Data saved successfully in offline data";

@@ -125,7 +125,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
         vis_lyt = wrdfragmentBinding.visibilityLyt;
 
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        agriCallApi.ComponentValues(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
+        agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
 
         setAllDropDownData();
 

@@ -3,7 +3,9 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,34 +27,78 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.farmwiseai.tniamp.R;
+import com.farmwiseai.tniamp.Retrofit.BaseApi;
+import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
+import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAEDBinding;
 
+import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
+import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
+import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
+import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
+import com.farmwiseai.tniamp.utils.componentCallApis.AEDCallApi;
+import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 
 import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AEDFragment extends Fragment implements View.OnClickListener {
     private Context context;
     private FragmentAEDBinding tnauBinding;
-    private CommonFunction mCommonFunction;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner;
-    private boolean takePicture;
-    private int valueofPic;
-    private String farmerName,category ,survey_no, area, near_tank, remarks, dateField;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
+    private List<ComponentData> componentDropDown;
+    private List<Sub_Basin_Data> sub_basin_DropDown;
+    private List<DistrictData> districtDropDown;
+    private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
+    private CharSequence myString = "0";
+    private CharSequence posValue = "0";
+    private ComponentAdapter adapter, adapter2;
+    private SubBasinAdapter subAdapter;
+    private DistrictAdapter districtAdapter;
+    private BlockAdapter blockAdapter;
+    private VillageAdaapter villageAdaapter;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner;
+    private EditText datePicker;
+    private AEDCallApi aedCallApi;
+    final Calendar myCalendar = Calendar.getInstance();
+    private boolean takePicture;
+    private int valueofPic;
+    private CommonFunction mCommonFunction;
+    private List<String> phraseList, genderList, categoryList;
+    private GPSTracker gpsTracker;
+    private LinearLayout hideLyt;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mCommonFunction = new CommonFunction(getActivity());
         context = getContext();
         tnauBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_a_e_d, container, false);
         tnauBinding.popBackImage.setOnClickListener(this);
@@ -67,63 +113,275 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
         remarks = tnauBinding.remarksTxt.getText().toString();
         componentSpinner = tnauBinding.componentTxt;
         sub_componentSpinner = tnauBinding.subComponentsTxt;
+        hideLyt = tnauBinding.visibilityLyt;
+
+
+        aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
+        aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, hideLyt);
+
+        setAllDataValues();
 
         return tnauBinding.getRoot();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.pop_back_image:
-                Intent intent = new Intent(context, DashboardActivity.class);
-                startActivity(intent);
-                break;
-
-            case R.id.submission_btn:
-                boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField);
-                if (checkValidaiton) {
-                    finalSubmission();
-                } else {
-                    //do the code for save all data
-                    Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.image_1:
-                if (checkPermission()) {
-                    Log.i(TAG, "onClick: " + "granded.!");
-                    valueofPic = 1;
-                    takePicture = true;
-                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Start the activity with camera_intent, and request pic id
-                    startActivityForResult(camera_intent, pic_id);
-                } else {
-                    requestPermission();
-                }
-                break;
-
-            case R.id.image_2:
-                if (checkPermission()) {
-                    Log.i(TAG, "onClick: " + "granded.!");
-                    valueofPic = 2;
-                    takePicture = false;
-                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Start the activity with camera_intent, and request pic id
-                    startActivityForResult(camera_intent, pic_id);
-                } else {
-                    requestPermission();
-                }
-                break;
-        }
-    }
-
-
     private void setAllDataValues(){
 
-        /*
-        api dropdown data for all the spinners accordingly
-         */
+        subBasinSpinner = tnauBinding.subBasinTxt;
+        districtSpinner = tnauBinding.districtTxt;
+        blockSpinner = tnauBinding.blockTxt;
+        genderSpinner = tnauBinding.genderTxt;
+        categorySpinner = tnauBinding.categoryTxt;
+        villageSpinner = tnauBinding.villageTxt;
+
+
+        //phase data
+        phraseList = new ArrayList<>();
+        phraseList.add("Choose phase");
+        phraseList.add("Phase 1");
+        phraseList.add("Phase 2");
+        phraseList.add("Phase 3");
+        phraseList.add("Phase 4");
+        tnauBinding.phase1.setItem(phraseList);
+
+
+        //phase drop down spinner
+        tnauBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<Sub_Basin_Data>> userDataCall = null;
+                        userDataCall = call.getSub_basinData();
+                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
+                            @Override
+                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    sub_basin_DropDown = response.body();
+                                    Log.i(TAG, "onBody: " + response.code());
+                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                                    myString = String.valueOf(tnauBinding.phase1.getSelectedItemPosition());
+                                    subAdapter.getFilter().filter(myString);
+                                    subBasinSpinner.setAdapter(subAdapter);
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), e.toString());
+                    }
+
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //district dropdown spinner
+        subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<DistrictData>> userDataCall = null;
+                        userDataCall = call.getDistrictData();
+                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
+                            @Override
+                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    districtDropDown = response.body();
+                                    Log.i(TAG, "onBody: " + response.code());
+                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    districtAdapter.getFilter().filter(posValue);
+                                    districtSpinner.setAdapter(districtAdapter);
+
+                                } else {
+                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
+                                mLoadCustomToast(getActivity(), t.toString());
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), e.toString());
+                    }
+
+
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //blockSpinner
+        districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<BlockData>> userDataCall = null;
+                        userDataCall = call.getBlockData();
+                        userDataCall.enqueue(new Callback<List<BlockData>>() {
+                            @Override
+                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    blockDropDown = response.body();
+                                    posValue = String.valueOf(districtDropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    blockAdapter.getFilter().filter(posValue);
+                                    blockSpinner.setAdapter(blockAdapter);
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                    }
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<VillageData>> userDataCall = null;
+                        userDataCall = call.getVillageData();
+                        userDataCall.enqueue(new Callback<List<VillageData>>() {
+                            @Override
+                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    villageDataList = response.body();
+                                    posValue = String.valueOf(blockDropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    villageAdaapter.getFilter().filter(posValue);
+                                    villageSpinner.setAdapter(villageAdaapter);
+
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                    }
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
+                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        //gender dropdown list
+        genderList = new ArrayList<>();
+        genderList.add("Male");
+        genderList.add("Female");
+        tnauBinding.genderTxt.setItem(genderList);
+
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //category dropdown spinner
+        categoryList = new ArrayList<>();
+        categoryList.add("SC");
+        categoryList.add("ST");
+        categoryList.add("Others");
+        tnauBinding.categoryTxt.setItem(categoryList);
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
 
     }
@@ -181,6 +439,73 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
 
 
         return true;
+    }
+
+
+    // click event for finalSubmission button and others
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+
+
+        boolean checkValidaiton = fieldValidation(farmerName,
+                category, survey_no, area, near_tank, remarks, dateField);
+
+        switch (view.getId()) {
+            case R.id.pop_back_image:
+                Intent intent = new Intent(context, DashboardActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.submission_btn:
+                Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
+                if (checkValidaiton) {
+
+                    try {
+                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        } else {
+                            getLocation(view);
+                            finalSubmission();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //do the code for save all data
+                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.image_1:
+                if (checkPermission()) {
+                    tnauBinding.image1.setSelected(true);
+                    Log.i(TAG, "onClick: " + "granded.!");
+                    valueofPic = 1;
+                    takePicture = true;
+                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Start the activity with camera_intent, and request pic id
+                    startActivityForResult(camera_intent, pic_id);
+                } else {
+                    requestPermission();
+                }
+                break;
+
+            case R.id.image_2:
+                if (checkPermission()) {
+                    tnauBinding.image2.setSelected(true);
+                    Log.i(TAG, "onClick: " + "granded.!");
+                    valueofPic = 2;
+                    takePicture = false;
+                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Start the activity with camera_intent, and request pic id
+                    startActivityForResult(camera_intent, pic_id);
+                } else {
+                    requestPermission();
+                }
+                break;
+
+        }
     }
 
     //check Permission for camera intents
@@ -283,7 +608,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
-
+            Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+            mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
         } else {
             String offlineText = "Data saved successfully in offline data";
@@ -299,6 +625,18 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
 
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
+    }
+    private void getLocation(View view) {
+        gpsTracker = new GPSTracker(getContext());
+        if (gpsTracker.canGetLocation()) {
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+
+            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
+
+        } else {
+            gpsTracker.showSettingsAlert();
+        }
     }
 
 }

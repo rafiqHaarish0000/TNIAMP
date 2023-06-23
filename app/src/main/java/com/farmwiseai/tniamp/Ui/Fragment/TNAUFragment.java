@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -91,6 +92,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private GPSTracker gpsTracker;
+    private LinearLayout hideLyt;
 
     @Override
     public void onAttach(Context context) {
@@ -120,6 +122,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
         dateField = tnauBinding.dateTxt.getText().toString();
+        hideLyt = tnauBinding.visibilityLyt;
 
         /*
         below component spinner is vary for all the department so please refer the callApi class
@@ -133,7 +136,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         datePicker = tnauBinding.dateTxt;
 
         TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        TNAUCallApi.firstSpinnerPhrase(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker);
+        TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt);
 
         setAllDropDownData();
 
@@ -153,7 +156,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         remarks = tnauBinding.remarksTxt.getText().toString();
         date = tnauBinding.dateTxt.getText().toString();
 
-        String getModelVillage = SharedPrefsUtils.getString(getContext(), SharedPrefsUtils.PREF_KEY.MODEL_VILLAGE);
 
         if (tnauBinding.phase1.getSelectedItem() == null
                 && subBasinSpinner.getSelectedItem() == null
@@ -163,7 +165,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
                 && sub_componentSpinner.getSelectedItem() == null
                 && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null) {
+                && categorySpinner.getSelectedItem() == null
+                && villageSpinner.getSelectedItem() == null) {
             mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
             return false;
         }
@@ -493,8 +496,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i(TAG, "onValue: "+villageDataList.get(i).getNAME());
-                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME,villageDataList.get(i).getNAME());
+                Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
+                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
 
             @Override
@@ -667,6 +670,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
             Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+            mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
         } else {
             String offlineText = "Data saved successfully in offline data";

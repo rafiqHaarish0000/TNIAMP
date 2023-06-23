@@ -44,6 +44,8 @@ import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
+import com.farmwiseai.tniamp.utils.BackPressListener;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -65,10 +67,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TNAUFragment extends Fragment implements View.OnClickListener {
+public class TNAUFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField,village;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -93,6 +95,26 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
     private List<String> phraseList, genderList, categoryList;
     private GPSTracker gpsTracker;
     private LinearLayout hideLyt;
+    public String intervention1; //component
+    public String intervention2; //sub_componenet
+    public String intervention3; // stages
+    public String farmer_name;
+    public String gender;
+    public String variety;
+    public String yield;
+    public String created_by; //serial number
+    public String created_date;
+    public String lat;
+    public String lon;
+    public String image1;
+    public String tank_name;
+    public String txn_date;
+    public String photo_lat;
+    public String photo_lon;
+    public String txn_id;
+    public String date;
+    public String status;
+    public BackPressListener backPressListener;
 
     @Override
     public void onAttach(Context context) {
@@ -135,7 +157,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         stagesSpinner = tnauBinding.stagesTxt;
         datePicker = tnauBinding.dateTxt;
 
-        TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
+        TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
         TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt);
 
         setAllDropDownData();
@@ -497,7 +519,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
-                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
+                village = villageDataList.get(i).getNAME();
+//                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
 
             @Override
@@ -543,6 +566,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+
+
+
 
     }
 
@@ -670,6 +696,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
             Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+            getAllData();
             mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
         } else {
@@ -688,5 +715,24 @@ public class TNAUFragment extends Fragment implements View.OnClickListener {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
 
+    private void getAllData(){
 
+        farmerName = tnauBinding.farmerTxt.getText().toString();
+        survey_no = tnauBinding.surveyTxt.getText().toString();
+        area = tnauBinding.areaTxt.getText().toString();
+        near_tank = tnauBinding.tankTxt.getText().toString();
+        remarks = tnauBinding.remarksTxt.getText().toString();
+        dateField = tnauBinding.dateTxt.getText().toString();
+        Log.i(TAG, "getAllData: "+village+intervention1+intervention2+intervention3);
+    }
+
+
+    @Override
+    public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
+//            intervention1 = lookUpDataClass.getIntervention1();
+//            intervention2 = lookUpDataClass.getIntervention2();
+//            intervention3 = lookUpDataClass.getIntervention3();
+//        Log.i(TAG, "getComponentData: "+intervention1+intervention2+intervention3);
+        Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
+    }
 }

@@ -146,7 +146,7 @@ public class TestActivity extends AppCompatActivity {
         });
 
 
-        TNAUCallApi = new TNAU_CallApi(TestActivity.this,TestActivity.this, spinnerPos1, adapter, adapter2, myString);
+//        TNAUCallApi = new TNAU_CallApi(TestActivity.this,TestActivity.this, spinnerPos1, adapter, adapter2, myString, backPressListener);
 //        TNAUCallApi.firstSpinnerPhrase(firstSpinner, secondSpinner, thirdSpinner, datePicker);
 
 

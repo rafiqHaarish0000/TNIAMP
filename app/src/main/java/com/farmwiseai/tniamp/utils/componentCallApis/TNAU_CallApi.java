@@ -15,7 +15,9 @@ import android.widget.Toast;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
@@ -32,14 +34,17 @@ public class TNAU_CallApi {
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
+    private BackPressListener backPressListener;
+    private LookUpDataClass lookUpDataClass = new LookUpDataClass();
 
-    public TNAU_CallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
+    public TNAU_CallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
         this.getAllComponentData = getAllComponentData;
         this.adapters = adapters;
         this.positionValue = positionValue;
         this.componentAdapter = componentAdapter;
         this.activity = activity;
+        this.backPressListener = backPressListener;
     }
 
 
@@ -72,7 +77,9 @@ public class TNAU_CallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
+                                        lookUpDataClass.setIntervention1(getAllComponentData.get(i).getName());
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
+
                                         if (getAllComponentData.get(i).getName().equals("Model Village")) {
                                             subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);
@@ -151,6 +158,7 @@ public class TNAU_CallApi {
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    lookUpDataClass.setIntervention2(getAllComponentData.get(i).getName());
                                     thirdSpinner.setVisibility(View.VISIBLE);
 
                                     try {
@@ -214,6 +222,8 @@ public class TNAU_CallApi {
                                     try {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
                                         String names = stagesList.get(i).getName();
+                                        lookUpDataClass.setIntervention3(names);
+                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {
@@ -221,9 +231,11 @@ public class TNAU_CallApi {
                                         } else {
                                             editText.setVisibility(View.GONE);
                                         }
+//                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                     } catch (Exception e) {
 
                                     }
+
 //                                    positionValue2 = String.valueOf(getAllComponentData.get(Integer.parseInt(stagePosVal)).getID());
 //                                    Log.i(TAG, "posvalue2: " + positionValue);
 //                                    stagesDropDown(positionValue2, thirdSpinner,editText);

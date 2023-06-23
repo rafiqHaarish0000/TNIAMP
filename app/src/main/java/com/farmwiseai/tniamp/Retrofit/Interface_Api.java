@@ -17,12 +17,8 @@ import retrofit2.http.POST;
 public interface Interface_Api
 {
 
-    /*
-    * #dev_api = http://172.16.40.246:3000
-#dev_api = http://vilfresh-admin.pptssolutions.com
-dev_api = http://172.16.40.207:3000
-    * */
-//lookUps
+//lookUps and static get response
+
     @GET("lookup?type=inv_tnau")
     Call<List<ComponentData>> getTNAUComponents();
     @GET("lookup?type=inv_agri")
@@ -41,10 +37,11 @@ dev_api = http://172.16.40.207:3000
     @GET("lookup?type=village_det")
     Call<List<VillageData>> getVillageData();
 
+
+    // request and response data for all the departments
     @POST("/api/tnau")
     Call<List<TNAU_Response>> mTnauAllListItems(@Body TNAU_Request tnau_request);
-//    @GET("lookup?type=sub_basin")
-//    Call<List<Sub_Basin_Data>> getVillageData();
+
 
 
 

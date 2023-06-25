@@ -680,8 +680,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);*/
 
         byte[] imageArr = os.toByteArray();
-
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
+        String convertedData=Base64.encodeToString(imageArr, Base64.URL_SAFE);
+ Log.i("data",convertedData);
+        return convertedData;
 
 
     }

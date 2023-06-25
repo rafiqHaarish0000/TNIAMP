@@ -29,31 +29,29 @@ import retrofit2.Response;
 public class TNAU_CallApi {
     private Activity activity;
     private Context context;
-    private List<ComponentData> getAllComponentData, stagesList;
-    private ComponentAdapter adapters, componentAdapter;
+    private List<ComponentData> componentList, stagesList,sub_componentList;
+    private ComponentAdapter adapters;
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    private LookUpDataClass lookUpDataClass = new LookUpDataClass();
+    public LookUpDataClass lookUpDataClass = new LookUpDataClass();
 
-    public TNAU_CallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue, BackPressListener backPressListener) {
+    public TNAU_CallApi(Activity activity, Context context, List<ComponentData> componentList, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
-        this.getAllComponentData = getAllComponentData;
+        this.componentList = componentList;
         this.adapters = adapters;
         this.positionValue = positionValue;
-        this.componentAdapter = componentAdapter;
         this.activity = activity;
         this.backPressListener = backPressListener;
     }
-
 
     //first spinner phrase;
 
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt) {
 
         commonFunction = new CommonFunction(activity);
-
+        positionValue = "0";
 
         if (commonFunction.isNetworkAvailable() == true) {
             try {
@@ -64,9 +62,9 @@ public class TNAU_CallApi {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            getAllComponentData = response.body();
+                            componentList = response.body();
 
-                            adapters = new ComponentAdapter(context, getAllComponentData);
+                            adapters = new ComponentAdapter(context, componentList);
                             positionValue = "0";
                             adapters.getFilter().filter(positionValue);
                             componentSpinner.setAdapter(adapters);
@@ -77,24 +75,59 @@ public class TNAU_CallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
-                                        lookUpDataClass.setIntervention1(getAllComponentData.get(i).getName());
-                                        positionValue = String.valueOf(getAllComponentData.get(i).getID());
+//                                        lookUpDataClass.setIntervention1(getAllComponentData.get(i).getName());
+                                        positionValue = String.valueOf(componentList.get(i).getID());
+                                        Log.i(TAG, "onItemSelectedComponent: "+ componentList.get(i).getID());
 
-                                        if (getAllComponentData.get(i).getName().equals("Model Village")) {
-                                            subComponentSpinner.setVisibility(View.GONE);
-                                            stageSpinner.setVisibility(View.GONE);
-                                            hideLyt.setVisibility(View.GONE);
-                                        } else {
-                                            subComponentSpinner.setVisibility(View.VISIBLE);
-                                            stageSpinner.setVisibility(View.GONE);
-                                            datePicker.setVisibility(View.GONE);
-                                            hideLyt.setVisibility(View.VISIBLE);
-                                            Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
-                                            //save data for offline data..
+                                        subComponentSpinner.setVisibility(View.VISIBLE);
+                                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                                        Call<List<ComponentData>> userDataCall = null;
+                                        userDataCall = call.getTNAUComponents();
+                                        userDataCall.enqueue(new Callback<List<ComponentData>>() {
+                                            @Override
+                                            public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
+                                                if (response.isSuccessful() && response.body() != null) {
+                                                    //subComponentSpinner.setVisibility(View.VISIBLE);
+                                                    if (componentList.get(i).getName().equals("Model Village")) {
+                                                        hideLyt.setVisibility(View.GONE);
+                                                        subComponentSpinner.setVisibility(View.GONE);
+                                                        stageSpinner.setVisibility(View.GONE);
+                                                        datePicker.setVisibility(View.GONE);
+                                                    } else {
+                                                        subComponentSpinner.setVisibility(View.VISIBLE);
+                                                        stageSpinner.setVisibility(View.VISIBLE);
+                                                        hideLyt.setVisibility(View.VISIBLE);
+                                                        Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
+                                                        //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
-                                        }
+                                                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
+                                                    }
+                                                } else {
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<List<ComponentData>> call, Throwable t) {
+
+                                            }
+                                        });
+
+//                                        subComponentSpinner.setVisibility(View.VISIBLE);
+//                                        if (getAllComponentData.get(i).getName().equals("Model Village")) {
+//                                            hideLyt.setVisibility(View.GONE);
+//                                        }
+//                                        else {
+//                                            subComponentSpinner.setVisibility(View.VISIBLE);
+//                                            stageSpinner.setVisibility(View.VISIBLE);
+//                                            hideLyt.setVisibility(View.VISIBLE);
+//                                            Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
+//                                            //save data for offline data..
+////                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
+//
+//                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+//                                        }
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -132,7 +165,7 @@ public class TNAU_CallApi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(String posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
 
         commonFunction = new CommonFunction(activity);
         if (commonFunction.isNetworkAvailable() == true) {
@@ -144,25 +177,24 @@ public class TNAU_CallApi {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            getAllComponentData = response.body();
-
-                            adapters = new ComponentAdapter(context, getAllComponentData);
-//                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
-
-                            //get id position for second filters
-//                            positionValue = String.valueOf(getAllComponentData.get(posVal).getID());
-
-                            adapters.getFilter().filter(posVal);
+                            sub_componentList = response.body();
+                            adapters = new ComponentAdapter(context, sub_componentList);
+                            adapters.getFilter().filter(String.valueOf(posVal));
                             secondSpinner.setAdapter(adapters);
 
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    lookUpDataClass.setIntervention2(getAllComponentData.get(i).getName());
-                                    thirdSpinner.setVisibility(View.VISIBLE);
-
+                                    lookUpDataClass.setIntervention2(componentList.get(i).getName());
                                     try {
-                                        positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
+                                        if (secondSpinner.getVisibility() == View.VISIBLE) {
+                                            thirdSpinner.setVisibility(View.VISIBLE);
+                                        } else if (secondSpinner.getSelectedItem() == null && secondSpinner.getVisibility() == View.GONE) {
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        } else {
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }
+                                        positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                                         Log.i(TAG, "posvalue2: " + positionValue2);
                                         stagesDropDown(positionValue2, thirdSpinner, editText);
                                     } catch (Exception e) {
@@ -211,9 +243,9 @@ public class TNAU_CallApi {
                         if (response.isSuccessful() && response.body() != null) {
 
                             stagesList = response.body();
-                            componentAdapter = new ComponentAdapter(context, stagesList);
-                            componentAdapter.getFilter().filter(stagePosVal);
-                            thirdSpinner.setAdapter(componentAdapter);
+                            adapters = new ComponentAdapter(context, stagesList);
+                            adapters.getFilter().filter(stagePosVal);
+                            thirdSpinner.setAdapter(adapters);
 
 
                             thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -221,9 +253,10 @@ public class TNAU_CallApi {
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
+
                                         String names = stagesList.get(i).getName();
-                                        lookUpDataClass.setIntervention3(names);
-                                        backPressListener.onSelectedInputs(lookUpDataClass);
+                                        lookUpDataClass.setIntervention1(names);
+
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {
@@ -231,14 +264,10 @@ public class TNAU_CallApi {
                                         } else {
                                             editText.setVisibility(View.GONE);
                                         }
-//                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                     } catch (Exception e) {
 
                                     }
 
-//                                    positionValue2 = String.valueOf(getAllComponentData.get(Integer.parseInt(stagePosVal)).getID());
-//                                    Log.i(TAG, "posvalue2: " + positionValue);
-//                                    stagesDropDown(positionValue2, thirdSpinner,editText);
                                 }
 
                                 @Override

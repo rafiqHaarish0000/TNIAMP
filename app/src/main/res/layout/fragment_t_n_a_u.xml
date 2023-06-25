@@ -195,7 +195,7 @@
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false"/>
 
-                    <EditText
+                        <EditText
                         android:id="@+id/date_txt"
                         style="@style/AppEdittext"
                         android:layout_width="match_parent"
@@ -272,6 +272,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:inputType="number"
+                            android:maxLength="2"
                             android:hint="@string/area_ha" />
 
                         <EditText

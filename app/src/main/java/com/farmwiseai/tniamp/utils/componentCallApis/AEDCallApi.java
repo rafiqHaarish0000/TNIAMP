@@ -73,7 +73,7 @@ public class AEDCallApi {
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
-                                        if (getAllComponentData.get(i).getName().equals("Model Village")) {
+                                        if (getAllComponentData.get(i).getName().contains("Model Village")) {
                                             subComponentSpinner.setVisibility(View.GONE);
                                             hideLyt.setVisibility(View.GONE);
                                         } else {

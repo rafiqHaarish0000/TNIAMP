@@ -38,6 +38,12 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
@@ -80,7 +86,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private List<VillageData> villageDataList;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
-    private ComponentAdapter adapter, adapter2;
+    private ComponentAdapter adapter;
     private SubBasinAdapter subAdapter;
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
@@ -115,6 +121,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String date;
     public String status;
     public BackPressListener backPressListener;
+    private String firstImageBase64, secondImageBase64;
 
     @Override
     public void onAttach(Context context) {
@@ -144,7 +151,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
         dateField = tnauBinding.dateTxt.getText().toString();
-        hideLyt = tnauBinding.visibilityLyt;
 
         /*
         below component spinner is vary for all the department so please refer the callApi class
@@ -156,10 +162,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         sub_componentSpinner = tnauBinding.subComponentsTxt;
         stagesSpinner = tnauBinding.stagesTxt;
         datePicker = tnauBinding.dateTxt;
+        hideLyt = tnauBinding.visibilityLyt;
 
-        TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
+        TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, myString,backPressListener);
         TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt);
-
+        LookUpDataClass lookUpDataClass = new LookUpDataClass();
+        Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
         setAllDropDownData();
 
 
@@ -539,7 +547,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                gender = genderSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -558,7 +566,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                category = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -648,6 +656,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 tnauBinding.image1.setImageBitmap(photo);
                 // BitMap is data structure of image file which store the image in memory
                 getEncodedString(photo);
+                Log.i(TAG, "base: "+getEncodedString(photo));
             } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
@@ -680,10 +689,10 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private void getLocation(View view) {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
+            lat = String.valueOf(gpsTracker.getLatitude());
+            lon = String.valueOf(gpsTracker.getLongitude());
 
-            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
+            Log.i(TAG, "Latitude" + lat + " " + "Longitude" + lon);
 
         } else {
             gpsTracker.showSettingsAlert();
@@ -715,16 +724,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
 
-    private void getAllData(){
-
-        farmerName = tnauBinding.farmerTxt.getText().toString();
-        survey_no = tnauBinding.surveyTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        near_tank = tnauBinding.tankTxt.getText().toString();
-        remarks = tnauBinding.remarksTxt.getText().toString();
-        dateField = tnauBinding.dateTxt.getText().toString();
-        Log.i(TAG, "getAllData: "+village+intervention1+intervention2+intervention3);
-    }
 
 
     @Override
@@ -733,6 +732,109 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 //            intervention2 = lookUpDataClass.getIntervention2();
 //            intervention3 = lookUpDataClass.getIntervention3();
 //        Log.i(TAG, "getComponentData: "+intervention1+intervention2+intervention3);
-        Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
+
+    }
+
+    private void getAllData() {
+
+        farmerName = tnauBinding.farmerTxt.getText().toString();
+        survey_no = tnauBinding.surveyTxt.getText().toString();
+        area = tnauBinding.areaTxt.getText().toString();
+        area = tnauBinding.areaTxt.getText().toString();
+        remarks = tnauBinding.remarksTxt.getText().toString();
+        dateField = tnauBinding.dateTxt.getText().toString();
+        near_tank = tnauBinding.tankTxt.getText().toString();
+
+        TNAU_Request request = new TNAU_Request();
+        request.setVillage(village);
+        request.setIntervention1("2");
+        request.setIntervention2("18");
+        request.setIntervention3("65");
+        request.setFarmer_name(farmerName);
+        request.setGender(gender);
+        request.setCategory(category);
+        request.setSurvey_no(survey_no);
+        request.setArea(area);
+        request.setVariety(" ");
+        request.setImage1(firstImageBase64);
+        request.setYield(" ");
+        request.setRemarks(remarks);
+        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_date(dateField);
+        request.setLat(String.valueOf(lat));
+        request.setLon(String.valueOf(lon));
+        request.setTank_name(near_tank);
+        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhoto_lat(String.valueOf(lat));
+        request.setPhoto_lon(String.valueOf(lon));
+        request.setTxn_id("20200212120446");
+        request.setDate(dateField);
+        request.setStatus("0");
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<List<TNAU_Response>> userDataCall = null;
+        userDataCall = call.getTnauResponse(request);
+        userDataCall.enqueue(new Callback<List<TNAU_Response>>() {
+            @Override
+            public void onResponse(Call<List<TNAU_Response>> call, Response<List<TNAU_Response>> response) {
+                if (response.body() != null) {
+                    try {
+                        String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                        Log.i(TAG, "txt_value: "+txt_id.toString());
+                        mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                        uploadSecondImage(txt_id);
+//                        List<AgriResponse> agriResponses = new ArrayList<>();
+//                        agriResponses.addAll(response.body().getResponse());
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(getContext(),"data error.!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TNAU_Response>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void uploadSecondImage(String txt_id) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        request.setDepartment_id("2");
+        request.setImg2(secondImageBase64);
+        request.setID(txt_id);
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg"+successMessage);
+                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+//                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
+                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 }

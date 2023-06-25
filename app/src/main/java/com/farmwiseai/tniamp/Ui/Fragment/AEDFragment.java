@@ -39,6 +39,12 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
@@ -69,7 +75,7 @@ import retrofit2.Response;
 public class AEDFragment extends Fragment implements View.OnClickListener {
     private Context context;
     private FragmentAEDBinding tnauBinding;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField,village;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -84,7 +90,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
     private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, genderSpinner, categorySpinner, villageSpinner;
     private EditText datePicker;
     private AEDCallApi aedCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -94,6 +100,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
     private List<String> phraseList, genderList, categoryList;
     private GPSTracker gpsTracker;
     private LinearLayout hideLyt;
+    private double lat, longi;
+    private String villageValue, gender, firstImageBase64, secondImageBase64;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -335,7 +343,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
-                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
+                village = villageDataList.get(i).getNAME();
+//                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
 
             @Override
@@ -354,7 +363,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                gender = genderSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -373,7 +382,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                category = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -403,7 +412,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
                 && blockSpinner.getSelectedItem() == null
                 && componentSpinner.getSelectedItem() == null
                 && sub_componentSpinner.getSelectedItem() == null
-                && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
                 && categorySpinner.getSelectedItem() == null) {
             mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
@@ -573,13 +581,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
                 // Set the image in imageview for display
                 tnauBinding.image1.setImageBitmap(photo);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo);
+                firstImageBase64 = getEncodedString(photo);
             } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
                 tnauBinding.image2.setImageBitmap(photo2);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo2);
+                secondImageBase64 = getEncodedString(photo2);
             }
         }
 
@@ -629,14 +637,113 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
     private void getLocation(View view) {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
+            lat = gpsTracker.getLatitude();
+            longi = gpsTracker.getLongitude();
 
-            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
+//            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
 
         } else {
             gpsTracker.showSettingsAlert();
         }
+    }
+
+    private void getAllData() {
+
+        farmerName = tnauBinding.farmerTxt.getText().toString();
+        survey_no = tnauBinding.surveyTxt.getText().toString();
+        area = tnauBinding.areaTxt.getText().toString();
+        area = tnauBinding.areaTxt.getText().toString();
+        remarks = tnauBinding.remarksTxt.getText().toString();
+        near_tank = tnauBinding.tankTxt.getText().toString();
+
+        AEDRequest request = new AEDRequest();
+        request.setVillage(village);
+        request.setIntervention1("2");
+        request.setIntervention2("18");
+        request.setIntervention3("65");
+        request.setFarmer_name(farmerName);
+        request.setGender(gender);
+        request.setCategory(category);
+        request.setSurvey_no(survey_no);
+        request.setArea(area);
+        request.setVariety(" ");
+        request.setImage1(firstImageBase64);
+        request.setYield(" ");
+        request.setRemarks(remarks);
+        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_date(dateField);
+        request.setLat(String.valueOf(lat));
+        request.setLon(String.valueOf(longi));
+        request.setTank_name(near_tank);
+        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhoto_lat(String.valueOf(lat));
+        request.setPhoto_lon(String.valueOf(longi));
+        request.setTxn_id("20200212120446");
+        request.setDate(dateField);
+        request.setStatus("0");
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<List<AEDResponse>> userDataCall = null;
+        userDataCall = call.getAEDResponse(request);
+        userDataCall.enqueue(new Callback<List<AEDResponse>>() {
+            @Override
+            public void onResponse(Call<List<AEDResponse>> call, Response<List<AEDResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                    Log.i(TAG, "txt_value: "+txt_id.toString());
+                    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                    uploadSecondImage(txt_id);
+//                        List<AgriResponse> agriResponses = new ArrayList<>();
+//                        agriResponses.addAll(response.body().getResponse());
+                }else{
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<AEDResponse>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void uploadSecondImage(String txt_id) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        request.setDepartment_id("2");
+        request.setImg2(secondImageBase64);
+        request.setID(txt_id);
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg"+successMessage);
+                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+//                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
+                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
 }

@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class AgriCallApi {
     private Activity activity;
     private Context context;
-    private List<ComponentData> getAllComponentData, stagesList;
+    private List<ComponentData> getAllComponentData, stagesList,sub_componentList;
     private ComponentAdapter adapters, componentAdapter;
     private CharSequence positionValue;
     private CharSequence positionValue2;
@@ -74,14 +74,12 @@ public class AgriCallApi {
                                     try {
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                         String names = getAllComponentData.get(i).getName();
-                                        if(names.contains("IPM")){
-                                            stageSpinner.setVisibility(View.GONE);
-                                        }
-                                        else if (names.equals("Model Village")) {
+                                         if (names.equals("Model Village")) {
                                             subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);
                                             hideLyt.setVisibility(View.GONE);
-                                        } else {
+                                        }
+                                        else {
                                             subComponentSpinner.setVisibility(View.VISIBLE);
                                             stageSpinner.setVisibility(View.GONE);
                                             datePicker.setVisibility(View.GONE);
@@ -141,9 +139,9 @@ public class AgriCallApi {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            getAllComponentData = response.body();
+                            sub_componentList = response.body();
 
-                            adapters = new ComponentAdapter(context, getAllComponentData);
+                            adapters = new ComponentAdapter(context, sub_componentList);
 //                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
 
                             //get id position for second filters
@@ -158,16 +156,27 @@ public class AgriCallApi {
                                     thirdSpinner.setVisibility(View.VISIBLE);
 
                                     try {
-                                        positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
+                                        positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                                         Log.i(TAG, "posvalue2: " + positionValue2);
-                                        String names = getAllComponentData.get(i).getName();
+                                        String names = sub_componentList.get(i).getName();
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("Planting")) {
                                             editText.setVisibility(View.VISIBLE);
                                             thirdSpinner.setVisibility(View.GONE);
-                                        } else {
+                                        }else if (names.contains("Installation")){
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }else if(names.contains("Milky")){
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }
+                                        else if(names.contains("Harvest")){
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }
+                                        else {
                                             editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.VISIBLE);
                                         }

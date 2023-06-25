@@ -1,5 +1,6 @@
 package com.farmwiseai.tniamp.Ui.Fragment;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
@@ -11,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.tv.SectionResponse;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -39,11 +41,16 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAgricultureBinding;
+import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
@@ -65,10 +72,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AgricultureFragment extends Fragment implements View.OnClickListener  {
+public class AgricultureFragment extends Fragment implements View.OnClickListener {
     private FragmentAgricultureBinding agricultureBinding;
     private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
+    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, survey_no, area, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -89,14 +96,19 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
+    private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout vis_lyt;
+    private double lat, longi;
+    private String villageValue, gender, category, firstImageBase64, secondImageBase64;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,14 +139,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         vis_lyt = agricultureBinding.visibilityLyt;
 
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
+        agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt);
 
         setAllDropDownData();
 
 
         return agricultureBinding.getRoot();
 
-        
+
     }
 
     private boolean fieldValidation(String farmerName, String category,
@@ -158,11 +170,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 && genderSpinner.getSelectedItem() == null
                 && categorySpinner.getSelectedItem() == null
                 && villageSpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
+            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
         }
 
-        if(valueofPic != 0 && valueofPic != 1 && valueofPic != 2){
-            mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
+        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
         if (farmerName.length() == 0) {
@@ -211,18 +223,18 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField);
+                    category, survey_no, area, near_tank, remarks, dateField);
                 if (checkValidaiton) {
-                    finalSubmission();
-                } else {
-                    //do the code for save all data
-                    Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
+                    if(getLocation(view)){
+                        getAllData();
+                    }
+                }else{
+                    showToast(getActivity(),"Validation error");
                 }
                 break;
 
             case R.id.image_1:
                 if (checkPermission()) {
-                    Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -235,7 +247,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
             case R.id.image_2:
                 if (checkPermission()) {
-                    Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -283,7 +294,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agricultureBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
                 if (mCommonFunction.isNetworkAvailable() == true) {
                     try {
                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -471,7 +481,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
-//                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
+                villageValue = villageDataList.get(i).getNAME();
             }
 
             @Override
@@ -489,7 +499,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                gender = genderSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -508,7 +518,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                category = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -583,22 +593,38 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == pic_id) {
+        if (requestCode == pic_id && resultCode == RESULT_OK) {
             if (takePicture && valueofPic == 1) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Bitmap photo1 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
-                agricultureBinding.image1.setImageBitmap(photo);
+                agricultureBinding.image1.setImageBitmap(photo1);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo);
+                getEncodedString(photo1);
+                firstImageBase64 = getEncodedString(photo1);
+//                Toast.makeText(getContext(), getEncodedString(photo1), Toast.LENGTH_LONG).show();
+
+
             } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
                 agricultureBinding.image2.setImageBitmap(photo2);
                 // BitMap is data structure of image file which store the image in memory
                 getEncodedString(photo2);
+                secondImageBase64 = getEncodedString(photo2);
             }
         }
 
+    }
+
+    private String encodeImage(Bitmap bm) {
+        Bitmap immagex = bm;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+        Log.e("LOOK", imageEncoded);
+        return imageEncoded;
     }
 
     private String getEncodedString(Bitmap bitmap) {
@@ -607,37 +633,160 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
 
-  /* or use below if you want 32 bit images
-
-   bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);*/
-
         byte[] imageArr = os.toByteArray();
 
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
+        String encodeImage = Base64.encodeToString(imageArr, Base64.URL_SAFE);
+
+        return encodeImage;
 
     }
 
-    private void finalSubmission() {
+    private boolean getLocation(View view) {
+        gpsTracker = new GPSTracker(getContext());
+        if (gpsTracker.canGetLocation()) {
+            lat = gpsTracker.getLatitude();
+            longi = gpsTracker.getLongitude();
 
-        if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should saved in post api
-            Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
-            mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+            Log.i(TAG, "Latitude" + lat + " " + "Longitude" + longi);
 
         } else {
-            String offlineText = "Data saved successfully in offline data";
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                }
-            });
+            gpsTracker.showSettingsAlert();
         }
+        return true;
     }
+
+//    private void finalSubmission() {
+//
+//        if (mCommonFunction.isNetworkAvailable() == true) {
+//            try {
+//                getAllData();
+//                mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+//                showToast(getActivity(), SharedPrefsUtils.getString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage));
+//            } catch (Exception e) {
+//                showToast(getActivity(), e.getMessage());
+//            }
+//        } else {
+//            showToast(getActivity(), getResources().getString(R.string.network_error));
+////            String offlineText = "Data saved successfully in offline data";
+////            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+////                @Override
+////                public void onClick(DialogInterface dialogInterface, int i) {
+//////                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+////                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+////                }
+////            });
+//        }
+//    }
 
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
+    }
+
+    public void showToast(Activity mcontaxt, String message) {
+        Toast.makeText(mcontaxt, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void getAllData() {
+
+        farmerName = agricultureBinding.farmerTxt.getText().toString();
+        survey_no = agricultureBinding.surveyTxt.getText().toString();
+        area = agricultureBinding.areaTxt.getText().toString();
+        area = agricultureBinding.areaTxt.getText().toString();
+        remarks = agricultureBinding.remarksTxt.getText().toString();
+        dateField = agricultureBinding.dateTxt.getText().toString();
+        near_tank = agricultureBinding.tankTxt.getText().toString();
+
+        Agri_Request request = new Agri_Request();
+        request.setVillage(villageValue);
+        request.setIntervention1("2");
+        request.setIntervention2("18");
+        request.setIntervention3("65");
+        request.setFarmer_name(farmerName);
+        request.setGender(gender);
+        request.setCategory(category);
+        request.setSurvey_no(survey_no);
+        request.setArea(area);
+        request.setVariety(" ");
+        request.setImage1(firstImageBase64);
+        request.setYield(" ");
+        request.setRemarks(remarks);
+        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_date(dateField);
+        request.setLat(String.valueOf(lat));
+        request.setLon(String.valueOf(longi));
+        request.setTank_name(near_tank);
+        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhoto_lat(String.valueOf(lat));
+        request.setPhoto_lon(String.valueOf(longi));
+        request.setTxn_id("20200212120446");
+        request.setDate(dateField);
+        request.setStatus("0");
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<List<AgriResponse>> userDataCall = null;
+        userDataCall = call.getAgriResponse(request);
+        userDataCall.enqueue(new Callback<List<AgriResponse>>() {
+            @Override
+            public void onResponse(Call<List<AgriResponse>> call, Response<List<AgriResponse>> response) {
+                if (response.body() != null) {
+                    try {
+                        String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                        Log.i(TAG, "txt_value: "+txt_id.toString());
+                        mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                        uploadSecondImage(txt_id);
+//                        List<AgriResponse> agriResponses = new ArrayList<>();
+//                        agriResponses.addAll(response.body().getResponse());
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(getContext(),"data error.!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AgriResponse>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void uploadSecondImage(String txt_id) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        request.setDepartment_id("2");
+        request.setImg2(secondImageBase64);
+        request.setID(txt_id);
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg"+successMessage);
+                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+//                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
+                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
 }

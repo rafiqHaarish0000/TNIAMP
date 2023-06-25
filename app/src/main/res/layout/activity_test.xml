@@ -20,7 +20,7 @@
             app:smsp_enableFloatingLabel="true"
             android:textSize="18sp"
             app:smsp_hint="Component"
-            android:padding="8dp"
+            android:padding="4dp"
             android:dropDownWidth="2dp"
             android:spinnerMode="dropdown"
             android:layout_marginStart="18dp"
@@ -127,6 +127,93 @@
             android:layout_height="wrap_content"
             android:text="Get click" />
 
+
+        <LinearLayout
+            android:id="@+id/iec_layt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:visibility="gone"
+            android:layout_marginStart="4dp"
+            android:orientation="vertical">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/AppEdittext"
+                android:gravity="start"
+                android:layout_gravity="start"
+                android:hint="No of Participants"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Male No."
+                style="@style/head_text"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="start"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/male_others"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEdittext"
+                    android:gravity="start"
+                    android:inputType="number"
+                    android:layout_gravity="start"
+                    android:hint="Others No"/>
+                <EditText
+                    android:id="@+id/male_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEdittext"
+                    android:gravity="start"
+                    android:inputType="number"
+                    android:layout_gravity="start"
+                    android:hint="SC/ST No."/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Female No."
+                style="@style/head_text"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="start"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/female_others"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEdittext"
+                    android:gravity="start"
+                    android:inputType="number"
+                    android:layout_gravity="start"
+                    android:hint="Others No"/>
+                <EditText
+                    android:id="@+id/female_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEdittext"
+                    android:gravity="start"
+                    android:inputType="number"
+                    android:layout_gravity="start"
+                    android:hint="SC/ST No."/>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

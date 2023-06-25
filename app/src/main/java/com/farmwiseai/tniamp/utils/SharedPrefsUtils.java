@@ -9,7 +9,7 @@ public class SharedPrefsUtils
 
     public static enum PREF_KEY
     {
-        UID("uid"),ACCESS_TOKEN("access_token"),LOGIN_SESSION("login_session"),CONFIRM_PASSWORD("confirm_password"),
+        SuccessMessage("success_message"),ACCESS_TOKEN("access_token"),LOGIN_SESSION("login_session"),CONFIRM_PASSWORD("confirm_password"),
         KEY_TODAY("key_today"),KEY_OVERDUE("key_overdue"),KEY_FEATURE("key_feature"),USER_DETAILS("user_details"),VIEWPAGERCURRENTPOSTION("viewpagercurrentpostion"),
         MFROM("mfrom"),LEAD_DETAILS("lead_details"),PHARSE_1("spinner_1_value"),COMPONENT("component"),SUB_COMPONENT("sub_component"),STAGE("satges"),
         DATE_OF_SOWING("sowing"),SAVED_OFFLINE_DATA("savedOfflineData"),MODEL_VILLAGE("model_village"),VILLAGE_NAME("village_name");

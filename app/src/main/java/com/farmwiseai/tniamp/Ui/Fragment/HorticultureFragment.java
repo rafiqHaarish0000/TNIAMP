@@ -39,11 +39,18 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentHorticultureBinding;
+import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.HortiCallApi;
 import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -73,16 +80,18 @@ FragmentHorticultureBinding horticultureBinding;
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
     private ComponentAdapter adapter, adapter2;
     private SubBasinAdapter subAdapter;
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
+    private VillageAdaapter villageAdaapter;
     private Spinner subBasinSpinner, districtSpinner,
             blockSpinner, componentSpinner,
             sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner;
+            genderSpinner, categorySpinner, villageSpinner;
     private EditText datePicker;
     private HortiCallApi hortiCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -90,7 +99,10 @@ FragmentHorticultureBinding horticultureBinding;
     private int valueofPic;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
-    private LinearLayout vis_lyt;
+    private LinearLayout vis_lyt,trainingLyt;
+    private GPSTracker gpsTracker;
+    private double lat, longi;
+    private String villageValue, gender, firstImageBase64, secondImageBase64;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -124,9 +136,11 @@ FragmentHorticultureBinding horticultureBinding;
         stagesSpinner = horticultureBinding.stagesTxt;
         datePicker = horticultureBinding.dateTxt;
         vis_lyt = horticultureBinding.visibilityLyt;
+        trainingLyt = horticultureBinding.iecLayt;
 
-        hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
+
+        hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter,myString);
+        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt,trainingLyt);
 
         setAllDropDownData();
 
@@ -154,7 +168,9 @@ FragmentHorticultureBinding horticultureBinding;
                 && sub_componentSpinner.getSelectedItem() == null
                 && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null) {
+                && categorySpinner.getSelectedItem() == null
+                &&villageSpinner.getSelectedItem() == null)
+                {
             mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
         }
 
@@ -210,6 +226,7 @@ FragmentHorticultureBinding horticultureBinding;
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category, survey_no, area, near_tank, remarks, dateField);
                 if (checkValidaiton) {
+                    getLocation(view);
                     finalSubmission();
                 } else {
                     //do the code for save all data
@@ -262,6 +279,7 @@ FragmentHorticultureBinding horticultureBinding;
         componentSpinner = horticultureBinding.componentTxt;
         sub_componentSpinner = horticultureBinding.subComponentsTxt;
         stagesSpinner = horticultureBinding.stagesTxt;
+        villageSpinner = horticultureBinding.villageTxt;
         datePicker = horticultureBinding.dateTxt;
 
 
@@ -417,6 +435,65 @@ FragmentHorticultureBinding horticultureBinding;
             }
         });
 
+        blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCommonFunction.isNetworkAvailable() == true) {
+                    try {
+                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                        Call<List<VillageData>> userDataCall = null;
+                        userDataCall = call.getVillageData();
+                        userDataCall.enqueue(new Callback<List<VillageData>>() {
+                            @Override
+                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    villageDataList = response.body();
+                                    posValue = String.valueOf(blockDropDown.get(i).getID());
+                                    Log.i(TAG, "posValue: " + posValue);
+                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                                    Log.i(TAG, "districtPos: " + myString);
+                                    villageAdaapter.getFilter().filter(posValue);
+                                    villageSpinner.setAdapter(villageAdaapter);
+
+                                } else {
+                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
+                    }
+                } else {
+                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
+                villageValue = villageDataList.get(i).getNAME();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         //gender dropdown list
         genderList = new ArrayList<>();
         genderList.add("Male");
@@ -426,7 +503,7 @@ FragmentHorticultureBinding horticultureBinding;
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                    gender = genderSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -445,7 +522,7 @@ FragmentHorticultureBinding horticultureBinding;
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                category = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -526,13 +603,13 @@ FragmentHorticultureBinding horticultureBinding;
                 // Set the image in imageview for display
                 horticultureBinding.image1.setImageBitmap(photo);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo);
+                firstImageBase64 = getEncodedString(photo);
             } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
                 horticultureBinding.image2.setImageBitmap(photo2);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo2);
+                secondImageBase64 = getEncodedString(photo2);
             }
         }
 
@@ -576,4 +653,118 @@ FragmentHorticultureBinding horticultureBinding;
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
+
+    private void getLocation(View view) {
+        gpsTracker = new GPSTracker(getContext());
+        if (gpsTracker.canGetLocation()) {
+            lat = gpsTracker.getLatitude();
+            longi = gpsTracker.getLongitude();
+
+//            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
+
+        } else {
+            gpsTracker.showSettingsAlert();
+        }
+    }
+
+
+    private void getAllData() {
+
+        farmerName = horticultureBinding.farmerTxt.getText().toString();
+        survey_no = horticultureBinding.surveyTxt.getText().toString();
+        area = horticultureBinding.areaTxt.getText().toString();
+        area = horticultureBinding.areaTxt.getText().toString();
+        remarks = horticultureBinding.remarksTxt.getText().toString();
+        near_tank = horticultureBinding.tankTxt.getText().toString();
+
+        AEDRequest request = new AEDRequest();
+        request.setVillage(villageValue);
+        request.setIntervention1("2");
+        request.setIntervention2("18");
+        request.setIntervention3("65");
+        request.setFarmer_name(farmerName);
+        request.setGender(gender);
+        request.setCategory(category);
+        request.setSurvey_no(survey_no);
+        request.setArea(area);
+        request.setVariety(" ");
+        request.setImage1(firstImageBase64);
+        request.setYield(" ");
+        request.setRemarks(remarks);
+        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_date(dateField);
+        request.setLat(String.valueOf(lat));
+        request.setLon(String.valueOf(longi));
+        request.setTank_name(near_tank);
+        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhoto_lat(String.valueOf(lat));
+        request.setPhoto_lon(String.valueOf(longi));
+        request.setTxn_id("20200212120446");
+        request.setDate(dateField);
+        request.setStatus("0");
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<List<AEDResponse>> userDataCall = null;
+        userDataCall = call.getAEDResponse(request);
+        userDataCall.enqueue(new Callback<List<AEDResponse>>() {
+            @Override
+            public void onResponse(Call<List<AEDResponse>> call, Response<List<AEDResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                    Log.i(TAG, "txt_value: "+txt_id.toString());
+                    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                    uploadSecondImage(txt_id);
+//                        List<AgriResponse> agriResponses = new ArrayList<>();
+//                        agriResponses.addAll(response.body().getResponse());
+                }else{
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<AEDResponse>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void uploadSecondImage(String txt_id) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        request.setDepartment_id("2");
+        request.setImg2(secondImageBase64);
+        request.setID(txt_id);
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg"+successMessage);
+                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+//                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
+                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 }

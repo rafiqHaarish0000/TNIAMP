@@ -1,7 +1,9 @@
 package com.farmwiseai.tniamp.utils;
 
 public class LookUpDataClass {
-    public String intervention1,intervention2,intervention3;
+    private String intervention1;
+    private String intervention2;
+    private String intervention3;
 
     public String getIntervention1() {
         return intervention1;

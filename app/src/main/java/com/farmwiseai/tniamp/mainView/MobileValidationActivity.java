@@ -16,6 +16,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.databinding.ActivityMobileValidationBinding;
 import com.farmwiseai.tniamp.utils.BaseActivity;
+import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 
 import java.util.List;
@@ -25,12 +26,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MobileValidationActivity extends BaseActivity {
-ActivityMobileValidationBinding binding;
-GenerateOTP generateOTP;
+    ActivityMobileValidationBinding binding;
+    GenerateOTP generateOTP;
+    CommonFunction commonFunction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(MobileValidationActivity.this, R.layout.activity_mobile_validation);
+        commonFunction = new CommonFunction(MobileValidationActivity.this);
         setContentView(binding.getRoot());
 
         binding.mVerifyMobileNumber.setOnClickListener(new View.OnClickListener() {
@@ -43,41 +47,39 @@ GenerateOTP generateOTP;
 
 //                    mLoadCustomToast(MobileValidationActivity.this,"Please enter the correct mobile number");
 
-                }else{
+                } else {
                     try {
                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                         Call<GenerateOTP> userDataCall = null;
-                        userDataCall = call.generateOTP(binding.mobileValues.getText().toString(),"OTP is","4");
-                     userDataCall.enqueue(new Callback<GenerateOTP>() {
-                         @Override
-                         public void onResponse(Call<GenerateOTP> call, Response<GenerateOTP> response) {
-                             if (response.isSuccessful() && response.body() != null) {
-                                 generateOTP = response.body();
-                                 Log.i(TAG, "onBody: " + response.code());
-if(generateOTP.getResponse().equalsIgnoreCase("success"))
-{
-    mLoadCustomToast(getParent(), "OTP send to mobile Number");
+                        userDataCall = call.generateOTP(binding.mobileValues.getText().toString(), "OTP is", "4");
+                        userDataCall.enqueue(new Callback<GenerateOTP>() {
+                            @Override
+                            public void onResponse(Call<GenerateOTP> call, Response<GenerateOTP> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    generateOTP = response.body();
+                                    Log.i(TAG, "onBody: " + response.code());
+                                    if (generateOTP.getResponse().equalsIgnoreCase("success")) {
+                                        mLoadCustomToast(getParent(), "OTP send to mobile Number");
+                                        commonFunction.showProgress();
+                                        Intent i = new Intent(MobileValidationActivity.this, VerifyMobileNumberActivitiy.class);
+                                        Bundle extras = new Bundle();
+                                        extras.putString("otp", generateOTP.getOtpDataId().toString());
+                                        extras.putString("phone", binding.mobileValues.getText().toString());
+                                        i.putExtras(extras);
+                                        startActivity(i);
+                                    }
+                                } else {
+                                    mLoadCustomToast(getParent(), "MobileNumber Not registered");
 
-    Intent i = new Intent(MobileValidationActivity.this,VerifyMobileNumberActivitiy.class);
-    Bundle extras = new Bundle();
-    extras.putString("otp", generateOTP.getOtpDataId().toString());
-    extras.putString("phone",binding.mobileValues.getText().toString());
-    i.putExtras(extras);
-    startActivity(i);
-}
-                             }
-                             else {
-                                 mLoadCustomToast(getParent(), "MobileNumber Not registered");
+                                }
+                            }
 
-                             }
-                         }
+                            @Override
+                            public void onFailure(Call<GenerateOTP> call, Throwable t) {
+                                mLoadCustomToast(getParent(), "MobileNumber Not registered");
 
-                         @Override
-                         public void onFailure(Call<GenerateOTP> call, Throwable t) {
-                             mLoadCustomToast(getParent(), "MobileNumber Not registered");
-
-                         }
-                     });
+                            }
+                        });
 
                     } catch (Exception e) {
                         mLoadCustomToast(getParent(), "Exception Caught");

@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Ui.Fragment.AEDFragment;
+import com.farmwiseai.tniamp.Ui.Fragment.AboutFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AgricultureFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AnimalFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.FisheriesFragment;
@@ -20,6 +21,7 @@ import com.farmwiseai.tniamp.Ui.Fragment.MarketingFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.TNAUFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.WRDFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
+import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
@@ -43,6 +45,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.naviWrd.setOnClickListener(this);
         binding.naviMarketing.setOnClickListener(this);
         binding.navFish.setOnClickListener(this);
+        binding.aboutImage.setOnClickListener(this);
+        binding.logoutIcon.setOnClickListener(this);
 
 
     }
@@ -81,13 +85,34 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             case R.id.nav_fish:
                 setAddFragment(new FisheriesFragment());
                 break;
+            case R.id.about_image:
+                setAddFragment(new AboutFragment());
+                break;
+            case R.id.logout_icon:
+                showMessageOKCancel("Are you sure want to Logout.?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPrefsUtils.clearAllPrefs(DashboardActivity.this);
+                        mCommonFunction.navigation(DashboardActivity.this, MobileValidationActivity.class);
+                        dialogInterface.dismiss();
+                    }
+                });
+                break;
         }
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(DashboardActivity.this)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
+                .setPositiveButton("Yes", okListener)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        dialogInterface.cancel();
+                    }
+                })
+                .setTitle("Logout")
                 .create()
                 .show();
     }
@@ -95,7 +120,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private void checkOfflineDataPresent() {
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should send to api and notification should be cleared accordingly
-            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
             if (checkDataIsPresentOrNot.length() != 0) {
                 showMessageOKCancel("Please update the offline data", new DialogInterface.OnClickListener() {
                     @Override
@@ -110,7 +135,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 binding.notificationBadge.setVisibility(View.GONE);
             }
         } else {
-            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
             if (checkDataIsPresentOrNot.length() != 0) {
                 binding.notificationBadge.setVisibility(View.VISIBLE);
             }
@@ -119,7 +144,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-         finish();
+        finish();
         super.onBackPressed();
     }
 }

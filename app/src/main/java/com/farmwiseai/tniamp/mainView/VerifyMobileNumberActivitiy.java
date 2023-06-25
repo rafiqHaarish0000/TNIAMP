@@ -32,9 +32,9 @@ List<ValidateOTP> validateOTP;
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(VerifyMobileNumberActivitiy.this, R.layout.activity_verify_mobile_number_activitiy);
         Bundle extras = getIntent().getExtras();
-        otpValue= extras.getString("otp");
+//        otpValue= extras.getString("otp");
         phoneNumber= extras.getString("phone");
-        mBinding.digitCodeValue.setText(otpValue);
+//        mBinding.digitCodeValue.setText(otpValue);
         setContentView(mBinding.getRoot());
               mBinding.confirmOtp.setOnClickListener(new View.OnClickListener() {
             @Override

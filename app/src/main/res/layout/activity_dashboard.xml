@@ -106,7 +106,7 @@
                             app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
                         <ImageView
-                            android:id="@+id/pop_back_image"
+                            android:id="@+id/about_image"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_marginEnd="16dp"
@@ -125,12 +125,12 @@
                             android:layout_weight="1"
                             android:padding="3dp"
                             android:src="@drawable/notification"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView3"
-                            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                            app:layout_constraintBottom_toBottomOf="@+id/logout_icon"
+                            app:layout_constraintEnd_toStartOf="@+id/logout_icon"
+                            app:layout_constraintTop_toTopOf="@+id/logout_icon" />
 
                         <ImageView
-                            android:id="@+id/imageView3"
+                            android:id="@+id/logout_icon"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="16dp"

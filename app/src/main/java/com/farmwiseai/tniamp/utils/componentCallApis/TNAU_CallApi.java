@@ -185,11 +185,16 @@ public class TNAU_CallApi {
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    lookUpDataClass.setIntervention2(componentList.get(i).getName());
+                                    String names = componentList.get(i).getName();
                                     try {
-                                        if (secondSpinner.getVisibility() == View.VISIBLE) {
-                                            thirdSpinner.setVisibility(View.VISIBLE);
-                                        } else if (secondSpinner.getSelectedItem() == null && secondSpinner.getVisibility() == View.GONE) {
+
+                                        if (names.contains("Sowing")) {
+                                            editText.setVisibility(View.VISIBLE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        } else if (names.contains("Planting")) {
+                                            editText.setVisibility(View.VISIBLE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }else if (secondSpinner.getSelectedItem() == null && secondSpinner.getVisibility() == View.GONE) {
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else {
                                             thirdSpinner.setVisibility(View.GONE);

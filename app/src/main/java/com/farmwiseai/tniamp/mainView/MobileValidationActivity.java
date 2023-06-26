@@ -60,7 +60,7 @@ public class MobileValidationActivity extends BaseActivity {
                                     Log.i(TAG, "onBody: " + response.code());
                                     if (generateOTP.getResponse().equalsIgnoreCase("success")) {
                                         mLoadCustomToast(getParent(), "OTP send to mobile Number");
-                                        commonFunction.showProgress();
+//                                        commonFunction.showProgress();
                                         Intent i = new Intent(MobileValidationActivity.this, VerifyMobileNumberActivitiy.class);
                                         Bundle extras = new Bundle();
                                         extras.putString("otp", generateOTP.getOtpDataId().toString());

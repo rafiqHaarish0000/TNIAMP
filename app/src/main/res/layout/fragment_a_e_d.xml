@@ -206,7 +206,8 @@
                                     android:id="@+id/radioYes"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Yes"/>
+                                    android:text="Yes"
+                                    android:checked="true"/>
                                 <RadioButton
                                     android:id="@+id/radioNo"
                                     android:layout_width="wrap_content"

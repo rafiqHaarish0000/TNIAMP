@@ -60,9 +60,11 @@ import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AEDCallApi;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -144,6 +146,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
         aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, hideLyt);
 
+        getLocation();
         setAllDataValues();
 
         return tnauBinding.getRoot();
@@ -453,15 +456,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         } else if (remarks.length() == 0) {
             tnauBinding.remarksTxt.setError("Remarks not found");
             return false;
-        }else if(!tnauBinding.radioYes.isChecked()){
-            mLoadCustomToast(getActivity(),"please enter the used for fist culture");
-            return false;
         }
-        else if(!tnauBinding.radioNo.isChecked()){
-            mLoadCustomToast(getActivity(),"please enter the used for fist culture");
-            return false;
-        }
-
 
         return true;
     }
@@ -485,12 +480,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
             case R.id.submission_btn:
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
-
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
                         } else {
-                            getLocation(view);
                             finalSubmission();
                         }
                     } catch (Exception e) {
@@ -615,7 +608,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
 
   /* or use below if you want 32 bit images
 
@@ -623,7 +616,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
 
         byte[] imageArr = os.toByteArray();
 
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
+        return Base64.encodeToString(imageArr, Base64.NO_WRAP);
 
 
     }
@@ -651,7 +644,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
-    private void getLocation(View view) {
+    private void getLocation() {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
             lati = gpsTracker.getLatitude();
@@ -675,6 +668,11 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         remarks = tnauBinding.remarksTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
 
+        String myFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dateField = dateFormat.format(myCalendar.getTime());
+        Log.i(TAG, "dataValue" + dateField);
+
         AEDRequest request = new AEDRequest();
         request.setVillage(village);
         request.setIntervention1(intervention1);
@@ -686,7 +684,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setVariety(" ");
-        request.setImage1(firstImageBase64);
+        request.setImage1(firstImageBase64.trim());
         request.setYield(" ");
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
@@ -730,8 +728,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
     private void uploadSecondImage(String txt_id) {
 
         SecondImageRequest request = new SecondImageRequest();
-        request.setDepartment_id("2");
-        request.setImg2(secondImageBase64);
+        request.setDepartment_id("4");
+        request.setImg2(secondImageBase64.trim());
         request.setID(txt_id);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);

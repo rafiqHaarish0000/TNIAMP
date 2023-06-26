@@ -639,7 +639,7 @@ FragmentHorticultureBinding horticultureBinding;
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
 
   /* or use below if you want 32 bit images
 
@@ -647,7 +647,7 @@ FragmentHorticultureBinding horticultureBinding;
 
         byte[] imageArr = os.toByteArray();
 
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
+        return Base64.encodeToString(imageArr, Base64.NO_WRAP);
 
 
     }

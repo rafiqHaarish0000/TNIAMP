@@ -163,6 +163,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
         agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt);
 
+        getLocation();
         setAllDropDownData();
 
 
@@ -682,17 +683,17 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
 
         byte[] imageArr = os.toByteArray();
 
-        String encodeImage = Base64.encodeToString(imageArr, Base64.URL_SAFE);
+        String encodeImage = Base64.encodeToString(imageArr, Base64.NO_WRAP);
 
         return encodeImage;
 
     }
 
-    private boolean getLocation(View view) {
+    private boolean getLocation() {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
             lati = gpsTracker.getLatitude();
@@ -812,7 +813,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         SecondImageRequest request = new SecondImageRequest();
         request.setDepartment_id("2");
-        request.setImg2(secondImageBase64);
+        request.setImg2(secondImageBase64.trim());
         request.setID(txt_id);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);

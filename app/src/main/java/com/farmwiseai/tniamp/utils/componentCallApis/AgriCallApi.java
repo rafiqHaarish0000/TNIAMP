@@ -80,6 +80,7 @@ public class AgriCallApi {
                                         lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                         String names = getAllComponentData.get(i).getName();
+                                        subComponentSpinner.setVisibility(View.VISIBLE);
                                          if (names.equals("Model Village")) {
                                             subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);

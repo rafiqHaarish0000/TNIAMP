@@ -2,6 +2,7 @@ package com.farmwiseai;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,10 +12,14 @@ import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,7 +44,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity implements LocationListener {
     ActivityTestBinding testBinding;
     List<ComponentData> spinnerPos1;
     CharSequence myString = "0";
@@ -53,12 +58,15 @@ public class TestActivity extends AppCompatActivity {
     private boolean takePicture;
     private int valueofPic;
     private GPSTracker gpsTracker;
+    double lat, longi;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         testBinding = DataBindingUtil.setContentView(TestActivity.this, R.layout.activity_test);
         setContentView(testBinding.getRoot());
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         firstSpinner = testBinding.phase1;
         secondSpinner = testBinding.phase2;
@@ -68,14 +76,13 @@ public class TestActivity extends AppCompatActivity {
         testBinding.clickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!testBinding.image1.isSelected()){
-                    Log.i(TAG, "clickable: "+"false");
-                }else{
-                    Log.i(TAG, "clickable: "+"true");
+                if (!testBinding.image1.isSelected()) {
+                    Log.i(TAG, "clickable: " + "false");
+                } else {
+                    Log.i(TAG, "clickable: " + "true");
                 }
             }
         });
-
 
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -133,13 +140,36 @@ public class TestActivity extends AppCompatActivity {
         testBinding.getLatLong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                gpsTracker = new GPSTracker(TestActivity.this);
+//                try {
+//                    if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+//                        ActivityCompat.requestPermissions(TestActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+//                    }else{
+//                        lat = gpsTracker.getLatitude();
+//                        longi = gpsTracker.getLongitude();
+//                        testBinding.latValue.setText(String.valueOf(lat));
+//                        testBinding.longValue.setText(String.valueOf(longi));
+//                    }
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
                 try {
-                    if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-                        ActivityCompat.requestPermissions(TestActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                    }else{
-                        getLocation(view);
+                    if (ActivityCompat.checkSelfPermission(TestActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                            PackageManager.PERMISSION_GRANTED &&
+                            ActivityCompat.checkSelfPermission(TestActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                                    PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
                     }
-                }catch (Exception e){
+                    Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+                    onLocationChanged(location);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -153,14 +183,11 @@ public class TestActivity extends AppCompatActivity {
     }
 
 
-    private void getLocation(View view){
+    private void getLocation(View view) {
         gpsTracker = new GPSTracker(TestActivity.this);
-        if(gpsTracker.canGetLocation()){
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
-            testBinding.latValue.setText(String.valueOf(latitude));
-            testBinding.longValue.setText(String.valueOf(longitude));
-        }else{
+        if (gpsTracker.canGetLocation()) {
+
+        } else {
             gpsTracker.showSettingsAlert();
         }
     }
@@ -233,13 +260,13 @@ public class TestActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == pic_id) {
 
-            if(takePicture  && valueofPic == 1){
+            if (takePicture && valueofPic == 1) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
                 testBinding.image1.setImageBitmap(photo);
                 // BitMap is data structure of image file which store the image in memory
                 getEncodedString(photo);
-            }else if(!takePicture && valueofPic == 2){
+            } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
                 testBinding.image2.setImageBitmap(photo2);
@@ -270,4 +297,25 @@ public class TestActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
+        Log.i(TAG, "onLocationChanged: " + lat + lon);
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
+    }
 }

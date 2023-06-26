@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -26,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -33,6 +36,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
@@ -51,6 +55,7 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
+import com.farmwiseai.tniamp.utils.ConstantClass;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
@@ -68,6 +73,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,7 +83,7 @@ import retrofit2.Response;
 public class TNAUFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField,village;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -122,7 +129,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String status;
     public BackPressListener backPressListener;
     private String firstImageBase64, secondImageBase64;
+<<<<<<< HEAD
     TNAU_Request request;
+=======
+    private double latitude, longitude;
+
+>>>>>>> 662a1ff237bea8daf71f2bbff64b1edd0055de98
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -151,7 +163,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
         dateField = tnauBinding.dateTxt.getText().toString();
-backPressListener=this;
+        backPressListener = this;
         /*
         below component spinner is vary for all the department so please refer the callApi class
         component spinner visible the other two dropdowns according to the data
@@ -164,12 +176,13 @@ backPressListener=this;
         datePicker = tnauBinding.dateTxt;
         hideLyt = tnauBinding.visibilityLyt;
 
-        TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, myString,backPressListener);
+        TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt);
       /*  LookUpDataClass lookUpDataClass = new LookUpDataClass();
         Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
-      */  setAllDropDownData();
-
+      */
+        getLocation();
+        setAllDropDownData();
 
         return tnauBinding.getRoot();
 
@@ -184,7 +197,7 @@ backPressListener=this;
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
-      //  date = tnauBinding.dateTxt.getText().toString();
+        //  date = tnauBinding.dateTxt.getText().toString();
 
         date = "11-09-2023";
 
@@ -262,12 +275,14 @@ backPressListener=this;
             case R.id.submission_btn:
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
-
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
                         } else {
-                          //  getLocation(view);
+                            //  getLocation(view);
+                            gpsTracker = new GPSTracker(getContext());
+                            lat = String.valueOf(gpsTracker.getLatitude());
+                            lon = String.valueOf(gpsTracker.getLongitude());
                             finalSubmission();
                         }
                     } catch (Exception e) {
@@ -493,9 +508,7 @@ backPressListener=this;
                                 if (response.isSuccessful() && response.body() != null) {
                                     villageDataList = response.body();
                                     posValue = String.valueOf(blockDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
                                     villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
-                                    Log.i(TAG, "districtPos: " + myString);
                                     villageAdaapter.getFilter().filter(posValue);
                                     villageSpinner.setAdapter(villageAdaapter);
 
@@ -528,7 +541,7 @@ backPressListener=this;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
-                village = villageDataList.get(i).getNAME();
+                village = String.valueOf(villageDataList.get(i).getID());
 //                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
 
@@ -537,7 +550,6 @@ backPressListener=this;
 
             }
         });
-
 
         //gender dropdown list
         genderList = new ArrayList<>();
@@ -575,8 +587,6 @@ backPressListener=this;
 
             }
         });
-
-
 
 
     }
@@ -656,14 +666,14 @@ backPressListener=this;
                 // Set the image in imageview for display
                 tnauBinding.image1.setImageBitmap(photo);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo);
-                Log.i(TAG, "base: "+getEncodedString(photo));
+                Log.i(TAG, "base: " + getEncodedString(photo));
+                firstImageBase64 = getEncodedString(photo);
             } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
                 tnauBinding.image2.setImageBitmap(photo2);
+                secondImageBase64 = getEncodedString(photo2);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo2);
             }
         }
 
@@ -674,30 +684,33 @@ backPressListener=this;
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
 
   /* or use below if you want 32 bit images
 
    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);*/
 
         byte[] imageArr = os.toByteArray();
-        String convertedData=Base64.encodeToString(imageArr, Base64.URL_SAFE);
- Log.i("data",convertedData);
+        String convertedData = Base64.encodeToString(imageArr, Base64.NO_WRAP);
+        Log.i("data", convertedData);
         return convertedData;
 
 
     }
 
-    private void getLocation(View view) {
+    private void getLocation() {
         gpsTracker = new GPSTracker(getContext());
-        if (gpsTracker.canGetLocation()) {
-            lat = String.valueOf(gpsTracker.getLatitude());
-            lon = String.valueOf(gpsTracker.getLongitude());
-
-            Log.i(TAG, "Latitude" + lat + " " + "Longitude" + lon);
-
-        } else {
-            gpsTracker.showSettingsAlert();
+        try {
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            } else {
+                latitude = gpsTracker.getLatitude();
+                longitude = gpsTracker.getLongitude();
+                lat = String.valueOf(latitude);
+                lon = String.valueOf(latitude);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -706,7 +719,7 @@ backPressListener=this;
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
-           // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
             getAllData();
             //mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
@@ -727,18 +740,21 @@ backPressListener=this;
     }
 
 
-
     @Override
     public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
-           intervention1 = lookUpDataClass.getIntervention1();
-            intervention2 = lookUpDataClass.getIntervention2();
-            intervention3 = lookUpDataClass.getIntervention3();
-        Log.i(TAG, "getComponentData: "+intervention1+intervention2+intervention3);
+        intervention1 = lookUpDataClass.getIntervention1();
+        intervention2 = lookUpDataClass.getIntervention2();
+        intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
 
     }
 
     private void getAllData() {
          request = new TNAU_Request();
+        Log.i(TAG, "letLATLONG: " + lat + lon);
+        Log.i(TAG, "base64: " + firstImageBase64.trim());
+        Log.i(TAG, "base64: " + secondImageBase64);
+
         farmerName = tnauBinding.farmerTxt.getText().toString();
         survey_no = tnauBinding.surveyTxt.getText().toString();
         area = tnauBinding.areaTxt.getText().toString();
@@ -747,27 +763,35 @@ backPressListener=this;
         dateField = tnauBinding.dateTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
 
-        request.setVillage("66");
-        request.setIntervention1("2");
-        request.setIntervention2("18");
-        request.setIntervention3("65");
+
+        String myFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dateField = dateFormat.format(myCalendar.getTime());
+        Log.i(TAG, "dataValue" + dateField);
+
+        TNAU_Request request = new TNAU_Request();
+        request.setVillage(village);
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
+        request.setIntervention3(intervention3);
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category);
         request.setSurvey_no(survey_no);
         request.setArea(area);
-        request.setVariety(" ");
-        request.setImage1("firstImageBase64");
-        request.setYield(" ");
+
+        request.setVariety("null");
+        request.setImage1(firstImageBase64.trim());
+        request.setYield("null");
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
-        request.setCreated_date("2020-02-12 11:02:02");
-        request.setLat("10.7274301");
-        request.setLon("10.7274301");
+        request.setCreated_date(dateField);
+        request.setLat(lat);
+        request.setLon(lon);
         request.setTank_name(near_tank);
         request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat("10.7274301");
-        request.setPhoto_lon("10.7274301");
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate("");
         request.setStatus("0");
@@ -782,14 +806,14 @@ backPressListener=this;
                         String txt_id = String.valueOf(response.body().getTnauLandDeptId());
                         Log.i(TAG, "txt_value: "+txt_id.toString());
                     //    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
-                        uploadSecondImage(txt_id);
+  uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
 //                        agriResponses.addAll(response.body().getResponse());
                     } catch (Exception e) {
-                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    Toast.makeText(getContext(),"data error.!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -805,7 +829,7 @@ backPressListener=this;
 
         SecondImageRequest request = new SecondImageRequest();
         request.setDepartment_id("1");
-        request.setImg2("secondImageBase64");
+        request.setImg2(secondImageBase64);
         request.setID(txt_id);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -817,16 +841,16 @@ backPressListener=this;
                 if (response.body() != null) {
                     try {
                         String successMessage = response.body().getResponse();
-                        Log.i(TAG, "onSuccessMsg"+successMessage);
-                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
-                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
-                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
                 }
             }
 

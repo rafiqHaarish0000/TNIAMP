@@ -40,8 +40,10 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
@@ -49,10 +51,11 @@ import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentHorticultureBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
+import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.HortiCallApi;
-import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
@@ -70,7 +73,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HorticultureFragment extends Fragment implements View.OnClickListener {
+public class HorticultureFragment extends Fragment implements View.OnClickListener,BackPressListener {
 FragmentHorticultureBinding horticultureBinding;
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
@@ -101,8 +104,28 @@ FragmentHorticultureBinding horticultureBinding;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout vis_lyt,trainingLyt;
     private GPSTracker gpsTracker;
-    private double lat, longi;
-    private String villageValue, gender, firstImageBase64, secondImageBase64;
+    private double lati, longi;
+    public String intervention1; //component
+    public String intervention2; //sub_componenet
+    public String intervention3; // stages
+    public String farmer_name;
+    public String gender;
+    public String variety;
+    public String yield;
+    public String created_by; //serial number
+    public String created_date;
+    public String lat;
+    public String lon;
+    public String image1;
+    public String tank_name;
+    public String txn_date;
+    public String photo_lat;
+    public String photo_lon;
+    public String txn_id;
+    public String date;
+    public String status;
+    public BackPressListener backPressListener;
+    private String villageValue, firstImageBase64, secondImageBase64;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -129,8 +152,7 @@ FragmentHorticultureBinding horticultureBinding;
         near_tank = horticultureBinding.tankTxt.getText().toString();
         remarks = horticultureBinding.remarksTxt.getText().toString();
         dateField = horticultureBinding.dateTxt.getText().toString();
-
-
+        backPressListener = this;
         componentSpinner = horticultureBinding.componentTxt;
         sub_componentSpinner = horticultureBinding.subComponentsTxt;
         stagesSpinner = horticultureBinding.stagesTxt;
@@ -138,8 +160,7 @@ FragmentHorticultureBinding horticultureBinding;
         vis_lyt = horticultureBinding.visibilityLyt;
         trainingLyt = horticultureBinding.iecLayt;
 
-
-        hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter,myString);
+        hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter,myString,backPressListener);
         hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt,trainingLyt);
 
         setAllDropDownData();
@@ -483,8 +504,7 @@ FragmentHorticultureBinding horticultureBinding;
         villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
-                villageValue = villageDataList.get(i).getNAME();
+                villageValue = String.valueOf(villageDataList.get(i).getID());
             }
 
             @Override
@@ -657,8 +677,10 @@ FragmentHorticultureBinding horticultureBinding;
     private void getLocation(View view) {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
-            lat = gpsTracker.getLatitude();
+            lati = gpsTracker.getLatitude();
             longi = gpsTracker.getLongitude();
+            lat = String.valueOf(lati);
+            lon = String.valueOf(longi);
 
 //            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
 
@@ -677,11 +699,16 @@ FragmentHorticultureBinding horticultureBinding;
         remarks = horticultureBinding.remarksTxt.getText().toString();
         near_tank = horticultureBinding.tankTxt.getText().toString();
 
-        AEDRequest request = new AEDRequest();
+        String myFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dateField = dateFormat.format(myCalendar.getTime());
+        Log.i(TAG, "dataValue"+dateField);
+
+        HortiRequest request = new HortiRequest();
         request.setVillage(villageValue);
-        request.setIntervention1("2");
-        request.setIntervention2("18");
-        request.setIntervention3("65");
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
+        request.setIntervention3(intervention3);
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category);
@@ -692,25 +719,25 @@ FragmentHorticultureBinding horticultureBinding;
         request.setYield(" ");
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
-        request.setCreated_date(dateField);
-        request.setLat(String.valueOf(lat));
-        request.setLon(String.valueOf(longi));
+        request.setCreated_date("2020-02-12 11:02:02");
+        request.setLat(lat);
+        request.setLon(lon);
         request.setTank_name(near_tank);
         request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat(String.valueOf(lat));
-        request.setPhoto_lon(String.valueOf(longi));
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
-        request.setDate(dateField);
         request.setStatus("0");
 
+
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-        Call<List<AEDResponse>> userDataCall = null;
-        userDataCall = call.getAEDResponse(request);
-        userDataCall.enqueue(new Callback<List<AEDResponse>>() {
+        Call<HortiResponse> userDataCall = null;
+        userDataCall = call.getHortiResponse(request);
+        userDataCall.enqueue(new Callback<HortiResponse>() {
             @Override
-            public void onResponse(Call<List<AEDResponse>> call, Response<List<AEDResponse>> response) {
+            public void onResponse(Call<HortiResponse> call, Response<HortiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                    String txt_id = String.valueOf(response.body().getTnauLandDeptId());
                     Log.i(TAG, "txt_value: "+txt_id.toString());
                     mCommonFunction.navigation(getActivity(),DashboardActivity.class);
                     uploadSecondImage(txt_id);
@@ -719,11 +746,10 @@ FragmentHorticultureBinding horticultureBinding;
                 }else{
 
                 }
-
             }
 
             @Override
-            public void onFailure(Call<List<AEDResponse>> call, Throwable t) {
+            public void onFailure(Call<HortiResponse> call, Throwable t) {
 
             }
         });
@@ -733,7 +759,7 @@ FragmentHorticultureBinding horticultureBinding;
     private void uploadSecondImage(String txt_id) {
 
         SecondImageRequest request = new SecondImageRequest();
-        request.setDepartment_id("2");
+        request.setDepartment_id("3");
         request.setImg2(secondImageBase64);
         request.setID(txt_id);
 
@@ -767,4 +793,11 @@ FragmentHorticultureBinding horticultureBinding;
 
     }
 
+    @Override
+    public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
+        intervention1 = lookUpDataClass.getIntervention1();
+        intervention2 = lookUpDataClass.getIntervention2();
+        intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
+    }
 }

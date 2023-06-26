@@ -15,7 +15,9 @@ import android.widget.Toast;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
@@ -32,14 +34,17 @@ public class AgriCallApi {
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
+    private BackPressListener backPressListener;
+    public LookUpDataClass lookUpDataClass ;
 
-    public AgriCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
+    public AgriCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue,BackPressListener backPressListener) {
         this.context = context;
         this.getAllComponentData = getAllComponentData;
         this.adapters = adapters;
         this.positionValue = positionValue;
         this.componentAdapter = componentAdapter;
         this.activity = activity;
+        this.backPressListener = backPressListener;
     }
 
 
@@ -72,6 +77,7 @@ public class AgriCallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
+                                        lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                         String names = getAllComponentData.get(i).getName();
                                          if (names.equals("Model Village")) {
@@ -153,12 +159,13 @@ public class AgriCallApi {
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    String names = sub_componentList.get(i).getName();
+                                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                                     thirdSpinner.setVisibility(View.VISIBLE);
 
                                     try {
                                         positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                                         Log.i(TAG, "posvalue2: " + positionValue2);
-                                        String names = sub_componentList.get(i).getName();
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                             thirdSpinner.setVisibility(View.GONE);
@@ -238,6 +245,8 @@ public class AgriCallApi {
                                     try {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
                                         String names = stagesList.get(i).getName();
+                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {

@@ -1,6 +1,10 @@
 package com.farmwiseai.tniamp.utils;
 
+import android.text.format.DateFormat;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class ConstantClass
@@ -28,5 +32,12 @@ public class ConstantClass
     public static final String LoginMessage = "You are not logged in.Please sign up or sign in.";
 
     public static final String signinsignup = "sign in / sign up ";
+
+//    public String getDate(long time) {
+//        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+//        cal.setTimeInMillis(time * 1000);
+//        String date = DateFormat.format("yyyy-MM-dd HH:mm:ss", cal).toString();
+//        return date;
+//    }
 
 }

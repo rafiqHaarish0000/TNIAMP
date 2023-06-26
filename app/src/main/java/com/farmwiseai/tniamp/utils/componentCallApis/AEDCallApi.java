@@ -15,7 +15,9 @@ import android.widget.Toast;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
@@ -27,19 +29,25 @@ import retrofit2.Response;
 public class AEDCallApi {
     private Activity activity;
     private Context context;
-    private List<ComponentData> getAllComponentData;
+    private List<ComponentData> getAllComponentData,sub_componentList;
     private ComponentAdapter adapters, componentAdapter;
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
+    private BackPressListener backPressListener;
+    public LookUpDataClass lookUpDataClass;
 
-    public AEDCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue) {
+    public AEDCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData,
+                      ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue,
+                      BackPressListener backPressListener) {
         this.context = context;
         this.getAllComponentData = getAllComponentData;
         this.adapters = adapters;
         this.positionValue = positionValue;
         this.componentAdapter = componentAdapter;
         this.activity = activity;
+        this.backPressListener = backPressListener;
+        lookUpDataClass = new LookUpDataClass();
     }
 
 
@@ -72,6 +80,7 @@ public class AEDCallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
+                                        lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                         if (getAllComponentData.get(i).getName().contains("Model Village")) {
                                             subComponentSpinner.setVisibility(View.GONE);
@@ -149,6 +158,7 @@ public class AEDCallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
+                                        lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                                         positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
                                         Log.i(TAG, "posvalue2: " + positionValue2);
 //                                        stagesDropDown(positionValue2, thirdSpinner, editText);

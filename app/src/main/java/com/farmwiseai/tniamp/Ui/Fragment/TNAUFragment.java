@@ -129,12 +129,10 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String status;
     public BackPressListener backPressListener;
     private String firstImageBase64, secondImageBase64;
-<<<<<<< HEAD
+
     TNAU_Request request;
-=======
     private double latitude, longitude;
 
->>>>>>> 662a1ff237bea8daf71f2bbff64b1edd0055de98
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

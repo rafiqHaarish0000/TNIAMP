@@ -29,22 +29,23 @@ import retrofit2.Response;
 public class TNAU_CallApi {
     private Activity activity;
     private Context context;
-    private List<ComponentData> componentList, stagesList,sub_componentList;
+    private List<ComponentData> componentList, stagesList, sub_componentList;
     private ComponentAdapter adapters;
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass ;
+    public LookUpDataClass lookUpDataClass;
 
-    public TNAU_CallApi(Activity activity, Context context, List<ComponentData> componentList, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
+    public TNAU_CallApi(Activity activity, Context context, List<ComponentData> componentList,
+                        ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
         this.componentList = componentList;
         this.adapters = adapters;
         this.positionValue = positionValue;
         this.activity = activity;
         this.backPressListener = backPressListener;
-        lookUpDataClass= new LookUpDataClass();
+        lookUpDataClass = new LookUpDataClass();
     }
 
     //first spinner phrase;
@@ -76,9 +77,9 @@ public class TNAU_CallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
-                                       lookUpDataClass.setIntervention1(componentList.get(i).getName());
+                                        lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                                         positionValue = String.valueOf(componentList.get(i).getID());
-                                        Log.i(TAG, "onItemSelectedComponent: "+ componentList.get(i).getID());
+                                        Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
 
                                         subComponentSpinner.setVisibility(View.VISIBLE);
                                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -186,8 +187,8 @@ public class TNAU_CallApi {
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    String names = componentList.get(i).getName();
-                                    lookUpDataClass.setIntervention2(componentList.get(i).getName());
+                                    String names = sub_componentList.get(i).getName();
+                                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
 
                                     try {
 
@@ -197,7 +198,7 @@ public class TNAU_CallApi {
                                         } else if (names.contains("Planting")) {
                                             editText.setVisibility(View.VISIBLE);
                                             thirdSpinner.setVisibility(View.GONE);
-                                        }else if (secondSpinner.getSelectedItem() == null && secondSpinner.getVisibility() == View.GONE) {
+                                        } else if (secondSpinner.getSelectedItem() == null && secondSpinner.getVisibility() == View.GONE) {
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else {
                                             thirdSpinner.setVisibility(View.VISIBLE);
@@ -263,8 +264,8 @@ public class TNAU_CallApi {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
 
                                         String names = stagesList.get(i).getName();
-                                        lookUpDataClass.setIntervention3(names);
-backPressListener.onSelectedInputs(lookUpDataClass);
+                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {

@@ -35,15 +35,17 @@ public class HortiCallApi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    private LookUpDataClass lookUpDataClass = new LookUpDataClass();
+    private LookUpDataClass lookUpDataClass;
 
-    public HortiCallApi(Activity activity, Context context, List<ComponentData> componentList, ComponentAdapter adapters, CharSequence positionValue) {
+    public HortiCallApi(Activity activity, Context context, List<ComponentData> componentList,
+                        ComponentAdapter adapters, CharSequence positionValue,BackPressListener backPressListener) {
         this.context = context;
         this.componentList = componentList;
         this.adapters = adapters;
         this.positionValue = positionValue;
         this.activity = activity;
         this.backPressListener = backPressListener;
+        lookUpDataClass = new LookUpDataClass();
     }
 
 
@@ -76,14 +78,14 @@ public class HortiCallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
-//                                        lookUpDataClass.setIntervention1(getAllComponentData.get(i).getName());
+                                        lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                                         positionValue = String.valueOf(componentList.get(i).getID());
                                         Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
 
                                         subComponentSpinner.setVisibility(View.VISIBLE);
                                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                                         Call<List<ComponentData>> userDataCall = null;
-                                        userDataCall = call.getTNAUComponents();
+                                        userDataCall = call.getHortiComponents();
                                         userDataCall.enqueue(new Callback<List<ComponentData>>() {
                                             @Override
                                             public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
@@ -186,10 +188,10 @@ public class HortiCallApi {
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    lookUpDataClass.setIntervention2(componentList.get(i).getName());
+                                    String names = sub_componentList.get(i).getName();
+                                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                                     try {
                                         positionValue2 = String.valueOf(sub_componentList.get(i).getID());
-                                        String names = sub_componentList.get(i).getName();
                                         if (names.contains("Training")) {
                                                 hideLayout.setVisibility(View.VISIBLE);
                                                 thirdSpinner.setVisibility(View.GONE);
@@ -263,6 +265,8 @@ public class HortiCallApi {
                                     try {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
                                         String names = stagesList.get(i).getName();
+                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {

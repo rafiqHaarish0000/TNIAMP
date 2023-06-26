@@ -10,6 +10,21 @@ public class HortiRequest {
     public String intervention1;
     public String intervention2;
     public String intervention3;
+    public String remarks;
+    public String survey_no;
+    public String variety;
+    public String village;
+    public String yield;
+    public String lat;
+    public String lon;
+    public String image1;
+    public String tank_name;
+    public String txn_date;
+    public String photo_lat;
+    public String photo_lon;
+    public String txn_id;
+    public String mobile;
+    public String status;
 
     public String getArea() {
         return area;
@@ -203,19 +218,5 @@ public class HortiRequest {
         this.status = status;
     }
 
-    public String remarks;
-    public String survey_no;
-    public String variety;
-    public String village;
-    public String yield;
-    public String lat;
-    public String lon;
-    public String image1;
-    public String tank_name;
-    public String txn_date;
-    public String photo_lat;
-    public String photo_lon;
-    public String txn_id;
-    public String mobile;
-    public String status;
+
 }

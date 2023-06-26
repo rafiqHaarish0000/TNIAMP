@@ -5,7 +5,6 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -41,10 +39,8 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
-import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
-import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
@@ -52,16 +48,16 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAEDBinding;
 
 import com.farmwiseai.tniamp.mainView.GPSTracker;
+import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
-import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AEDCallApi;
-import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -72,7 +68,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AEDFragment extends Fragment implements View.OnClickListener {
+public class AEDFragment extends Fragment implements View.OnClickListener,BackPressListener {
     private Context context;
     private FragmentAEDBinding tnauBinding;
     private String farmerName, category, survey_no, area, near_tank, remarks, dateField,village;
@@ -100,8 +96,28 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
     private List<String> phraseList, genderList, categoryList;
     private GPSTracker gpsTracker;
     private LinearLayout hideLyt;
-    private double lat, longi;
-    private String villageValue, gender, firstImageBase64, secondImageBase64;
+    private double lati, longi;
+    public String intervention1; //component
+    public String intervention2; //sub_componenet
+    public String intervention3; // stages
+    public String farmer_name;
+    public String gender;
+    public String variety;
+    public String yield;
+    public String created_by; //serial number
+    public String created_date;
+    public String lat;
+    public String lon;
+    public String image1;
+    public String tank_name;
+    public String txn_date;
+    public String photo_lat;
+    public String photo_lon;
+    public String txn_id;
+    public String date;
+    public String status;
+    public BackPressListener backPressListener;
+    private String villageValue, firstImageBase64, secondImageBase64;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -122,9 +138,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
         componentSpinner = tnauBinding.componentTxt;
         sub_componentSpinner = tnauBinding.subComponentsTxt;
         hideLyt = tnauBinding.visibilityLyt;
+        backPressListener = this;
 
 
-        aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
+        aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
         aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, hideLyt);
 
         setAllDataValues();
@@ -343,7 +360,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
-                village = villageDataList.get(i).getNAME();
+                village = String.valueOf(villageDataList.get(i).getID());
 //                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
 
@@ -637,8 +654,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
     private void getLocation(View view) {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
-            lat = gpsTracker.getLatitude();
+            lati = gpsTracker.getLatitude();
             longi = gpsTracker.getLongitude();
+            lat = String.valueOf(lati);
+            lon = String.valueOf(longi);
 
 //            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
 
@@ -658,8 +677,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
 
         AEDRequest request = new AEDRequest();
         request.setVillage(village);
-        request.setIntervention1("2");
-        request.setIntervention2("18");
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
         request.setIntervention3("65");
         request.setFarmer_name(farmerName);
         request.setGender(gender);
@@ -672,24 +691,24 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date(dateField);
-        request.setLat(String.valueOf(lat));
-        request.setLon(String.valueOf(longi));
+        request.setLat(lat);
+        request.setLon(lon);
         request.setTank_name(near_tank);
         request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat(String.valueOf(lat));
-        request.setPhoto_lon(String.valueOf(longi));
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate(dateField);
         request.setStatus("0");
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-        Call<List<AEDResponse>> userDataCall = null;
+        Call<AEDResponse> userDataCall = null;
         userDataCall = call.getAEDResponse(request);
-        userDataCall.enqueue(new Callback<List<AEDResponse>>() {
+        userDataCall.enqueue(new Callback<AEDResponse>() {
             @Override
-            public void onResponse(Call<List<AEDResponse>> call, Response<List<AEDResponse>> response) {
+            public void onResponse(Call<AEDResponse> call, Response<AEDResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                    String txt_id = String.valueOf(response.body().getTnauLandDeptId());
                     Log.i(TAG, "txt_value: "+txt_id.toString());
                     mCommonFunction.navigation(getActivity(),DashboardActivity.class);
                     uploadSecondImage(txt_id);
@@ -698,11 +717,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
                 }else{
 
                 }
-
             }
 
             @Override
-            public void onFailure(Call<List<AEDResponse>> call, Throwable t) {
+            public void onFailure(Call<AEDResponse> call, Throwable t) {
 
             }
         });
@@ -746,4 +764,11 @@ public class AEDFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
+        intervention1 = lookUpDataClass.getIntervention1();
+        intervention2 = lookUpDataClass.getIntervention2();
+        intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
+    }
 }

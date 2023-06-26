@@ -1,9 +1,18 @@
 package com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class AEDResponse {
-    public String statusCode;
-    public String response;
-    public int tnau_land_dept_id;
+    @SerializedName("statusCode")
+    @Expose
+    private String statusCode;
+    @SerializedName("response")
+    @Expose
+    private String response;
+    @SerializedName("tnau_land_dept_id")
+    @Expose
+    private Integer tnauLandDeptId;
 
     public String getStatusCode() {
         return statusCode;
@@ -21,11 +30,11 @@ public class AEDResponse {
         this.response = response;
     }
 
-    public int getTnau_land_dept_id() {
-        return tnau_land_dept_id;
+    public Integer getTnauLandDeptId() {
+        return tnauLandDeptId;
     }
 
-    public void setTnau_land_dept_id(int tnau_land_dept_id) {
-        this.tnau_land_dept_id = tnau_land_dept_id;
+    public void setTnauLandDeptId(Integer tnauLandDeptId) {
+        this.tnauLandDeptId = tnauLandDeptId;
     }
 }

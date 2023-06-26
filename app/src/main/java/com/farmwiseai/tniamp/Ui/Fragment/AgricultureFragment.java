@@ -12,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.tv.SectionResponse;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -51,7 +50,8 @@ import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAgricultureBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
-import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.BackPressListener;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -72,7 +72,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AgricultureFragment extends Fragment implements View.OnClickListener {
+public class AgricultureFragment extends Fragment implements View.OnClickListener,BackPressListener {
     private FragmentAgricultureBinding agricultureBinding;
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, farmerName, survey_no, area, near_tank, remarks, dateField;
@@ -100,8 +100,29 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout vis_lyt;
-    private double lat, longi;
-    private String villageValue, gender, category, firstImageBase64, secondImageBase64;
+    private double lati, longi;
+    public String intervention1; //component
+    public String intervention2; //sub_componenet
+    public String intervention3; // stages
+    public String farmer_name;
+    public String gender;
+    public String variety;
+    public String yield;
+    public String created_by; //serial number
+    public String created_date;
+    public String lat;
+    public String lon;
+    public String image1;
+    public String tank_name;
+    public String txn_date;
+    public String photo_lat;
+    public String photo_lon;
+    public String txn_id;
+    public String date;
+    public String status;
+    public BackPressListener backPressListener;
+    private String villageValue, category, firstImageBase64, secondImageBase64;
+
 
     @Override
     public void onAttach(Context context) {
@@ -137,8 +158,9 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         stagesSpinner = agricultureBinding.stagesTxt;
         datePicker = agricultureBinding.dateTxt;
         vis_lyt = agricultureBinding.visibilityLyt;
+        backPressListener = this;
 
-        agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
+        agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
         agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt);
 
         setAllDropDownData();
@@ -225,8 +247,18 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 boolean checkValidaiton = fieldValidation(farmerName,
                     category, survey_no, area, near_tank, remarks, dateField);
                 if (checkValidaiton) {
-                    if(getLocation(view)){
-                        getAllData();
+                    try {
+                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        } else {
+                            //  getLocation(view);
+                            gpsTracker = new GPSTracker(getContext());
+                            lat = String.valueOf(gpsTracker.getLatitude());
+                            lon = String.valueOf(gpsTracker.getLongitude());
+                            finalSubmission();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }else{
                     showToast(getActivity(),"Validation error");
@@ -261,6 +293,25 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                 break;
 
+        }
+    }
+    private void finalSubmission() {
+
+        if (mCommonFunction.isNetworkAvailable() == true) {
+            //data should saved in post api
+            // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+            getAllData();
+            //mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+
+        } else {
+            String offlineText = "Data saved successfully in offline data";
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
         }
     }
 
@@ -481,7 +532,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
-                villageValue = villageDataList.get(i).getNAME();
+                villageValue = String.valueOf(villageDataList.get(i).getID());
             }
 
             @Override
@@ -644,10 +695,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private boolean getLocation(View view) {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
-            lat = gpsTracker.getLatitude();
+            lati = gpsTracker.getLatitude();
             longi = gpsTracker.getLongitude();
 
-            Log.i(TAG, "Latitude" + lat + " " + "Longitude" + longi);
+            Log.i(TAG, "Latitude" + lati + " " + "Longitude" + longi);
 
         } else {
             gpsTracker.showSettingsAlert();
@@ -696,11 +747,16 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         dateField = agricultureBinding.dateTxt.getText().toString();
         near_tank = agricultureBinding.tankTxt.getText().toString();
 
+        String myFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dateField = dateFormat.format(myCalendar.getTime());
+        Log.i(TAG, "dataValue"+dateField);
+
         Agri_Request request = new Agri_Request();
         request.setVillage(villageValue);
-        request.setIntervention1("2");
-        request.setIntervention2("18");
-        request.setIntervention3("65");
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
+        request.setIntervention3(intervention3);
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category);
@@ -712,25 +768,25 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date(dateField);
-        request.setLat(String.valueOf(lat));
-        request.setLon(String.valueOf(longi));
+        request.setLat(lat);
+        request.setLon(lon);
         request.setTank_name(near_tank);
         request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat(String.valueOf(lat));
-        request.setPhoto_lon(String.valueOf(longi));
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate(dateField);
         request.setStatus("0");
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-        Call<List<AgriResponse>> userDataCall = null;
+        Call<AgriResponse> userDataCall = null;
         userDataCall = call.getAgriResponse(request);
-        userDataCall.enqueue(new Callback<List<AgriResponse>>() {
+        userDataCall.enqueue(new Callback<AgriResponse>() {
             @Override
-            public void onResponse(Call<List<AgriResponse>> call, Response<List<AgriResponse>> response) {
+            public void onResponse(Call<AgriResponse> call, Response<AgriResponse> response) {
                 if (response.body() != null) {
                     try {
-                        String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                        String txt_id = String.valueOf(response.body().getTnauLandDeptId());
                         Log.i(TAG, "txt_value: "+txt_id.toString());
                         mCommonFunction.navigation(getActivity(),DashboardActivity.class);
                         uploadSecondImage(txt_id);
@@ -745,7 +801,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             }
 
             @Override
-            public void onFailure(Call<List<AgriResponse>> call, Throwable t) {
+            public void onFailure(Call<AgriResponse> call, Throwable t) {
 
             }
         });
@@ -789,4 +845,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
     }
 
+    @Override
+    public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
+        intervention1 = lookUpDataClass.getIntervention1();
+        intervention2 = lookUpDataClass.getIntervention2();
+        intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
+    }
 }

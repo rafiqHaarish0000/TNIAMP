@@ -48,7 +48,7 @@ public interface Interface_Api
     @GET("lookup?type=village_det")
     Call<List<VillageData>> getVillageData();
     //image2 url
-    @POST("/api/image2")
+    @POST("image2")
     Call<SecondImageResponse> getSecondImageURL(@Body SecondImageRequest secondImageRequest);
 
     @GET("otp/generate?")
@@ -57,7 +57,7 @@ public interface Interface_Api
     Call<List<ValidateOTP>> validateOTP(@Query("phone") String phone_number, @Query("otp") String otp);
 
     // request and response data for all the departments
-    @POST("/api/tnau")
+    @POST("tnau")
     Call<List<TNAU_Response>> getTnauResponse(@Body TNAU_Request tnau_request);
     @POST("/api/agri")
     Call<List<AgriResponse>> getAgriResponse(@Body Agri_Request tnau_request);

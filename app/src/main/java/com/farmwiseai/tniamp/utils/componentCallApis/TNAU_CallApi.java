@@ -35,7 +35,7 @@ public class TNAU_CallApi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass = new LookUpDataClass();
+    public LookUpDataClass lookUpDataClass ;
 
     public TNAU_CallApi(Activity activity, Context context, List<ComponentData> componentList, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
@@ -44,6 +44,7 @@ public class TNAU_CallApi {
         this.positionValue = positionValue;
         this.activity = activity;
         this.backPressListener = backPressListener;
+        lookUpDataClass= new LookUpDataClass();
     }
 
     //first spinner phrase;
@@ -75,7 +76,7 @@ public class TNAU_CallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
-//                                        lookUpDataClass.setIntervention1(getAllComponentData.get(i).getName());
+                                       lookUpDataClass.setIntervention1(componentList.get(i).getName());
                                         positionValue = String.valueOf(componentList.get(i).getID());
                                         Log.i(TAG, "onItemSelectedComponent: "+ componentList.get(i).getID());
 
@@ -186,6 +187,8 @@ public class TNAU_CallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     String names = componentList.get(i).getName();
+                                    lookUpDataClass.setIntervention2(componentList.get(i).getName());
+
                                     try {
 
                                         if (names.contains("Sowing")) {
@@ -197,7 +200,7 @@ public class TNAU_CallApi {
                                         }else if (secondSpinner.getSelectedItem() == null && secondSpinner.getVisibility() == View.GONE) {
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else {
-                                            thirdSpinner.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.VISIBLE);
                                         }
                                         positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                                         Log.i(TAG, "posvalue2: " + positionValue2);
@@ -260,8 +263,8 @@ public class TNAU_CallApi {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
 
                                         String names = stagesList.get(i).getName();
-                                        lookUpDataClass.setIntervention1(names);
-
+                                        lookUpDataClass.setIntervention3(names);
+backPressListener.onSelectedInputs(lookUpDataClass);
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {

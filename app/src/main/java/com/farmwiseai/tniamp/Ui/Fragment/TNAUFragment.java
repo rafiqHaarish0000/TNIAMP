@@ -151,7 +151,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
         dateField = tnauBinding.dateTxt.getText().toString();
-
+backPressListener=this;
         /*
         below component spinner is vary for all the department so please refer the callApi class
         component spinner visible the other two dropdowns according to the data
@@ -166,9 +166,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
         TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, myString,backPressListener);
         TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt);
-        LookUpDataClass lookUpDataClass = new LookUpDataClass();
+      /*  LookUpDataClass lookUpDataClass = new LookUpDataClass();
         Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
-        setAllDropDownData();
+      */  setAllDropDownData();
 
 
         return tnauBinding.getRoot();
@@ -184,8 +184,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
-        date = tnauBinding.dateTxt.getText().toString();
+      //  date = tnauBinding.dateTxt.getText().toString();
 
+        date = "11-09-2023";
 
         if (tnauBinding.phase1.getSelectedItem() == null
                 && subBasinSpinner.getSelectedItem() == null
@@ -266,7 +267,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
                         } else {
-                            getLocation(view);
+                          //  getLocation(view);
                             finalSubmission();
                         }
                     } catch (Exception e) {
@@ -705,9 +706,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
-            Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
             getAllData();
-            mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+            //mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
         } else {
             String offlineText = "Data saved successfully in offline data";
@@ -729,10 +730,10 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
     @Override
     public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
-//            intervention1 = lookUpDataClass.getIntervention1();
-//            intervention2 = lookUpDataClass.getIntervention2();
-//            intervention3 = lookUpDataClass.getIntervention3();
-//        Log.i(TAG, "getComponentData: "+intervention1+intervention2+intervention3);
+           intervention1 = lookUpDataClass.getIntervention1();
+            intervention2 = lookUpDataClass.getIntervention2();
+            intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: "+intervention1+intervention2+intervention3);
 
     }
 
@@ -748,9 +749,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
         TNAU_Request request = new TNAU_Request();
         request.setVillage(village);
-        request.setIntervention1("2");
-        request.setIntervention2("18");
-        request.setIntervention3("65");
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
+        request.setIntervention3(intervention3);
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category);
@@ -782,7 +783,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                     try {
                         String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
                         Log.i(TAG, "txt_value: "+txt_id.toString());
-                        mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                    //    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
                         uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
 //                        agriResponses.addAll(response.body().getResponse());

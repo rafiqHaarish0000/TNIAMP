@@ -58,7 +58,7 @@ public interface Interface_Api
 
     // request and response data for all the departments
     @POST("tnau")
-    Call<List<TNAU_Response>> getTnauResponse(@Body TNAU_Request tnau_request);
+    Call<TNAU_Response> getTnauResponse(@Body TNAU_Request tnau_request);
     @POST("/api/agri")
     Call<List<AgriResponse>> getAgriResponse(@Body Agri_Request tnau_request);
     @POST("/api/aed")

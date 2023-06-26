@@ -122,7 +122,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String status;
     public BackPressListener backPressListener;
     private String firstImageBase64, secondImageBase64;
-
+    TNAU_Request request;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -738,7 +738,7 @@ backPressListener=this;
     }
 
     private void getAllData() {
-
+         request = new TNAU_Request();
         farmerName = tnauBinding.farmerTxt.getText().toString();
         survey_no = tnauBinding.surveyTxt.getText().toString();
         area = tnauBinding.areaTxt.getText().toString();
@@ -747,41 +747,39 @@ backPressListener=this;
         dateField = tnauBinding.dateTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
 
-        TNAU_Request request = new TNAU_Request();
-        request.setVillage(village);
-        request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
-        request.setIntervention3(intervention3);
+        request.setVillage("66");
+        request.setIntervention1("2");
+        request.setIntervention2("18");
+        request.setIntervention3("65");
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category);
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setVariety(" ");
-        request.setImage1(firstImageBase64);
+        request.setImage1("firstImageBase64");
         request.setYield(" ");
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
-        request.setCreated_date(dateField);
-        request.setLat(String.valueOf(lat));
-        request.setLon(String.valueOf(lon));
+        request.setCreated_date("2020-02-12 11:02:02");
+        request.setLat("10.7274301");
+        request.setLon("10.7274301");
         request.setTank_name(near_tank);
         request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat(String.valueOf(lat));
-        request.setPhoto_lon(String.valueOf(lon));
+        request.setPhoto_lat("10.7274301");
+        request.setPhoto_lon("10.7274301");
         request.setTxn_id("20200212120446");
-        request.setDate(dateField);
+        request.setDate("");
         request.setStatus("0");
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-        Call<List<TNAU_Response>> userDataCall = null;
-        userDataCall = call.getTnauResponse(request);
-        userDataCall.enqueue(new Callback<List<TNAU_Response>>() {
+        Call<TNAU_Response> userDataCall = call.getTnauResponse(request);
+        userDataCall.enqueue(new Callback<TNAU_Response>() {
             @Override
-            public void onResponse(Call<List<TNAU_Response>> call, Response<List<TNAU_Response>> response) {
+            public void onResponse(Call<TNAU_Response> call, Response<TNAU_Response>response) {
                 if (response.body() != null) {
                     try {
-                        String txt_id = String.valueOf(response.body().get(0).getTnau_land_dept_id());
+                        String txt_id = String.valueOf(response.body().getTnauLandDeptId());
                         Log.i(TAG, "txt_value: "+txt_id.toString());
                     //    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
                         uploadSecondImage(txt_id);
@@ -796,7 +794,7 @@ backPressListener=this;
             }
 
             @Override
-            public void onFailure(Call<List<TNAU_Response>> call, Throwable t) {
+            public void onFailure(Call<TNAU_Response> call, Throwable t) {
 
             }
         });
@@ -806,8 +804,8 @@ backPressListener=this;
     private void uploadSecondImage(String txt_id) {
 
         SecondImageRequest request = new SecondImageRequest();
-        request.setDepartment_id("2");
-        request.setImg2(secondImageBase64);
+        request.setDepartment_id("1");
+        request.setImg2("secondImageBase64");
         request.setID(txt_id);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);

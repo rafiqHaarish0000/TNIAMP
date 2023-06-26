@@ -30,8 +30,38 @@ public class TNAU_Request {
         return village;
     }
 
+    public TNAU_Request() {
+    }
+
     public void setVillage(String village) {
         this.village = village;
+    }
+
+    public TNAU_Request(String village, String intervention1, String intervention2, String intervention3, String farmer_name, String gender, String category, String survey_no, String area, String variety, String yield, String remarks, String created_by, String created_date, String lat, String lon, String image1, String tank_name, String txn_date, String photo_lat, String photo_lon, String txn_id, String date, String status) {
+        this.village = village;
+        this.intervention1 = intervention1;
+        this.intervention2 = intervention2;
+        this.intervention3 = intervention3;
+        this.farmer_name = farmer_name;
+        this.gender = gender;
+        this.category = category;
+        this.survey_no = survey_no;
+        this.area = area;
+        this.variety = variety;
+        this.yield = yield;
+        this.remarks = remarks;
+        this.created_by = created_by;
+        this.created_date = created_date;
+        this.lat = lat;
+        this.lon = lon;
+        this.image1 = image1;
+        this.tank_name = tank_name;
+        this.txn_date = txn_date;
+        this.photo_lat = photo_lat;
+        this.photo_lon = photo_lon;
+        this.txn_id = txn_id;
+        this.date = date;
+        this.status = status;
     }
 
     public String getIntervention1() {

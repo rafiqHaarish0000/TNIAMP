@@ -63,7 +63,7 @@ public class MobileValidationActivity extends BaseActivity {
 //                                        commonFunction.showProgress();
                                         Intent i = new Intent(MobileValidationActivity.this, VerifyMobileNumberActivitiy.class);
                                         Bundle extras = new Bundle();
-                                        extras.putString("otp", generateOTP.getOtpDataId().toString());
+                                     //   extras.putString("otp", generateOTP.getResponseMessage().getOtpDataId().toString());
                                         extras.putString("phone", binding.mobileValues.getText().toString());
                                         i.putExtras(extras);
                                         startActivity(i);

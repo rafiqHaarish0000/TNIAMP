@@ -44,7 +44,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
-
                         <androidx.cardview.widget.CardView
                             android:id="@+id/notification_badge"
                             android:layout_width="20dp"
@@ -77,6 +76,23 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:id="@+id/txtUserName"
+                            style="@style/head_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="20dp"
+                            android:padding="12dp"
+                            android:layout_marginTop="55dp"
+                            android:text="Welcome Raja"
+                            tools:layout_editor_absoluteX="16dp"
+                            tools:layout_editor_absoluteY="59dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                        />
 
                         <ImageView
                             android:id="@+id/imageView5"

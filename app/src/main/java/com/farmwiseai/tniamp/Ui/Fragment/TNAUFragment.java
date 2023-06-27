@@ -267,6 +267,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 break;
 

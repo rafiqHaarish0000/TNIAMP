@@ -54,7 +54,7 @@ public interface Interface_Api
     @GET("otp/generate?")
     Call<GenerateOTP> generateOTP(@Query("phone") String phone_number, @Query("message") String message, @Query("digits") String digits);
     @GET("otp/validate?")
-    Call<List<ValidateOTP>> validateOTP(@Query("phone") String phone_number, @Query("otp") String otp);
+    Call<ValidateOTP> validateOTP(@Query("phone") String phone_number, @Query("otp") String otp);
 
     // request and response data for all the departments
     @POST("tnau")

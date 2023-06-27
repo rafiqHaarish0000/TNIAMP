@@ -162,6 +162,7 @@ FragmentHorticultureBinding horticultureBinding;
 
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter,myString,backPressListener);
         hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt,trainingLyt);
+        getLocation();
 
         setAllDropDownData();
 
@@ -214,10 +215,10 @@ FragmentHorticultureBinding horticultureBinding;
         } else if (remarks.length() == 0) {
             horticultureBinding.remarksTxt.setError("Remarks not found");
             return false;
-        } else if (date.length() == 0) {
+        } /*else if (date.length() == 0) {
             horticultureBinding.dateTxt.setError("Please enter the date");
             return false;
-        }
+        }*/
 
 
         return true;
@@ -240,6 +241,8 @@ FragmentHorticultureBinding horticultureBinding;
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                 startActivity(intent);
                 break;
 
@@ -247,7 +250,6 @@ FragmentHorticultureBinding horticultureBinding;
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category, survey_no, area, near_tank, remarks, dateField);
                 if (checkValidaiton) {
-                    getLocation(view);
                     finalSubmission();
                 } else {
                     //do the code for save all data
@@ -656,7 +658,7 @@ FragmentHorticultureBinding horticultureBinding;
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
-
+getAllData();
 
         } else {
             String offlineText = "Data saved successfully in offline data";
@@ -674,7 +676,7 @@ FragmentHorticultureBinding horticultureBinding;
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
 
-    private void getLocation(View view) {
+    private void getLocation() {
         gpsTracker = new GPSTracker(getContext());
         if (gpsTracker.canGetLocation()) {
             lati = gpsTracker.getLatitude();
@@ -775,7 +777,7 @@ FragmentHorticultureBinding horticultureBinding;
                         Log.i(TAG, "onSuccessMsg"+successMessage);
                         mCommonFunction.navigation(getContext(),DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
-                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Data Saved Successfully",Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
                         Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();

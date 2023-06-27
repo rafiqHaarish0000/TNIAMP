@@ -2,7 +2,6 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 
 import static android.content.ContentValues.TAG;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -11,10 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -28,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -36,16 +31,13 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
-import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
-import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
@@ -55,17 +47,17 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentTNAUBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
-import com.farmwiseai.tniamp.utils.ConstantClass;
-import com.farmwiseai.tniamp.utils.LookUpDataClass;
-import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
-import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
-import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.LatLongPojo;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
+import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -73,8 +65,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,7 +74,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private FragmentTNAUBinding tnauBinding;
     private Context context;
     private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village;
-    private static final int PERMISSION_REQUEST_CODE = 200;
+    public static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
     private List<Sub_Basin_Data> sub_basin_DropDown;
@@ -179,7 +169,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
       /*  LookUpDataClass lookUpDataClass = new LookUpDataClass();
         Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
       */
-        getLocation();
+        LatLongPojo latLongPojo= new LatLongPojo();
+      latLongPojo= PermissionUtils.getLocation(getContext());
+       lat=latLongPojo.getLat();
+       lon=latLongPojo.getLon();
+       Log.i("data",lat+","+lon);
         setAllDropDownData();
 
         return tnauBinding.getRoot();
@@ -296,7 +290,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 break;
 
             case R.id.image_1:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     tnauBinding.image1.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
@@ -305,12 +299,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
             case R.id.image_2:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     tnauBinding.image2.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
@@ -319,7 +313,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
@@ -601,23 +595,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     }
 
     //check Permission for camera intents
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            return false;
-        }
-        return true;
-    }
 
-    private void requestPermission() {
 
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.CAMERA},
-                PERMISSION_REQUEST_CODE);
-    }
 
-    @Override
+
+  /*  @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
@@ -646,7 +628,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 break;
         }
     }
-
+*/
     // alert pop up
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())
@@ -699,21 +681,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
     }
 
-    private void getLocation() {
-        gpsTracker = new GPSTracker(getContext());
-        try {
-            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-            } else {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                lat = String.valueOf(latitude);
-                lon = String.valueOf(latitude);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     // final submission button validation for online and save data for offline data through database..
     private void finalSubmission() {
@@ -804,7 +772,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             public void onResponse(Call<TNAU_Response> call, Response<TNAU_Response>response) {
                 if (response.body() != null) {
                     try {
-                        String txt_id = String.valueOf(response.body().getTnauLandDeptId());
+                        String txt_id = String.valueOf(response.body().getResponseMessage().getTnauLandDeptId());
                         Log.i(TAG, "txt_value: "+txt_id.toString());
                     //    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
   uploadSecondImage(txt_id);

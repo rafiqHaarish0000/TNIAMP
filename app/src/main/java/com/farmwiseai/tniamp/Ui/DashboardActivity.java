@@ -2,14 +2,20 @@ package com.farmwiseai.tniamp.Ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.Manifest;
+import android.widget.Toast;
 
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Ui.Fragment.AEDFragment;
@@ -22,28 +28,33 @@ import com.farmwiseai.tniamp.Ui.Fragment.MarketingFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.TNAUFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.WRDFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
+import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
 import com.farmwiseai.tniamp.mainView.VerifyMobileNumberActivitiy;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityDashboardBinding binding;
     CommonFunction mCommonFunction;
-    String username,lineDeptId;
+    String username, lineDeptId;
     int countData;
+    private GPSTracker gpsTracker;
+    private static final int PERMISSION_REQUEST_CODE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(DashboardActivity.this, R.layout.activity_dashboard);
         setContentView(binding.getRoot());
-         username=  SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.USER_NAME);
-        lineDeptId=  SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-lineDeptId="1";
-        binding.txtUserName.setText("Welcome "+username);
+        username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
+        lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
+        lineDeptId = "1";
+        binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
+        getLocation();
         binding.naviTnau.setOnClickListener(this);
         binding.naviAgri.setOnClickListener(this);
         binding.naviHorti.setOnClickListener(this);
@@ -59,8 +70,7 @@ lineDeptId="1";
     }
 
     private void showDept(String lineDeptId) {
-        if(lineDeptId=="1")
-        {
+        if (lineDeptId == "1") {
             binding.naviTnau.setEnabled(true);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -71,8 +81,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        } else if(lineDeptId=="2")
-        {
+        } else if (lineDeptId == "2") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(true);
             binding.naviHorti.setEnabled(false);
@@ -83,8 +92,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }else if(lineDeptId=="3")
-        {
+        } else if (lineDeptId == "3") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(true);
@@ -95,9 +103,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="4")
-        {
+        } else if (lineDeptId == "4") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -108,9 +114,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="5")
-        {
+        } else if (lineDeptId == "5") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -121,9 +125,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="6")
-        {
+        } else if (lineDeptId == "6") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -134,9 +136,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="7")
-        {
+        } else if (lineDeptId == "7") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -147,8 +147,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }else if(lineDeptId=="8")
-        {
+        } else if (lineDeptId == "8") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -158,8 +157,7 @@ lineDeptId="1";
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(true);
 
-        }else
-        {
+        } else {
             binding.naviTnau.setEnabled(true);
             binding.naviAgri.setEnabled(true);
             binding.naviHorti.setEnabled(true);
@@ -266,5 +264,59 @@ lineDeptId="1";
         }
     }
 
+    private void getLocation() {
+        if (PermissionUtils.checkPermission(getApplicationContext()) == false) {
+            PermissionUtils.requestPermission(this);
+        }
+        gpsTracker = new GPSTracker(this);
+        try {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            } else {
+                gpsTracker.getLatitude();
+                gpsTracker.getLongitude();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+
+                    // main logic
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            showMessageOKCancel("You need to allow access permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermission();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                PERMISSION_REQUEST_CODE);
+    }
 
 }

@@ -209,6 +209,175 @@
                         android:hint="@string/date_of_sowing_planting" />
 
                     <LinearLayout
+                        android:id="@+id/inerventionLyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            style="@style/med_text2"
+                            android:layout_marginTop="4dp"
+                            android:layout_gravity="start"
+                            android:text="50-100 Characters"/>
+                        <EditText
+                            android:id="@+id/inerventionNameTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="2dp"
+                            android:lines="8"
+                            android:minLines="6"
+                            android:gravity="top|start"
+                            android:maxLines="10"
+                            android:singleLine="false"
+                            android:scrollbars="vertical"
+                            android:hint="Intervention name"
+                            style="@style/AppEdittext"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/seed_group_lyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <EditText
+                            android:id="@+id/name_of_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/name_of_the_group"
+                            style="@style/AppEdittext"/>
+                        <EditText
+                            android:id="@+id/doa_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/date_of_account_open"
+                            style="@style/AppEdittext"/>
+                        <EditText
+                            android:id="@+id/dorf_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/date_of_revolving_fund_release"
+                            style="@style/AppEdittext"/>
+                        <EditText
+                            android:id="@+id/area_raised_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/seed_from_area_raised_ha"
+                            style="@style/AppEdittext"/>
+                        <EditText
+                            android:id="@+id/quantity_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/quantity_to_proceed_kg"
+                            style="@style/AppEdittext"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/iec_layt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:visibility="gone"
+                        android:layout_marginStart="4dp"
+                        android:orientation="vertical">
+                        <EditText
+                            android:id="@+id/noParti"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="No of Participants"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Male No."
+                            style="@style/head_text"
+                            android:textColor="@color/black"
+                            android:textStyle="normal"
+                            android:fontFamily="@font/poppins_medium"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="10dp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/male_others"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/AppEdittext"
+                                android:gravity="start"
+                                android:inputType="number"
+                                android:layout_gravity="start"
+                                android:hint="Others No"/>
+                            <EditText
+                                android:id="@+id/male_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/AppEdittext"
+                                android:gravity="start"
+                                android:inputType="number"
+                                android:layout_gravity="start"
+                                android:hint="SC/ST No."/>
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Female No."
+                            style="@style/head_text"
+                            android:textColor="@color/black"
+                            android:textStyle="normal"
+                            android:fontFamily="@font/poppins_medium"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="10dp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/female_others"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/AppEdittext"
+                                android:gravity="start"
+                                android:inputType="number"
+                                android:layout_gravity="start"
+                                android:hint="Others No"/>
+                            <EditText
+                                android:id="@+id/female_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/AppEdittext"
+                                android:gravity="start"
+                                android:inputType="number"
+                                android:layout_gravity="start"
+                                android:hint="SC/ST No."/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
                         android:id="@+id/visibilityLyt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -342,20 +511,21 @@
                         android:layout_marginTop="12dp"
                         android:hint="@string/remarks" />
 
-                    <LinearLayout
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/inverntionTyper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="18dp"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/check_values"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Consider as a Test" />
-                    </LinearLayout>
+                        app:smsp_enableFloatingLabel="true"
+                        android:textSize="18sp"
+                        app:smsp_hint="Intervention Type"
+                        android:padding="8dp"
+                        android:dropDownWidth="2dp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginTop="4dp"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false"/>
 
                     <Button
                         android:id="@+id/submission_btn"

@@ -29,15 +29,15 @@ import retrofit2.Response;
 public class AgriCallApi {
     private Activity activity;
     private Context context;
-    private List<ComponentData> getAllComponentData, stagesList,sub_componentList;
+    private List<ComponentData> getAllComponentData, stagesList, sub_componentList;
     private ComponentAdapter adapters, componentAdapter;
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass ;
+    public LookUpDataClass lookUpDataClass;
 
-    public AgriCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue,BackPressListener backPressListener) {
+    public AgriCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
         this.getAllComponentData = getAllComponentData;
         this.adapters = adapters;
@@ -50,7 +50,8 @@ public class AgriCallApi {
 
     //first spinner phrase;
 
-    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt, LinearLayout trainingLyt, LinearLayout seedLyt,
+                                   LinearLayout interventioNameLyt) {
 
         commonFunction = new CommonFunction(activity);
 
@@ -76,21 +77,40 @@ public class AgriCallApi {
                             componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    subComponentSpinner.setVisibility(View.VISIBLE);
                                     try {
-                                        lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                         String names = getAllComponentData.get(i).getName();
-                                        subComponentSpinner.setVisibility(View.VISIBLE);
-                                         if (names.equals("Model Village")) {
+                                        if (names.equals("Model Village")) {
+                                            subComponentSpinner.setVisibility(View.VISIBLE);
+                                            stageSpinner.setVisibility(View.GONE);
+                                            hideLyt.setVisibility(View.VISIBLE);
+                                            seedLyt.setVisibility(View.GONE);
+                                            trainingLyt.setVisibility(View.GONE);
+                                            interventioNameLyt.setVisibility(View.VISIBLE);
+                                        } else if (names.contains("Farmers")) {
+                                            subComponentSpinner.setVisibility(View.GONE);
+                                            stageSpinner.setVisibility(View.GONE);
+                                            seedLyt.setVisibility(View.VISIBLE);
+                                            interventioNameLyt.setVisibility(View.GONE);
+                                            trainingLyt.setVisibility(View.GONE);
+                                        } else if (names.contains("IPM")) {
                                             subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);
                                             hideLyt.setVisibility(View.GONE);
-                                        }
-                                        else {
+                                            seedLyt.setVisibility(View.GONE);
+                                            interventioNameLyt.setVisibility(View.GONE);
+                                            trainingLyt.setVisibility(View.VISIBLE);
+                                        } else if (names.contains("Cono Weeding")) {
+                                            stageSpinner.setVisibility(View.GONE);
+                                        } else {
                                             subComponentSpinner.setVisibility(View.VISIBLE);
                                             stageSpinner.setVisibility(View.GONE);
                                             datePicker.setVisibility(View.GONE);
                                             hideLyt.setVisibility(View.VISIBLE);
+                                            trainingLyt.setVisibility(View.GONE);
+                                            seedLyt.setVisibility(View.GONE);
+                                            interventioNameLyt.setVisibility(View.GONE);
                                             Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
                                             //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
@@ -160,8 +180,9 @@ public class AgriCallApi {
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                                     String names = sub_componentList.get(i).getName();
-                                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+
                                     thirdSpinner.setVisibility(View.VISIBLE);
 
                                     try {
@@ -173,22 +194,23 @@ public class AgriCallApi {
                                         } else if (names.contains("Planting")) {
                                             editText.setVisibility(View.VISIBLE);
                                             thirdSpinner.setVisibility(View.GONE);
-                                        }else if (names.contains("Installation")){
+                                        } else if (names.contains("Installation")) {
                                             editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.GONE);
-                                        }else if(names.contains("Milky")){
+                                        } else if (names.contains("Milky")) {
                                             editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.GONE);
-                                        }
-                                        else if(names.contains("Harvest")){
+                                        } else if (names.contains("First") || names.contains("Field")) {
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        } else if (names.contains("Harvest")) {
                                             editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.GONE);
-                                        }
-                                        else {
+                                        } else {
                                             editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.VISIBLE);
                                         }
                                         stagesDropDown(positionValue2, thirdSpinner, editText);
+                                        lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -246,8 +268,6 @@ public class AgriCallApi {
                                     try {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
                                         String names = stagesList.get(i).getName();
-                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
-                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {
@@ -255,6 +275,8 @@ public class AgriCallApi {
                                         } else {
                                             editText.setVisibility(View.GONE);
                                         }
+                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                     } catch (Exception e) {
 
                                     }

@@ -94,10 +94,12 @@ public class TNAU_CallApi {
                                                     if (names.equals("Model Village")) {
                                                         hideLyt.setVisibility(View.GONE);
                                                         subComponentSpinner.setVisibility(View.GONE);
+                                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                                         stageSpinner.setVisibility(View.GONE);
                                                         datePicker.setVisibility(View.GONE);
                                                     }else if(names.contains("GHG emission")){
                                                         subComponentSpinner.setVisibility(View.GONE);
+                                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                                         stageSpinner.setVisibility(View.GONE);
                                                         datePicker.setVisibility(View.GONE);
                                                     }
@@ -198,26 +200,34 @@ public class TNAU_CallApi {
                                     try {
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("Planting")) {
                                             editText.setVisibility(View.VISIBLE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("Installation")) {
                                             editText.setVisibility(View.GONE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("Milky")) {
                                             editText.setVisibility(View.GONE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("First") || names.contains("Field")) {
                                             thirdSpinner.setVisibility(View.GONE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                         } else if (names.contains("Harvest")) {
                                             editText.setVisibility(View.GONE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                             thirdSpinner.setVisibility(View.GONE);
                                         }else if (names.contains("Group formation")) {
                                             editText.setVisibility(View.GONE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("Meetings")) {
                                             editText.setVisibility(View.GONE);
+                                            backPressListener.onSelectedInputs(lookUpDataClass);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else {
                                             editText.setVisibility(View.GONE);

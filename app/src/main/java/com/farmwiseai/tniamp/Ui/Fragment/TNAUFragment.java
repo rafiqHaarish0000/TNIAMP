@@ -213,27 +213,36 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             return false;
         }
 
-        if (farmerName.length() == 0) {
-            tnauBinding.farmerTxt.setError("Please enter farmer name");
-            return false;
-        } else if (survey_no.length() == 0) {
-            tnauBinding.surveyTxt.setError("Please enter survey no");
-            return false;
-        } else if (area.length() == 0) {
-            tnauBinding.areaTxt.setError("Please enter area");
-            return false;
+//        if (tnauBinding.farmerTxt.getVisibility() == View.VISIBLE) {
+//            if (farmerName.length() == 0) {
+//                tnauBinding.farmerTxt.setError("Please enter farmer name");
+//                return false;
+//            }
+//        } else
+        if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
+            if (survey_no.length() == 0) {
+                tnauBinding.surveyTxt.setError("Please enter survey no");
+                return false;
+            }else if (area.length() == 0) {
+                tnauBinding.areaTxt.setError("Please enter area");
+                return false;
+            }
+            return true;
 
 //        } else if (near_tank.length() == 0) {
 //            tnauBinding.tankTxt.setError("Please enter near by tank name");
 //            return false;
 
-        } else if (remarks.length() == 0) {
+        }
+        if (remarks.length() == 0) {
             tnauBinding.remarksTxt.setError("Remarks not found");
             return false;
-        } else if (date.length() == 0) {
-            tnauBinding.dateTxt.setError("Please enter the date");
-            return false;
-        } else if (!tnauBinding.image1.isSelected() && !tnauBinding.image2.isSelected()) {
+        }
+//        else if (date.length() == 0) {
+//            tnauBinding.dateTxt.setError("Please enter the date");
+//            return false;
+//        }
+        else if (!tnauBinding.image1.isSelected() && !tnauBinding.image2.isSelected()) {
             Toast.makeText(getActivity(), "Please capture photo", Toast.LENGTH_LONG).show();
             return false;
         }

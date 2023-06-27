@@ -751,7 +751,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     }
 
     private void getAllData() {
-         request = new TNAU_Request();
+        request = new TNAU_Request();
         Log.i(TAG, "letLATLONG: " + lat + lon);
         Log.i(TAG, "base64: " + firstImageBase64.trim());
         Log.i(TAG, "base64: " + secondImageBase64);
@@ -780,7 +780,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         request.setCategory(category);
         request.setSurvey_no(survey_no);
         request.setArea(area);
-
         request.setVariety("null");
         request.setImage1(firstImageBase64.trim());
         request.setYield("null");
@@ -801,13 +800,13 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         Call<TNAU_Response> userDataCall = call.getTnauResponse(request);
         userDataCall.enqueue(new Callback<TNAU_Response>() {
             @Override
-            public void onResponse(Call<TNAU_Response> call, Response<TNAU_Response>response) {
+            public void onResponse(Call<TNAU_Response> call, Response<TNAU_Response> response) {
                 if (response.body() != null) {
                     try {
                         String txt_id = String.valueOf(response.body().getTnauLandDeptId());
-                        Log.i(TAG, "txt_value: "+txt_id.toString());
-                    //    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
-  uploadSecondImage(txt_id);
+                        Log.i(TAG, "txt_value: " + txt_id.toString());
+                        //    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                        uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
 //                        agriResponses.addAll(response.body().getResponse());
                     } catch (Exception e) {

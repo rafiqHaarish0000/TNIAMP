@@ -204,16 +204,9 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
 
 
-        if (componentSpinner.getVisibility() == View.VISIBLE) {
-            if (intervention1.isEmpty() && intervention1.equalsIgnoreCase("")) {
-                mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-            }
-            return false;
-        }
-//        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && sub_componentSpinner.getSelectedItem()==null) {
+//        if (sub_componentSpinner.getVisibility() == View.VISIBLE && sub_componentSpinner.getSelectedItem() == null) {
 //            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
 //            return false;
-//        }
 //        } else if (genderSpinner.getVisibility() == View.VISIBLE && genderSpinner.getSelectedItem() == null) {
 //            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
 //            return false;
@@ -225,21 +218,20 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 //            return false;
 //        }
 
-
-//        if (agricultureBinding.phase1.getSelectedItem() == null
-//                && subBasinSpinner.getSelectedItem() == null
-//                && districtSpinner.getSelectedItem() == null
-//                && blockSpinner.getSelectedItem() == null
-//                && componentSpinner.getSelectedItem() == null
-//                && sub_componentSpinner.getSelectedItem() == null
-//                && stagesSpinner.getSelectedItem() == null
-//                && genderSpinner.getSelectedItem() == null
-//                && categorySpinner.getSelectedItem() == null
-//                && villageSpinner.getSelectedItem() == null
-//                && interventionSpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        }
+        if (agricultureBinding.phase1.getSelectedItem() == null
+                && subBasinSpinner.getSelectedItem() == null
+                && districtSpinner.getSelectedItem() == null
+                && blockSpinner.getSelectedItem() == null
+                && componentSpinner.getSelectedItem() == null
+                && sub_componentSpinner.getSelectedItem() == null
+                && stagesSpinner.getSelectedItem() == null
+                && genderSpinner.getSelectedItem() == null
+                && categorySpinner.getSelectedItem() == null
+                && villageSpinner.getSelectedItem() == null
+                && interventionSpinner.getSelectedItem() == null) {
+            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+            return false;
+        }
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -263,72 +255,68 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         } else if (date.length() == 0 && agricultureBinding.dateTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.dateTxt.setError("Please enter the date");
             return false;
-        }else if(agricultureBinding.mobileNumbertxt.toString().isEmpty()){
+        } else if (agricultureBinding.mobileNumbertxt.toString().isEmpty()) {
             agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
             return false;
+//        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
+//            if (nop.length() == 0) {
+//                agricultureBinding.noParti.setError("field empty");
+//                return false;
+//            } else if (moN.length() == 0) {
+//                {
+//                    agricultureBinding.maleOthers.setError("field empty");
+//                    return false;
+//                }
+//            } else if (mOO.length() == 0) {
+//                {
+//                    agricultureBinding.maleOthers.setError("field empty");
+//                    return false;
+//                }
+//            } else if (foN.length() == 0) {
+//                {
+//                    agricultureBinding.maleOthers.setError("field empty");
+//                    return false;
+//                }
+//            } else if (fOO.length() == 0) {
+//                {
+//                    agricultureBinding.maleOthers.setError("field empty");
+//                    return false;
+//                }
+//            }
+//            return false;
+//
+//        } else if (seed_lyt.getVisibility() == View.VISIBLE) {
+//            if (nag.length() == 0) {
+//                agricultureBinding.nameOfGroup.setError("field empty");
+//                return false;
+//            } else if (dag.length() == 0) {
+//                {
+//                    agricultureBinding.doaTxt.setError("field empty");
+//                    return false;
+//                }
+//            } else if (dafr.length() == 0) {
+//                {
+//                    agricultureBinding.dorfTxt.setError("field empty");
+//                    return false;
+//                }
+//            } else if (seedra.length() == 0) {
+//                {
+//                    agricultureBinding.areaRaisedTxt.setError("field empty");
+//                    return false;
+//                }
+//            } else if (qop.length() == 0) {
+//                {
+//                    agricultureBinding.quantityTxt.setError("field empty");
+//                    return false;
+//                }
+//            }
+//            return false;
+//        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+//            if (intName.length() == 0) {
+//                agricultureBinding.inerventionNameTxt.setError("field empty");
+//                return false;
+//            }
         }
-        else if (trainingLyt.getVisibility() == View.VISIBLE) {
-            if (nop.length() == 0) {
-                agricultureBinding.noParti.setError("field empty");
-                return false;
-            } else if (moN.length() == 0) {
-                {
-                    agricultureBinding.maleOthers.setError("field empty");
-                    return false;
-                }
-            } else if (mOO.length() == 0) {
-                {
-                    agricultureBinding.maleOthers.setError("field empty");
-                    return false;
-                }
-            } else if (foN.length() == 0) {
-                {
-                    agricultureBinding.maleOthers.setError("field empty");
-                    return false;
-                }
-            } else if (fOO.length() == 0) {
-                {
-                    agricultureBinding.maleOthers.setError("field empty");
-                    return false;
-                }
-            }
-            return false;
-
-        } else if (seed_lyt.getVisibility() == View.VISIBLE) {
-            if (nag.length() == 0) {
-                agricultureBinding.nameOfGroup.setError("field empty");
-                return false;
-            } else if (dag.length() == 0) {
-                {
-                    agricultureBinding.doaTxt.setError("field empty");
-                    return false;
-                }
-            } else if (dafr.length() == 0) {
-                {
-                    agricultureBinding.dorfTxt.setError("field empty");
-                    return false;
-                }
-            } else if (seedra.length() == 0) {
-                {
-                    agricultureBinding.areaRaisedTxt.setError("field empty");
-                    return false;
-                }
-            } else if (qop.length() == 0) {
-                {
-                    agricultureBinding.quantityTxt.setError("field empty");
-                    return false;
-                }
-            }
-            return false;
-        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
-            if (intName.length() == 0) {
-                agricultureBinding.inerventionNameTxt.setError("field empty");
-                return false;
-            }
-            return false;
-        }
-
-
         return true;
     }
 
@@ -892,7 +880,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setVariety(" ");
-        request.setImage1(firstImageBase64);
+        request.setImage1(firstImageBase64.trim());
         request.setYield(" ");
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
@@ -904,7 +892,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
-        request.setDate(dateField);
+        request.setDate("");
         request.setStatus("0");
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -917,7 +905,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     try {
                         String txt_id = String.valueOf(response.body().getTnauLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
-                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                         uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
 //                        agriResponses.addAll(response.body().getResponse());

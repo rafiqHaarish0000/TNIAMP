@@ -30,7 +30,7 @@ import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityDashboardBinding binding;
     CommonFunction mCommonFunction;
-    String username,lineDeptId;
+    String username, lineDeptId;
     int countData;
 
     @Override
@@ -38,10 +38,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(DashboardActivity.this, R.layout.activity_dashboard);
         setContentView(binding.getRoot());
-         username=  SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.USER_NAME);
-        lineDeptId=  SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-lineDeptId="1";
-        binding.txtUserName.setText("Welcome "+username);
+        username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
+        lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
+        lineDeptId = "9";
+        binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
         binding.naviTnau.setOnClickListener(this);
@@ -59,8 +59,7 @@ lineDeptId="1";
     }
 
     private void showDept(String lineDeptId) {
-        if(lineDeptId=="1")
-        {
+        if (lineDeptId == "1") {
             binding.naviTnau.setEnabled(true);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -71,8 +70,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        } else if(lineDeptId=="2")
-        {
+        } else if (lineDeptId == "2") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(true);
             binding.naviHorti.setEnabled(false);
@@ -83,8 +81,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }else if(lineDeptId=="3")
-        {
+        } else if (lineDeptId == "3") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(true);
@@ -95,9 +92,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="4")
-        {
+        } else if (lineDeptId == "4") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -108,9 +103,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="5")
-        {
+        } else if (lineDeptId == "5") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -121,9 +114,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="6")
-        {
+        } else if (lineDeptId == "6") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -134,9 +125,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }
-        else if(lineDeptId=="7")
-        {
+        } else if (lineDeptId == "7") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -147,8 +136,7 @@ lineDeptId="1";
             binding.navFish.setEnabled(false);
 
 
-        }else if(lineDeptId=="8")
-        {
+        } else if (lineDeptId == "8") {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -158,8 +146,7 @@ lineDeptId="1";
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(true);
 
-        }else
-        {
+        } else {
             binding.naviTnau.setEnabled(true);
             binding.naviAgri.setEnabled(true);
             binding.naviHorti.setEnabled(true);

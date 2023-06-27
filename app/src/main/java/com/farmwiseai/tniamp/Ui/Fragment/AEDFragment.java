@@ -51,7 +51,9 @@ import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -146,7 +148,11 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
         aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, hideLyt);
 
-        getLocation();
+        LatLongPojo latLongPojo= new LatLongPojo();
+        latLongPojo= PermissionUtils.getLocation(getContext());
+        lat=latLongPojo.getLat();
+        lon=latLongPojo.getLon();
+        Log.i("data",lat+","+lon);
         setAllDataValues();
 
         return tnauBinding.getRoot();
@@ -498,7 +504,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
                 break;
 
             case R.id.image_1:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     tnauBinding.image1.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
@@ -507,12 +513,12 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
             case R.id.image_2:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     tnauBinding.image2.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
@@ -521,59 +527,14 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
         }
     }
 
-    //check Permission for camera intents
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            return false;
-        }
-        return true;
-    }
 
-    private void requestPermission() {
-
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.CAMERA},
-                PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
-
-                    // main logic
-                } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            showMessageOKCancel("You need to allow access permissions",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermission();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                }
-                break;
-        }
-    }
 
     // alert pop up
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
@@ -628,6 +589,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
+            getAllData();
             Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
             mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
@@ -646,20 +608,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
-    private void getLocation() {
-        gpsTracker = new GPSTracker(getContext());
-        if (gpsTracker.canGetLocation()) {
-            lati = gpsTracker.getLatitude();
-            longi = gpsTracker.getLongitude();
-            lat = String.valueOf(lati);
-            lon = String.valueOf(longi);
 
-//            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
-
-        } else {
-            gpsTracker.showSettingsAlert();
-        }
-    }
 
     private void getAllData() {
 

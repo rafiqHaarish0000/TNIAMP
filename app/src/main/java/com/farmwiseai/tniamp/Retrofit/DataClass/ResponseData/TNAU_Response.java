@@ -10,9 +10,9 @@ public class TNAU_Response {
     @SerializedName("response")
     @Expose
     private String response;
-    @SerializedName("tnau_land_dept_id")
+    @SerializedName("responseMessage")
     @Expose
-    private Integer tnauLandDeptId;
+    private ResponseMessage responseMessage;
 
     public String getStatusCode() {
         return statusCode;
@@ -30,6 +30,21 @@ public class TNAU_Response {
         this.response = response;
     }
 
+    public ResponseMessage getResponseMessage() {
+        return responseMessage;
+    }
+
+    public void setResponseMessage(ResponseMessage responseMessage) {
+        this.responseMessage = responseMessage;
+    }
+
+
+public class ResponseMessage {
+
+    @SerializedName("tnau_land_dept_id")
+    @Expose
+    private Integer tnauLandDeptId;
+
     public Integer getTnauLandDeptId() {
         return tnauLandDeptId;
     }
@@ -37,5 +52,5 @@ public class TNAU_Response {
     public void setTnauLandDeptId(Integer tnauLandDeptId) {
         this.tnauLandDeptId = tnauLandDeptId;
     }
-
+}
 }

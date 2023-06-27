@@ -51,7 +51,9 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAgricultureBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
+import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -102,7 +104,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
     private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
-    private double lati, longi;
+
     public String intervention1 = ""; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
@@ -171,10 +173,12 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, seed_lyt, iNames_lyt);
 
-        getLocation();
+        LatLongPojo latLongPojo= new LatLongPojo();
+        latLongPojo= PermissionUtils.getLocation(getContext());
+        lat=latLongPojo.getLat();
+        lon=latLongPojo.getLon();
+        Log.i("data",lat+","+lon);
         setAllDropDownData();
-
-
         return agricultureBinding.getRoot();
 
 
@@ -365,26 +369,26 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.image_1:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     valueofPic = 1;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
             case R.id.image_2:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     valueofPic = 2;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                   PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
@@ -704,51 +708,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agricultureBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            return false;
-        }
-        return true;
-    }
 
-    private void requestPermission() {
-
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.CAMERA},
-                PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
-
-                    // main logic
-                } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            showMessageOKCancel("You need to allow access permissions",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermission();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                }
-                break;
-        }
-    }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())
@@ -809,19 +769,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private boolean getLocation() {
-        gpsTracker = new GPSTracker(getContext());
-        if (gpsTracker.canGetLocation()) {
-            lati = gpsTracker.getLatitude();
-            longi = gpsTracker.getLongitude();
-
-            Log.i(TAG, "Latitude" + lati + " " + "Longitude" + longi);
-
-        } else {
-            gpsTracker.showSettingsAlert();
-        }
-        return true;
-    }
 
 //    private void finalSubmission() {
 //

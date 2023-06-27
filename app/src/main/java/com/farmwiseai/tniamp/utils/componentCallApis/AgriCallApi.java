@@ -45,6 +45,7 @@ public class AgriCallApi {
         this.componentAdapter = componentAdapter;
         this.activity = activity;
         this.backPressListener = backPressListener;
+        lookUpDataClass = new LookUpDataClass();
     }
 
 

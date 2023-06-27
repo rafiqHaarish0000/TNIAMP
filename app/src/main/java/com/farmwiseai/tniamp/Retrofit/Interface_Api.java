@@ -39,6 +39,9 @@ public interface Interface_Api
     @GET("lookup?type=inv_aed")
     Call<List<ComponentData>> getAEDComponets();
 
+    @GET("lookup?type=inv_husb")
+    Call<List<ComponentData>> getAnimalComponents();
+
     @GET("lookup?type=sub_basin")
     Call<List<Sub_Basin_Data>> getSub_basinData();
     @GET("lookup?type=district")

@@ -89,13 +89,19 @@ public class TNAU_CallApi {
                                             @Override
                                             public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                                                 if (response.isSuccessful() && response.body() != null) {
+                                                    String names = componentList.get(i).getName();
                                                     //subComponentSpinner.setVisibility(View.VISIBLE);
-                                                    if (componentList.get(i).getName().equals("Model Village")) {
+                                                    if (names.equals("Model Village")) {
                                                         hideLyt.setVisibility(View.GONE);
                                                         subComponentSpinner.setVisibility(View.GONE);
                                                         stageSpinner.setVisibility(View.GONE);
                                                         datePicker.setVisibility(View.GONE);
-                                                    } else {
+                                                    }else if(names.contains("GHG emission")){
+                                                        subComponentSpinner.setVisibility(View.GONE);
+                                                        stageSpinner.setVisibility(View.GONE);
+                                                        datePicker.setVisibility(View.GONE);
+                                                    }
+                                                    else {
                                                         subComponentSpinner.setVisibility(View.VISIBLE);
                                                         stageSpinner.setVisibility(View.VISIBLE);
                                                         hideLyt.setVisibility(View.VISIBLE);
@@ -188,21 +194,36 @@ public class TNAU_CallApi {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     String names = sub_componentList.get(i).getName();
-                                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
-
+                                    thirdSpinner.setVisibility(View.VISIBLE);
                                     try {
-
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("Planting")) {
                                             editText.setVisibility(View.VISIBLE);
                                             thirdSpinner.setVisibility(View.GONE);
-                                        } else if (secondSpinner.getSelectedItem() == null && secondSpinner.getVisibility() == View.GONE) {
+                                        } else if (names.contains("Installation")) {
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        } else if (names.contains("Milky")) {
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        } else if (names.contains("First") || names.contains("Field")) {
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        } else if (names.contains("Harvest")) {
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }else if (names.contains("Group formation")) {
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        } else if (names.contains("Meetings")) {
+                                            editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else {
+                                            editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.VISIBLE);
                                         }
+                                        lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                                         positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                                         Log.i(TAG, "posvalue2: " + positionValue2);
                                         stagesDropDown(positionValue2, thirdSpinner, editText);
@@ -262,10 +283,7 @@ public class TNAU_CallApi {
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
                                         Log.i(TAG, "names: " + stagesList.get(i).getName());
-
                                         String names = stagesList.get(i).getName();
-                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
-                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                         if (names.contains("Sowing")) {
                                             editText.setVisibility(View.VISIBLE);
                                         } else if (names.contains("Planting")) {
@@ -273,6 +291,8 @@ public class TNAU_CallApi {
                                         } else {
                                             editText.setVisibility(View.GONE);
                                         }
+                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                                        backPressListener.onSelectedInputs(lookUpDataClass);
                                     } catch (Exception e) {
 
                                     }

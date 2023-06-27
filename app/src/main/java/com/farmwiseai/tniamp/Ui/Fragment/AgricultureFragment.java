@@ -263,7 +263,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         } else if (date.length() == 0 && agricultureBinding.dateTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.dateTxt.setError("Please enter the date");
             return false;
-        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
+        }else if(agricultureBinding.mobileNumbertxt.toString().isEmpty()){
+            agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+            return false;
+        }
+        else if (trainingLyt.getVisibility() == View.VISIBLE) {
             if (nop.length() == 0) {
                 agricultureBinding.noParti.setError("field empty");
                 return false;

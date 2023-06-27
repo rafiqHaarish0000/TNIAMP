@@ -393,6 +393,16 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="@string/farmer_name" />
+                        <EditText
+                            android:id="@+id/mobileNumbertxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:singleLine="true"
+                            android:hint="@string/mobile_number" />
 
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/gender_txt"

@@ -77,15 +77,19 @@ ValidateOTP validateOTP;
                     if (response.body() != null) {
                         validateOTP = response.body();
                         Log.i(TAG, "onBody: " + response.code());
-                        SharedPrefsUtils.putBoolean(VerifyMobileNumberActivitiy.this,SharedPrefsUtils.PREF_KEY.LOGIN_SESSION,true);
-                        SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this,SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN,validateOTP.getResponseMessage().getSerialNo().toString());
-                        SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this,SharedPrefsUtils.PREF_KEY.USER_DETAILS,validateOTP.getResponseMessage().getLineDept().toString());
-                        SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this,SharedPrefsUtils.PREF_KEY.USER_NAME,validateOTP.getResponseMessage().getLineDept().toString());
-
-                        Intent i = new Intent(VerifyMobileNumberActivitiy.this, DashboardActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                        finish();
+                        String responsemsg=validateOTP.getResponseMessage().getResponse();
+                        if(responsemsg==null) {
+                            SharedPrefsUtils.putBoolean(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.LOGIN_SESSION, true);
+                            SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN, validateOTP.getResponseMessage().getSerialNo().toString());
+                            SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS, validateOTP.getResponseMessage().getLineDept().toString());
+                            SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.USER_NAME, validateOTP.getResponseMessage().getName().toString());
+                            Intent i = new Intent(VerifyMobileNumberActivitiy.this, DashboardActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            finish();
+                        }else {
+                            mLoadCustomToast(getParent(), validateOTP.getResponseMessage().getResponse());
+                        }
                     }
                     else {
                         mLoadCustomToast(getParent(), "InValid OTP ");

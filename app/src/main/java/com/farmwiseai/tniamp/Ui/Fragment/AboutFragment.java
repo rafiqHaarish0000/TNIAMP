@@ -1,5 +1,6 @@
 package com.farmwiseai.tniamp.Ui.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -27,8 +28,10 @@ CommonFunction commonFunction;
         aboutBinding.popBackImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                commonFunction.navigation(getContext(), DashboardActivity.class);
-            }
+                Intent intent = new Intent(getContext(), DashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);            }
         });
         return aboutBinding.getRoot();
     }

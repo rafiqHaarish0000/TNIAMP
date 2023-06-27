@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,12 +23,14 @@ import com.farmwiseai.tniamp.Ui.Fragment.TNAUFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.WRDFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
 import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
+import com.farmwiseai.tniamp.mainView.VerifyMobileNumberActivitiy;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityDashboardBinding binding;
     CommonFunction mCommonFunction;
+    String username,lineDeptId;
     int countData;
 
     @Override
@@ -35,8 +38,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(DashboardActivity.this, R.layout.activity_dashboard);
         setContentView(binding.getRoot());
-
+         username=  SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.USER_NAME);
+        lineDeptId=  SharedPrefsUtils.getString(DashboardActivity.this,SharedPrefsUtils.PREF_KEY.USER_DETAILS);
+lineDeptId="1";
+        binding.txtUserName.setText("Welcome "+username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
+        showDept(lineDeptId);
         binding.naviTnau.setOnClickListener(this);
         binding.naviAgri.setOnClickListener(this);
         binding.naviHorti.setOnClickListener(this);
@@ -48,6 +55,123 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.aboutImage.setOnClickListener(this);
         binding.logoutIcon.setOnClickListener(this);
 
+
+    }
+
+    private void showDept(String lineDeptId) {
+        if(lineDeptId=="1")
+        {
+            binding.naviTnau.setEnabled(true);
+            binding.naviAgri.setEnabled(false);
+            binding.naviHorti.setEnabled(false);
+            binding.naviAed.setEnabled(false);
+            binding.naviAnimal.setEnabled(false);
+            binding.naviWrd.setEnabled(false);
+            binding.naviMarketing.setEnabled(false);
+            binding.navFish.setEnabled(false);
+
+
+        } else if(lineDeptId=="2")
+        {
+            binding.naviTnau.setEnabled(false);
+            binding.naviAgri.setEnabled(true);
+            binding.naviHorti.setEnabled(false);
+            binding.naviAed.setEnabled(false);
+            binding.naviAnimal.setEnabled(false);
+            binding.naviWrd.setEnabled(false);
+            binding.naviMarketing.setEnabled(false);
+            binding.navFish.setEnabled(false);
+
+
+        }else if(lineDeptId=="3")
+        {
+            binding.naviTnau.setEnabled(false);
+            binding.naviAgri.setEnabled(false);
+            binding.naviHorti.setEnabled(true);
+            binding.naviAed.setEnabled(false);
+            binding.naviAnimal.setEnabled(false);
+            binding.naviWrd.setEnabled(false);
+            binding.naviMarketing.setEnabled(false);
+            binding.navFish.setEnabled(false);
+
+
+        }
+        else if(lineDeptId=="4")
+        {
+            binding.naviTnau.setEnabled(false);
+            binding.naviAgri.setEnabled(false);
+            binding.naviHorti.setEnabled(false);
+            binding.naviAed.setEnabled(true);
+            binding.naviAnimal.setEnabled(false);
+            binding.naviWrd.setEnabled(false);
+            binding.naviMarketing.setEnabled(false);
+            binding.navFish.setEnabled(false);
+
+
+        }
+        else if(lineDeptId=="5")
+        {
+            binding.naviTnau.setEnabled(false);
+            binding.naviAgri.setEnabled(false);
+            binding.naviHorti.setEnabled(false);
+            binding.naviAed.setEnabled(false);
+            binding.naviAnimal.setEnabled(true);
+            binding.naviWrd.setEnabled(false);
+            binding.naviMarketing.setEnabled(false);
+            binding.navFish.setEnabled(false);
+
+
+        }
+        else if(lineDeptId=="6")
+        {
+            binding.naviTnau.setEnabled(false);
+            binding.naviAgri.setEnabled(false);
+            binding.naviHorti.setEnabled(false);
+            binding.naviAed.setEnabled(false);
+            binding.naviAnimal.setEnabled(false);
+            binding.naviWrd.setEnabled(true);
+            binding.naviMarketing.setEnabled(false);
+            binding.navFish.setEnabled(false);
+
+
+        }
+        else if(lineDeptId=="7")
+        {
+            binding.naviTnau.setEnabled(false);
+            binding.naviAgri.setEnabled(false);
+            binding.naviHorti.setEnabled(false);
+            binding.naviAed.setEnabled(false);
+            binding.naviAnimal.setEnabled(false);
+            binding.naviWrd.setEnabled(false);
+            binding.naviMarketing.setEnabled(true);
+            binding.navFish.setEnabled(false);
+
+
+        }else if(lineDeptId=="8")
+        {
+            binding.naviTnau.setEnabled(false);
+            binding.naviAgri.setEnabled(false);
+            binding.naviHorti.setEnabled(false);
+            binding.naviAed.setEnabled(false);
+            binding.naviAnimal.setEnabled(false);
+            binding.naviWrd.setEnabled(false);
+            binding.naviMarketing.setEnabled(false);
+            binding.navFish.setEnabled(true);
+
+        }else
+        {
+            binding.naviTnau.setEnabled(true);
+            binding.naviAgri.setEnabled(true);
+            binding.naviHorti.setEnabled(true);
+            binding.naviAed.setEnabled(true);
+            binding.naviAnimal.setEnabled(true);
+            binding.naviWrd.setEnabled(true);
+            binding.naviMarketing.setEnabled(true);
+            binding.navFish.setEnabled(true);
+            binding.aboutImage.setEnabled(true);
+            binding.logoutIcon.setEnabled(true);
+
+        }
 
     }
 
@@ -142,9 +266,5 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
-    }
+
 }

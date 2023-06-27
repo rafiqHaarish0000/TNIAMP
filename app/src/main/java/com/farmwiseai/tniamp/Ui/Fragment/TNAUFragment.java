@@ -228,9 +228,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         } else if (area.length() == 0) {
             tnauBinding.areaTxt.setError("Please enter area");
             return false;
-        } else if (near_tank.length() == 0) {
-            tnauBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
+
+//        } else if (near_tank.length() == 0) {
+//            tnauBinding.tankTxt.setError("Please enter near by tank name");
+//            return false;
+
         } else if (remarks.length() == 0) {
             tnauBinding.remarksTxt.setError("Remarks not found");
             return false;

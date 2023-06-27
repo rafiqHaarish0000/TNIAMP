@@ -72,10 +72,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AgricultureFragment extends Fragment implements View.OnClickListener,BackPressListener {
+public class AgricultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentAgricultureBinding agricultureBinding;
     private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, survey_no, area, near_tank, remarks, dateField;
+    private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, nop, mon, moo,
+            fon, foo, intName;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -90,7 +91,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
     private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
+            sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
     private AgriCallApi agriCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -98,30 +100,21 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private int valueofPic;
     private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList;
-    private LinearLayout vis_lyt;
+    private List<String> phraseList, genderList, categoryList, interventionList;
+    private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
     private double lati, longi;
-    public String intervention1; //component
+    public String intervention1 = ""; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
     public String farmer_name;
     public String gender;
-    public String variety;
-    public String yield;
-    public String created_by; //serial number
-    public String created_date;
     public String lat;
     public String lon;
-    public String image1;
     public String tank_name;
-    public String txn_date;
-    public String photo_lat;
-    public String photo_lon;
-    public String txn_id;
     public String date;
     public String status;
     public BackPressListener backPressListener;
-    private String villageValue, category, firstImageBase64, secondImageBase64;
+    private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
 
 
     @Override
@@ -151,6 +144,17 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         near_tank = agricultureBinding.tankTxt.getText().toString();
         remarks = agricultureBinding.remarksTxt.getText().toString();
         dateField = agricultureBinding.dateTxt.getText().toString();
+        nag = agricultureBinding.nameOfGroup.getText().toString();
+        dag = agricultureBinding.doaTxt.getText().toString();
+        darf = agricultureBinding.dorfTxt.getText().toString();
+        seedra = agricultureBinding.areaRaisedTxt.getText().toString();
+        qop = agricultureBinding.quantityTxt.getText().toString();
+        nag = agricultureBinding.noParti.getText().toString();
+        mon = agricultureBinding.maleNo.getText().toString();
+        moo = agricultureBinding.maleOthers.getText().toString();
+        fon = agricultureBinding.femaleNo.getText().toString();
+        foo = agricultureBinding.femaleOthers.getText().toString();
+        intName = agricultureBinding.inerventionNameTxt.getText().toString();
 
 
         componentSpinner = agricultureBinding.componentTxt;
@@ -158,10 +162,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         stagesSpinner = agricultureBinding.stagesTxt;
         datePicker = agricultureBinding.dateTxt;
         vis_lyt = agricultureBinding.visibilityLyt;
+        trainingLyt = agricultureBinding.iecLayt;
+        seed_lyt = agricultureBinding.seedGroupLyt;
+        iNames_lyt = agricultureBinding.inerventionLyt;
+
         backPressListener = this;
 
-        agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
-        agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt);
+        agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
+        agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, seed_lyt, iNames_lyt);
 
         getLocation();
         setAllDropDownData();
@@ -173,7 +181,9 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     }
 
     private boolean fieldValidation(String farmerName, String category,
-                                    String survey_no, String area, String near_tank, String remarks, String date) {
+                                    String survey_no, String area, String near_tank, String remarks, String date,
+                                    String nag, String dag, String dafr, String seedra, String qop, String nop,
+                                    String moN, String mOO, String foN, String fOO, String intName) {
 
         farmerName = agricultureBinding.farmerTxt.getText().toString();
         survey_no = agricultureBinding.surveyTxt.getText().toString();
@@ -181,42 +191,136 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         near_tank = agricultureBinding.tankTxt.getText().toString();
         remarks = agricultureBinding.remarksTxt.getText().toString();
         date = agricultureBinding.dateTxt.getText().toString();
+        nag = agricultureBinding.nameOfGroup.getText().toString();
+        dag = agricultureBinding.doaTxt.getText().toString();
+        dafr = agricultureBinding.dorfTxt.getText().toString();
+        seedra = agricultureBinding.areaRaisedTxt.getText().toString();
+        qop = agricultureBinding.quantityTxt.getText().toString();
+        nop = agricultureBinding.noParti.getText().toString();
+        moN = agricultureBinding.maleNo.getText().toString();
+        mOO = agricultureBinding.maleOthers.getText().toString();
+        foN = agricultureBinding.femaleNo.getText().toString();
+        fOO = agricultureBinding.femaleOthers.getText().toString();
+        intName = agricultureBinding.inerventionNameTxt.getText().toString();
 
 
-        if (agricultureBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && stagesSpinner.getSelectedItem() == null
-                && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+        if (componentSpinner.getVisibility() == View.VISIBLE) {
+            if (intervention1.isEmpty() && intervention1.equalsIgnoreCase("")) {
+                mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+            }
+            return false;
         }
+//        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && sub_componentSpinner.getSelectedItem()==null) {
+//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+//            return false;
+//        }
+//        } else if (genderSpinner.getVisibility() == View.VISIBLE && genderSpinner.getSelectedItem() == null) {
+//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+//            return false;
+//        } else if (categorySpinner.getVisibility() == View.VISIBLE && categorySpinner.getSelectedItem() == null) {
+//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+//            return false;
+//        } else if (interventionSpinner.getVisibility() == View.VISIBLE && interventionSpinner.getSelectedItem() == null) {
+//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+//            return false;
+//        }
+
+
+//        if (agricultureBinding.phase1.getSelectedItem() == null
+//                && subBasinSpinner.getSelectedItem() == null
+//                && districtSpinner.getSelectedItem() == null
+//                && blockSpinner.getSelectedItem() == null
+//                && componentSpinner.getSelectedItem() == null
+//                && sub_componentSpinner.getSelectedItem() == null
+//                && stagesSpinner.getSelectedItem() == null
+//                && genderSpinner.getSelectedItem() == null
+//                && categorySpinner.getSelectedItem() == null
+//                && villageSpinner.getSelectedItem() == null
+//                && interventionSpinner.getSelectedItem() == null) {
+//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+//            return false;
+//        }
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
-        if (farmerName.length() == 0) {
+        if (farmerName.length() == 0 && agricultureBinding.farmerTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.farmerTxt.setError("Please enter farmer name");
             return false;
-        } else if (survey_no.length() == 0) {
+        } else if (survey_no.length() == 0 && agricultureBinding.surveyTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.surveyTxt.setError("Please enter survey no");
             return false;
-        } else if (area.length() == 0) {
+        } else if (area.length() == 0 && agricultureBinding.areaTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.areaTxt.setError("Please enter area");
             return false;
-        } else if (near_tank.length() == 0) {
+        } else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        } else if (remarks.length() == 0) {
+        } else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.remarksTxt.setError("Remarks not found");
             return false;
-        } else if (date.length() == 0) {
+        } else if (date.length() == 0 && agricultureBinding.dateTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.dateTxt.setError("Please enter the date");
+            return false;
+        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
+            if (nop.length() == 0) {
+                agricultureBinding.noParti.setError("field empty");
+                return false;
+            } else if (moN.length() == 0) {
+                {
+                    agricultureBinding.maleOthers.setError("field empty");
+                    return false;
+                }
+            } else if (mOO.length() == 0) {
+                {
+                    agricultureBinding.maleOthers.setError("field empty");
+                    return false;
+                }
+            } else if (foN.length() == 0) {
+                {
+                    agricultureBinding.maleOthers.setError("field empty");
+                    return false;
+                }
+            } else if (fOO.length() == 0) {
+                {
+                    agricultureBinding.maleOthers.setError("field empty");
+                    return false;
+                }
+            }
+            return false;
+
+        } else if (seed_lyt.getVisibility() == View.VISIBLE) {
+            if (nag.length() == 0) {
+                agricultureBinding.nameOfGroup.setError("field empty");
+                return false;
+            } else if (dag.length() == 0) {
+                {
+                    agricultureBinding.doaTxt.setError("field empty");
+                    return false;
+                }
+            } else if (dafr.length() == 0) {
+                {
+                    agricultureBinding.dorfTxt.setError("field empty");
+                    return false;
+                }
+            } else if (seedra.length() == 0) {
+                {
+                    agricultureBinding.areaRaisedTxt.setError("field empty");
+                    return false;
+                }
+            } else if (qop.length() == 0) {
+                {
+                    agricultureBinding.quantityTxt.setError("field empty");
+                    return false;
+                }
+            }
+            return false;
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            if (intName.length() == 0) {
+                agricultureBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
             return false;
         }
 
@@ -247,7 +351,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                    category, survey_no, area, near_tank, remarks, dateField);
+                        category, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop,
+                        nop, mon, moo, fon, foo, intName);
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -262,8 +367,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else{
-                    showToast(getActivity(),"Validation error");
+                } else {
+                    showToast(getActivity(), "Validation error");
                 }
                 break;
 
@@ -297,6 +402,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         }
     }
+
     private void finalSubmission() {
 
         if (mCommonFunction.isNetworkAvailable() == true) {
@@ -331,6 +437,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         stagesSpinner = agricultureBinding.stagesTxt;
         villageSpinner = agricultureBinding.villageTxt;
         datePicker = agricultureBinding.dateTxt;
+        interventionSpinner = agricultureBinding.inverntionTyper;
 
 
         //phase data
@@ -579,6 +686,22 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
             }
         });
+        interventionList = new ArrayList<>();
+        interventionList.add("Demo");
+        interventionList.add("Sustainability");
+        interventionList.add("Adoption");
+        agricultureBinding.inverntionTyper.setItem(interventionList);
+        interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                interventionTypeVal = interventionSpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 
@@ -752,7 +875,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         dateField = dateFormat.format(myCalendar.getTime());
-        Log.i(TAG, "dataValue"+dateField);
+        Log.i(TAG, "dataValue" + dateField);
 
         Agri_Request request = new Agri_Request();
         request.setVillage(villageValue);
@@ -789,16 +912,16 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 if (response.body() != null) {
                     try {
                         String txt_id = String.valueOf(response.body().getTnauLandDeptId());
-                        Log.i(TAG, "txt_value: "+txt_id.toString());
-                        mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                        Log.i(TAG, "txt_value: " + txt_id.toString());
+                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                         uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
 //                        agriResponses.addAll(response.body().getResponse());
                     } catch (Exception e) {
-                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    Toast.makeText(getContext(),"data error.!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -826,16 +949,16 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 if (response.body() != null) {
                     try {
                         String successMessage = response.body().getResponse();
-                        Log.i(TAG, "onSuccessMsg"+successMessage);
-                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
-                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
-                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
                 }
             }
 

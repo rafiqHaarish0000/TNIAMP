@@ -218,7 +218,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         SharedPrefsUtils.clearAllPrefs(DashboardActivity.this);
-                        mCommonFunction.navigation(DashboardActivity.this, MobileValidationActivity.class);
+                        Intent intent = new Intent(DashboardActivity.this, MobileValidationActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         dialogInterface.dismiss();
                     }
                 });

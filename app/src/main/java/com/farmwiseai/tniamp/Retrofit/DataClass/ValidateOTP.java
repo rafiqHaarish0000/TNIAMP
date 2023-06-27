@@ -11,7 +11,7 @@ public class ValidateOTP {
     @SerializedName("response")
     @Expose
     private String response;
-    @SerializedName("response message")
+    @SerializedName("responseMessage")
     @Expose
     private ResponseMessage responseMessage;
 
@@ -42,6 +42,10 @@ public class ValidateOTP {
 
     public class ResponseMessage {
 
+
+        @SerializedName("Response")
+        @Expose
+        private String response;
         @SerializedName("ID")
         @Expose
         private Integer id;
@@ -185,5 +189,13 @@ public class ValidateOTP {
         public void setUserStatus(Integer userStatus) {
             this.userStatus = userStatus;
         }
+        public String getResponse() {
+            return response;
+        }
+
+        public void setResponse(String response) {
+            this.response = response;
+        }
+
     }
 }

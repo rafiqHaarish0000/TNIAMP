@@ -1,30 +1,102 @@
 package com.farmwiseai.tniamp.Retrofit.DataClass.RequestData;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Agri_Request {
-    public String village;
-    public String intervention1;
-    public String intervention2;
-    public String intervention3;
-    public String farmer_name;
-    public String gender;
-    public String category;
-    public String survey_no;
-    public String area;
-    public String variety;
-    public String image1;
-    public String yield;
-    public String remarks;
-    public String created_by;
-    public String created_date;
-    public String lat;
-    public String lon;
-    public String tank_name;
-    public String txn_date;
-    public String photo_lat;
-    public String photo_lon;
-    public String txn_id;
-    public String date;
-    public String status;
+    @SerializedName("village")
+    @Expose
+    private String village;
+    @SerializedName("intervention1")
+    @Expose
+    private String intervention1;
+    @SerializedName("intervention2")
+    @Expose
+    private String intervention2;
+    @SerializedName("intervention3")
+    @Expose
+    private String intervention3;
+    @SerializedName("farmer_name")
+    @Expose
+    private String farmerName;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+    @SerializedName("category")
+    @Expose
+    private String category;
+    @SerializedName("survey_no")
+    @Expose
+    private String surveyNo;
+    @SerializedName("area")
+    @Expose
+    private String area;
+    @SerializedName("variety")
+    @Expose
+    private String variety;
+    @SerializedName("image1")
+    @Expose
+    private String image1;
+    @SerializedName("yield")
+    @Expose
+    private String yield;
+    @SerializedName("remarks")
+    @Expose
+    private String remarks;
+    @SerializedName("created_by")
+    @Expose
+    private String createdBy;
+    @SerializedName("created_date")
+    @Expose
+    private String createdDate;
+    @SerializedName("lat")
+    @Expose
+    private String lat;
+    @SerializedName("lon")
+    @Expose
+    private String lon;
+    @SerializedName("tank_name")
+    @Expose
+    private String tankName;
+    @SerializedName("txn_date")
+    @Expose
+    private String txnDate;
+    @SerializedName("photo_lat")
+    @Expose
+    private String photoLat;
+    @SerializedName("photo_lon")
+    @Expose
+    private String photoLon;
+    @SerializedName("txn_id")
+    @Expose
+    private String txnId;
+    @SerializedName("date")
+    @Expose
+    private String date;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("intervention_type")
+    @Expose
+    private String interventionType;
+    @SerializedName("other_intervention")
+    @Expose
+    private String otherIntervention;
+    @SerializedName("group_name")
+    @Expose
+    private String groupName;
+    @SerializedName("date_count_open")
+    @Expose
+    private String dateCountOpen;
+    @SerializedName("date_revolving_fund_release")
+    @Expose
+    private String dateRevolvingFundRelease;
+    @SerializedName("seed_area decimal")
+    @Expose
+    private String seedAreaDecimal;
+    @SerializedName("quantity_procured")
+    @Expose
+    private String quantityProcured;
 
     public String getVillage() {
         return village;
@@ -58,12 +130,12 @@ public class Agri_Request {
         this.intervention3 = intervention3;
     }
 
-    public String getFarmer_name() {
-        return farmer_name;
+    public String getFarmerName() {
+        return farmerName;
     }
 
-    public void setFarmer_name(String farmer_name) {
-        this.farmer_name = farmer_name;
+    public void setFarmerName(String farmerName) {
+        this.farmerName = farmerName;
     }
 
     public String getGender() {
@@ -82,12 +154,12 @@ public class Agri_Request {
         this.category = category;
     }
 
-    public String getSurvey_no() {
-        return survey_no;
+    public String getSurveyNo() {
+        return surveyNo;
     }
 
-    public void setSurvey_no(String survey_no) {
-        this.survey_no = survey_no;
+    public void setSurveyNo(String surveyNo) {
+        this.surveyNo = surveyNo;
     }
 
     public String getArea() {
@@ -130,20 +202,20 @@ public class Agri_Request {
         this.remarks = remarks;
     }
 
-    public String getCreated_by() {
-        return created_by;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getCreated_date() {
-        return created_date;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(String created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getLat() {
@@ -162,44 +234,44 @@ public class Agri_Request {
         this.lon = lon;
     }
 
-    public String getTank_name() {
-        return tank_name;
+    public String getTankName() {
+        return tankName;
     }
 
-    public void setTank_name(String tank_name) {
-        this.tank_name = tank_name;
+    public void setTankName(String tankName) {
+        this.tankName = tankName;
     }
 
-    public String getTxn_date() {
-        return txn_date;
+    public String getTxnDate() {
+        return txnDate;
     }
 
-    public void setTxn_date(String txn_date) {
-        this.txn_date = txn_date;
+    public void setTxnDate(String txnDate) {
+        this.txnDate = txnDate;
     }
 
-    public String getPhoto_lat() {
-        return photo_lat;
+    public String getPhotoLat() {
+        return photoLat;
     }
 
-    public void setPhoto_lat(String photo_lat) {
-        this.photo_lat = photo_lat;
+    public void setPhotoLat(String photoLat) {
+        this.photoLat = photoLat;
     }
 
-    public String getPhoto_lon() {
-        return photo_lon;
+    public String getPhotoLon() {
+        return photoLon;
     }
 
-    public void setPhoto_lon(String photo_lon) {
-        this.photo_lon = photo_lon;
+    public void setPhotoLon(String photoLon) {
+        this.photoLon = photoLon;
     }
 
-    public String getTxn_id() {
-        return txn_id;
+    public String getTxnId() {
+        return txnId;
     }
 
-    public void setTxn_id(String txn_id) {
-        this.txn_id = txn_id;
+    public void setTxnId(String txnId) {
+        this.txnId = txnId;
     }
 
     public String getDate() {
@@ -217,4 +289,61 @@ public class Agri_Request {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getInterventionType() {
+        return interventionType;
+    }
+
+    public void setInterventionType(String interventionType) {
+        this.interventionType = interventionType;
+    }
+
+    public String getOtherIntervention() {
+        return otherIntervention;
+    }
+
+    public void setOtherIntervention(String otherIntervention) {
+        this.otherIntervention = otherIntervention;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getDateCountOpen() {
+        return dateCountOpen;
+    }
+
+    public void setDateCountOpen(String dateCountOpen) {
+        this.dateCountOpen = dateCountOpen;
+    }
+
+    public String getDateRevolvingFundRelease() {
+        return dateRevolvingFundRelease;
+    }
+
+    public void setDateRevolvingFundRelease(String dateRevolvingFundRelease) {
+        this.dateRevolvingFundRelease = dateRevolvingFundRelease;
+    }
+
+    public String getSeedAreaDecimal() {
+        return seedAreaDecimal;
+    }
+
+    public void setSeedAreaDecimal(String seedAreaDecimal) {
+        this.seedAreaDecimal = seedAreaDecimal;
+    }
+
+    public String getQuantityProcured() {
+        return quantityProcured;
+    }
+
+    public void setQuantityProcured(String quantityProcured) {
+        this.quantityProcured = quantityProcured;
+    }
+
 }

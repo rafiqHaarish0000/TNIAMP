@@ -82,14 +82,14 @@ public class AgriCallApi {
                                     try {
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                         String names = getAllComponentData.get(i).getName();
-                                        if (names.equalsIgnoreCase("Others")) {
+                                        if (names.equalsIgnoreCase("Other")) {
                                             subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);
                                             hideLyt.setVisibility(View.VISIBLE);
                                             seedLyt.setVisibility(View.GONE);
                                             trainingLyt.setVisibility(View.GONE);
                                             interventioNameLyt.setVisibility(View.VISIBLE);
-                                           // subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
 
                                         }
                                         else if (names.equals("Model Village")) {
@@ -108,7 +108,7 @@ public class AgriCallApi {
                                             interventioNameLyt.setVisibility(View.GONE);
                                             trainingLyt.setVisibility(View.GONE);
                                         }
-                                        else if (names.equals("Seed Village Group")) {
+                                        else if (names.equals("Seed_Village_Group")) {
                                             subComponenetDropDown(String.valueOf(positionValue),subComponentSpinner,stageSpinner,datePicker);
                                             subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);

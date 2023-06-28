@@ -82,21 +82,41 @@ public class AgriCallApi {
                                     try {
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
                                         String names = getAllComponentData.get(i).getName();
-                                        if (names.equals("Model Village")) {
-                                            subComponentSpinner.setVisibility(View.VISIBLE);
+                                        if (names.equalsIgnoreCase("Others")) {
+                                            subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);
                                             hideLyt.setVisibility(View.VISIBLE);
                                             seedLyt.setVisibility(View.GONE);
                                             trainingLyt.setVisibility(View.GONE);
                                             interventioNameLyt.setVisibility(View.VISIBLE);
+                                           // subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+
+                                        }
+                                        else if (names.equals("Model Village")) {
+                                            subComponentSpinner.setVisibility(View.VISIBLE);
+                                            stageSpinner.setVisibility(View.GONE);
+                                            hideLyt.setVisibility(View.VISIBLE);
+                                            seedLyt.setVisibility(View.GONE);
+                                            trainingLyt.setVisibility(View.GONE);
+                                            interventioNameLyt.setVisibility(View.GONE);
+                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+
                                         } else if (names.equals("Farmers Field School")) {
                                             subComponenetDropDown(String.valueOf(positionValue),subComponentSpinner,stageSpinner,datePicker);
                                             subComponentSpinner.setVisibility(View.VISIBLE);
                                             stageSpinner.setVisibility(View.GONE);
+                                            interventioNameLyt.setVisibility(View.GONE);
+                                            trainingLyt.setVisibility(View.GONE);
+                                        }
+                                        else if (names.equals("Seed Village Group")) {
+                                            subComponenetDropDown(String.valueOf(positionValue),subComponentSpinner,stageSpinner,datePicker);
+                                            subComponentSpinner.setVisibility(View.GONE);
+                                            stageSpinner.setVisibility(View.GONE);
                                             seedLyt.setVisibility(View.VISIBLE);
                                             interventioNameLyt.setVisibility(View.GONE);
                                             trainingLyt.setVisibility(View.GONE);
-                                        } else if (names.equals("IPM")) {
+                                        }
+                                        else if (names.equals("IPM")) {
                                             subComponentSpinner.setVisibility(View.GONE);
                                             stageSpinner.setVisibility(View.GONE);
                                             hideLyt.setVisibility(View.GONE);
@@ -185,7 +205,6 @@ public class AgriCallApi {
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                                     String names = sub_componentList.get(i).getName();
-
                                     thirdSpinner.setVisibility(View.VISIBLE);
 
                                     try {
@@ -206,6 +225,9 @@ public class AgriCallApi {
                                         } else if (names.contains("First") || names.contains("Field")) {
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else if (names.contains("Harvest")) {
+                                            editText.setVisibility(View.GONE);
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }else if (names.contains("CCWM")||names.contains("SWIKC")||names.contains("Water walk")||names.contains("PRA Excercise")||names.contains("SWIC Centre")||names.contains("CCMG")||names.contains("Farmers Discussion")||names.contains("Village Vision")||names.contains("Entry Point Activity")||names.contains("Awareness Meeting")) {
                                             editText.setVisibility(View.GONE);
                                             thirdSpinner.setVisibility(View.GONE);
                                         } else {

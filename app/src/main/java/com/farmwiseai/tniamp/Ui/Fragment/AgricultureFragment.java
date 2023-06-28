@@ -77,8 +77,7 @@ import retrofit2.Response;
 public class AgricultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentAgricultureBinding agricultureBinding;
     private Context context;
-    private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, nop, mon, moo,
-            fon, foo, intName;
+    private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -133,11 +132,19 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agricultureBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_agriculture, container, false);
 
 
+        nag = null;
+        dag = null;
+        darf = null;
+        seedra = null;
+        qop = null;
+
         agricultureBinding.popBackImage.setOnClickListener(this);
         agricultureBinding.submissionBtn.setOnClickListener(this);
         agricultureBinding.image1.setOnClickListener(this);
         agricultureBinding.image2.setOnClickListener(this);
         agricultureBinding.dateTxt.setOnClickListener(this);
+        agricultureBinding.doaTxt.setOnClickListener(this);
+        agricultureBinding.dorfTxt.setOnClickListener(this);
 
 
         farmerName = agricultureBinding.farmerTxt.getText().toString();
@@ -151,11 +158,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         darf = agricultureBinding.dorfTxt.getText().toString();
         seedra = agricultureBinding.areaRaisedTxt.getText().toString();
         qop = agricultureBinding.quantityTxt.getText().toString();
-        nag = agricultureBinding.noParti.getText().toString();
-        mon = agricultureBinding.maleNo.getText().toString();
-        moo = agricultureBinding.maleOthers.getText().toString();
-        fon = agricultureBinding.femaleNo.getText().toString();
-        foo = agricultureBinding.femaleOthers.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
 
 
@@ -164,7 +166,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         stagesSpinner = agricultureBinding.stagesTxt;
         datePicker = agricultureBinding.dateTxt;
         vis_lyt = agricultureBinding.visibilityLyt;
-        trainingLyt = agricultureBinding.iecLayt;
         seed_lyt = agricultureBinding.seedGroupLyt;
         iNames_lyt = agricultureBinding.inerventionLyt;
 
@@ -173,11 +174,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, seed_lyt, iNames_lyt);
 
-        LatLongPojo latLongPojo= new LatLongPojo();
-        latLongPojo= PermissionUtils.getLocation(getContext());
-        lat=latLongPojo.getLat();
-        lon=latLongPojo.getLon();
-        Log.i("data",lat+","+lon);
+        LatLongPojo latLongPojo = new LatLongPojo();
+        latLongPojo = PermissionUtils.getLocation(getContext());
+        lat = latLongPojo.getLat();
+        lon = latLongPojo.getLon();
+        Log.i("data", lat + "," + lon);
         setAllDropDownData();
         return agricultureBinding.getRoot();
 
@@ -186,8 +187,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
     private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date,
-                                    String nag, String dag, String dafr, String seedra, String qop, String nop,
-                                    String moN, String mOO, String foN, String fOO, String intName) {
+                                    String nag, String dag, String dafr, String seedra, String qop,
+                                    String intName) {
 
         farmerName = agricultureBinding.farmerTxt.getText().toString();
         survey_no = agricultureBinding.surveyTxt.getText().toString();
@@ -200,11 +201,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         dafr = agricultureBinding.dorfTxt.getText().toString();
         seedra = agricultureBinding.areaRaisedTxt.getText().toString();
         qop = agricultureBinding.quantityTxt.getText().toString();
-        nop = agricultureBinding.noParti.getText().toString();
-        moN = agricultureBinding.maleNo.getText().toString();
-        mOO = agricultureBinding.maleOthers.getText().toString();
-        foN = agricultureBinding.femaleNo.getText().toString();
-        fOO = agricultureBinding.femaleOthers.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
 
 
@@ -241,27 +237,80 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
-        if (farmerName.length() == 0 && agricultureBinding.farmerTxt.getVisibility() == View.VISIBLE) {
-            agricultureBinding.farmerTxt.setError("Please enter farmer name");
-            return false;
-        } else if (survey_no.length() == 0 && agricultureBinding.surveyTxt.getVisibility() == View.VISIBLE) {
+        if (survey_no.length() == 0) {
             agricultureBinding.surveyTxt.setError("Please enter survey no");
             return false;
-        } else if (area.length() == 0 && agricultureBinding.areaTxt.getVisibility() == View.VISIBLE) {
+        } else if (area.length() == 0) {
             agricultureBinding.areaTxt.setError("Please enter area");
             return false;
-        } else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
+        } else if (near_tank.length() == 0) {
             agricultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        } else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
+        } else if (remarks.length() == 0) {
             agricultureBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        } else if (date.length() == 0 && agricultureBinding.dateTxt.getVisibility() == View.VISIBLE) {
-            agricultureBinding.dateTxt.setError("Please enter the date");
             return false;
         } else if (agricultureBinding.mobileNumbertxt.toString().isEmpty()) {
             agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
             return false;
+        }
+
+        if (vis_lyt.getVisibility() == View.VISIBLE) {
+            if (farmerName.length() == 0) {
+                agricultureBinding.farmerTxt.setError("Please enter farmer name");
+                return false;
+            } else if (date.length() == 0) {
+                agricultureBinding.dateTxt.setError("Please enter the date");
+                return false;
+            }
+            return true;
+        }
+
+        if (seed_lyt.getVisibility() == View.VISIBLE) {
+            if (nag.length() == 0) {
+                agricultureBinding.nameOfGroup.setError("field empty");
+                return false;
+            } else if (dag.length() == 0) {
+                {
+                    agricultureBinding.doaTxt.setError("field empty");
+                    return false;
+                }
+            } else if (dafr.length() == 0) {
+                {
+                    agricultureBinding.dorfTxt.setError("field empty");
+                    return false;
+                }
+            } else if (seedra.length() == 0) {
+                {
+                    agricultureBinding.areaRaisedTxt.setError("field empty");
+                    return false;
+                }
+            } else if (qop.length() == 0) {
+                {
+                    agricultureBinding.quantityTxt.setError("field empty");
+                    return false;
+                }
+            }
+            mLoadCustomToast(getActivity(), "Data field empty,Please check.!");
+            return false;
+        }
+
+        if (vis_lyt.getVisibility() == View.VISIBLE) {
+            if (intName.length() == 0) {
+                agricultureBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+            return true;
+        }
+
+        return true;
+
+//         if (iNames_lyt.getVisibility() == View.VISIBLE) {
+//            if (intName.length() == 0) {
+//                agricultureBinding.inerventionNameTxt.setError("field empty");
+//            }
+//
+//        }
+
 //        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
 //            if (nop.length() == 0) {
 //                agricultureBinding.noParti.setError("field empty");
@@ -289,39 +338,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 //            }
 //            return false;
 //
-//        } else if (seed_lyt.getVisibility() == View.VISIBLE) {
-//            if (nag.length() == 0) {
-//                agricultureBinding.nameOfGroup.setError("field empty");
-//                return false;
-//            } else if (dag.length() == 0) {
-//                {
-//                    agricultureBinding.doaTxt.setError("field empty");
-//                    return false;
-//                }
-//            } else if (dafr.length() == 0) {
-//                {
-//                    agricultureBinding.dorfTxt.setError("field empty");
-//                    return false;
-//                }
-//            } else if (seedra.length() == 0) {
-//                {
-//                    agricultureBinding.areaRaisedTxt.setError("field empty");
-//                    return false;
-//                }
-//            } else if (qop.length() == 0) {
-//                {
-//                    agricultureBinding.quantityTxt.setError("field empty");
-//                    return false;
-//                }
-//            }
-//            return false;
-//        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
-//            if (intName.length() == 0) {
-//                agricultureBinding.inerventionNameTxt.setError("field empty");
-//                return false;
-//            }
-        }
-        return true;
+
     }
 
 
@@ -329,15 +346,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
 
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                updateLabel();
-            }
-        };
+
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
@@ -347,8 +356,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop,
-                        nop, mon, moo, fon, foo, intName);
+                        category, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName);
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -388,12 +396,18 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                   PermissionUtils.requestPermission(getActivity());
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
             case R.id.date_txt:
-                new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                dateFieldValidation(agricultureBinding.dateTxt);
+                break;
+            case R.id.doa_txt:
+                dateFieldValidation(agricultureBinding.doaTxt);
+                break;
+            case R.id.dorf_txt:
+                dateFieldValidation(agricultureBinding.dorfTxt);
                 break;
 
         }
@@ -690,7 +704,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                interventionTypeVal = interventionSpinner.getSelectedItem().toString();
+                interventionTypeVal = String.valueOf(interventionSpinner.getSelectedItemPosition());
+                Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
             @Override
@@ -702,12 +717,21 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     }
 
 
-    private void updateLabel() {
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        agricultureBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
-    }
+    private void dateFieldValidation(EditText datePicker) {
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                datePicker.setText(dateFormat.format(myCalendar.getTime()));
+            }
+        };
+        new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
+    }
 
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
@@ -821,26 +845,33 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
         request.setIntervention3(intervention3);
-        request.setFarmer_name(farmerName);
+        request.setFarmerName(farmerName);
         request.setGender(gender);
         request.setCategory(category);
-        request.setSurvey_no(survey_no);
+        request.setSurveyNo(survey_no);
         request.setArea(area);
         request.setVariety(" ");
         request.setImage1(firstImageBase64.trim());
         request.setYield(" ");
         request.setRemarks(remarks);
-        request.setCreated_by("f55356773fce5b11");
-        request.setCreated_date(dateField);
+        request.setCategory("f55356773fce5b11");
+        request.setCreatedDate(dateField);
         request.setLat(lat);
         request.setLon(lon);
-        request.setTank_name(near_tank);
-        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat(lat);
-        request.setPhoto_lon(lon);
-        request.setTxn_id("20200212120446");
+        request.setTankName(near_tank);
+        request.setTxnDate("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhotoLat(lat);
+        request.setPhotoLon(lon);
+        request.setTxnId("20200212120446");
         request.setDate("");
         request.setStatus("0");
+        request.setInterventionType(interventionTypeVal);
+        request.setOtherIntervention(intName);
+        request.setGroupName(nag);
+        request.setDateCountOpen(dag);
+        request.setDateRevolvingFundRelease(darf);
+        request.setSeedAreaDecimal(seedra);
+        request.setQuantityProcured(qop);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AgriResponse> userDataCall = null;
@@ -850,7 +881,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             public void onResponse(Call<AgriResponse> call, Response<AgriResponse> response) {
                 if (response.body() != null) {
                     try {
-                        String txt_id = String.valueOf(response.body().getTnauLandDeptId());
+                        String txt_id = String.valueOf(response.body().getResponseMessage().getAgriLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
                         uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();

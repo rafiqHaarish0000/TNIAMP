@@ -2,25 +2,14 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 
 import static android.content.ContentValues.TAG;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -34,15 +23,18 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
-import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
-import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
@@ -52,15 +44,17 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentHorticultureBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
-import com.farmwiseai.tniamp.utils.CustomToast;
-import com.farmwiseai.tniamp.utils.LookUpDataClass;
-import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
-import com.farmwiseai.tniamp.utils.componentCallApis.HortiCallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.LatLongPojo;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
+import com.farmwiseai.tniamp.utils.componentCallApis.HortiCallApi;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -73,8 +67,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HorticultureFragment extends Fragment implements View.OnClickListener,BackPressListener {
-FragmentHorticultureBinding horticultureBinding;
+public class HorticultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
+    FragmentHorticultureBinding horticultureBinding;
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
@@ -94,7 +88,7 @@ FragmentHorticultureBinding horticultureBinding;
     private Spinner subBasinSpinner, districtSpinner,
             blockSpinner, componentSpinner,
             sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner, villageSpinner;
+            genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
     private HortiCallApi hortiCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -102,7 +96,7 @@ FragmentHorticultureBinding horticultureBinding;
     private int valueofPic;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
-    private LinearLayout vis_lyt,trainingLyt;
+    private LinearLayout vis_lyt, trainingLyt, iNames_lyt;
     private GPSTracker gpsTracker;
     private double lati, longi;
     public String intervention1; //component
@@ -123,14 +117,16 @@ FragmentHorticultureBinding horticultureBinding;
     public String photo_lon;
     public String txn_id;
     public String date;
-    public String status;
+    public String status, intName;
     public BackPressListener backPressListener;
     private String villageValue, firstImageBase64, secondImageBase64;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -159,10 +155,15 @@ FragmentHorticultureBinding horticultureBinding;
         datePicker = horticultureBinding.dateTxt;
         vis_lyt = horticultureBinding.visibilityLyt;
         trainingLyt = horticultureBinding.iecLayt;
-
-        hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter,myString,backPressListener);
-        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt,trainingLyt);
-        getLocation();
+        intName = horticultureBinding.inerventionNameTxt.getText().toString();
+        iNames_lyt = horticultureBinding.inerventionLyt;
+        hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
+        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt);
+        LatLongPojo latLongPojo = new LatLongPojo();
+        latLongPojo = PermissionUtils.getLocation(getContext());
+        lat = latLongPojo.getLat();
+        lon = latLongPojo.getLon();
+        Log.i("data", lat + "," + lon);
 
         setAllDropDownData();
 
@@ -172,7 +173,7 @@ FragmentHorticultureBinding horticultureBinding;
     }
 
     private boolean fieldValidation(String farmerName, String category,
-                                    String survey_no, String area, String near_tank, String remarks, String date) {
+                                    String survey_no, String area, String near_tank, String remarks, String date, String intName) {
 
         farmerName = horticultureBinding.farmerTxt.getText().toString();
         survey_no = horticultureBinding.surveyTxt.getText().toString();
@@ -180,6 +181,7 @@ FragmentHorticultureBinding horticultureBinding;
         near_tank = horticultureBinding.tankTxt.getText().toString();
         remarks = horticultureBinding.remarksTxt.getText().toString();
         date = horticultureBinding.dateTxt.getText().toString();
+        intName = horticultureBinding.inerventionNameTxt.getText().toString();
 
 
         if (horticultureBinding.phase1.getSelectedItem() == null
@@ -191,16 +193,36 @@ FragmentHorticultureBinding horticultureBinding;
                 && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
                 && categorySpinner.getSelectedItem() == null
-                &&villageSpinner.getSelectedItem() == null)
-                {
-            mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
+                && villageSpinner.getSelectedItem() == null
+                && interventionSpinner.getSelectedItem() == null) {
+            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
         }
 
-        if(valueofPic != 0 && valueofPic != 1 && valueofPic != 2){
-            mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
+        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
-        if (farmerName.length() == 0) {
+
+        if (farmerName.length() == 0 && horticultureBinding.farmerTxt.getVisibility() == View.VISIBLE) {
+            horticultureBinding.farmerTxt.setError("Please enter farmer name");
+            return false;
+        } else if (survey_no.length() == 0 && horticultureBinding.surveyTxt.getVisibility() == View.VISIBLE) {
+            horticultureBinding.surveyTxt.setError("Please enter survey no");
+            return false;
+        } else if (area.length() == 0 && horticultureBinding.areaTxt.getVisibility() == View.VISIBLE) {
+            horticultureBinding.areaTxt.setError("Please enter area");
+            return false;
+        } /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
+            horticultureBinding.tankTxt.setError("Please enter near by tank name");
+            return false;
+        }*/ else if (remarks.length() == 0 && horticultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
+            horticultureBinding.remarksTxt.setError("Remarks not found");
+            return false;
+        } else if (date.length() == 0 && horticultureBinding.dateTxt.getVisibility() == View.VISIBLE) {
+            horticultureBinding.dateTxt.setError("Please enter the date");
+            return false;
+        }
+    /*    if (farmerName.length() == 0) {
             horticultureBinding.farmerTxt.setError("Please enter farmer name");
             return false;
         } else if (survey_no.length() == 0) {
@@ -209,13 +231,14 @@ FragmentHorticultureBinding horticultureBinding;
         } else if (area.length() == 0) {
             horticultureBinding.areaTxt.setError("Please enter area");
             return false;
-        } else if (near_tank.length() == 0) {
+        } *//*else if (near_tank.length() == 0) {
             horticultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        } else if (remarks.length() == 0) {
+        }*//*
+        else if (remarks.length() == 0) {
             horticultureBinding.remarksTxt.setError("Remarks not found");
             return false;
-        } /*else if (date.length() == 0) {
+        } *//*else if (date.length() == 0) {
             horticultureBinding.dateTxt.setError("Please enter the date");
             return false;
         }*/
@@ -248,7 +271,7 @@ FragmentHorticultureBinding horticultureBinding;
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField);
+                        category, survey_no, area, near_tank, remarks, dateField, intName);
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -258,7 +281,7 @@ FragmentHorticultureBinding horticultureBinding;
                 break;
 
             case R.id.image_1:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
                     takePicture = true;
@@ -266,12 +289,12 @@ FragmentHorticultureBinding horticultureBinding;
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
             case R.id.image_2:
-                if (checkPermission()) {
+                if (PermissionUtils.checkPermission(context)) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
                     takePicture = false;
@@ -279,7 +302,7 @@ FragmentHorticultureBinding horticultureBinding;
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
@@ -525,7 +548,7 @@ FragmentHorticultureBinding horticultureBinding;
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    gender = genderSpinner.getSelectedItem().toString();
+                gender = genderSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -562,51 +585,6 @@ FragmentHorticultureBinding horticultureBinding;
         horticultureBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            return false;
-        }
-        return true;
-    }
-
-    private void requestPermission() {
-
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.CAMERA},
-                PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
-
-                    // main logic
-                } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            showMessageOKCancel("You need to allow access permissions",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermission();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                }
-                break;
-        }
-    }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())
@@ -658,7 +636,7 @@ FragmentHorticultureBinding horticultureBinding;
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
-getAllData();
+            getAllData();
 
         } else {
             String offlineText = "Data saved successfully in offline data";
@@ -676,20 +654,7 @@ getAllData();
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
 
-    private void getLocation() {
-        gpsTracker = new GPSTracker(getContext());
-        if (gpsTracker.canGetLocation()) {
-            lati = gpsTracker.getLatitude();
-            longi = gpsTracker.getLongitude();
-            lat = String.valueOf(lati);
-            lon = String.valueOf(longi);
 
-//            Log.i(TAG, "Latitude" + latitude + " " + "Longitude" + longitude);
-
-        } else {
-            gpsTracker.showSettingsAlert();
-        }
-    }
 
 
     private void getAllData() {
@@ -704,31 +669,31 @@ getAllData();
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         dateField = dateFormat.format(myCalendar.getTime());
-        Log.i(TAG, "dataValue"+dateField);
+        Log.i(TAG, "dataValue" + dateField);
 
         HortiRequest request = new HortiRequest();
         request.setVillage(villageValue);
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
         request.setIntervention3(intervention3);
-        request.setFarmer_name(farmerName);
+        request.setFarmerName(farmerName);
         request.setGender(gender);
         request.setCategory(category);
-        request.setSurvey_no(survey_no);
+        request.setSurveyNo(survey_no);
         request.setArea(area);
         request.setVariety(" ");
         request.setImage1(firstImageBase64);
         request.setYield(" ");
         request.setRemarks(remarks);
-        request.setCreated_by("f55356773fce5b11");
-        request.setCreated_date("2020-02-12 11:02:02");
+        request.setCreatedBy("f55356773fce5b11");
+        request.setCreatedDate("2020-02-12 11:02:02");
         request.setLat(lat);
         request.setLon(lon);
-        request.setTank_name(near_tank);
-        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat(lat);
-        request.setPhoto_lon(lon);
-        request.setTxn_id("20200212120446");
+        request.setTankName(near_tank);
+        request.setTxnDate("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhotoLat(lat);
+        request.setPhotoLon(lon);
+        request.setTxnId("20200212120446");
         request.setStatus("0");
 
 
@@ -739,13 +704,13 @@ getAllData();
             @Override
             public void onResponse(Call<HortiResponse> call, Response<HortiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String txt_id = String.valueOf(response.body().getTnauLandDeptId());
-                    Log.i(TAG, "txt_value: "+txt_id.toString());
-                    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                    String txt_id = String.valueOf(response.body().getResponseMessage().getHortiLandDeptId());
+                    Log.i(TAG, "txt_value: " + txt_id.toString());
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                     uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
 //                        agriResponses.addAll(response.body().getResponse());
-                }else{
+                } else {
 
                 }
             }
@@ -774,16 +739,16 @@ getAllData();
                 if (response.body() != null) {
                     try {
                         String successMessage = response.body().getResponse();
-                        Log.i(TAG, "onSuccessMsg"+successMessage);
-                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
-                        Toast.makeText(getContext(),"Data Saved Successfully",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Data Saved Successfully", Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
-                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
                 }
             }
 

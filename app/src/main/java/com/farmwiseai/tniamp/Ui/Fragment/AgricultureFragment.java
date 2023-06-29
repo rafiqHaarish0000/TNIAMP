@@ -250,10 +250,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         } else if (area.length() == 0 && agricultureBinding.areaTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.areaTxt.setError("Please enter area");
             return false;
-        } else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
+        } /*else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        } else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
+        }*/ else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.remarksTxt.setError("Remarks not found");
             return false;
         } else if (date.length() == 0 && agricultureBinding.dateTxt.getVisibility() == View.VISIBLE) {
@@ -821,24 +821,24 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
         request.setIntervention3(intervention3);
-        request.setFarmer_name(farmerName);
+        request.setFarmerName(farmerName);
         request.setGender(gender);
         request.setCategory(category);
-        request.setSurvey_no(survey_no);
+        request.setSurveyNo(survey_no);
         request.setArea(area);
         request.setVariety(" ");
         request.setImage1(firstImageBase64.trim());
         request.setYield(" ");
         request.setRemarks(remarks);
-        request.setCreated_by("f55356773fce5b11");
-        request.setCreated_date(dateField);
+        request.setCreatedBy("f55356773fce5b11");
+        request.setCreatedDate(dateField);
         request.setLat(lat);
         request.setLon(lon);
-        request.setTank_name(near_tank);
-        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
-        request.setPhoto_lat(lat);
-        request.setPhoto_lon(lon);
-        request.setTxn_id("20200212120446");
+        request.setTankName(near_tank);
+        request.setTxnDate("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhotoLat(lat);
+        request.setPhotoLon(lon);
+        request.setTxnId("20200212120446");
         request.setDate("");
         request.setStatus("0");
 
@@ -850,7 +850,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             public void onResponse(Call<AgriResponse> call, Response<AgriResponse> response) {
                 if (response.body() != null) {
                     try {
-                        String txt_id = String.valueOf(response.body().getTnauLandDeptId());
+                        String txt_id = String.valueOf(response.body().getResponseMessage().getAgriLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
                         uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();

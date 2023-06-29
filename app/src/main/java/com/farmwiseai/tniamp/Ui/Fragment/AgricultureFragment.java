@@ -167,7 +167,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         datePicker = agricultureBinding.dateTxt;
         vis_lyt = agricultureBinding.visibilityLyt;
         seed_lyt = agricultureBinding.seedGroupLyt;
-        iNames_lyt = agricultureBinding.inerventionLyt;
+            iNames_lyt = agricultureBinding.othersLayout;
 
         backPressListener = this;
 

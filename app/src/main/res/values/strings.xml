@@ -136,5 +136,10 @@
     <string name="date_of_revolving_fund_release">Date of revolving fund release</string>
     <string name="seed_from_area_raised_ha">Seed from area raised (HA)</string>
     <string name="quantity_to_proceed_kg">Quantity to proceed (KG)</string>
+    <string name="_50_100_characters">50-100 Characters</string>
+    <string name="intervention_name">Intervention name</string>
+    <string name="length_m">Length (m)</string>
+    <string name="ls_point_number">LS Point Number</string>
+    <string name="slice_number">Slice Number</string>
 
 </resources>

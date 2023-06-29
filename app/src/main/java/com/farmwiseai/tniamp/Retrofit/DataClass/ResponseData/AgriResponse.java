@@ -39,19 +39,21 @@ public class AgriResponse {
     }
 
 
-public class ResponseMessage {
+    public class ResponseMessage {
 
-    @SerializedName("agri_land_dept_id")
-    @Expose
-    private Integer agriLandDeptId;
+        @SerializedName("agri_land_dept_id")
+        @Expose
+        private Integer agriLandDeptId;
 
-    public Integer getAgriLandDeptId() {
-        return agriLandDeptId;
+        public Integer getAgriLandDeptId() {
+            return agriLandDeptId;
+        }
+
+        public void setAgriLandDeptId(Integer agriLandDeptId) {
+            this.agriLandDeptId = agriLandDeptId;
+        }
+
     }
 
-    public void setAgriLandDeptId(Integer agriLandDeptId) {
-        this.agriLandDeptId = agriLandDeptId;
-    }
 
-}
 }

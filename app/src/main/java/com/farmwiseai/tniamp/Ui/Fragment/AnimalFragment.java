@@ -39,6 +39,12 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
@@ -90,6 +96,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
             sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
+    private AnimalRequest request;
     private AnimalCallApi animalCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
@@ -97,11 +104,11 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
-    private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
+    private LinearLayout vis_lyt, trainingLyt, pregLyt, iNames_lyt;
     private double lati, longi;
-    public String intervention1 = ""; //component
-    public String intervention2; //sub_componenet
-    public String intervention3; // stages
+    public String intervention1 = null; //component
+    public String intervention2 = null; //sub_componenet
+    public String intervention3 = null;  // stages
     public String farmer_name;
     public String gender;
     public String lat;
@@ -141,13 +148,15 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         sub_componentSpinner = animalBinding.subComponentsTxt;
         stagesSpinner = animalBinding.stagesTxt;
         datePicker = animalBinding.dateTxt;
-        trainingLyt = animalBinding.trainingLayout;
         vis_lyt = animalBinding.visibilityLyt;
+        trainingLyt = animalBinding.trainingLayout;
         EditText calves = animalBinding.noOfCalves;
+        pregLyt = animalBinding.pregLyt;
+        iNames_lyt = animalBinding.othersLayout;
 
 
         animalCallApi = new AnimalCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-            animalCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,calves ,vis_lyt, trainingLyt);
+        animalCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, calves, vis_lyt, trainingLyt, pregLyt, iNames_lyt);
         setAllDropDownData();
 
 
@@ -426,7 +435,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                interventionTypeVal = interventionSpinner.getSelectedItem().toString();
+                interventionTypeVal = String.valueOf(interventionSpinner.getSelectedItemPosition());
             }
 
             @Override
@@ -622,7 +631,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
             // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
-//            getAllData();
+            getAllData();
             //mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
         } else {
@@ -645,9 +654,131 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 .show();
     }
 
+    private void getAllData() {
+        request = new AnimalRequest();
+        farmerName = animalBinding.farmerTxt.getText().toString();
+        survey_no = animalBinding.surveyTxt.getText().toString();
+        area = animalBinding.areaTxt.getText().toString();
+        area = animalBinding.areaTxt.getText().toString();
+        remarks = animalBinding.remarksTxt.getText().toString();
+        dateField = animalBinding.dateTxt.getText().toString();
+        near_tank = animalBinding.tankTxt.getText().toString();
+
+        String myFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dateField = dateFormat.format(myCalendar.getTime());
+        Log.i(TAG, "dataValue" + dateField);
+
+
+        request.setVillage(villageValue);
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
+        request.setIntervention3(intervention3);
+        request.setFarmer_name(farmerName);
+        request.setGender(gender);
+        request.setCategory(category);
+        request.setSurvey_no(survey_no);
+        request.setArea(area);
+        request.setVariety(" ");
+        request.setImage1(firstImageBase64.trim());
+        request.setYield(" ");
+        request.setRemarks(remarks);
+        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_date(dateField);
+        request.setLat(lat);
+        request.setLon(lon);
+        request.setTank_name(near_tank);
+        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
+        request.setTxn_id("20200212120446");
+        request.setDate("");
+        request.setStatus("0");
+        request.setNo_of_cows(animalBinding.noOfCalves.getText().toString());
+        request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
+        request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
+        request.setMobile(animalBinding.mobileNumber.getText().toString());
+        request.setOthers_female_no(foo);
+        request.setOthers_male_no(mon);
+        request.setSc_st_female_no(fon);
+        request.setSc_st_male_no(moo);
+        request.setVenue(animalBinding.venue.getText().toString());
+        request.setIntervention_type(interventionTypeVal);
+        request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
+
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<AnimalResponse> userDataCall = null;
+        userDataCall = call.getAnimalResponse(request);
+        userDataCall.enqueue(new Callback<AnimalResponse>() {
+            @Override
+            public void onResponse(Call<AnimalResponse> call, Response<AnimalResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String txt_id = String.valueOf(response.body().getResponseMessage().getAgriLandDeptId());
+                        Log.i(TAG, "txt_value: " + txt_id.toString());
+                        uploadSecondImage(txt_id);
+//                        List<AgriResponse> agriResponses = new ArrayList<>();
+//                        agriResponses.addAll(response.body().getResponse());
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AnimalResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void uploadSecondImage(String txt_id) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        request.setDepartment_id("5");
+        request.setImg2(secondImageBase64.trim());
+        request.setID(txt_id);
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
+//                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
+                        Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     @Override
     public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
-
+        intervention1 = lookUpDataClass.getIntervention1();
+        intervention2 = lookUpDataClass.getIntervention2();
+        intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 
 

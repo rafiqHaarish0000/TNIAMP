@@ -17,6 +17,7 @@ import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
@@ -54,6 +55,57 @@ public class TNAU_CallApi {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
+        componentList = FetchDeptLookup.readDataFromFile(context, "lookup.json");
+        adapters = new ComponentAdapter(context, componentList);
+        positionValue = "0";
+        adapters.getFilter().filter(positionValue);
+        componentSpinner.setAdapter(adapters);
+        componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
+                    positionValue = String.valueOf(componentList.get(i).getID());
+                    Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
+
+                    subComponentSpinner.setVisibility(View.VISIBLE);
+                    String names = componentList.get(i).getName();
+                    //subComponentSpinner.setVisibility(View.VISIBLE);
+                    if (names.equals("Model Village")) {
+                        hideLyt.setVisibility(View.GONE);
+                        subComponentSpinner.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        stageSpinner.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
+                    } else if (names.contains("GHG emission")) {
+                        subComponentSpinner.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        stageSpinner.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
+                    } else {
+                        subComponentSpinner.setVisibility(View.VISIBLE);
+                        stageSpinner.setVisibility(View.VISIBLE);
+                        hideLyt.setVisibility(View.VISIBLE);
+                        Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
+                        //save data for offline data..
+//                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
+
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
+
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         if (commonFunction.isNetworkAvailable() == true) {
             try {
@@ -72,83 +124,6 @@ public class TNAU_CallApi {
                             componentSpinner.setAdapter(adapters);
 
                             //position handling
-
-                            componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    try {
-                                        lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
-                                        positionValue = String.valueOf(componentList.get(i).getID());
-                                        Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
-
-                                        subComponentSpinner.setVisibility(View.VISIBLE);
-                                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                                        Call<List<ComponentData>> userDataCall = null;
-                                        userDataCall = call.getTNAUComponents();
-                                        userDataCall.enqueue(new Callback<List<ComponentData>>() {
-                                            @Override
-                                            public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
-                                                if (response.isSuccessful() && response.body() != null) {
-                                                    String names = componentList.get(i).getName();
-                                                    //subComponentSpinner.setVisibility(View.VISIBLE);
-                                                    if (names.equals("Model Village")) {
-                                                        hideLyt.setVisibility(View.GONE);
-                                                        subComponentSpinner.setVisibility(View.GONE);
-                                                        backPressListener.onSelectedInputs(lookUpDataClass);
-                                                        stageSpinner.setVisibility(View.GONE);
-                                                        datePicker.setVisibility(View.GONE);
-                                                    }else if(names.contains("GHG emission")){
-                                                        subComponentSpinner.setVisibility(View.GONE);
-                                                        backPressListener.onSelectedInputs(lookUpDataClass);
-                                                        stageSpinner.setVisibility(View.GONE);
-                                                        datePicker.setVisibility(View.GONE);
-                                                    }
-                                                    else {
-                                                        subComponentSpinner.setVisibility(View.VISIBLE);
-                                                        stageSpinner.setVisibility(View.VISIBLE);
-                                                        hideLyt.setVisibility(View.VISIBLE);
-                                                        Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
-                                                        //save data for offline data..
-//                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
-
-                                                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
-                                                    }
-                                                } else {
-
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<List<ComponentData>> call, Throwable t) {
-
-                                            }
-                                        });
-
-//                                        subComponentSpinner.setVisibility(View.VISIBLE);
-//                                        if (getAllComponentData.get(i).getName().equals("Model Village")) {
-//                                            hideLyt.setVisibility(View.GONE);
-//                                        }
-//                                        else {
-//                                            subComponentSpinner.setVisibility(View.VISIBLE);
-//                                            stageSpinner.setVisibility(View.VISIBLE);
-//                                            hideLyt.setVisibility(View.VISIBLE);
-//                                            Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
-//                                            //save data for offline data..
-////                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
-//
-//                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
-//                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                }
-                            });
 
 
                         } else {
@@ -178,160 +153,105 @@ public class TNAU_CallApi {
     public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
 
         commonFunction = new CommonFunction(activity);
-        if (commonFunction.isNetworkAvailable() == true) {
-            try {
-                Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getTNAUComponents();
-                userDataCall.enqueue(new Callback<List<ComponentData>>() {
-                    @Override
-                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            sub_componentList = response.body();
-                            adapters = new ComponentAdapter(context, sub_componentList);
-                            adapters.getFilter().filter(String.valueOf(posVal));
-                            secondSpinner.setAdapter(adapters);
-
-                            secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    String names = sub_componentList.get(i).getName();
-                                    thirdSpinner.setVisibility(View.VISIBLE);
-                                    try {
-                                        if (names.contains("Sowing")) {
-                                            editText.setVisibility(View.VISIBLE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                            thirdSpinner.setVisibility(View.GONE);
-                                        } else if (names.contains("Planting")) {
-                                            editText.setVisibility(View.VISIBLE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                            thirdSpinner.setVisibility(View.GONE);
-                                        } else if (names.contains("Installation")) {
-                                            editText.setVisibility(View.GONE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                            thirdSpinner.setVisibility(View.GONE);
-                                        } else if (names.contains("Milky")) {
-                                            editText.setVisibility(View.GONE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                            thirdSpinner.setVisibility(View.GONE);
-                                        } else if (names.contains("First") || names.contains("Field")) {
-                                            thirdSpinner.setVisibility(View.GONE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                        } else if (names.contains("Harvest")) {
-                                            editText.setVisibility(View.GONE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                            thirdSpinner.setVisibility(View.GONE);
-                                        }else if (names.contains("Group formation")) {
-                                            editText.setVisibility(View.GONE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                            thirdSpinner.setVisibility(View.GONE);
-                                        } else if (names.contains("Meetings")) {
-                                            editText.setVisibility(View.GONE);
-                                            backPressListener.onSelectedInputs(lookUpDataClass);
-                                            thirdSpinner.setVisibility(View.GONE);
-                                        } else {
-                                            editText.setVisibility(View.GONE);
-                                            thirdSpinner.setVisibility(View.VISIBLE);
-                                        }
-                                        lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
-                                        positionValue2 = String.valueOf(sub_componentList.get(i).getID());
-                                        Log.i(TAG, "posvalue2: " + positionValue2);
-                                        stagesDropDown(positionValue2, thirdSpinner, editText);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                }
-                            });
-
-
-                        } else {
-                            Toast.makeText(context, "Data not found", Toast.LENGTH_SHORT).show();
-                        }
+        sub_componentList = FetchDeptLookup.readDataFromFile(context, "lookup.json");
+        adapters = new ComponentAdapter(context, sub_componentList);
+        adapters.getFilter().filter(String.valueOf(posVal));
+        secondSpinner.setAdapter(adapters);
+        secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String names = sub_componentList.get(i).getName();
+                thirdSpinner.setVisibility(View.VISIBLE);
+                try {
+                    if (names.contains("Sowing")) {
+                        editText.setVisibility(View.VISIBLE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("Planting")) {
+                        editText.setVisibility(View.VISIBLE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("Installation")) {
+                        editText.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("Milky")) {
+                        editText.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("First") || names.contains("Field")) {
+                        thirdSpinner.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                    } else if (names.contains("Harvest")) {
+                        editText.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("Group formation")) {
+                        editText.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("Meetings")) {
+                        editText.setVisibility(View.GONE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else {
+                        editText.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.VISIBLE);
                     }
+                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    positionValue2 = String.valueOf(sub_componentList.get(i).getID());
+                    Log.i(TAG, "posvalue2: " + positionValue2);
+                    stagesDropDown(positionValue2, thirdSpinner, editText);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                    @Override
-                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
-                        Log.d(TAG, "onFailure: " + t);
-                    }
-                });
-
-            } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-                Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        } else {
-            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
-        }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
     }
 
     public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
         commonFunction = new CommonFunction(activity);
-        if (commonFunction.isNetworkAvailable() == true) {
-            try {
-                Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getTNAUComponents();
-                userDataCall.enqueue(new Callback<List<ComponentData>>() {
-                    @Override
-                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-
-                            stagesList = response.body();
-                            adapters = new ComponentAdapter(context, stagesList);
-                            adapters.getFilter().filter(stagePosVal);
-                            thirdSpinner.setAdapter(adapters);
-
-
-                            thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    try {
-                                        Log.i(TAG, "names: " + stagesList.get(i).getName());
-                                        String names = stagesList.get(i).getName();
-                                        if (names.contains("Sowing")) {
-                                            editText.setVisibility(View.VISIBLE);
-                                        } else if (names.contains("Planting")) {
-                                            editText.setVisibility(View.VISIBLE);
-                                        } else {
-                                            editText.setVisibility(View.GONE);
-                                        }
-                                        lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
-                                        backPressListener.onSelectedInputs(lookUpDataClass);
-                                    } catch (Exception e) {
-
-                                    }
-
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(context, "Data not found", Toast.LENGTH_SHORT).show();
-                        }
+        stagesList = FetchDeptLookup.readDataFromFile(context, "lookup.json");
+        adapters = new ComponentAdapter(context, stagesList);
+        adapters.getFilter().filter(stagePosVal);
+        thirdSpinner.setAdapter(adapters);
+        thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    Log.i(TAG, "names: " + stagesList.get(i).getName());
+                    String names = stagesList.get(i).getName();
+                    if (names.contains("Sowing")) {
+                        editText.setVisibility(View.VISIBLE);
+                    } else if (names.contains("Planting")) {
+                        editText.setVisibility(View.VISIBLE);
+                    } else {
+                        editText.setVisibility(View.GONE);
                     }
+                    lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                    backPressListener.onSelectedInputs(lookUpDataClass);
+                } catch (Exception e) {
 
-                    @Override
-                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
-                        Log.d(TAG, "onFailure: " + t);
-                    }
-                });
+                }
 
-            } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-                Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
             }
-        } else {
-            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
-        }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
     }
 

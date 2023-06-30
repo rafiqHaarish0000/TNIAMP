@@ -55,7 +55,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".Ui.SplashScreenActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
@@ -86,7 +86,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Ui.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
 

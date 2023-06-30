@@ -6,7 +6,11 @@ import android.net.ParseException;
 import android.util.Log;
 
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
+import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -103,5 +107,137 @@ public class FetchDeptLookup {
         return componentDataList;
     }
 
+    public static List<Sub_Basin_Data> readSubBasin(Context context, String FILE_NAME) {
+        List<Sub_Basin_Data> subBasinDataList = null;
+
+        try {
+            subBasinDataList= new ArrayList<>();
+            Gson gson = new Gson();
+          /*  File file = new File(context.getFilesDir(), FILE_NAME);
+            FileReader fileReader = new FileReader(file);*/
+            BufferedReader bufferedReader  = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open(FILE_NAME)));
+            JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement str = jsonArray.get(i);
+                Sub_Basin_Data obj = gson.fromJson(str, Sub_Basin_Data.class);
+                subBasinDataList.add(obj);
+                System.out.println(obj);
+                System.out.println(str);
+                System.out.println("-------");
+            }
+         /*   StringBuilder stringBuilder = new StringBuilder();
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                stringBuilder.append(line).append("\n");
+                line = bufferedReader.readLine();
+            }
+            bufferedReader.close();
+// This responce will have Json Format String
+            jsonResponse = stringBuilder.toString();*/
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return subBasinDataList;
+    }
+    public static List<BlockData> readBlockData(Context context, String FILE_NAME) {
+        List<BlockData> blockDataList = null;
+
+        try {
+            blockDataList= new ArrayList<>();
+            Gson gson = new Gson();
+          /*  File file = new File(context.getFilesDir(), FILE_NAME);
+            FileReader fileReader = new FileReader(file);*/
+            BufferedReader bufferedReader  = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open(FILE_NAME)));
+            JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement str = jsonArray.get(i);
+                BlockData obj = gson.fromJson(str, BlockData.class);
+                blockDataList.add(obj);
+                System.out.println(obj);
+                System.out.println(str);
+                System.out.println("-------");
+            }
+         /*   StringBuilder stringBuilder = new StringBuilder();
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                stringBuilder.append(line).append("\n");
+                line = bufferedReader.readLine();
+            }
+            bufferedReader.close();
+// This responce will have Json Format String
+            jsonResponse = stringBuilder.toString();*/
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return blockDataList;
+    }
+    public static List<DistrictData> readDistrictData(Context context, String FILE_NAME) {
+        List<DistrictData> districtDataList = null;
+
+        try {
+            districtDataList= new ArrayList<>();
+            Gson gson = new Gson();
+          /*  File file = new File(context.getFilesDir(), FILE_NAME);
+            FileReader fileReader = new FileReader(file);*/
+            BufferedReader bufferedReader  = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open(FILE_NAME)));
+            JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement str = jsonArray.get(i);
+                DistrictData obj = gson.fromJson(str, DistrictData.class);
+                districtDataList.add(obj);
+                System.out.println(obj);
+                System.out.println(str);
+                System.out.println("-------");
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return districtDataList;
+    }
+    public static List<VillageData> readVillageData(Context context, String FILE_NAME) {
+        List<VillageData> villageDataList = null;
+
+        try {
+            villageDataList= new ArrayList<>();
+            Gson gson = new Gson();
+          /*  File file = new File(context.getFilesDir(), FILE_NAME);
+            FileReader fileReader = new FileReader(file);*/
+            BufferedReader bufferedReader  = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open(FILE_NAME)));
+            JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement str = jsonArray.get(i);
+                VillageData obj = gson.fromJson(str, VillageData.class);
+                villageDataList.add(obj);
+                System.out.println(obj);
+                System.out.println(str);
+                System.out.println("-------");
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return villageDataList;
+    }
 
 }

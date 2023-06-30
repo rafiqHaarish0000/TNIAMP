@@ -49,9 +49,11 @@ import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -121,7 +123,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String status;
     public BackPressListener backPressListener;
     private String firstImageBase64, secondImageBase64;
-
+    ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
     private double latitude, longitude;
 
@@ -146,7 +148,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         tnauBinding.image2.setOnClickListener(this);
         tnauBinding.dateTxt.setOnClickListener(this);
 
-
+        offlineRequest = SharedPrefsUtils.getArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
         farmerName = tnauBinding.farmerTxt.getText().toString();
         survey_no = tnauBinding.surveyTxt.getText().toString();
         area = tnauBinding.areaTxt.getText().toString();
@@ -225,7 +227,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             if (survey_no.length() == 0) {
                 tnauBinding.surveyTxt.setError("Please enter survey no");
                 return false;
-            }else if (area.length() == 0) {
+            } else if (area.length() == 0) {
                 tnauBinding.areaTxt.setError("Please enter area");
                 return false;
             }
@@ -363,39 +365,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<Sub_Basin_Data>> userDataCall = null;
-                        userDataCall = call.getSub_basinData();
-                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
-                            @Override
-                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    sub_basin_DropDown = response.body();
-                                    Log.i(TAG, "onBody: " + response.code());
-                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
-                                    myString = String.valueOf(tnauBinding.phase1.getSelectedItemPosition());
-                                    subAdapter.getFilter().filter(myString);
-                                    subBasinSpinner.setAdapter(subAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
+                subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                myString = String.valueOf(tnauBinding.phase1.getSelectedItemPosition());
+                subAdapter.getFilter().filter(myString);
+                subBasinSpinner.setAdapter(subAdapter);
 
-                            @Override
-                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -408,45 +383,14 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
+                districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
+                posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                Log.i(TAG, "posValue: " + posValue);
+                districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                Log.i(TAG, "districtPos: " + myString);
+                districtAdapter.getFilter().filter(posValue);
+                districtSpinner.setAdapter(districtAdapter);
 
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<DistrictData>> userDataCall = null;
-                        userDataCall = call.getDistrictData();
-                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
-                            @Override
-                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    districtDropDown = response.body();
-                                    Log.i(TAG, "onBody: " + response.code());
-                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    districtAdapter.getFilter().filter(posValue);
-                                    districtSpinner.setAdapter(districtAdapter);
-
-                                } else {
-                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
-                                mLoadCustomToast(getActivity(), t.toString());
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -459,39 +403,14 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<BlockData>> userDataCall = null;
-                        userDataCall = call.getBlockData();
-                        userDataCall.enqueue(new Callback<List<BlockData>>() {
-                            @Override
-                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    blockDropDown = response.body();
-                                    posValue = String.valueOf(districtDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    blockAdapter.getFilter().filter(posValue);
-                                    blockSpinner.setAdapter(blockAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
+                posValue = String.valueOf(districtDropDown.get(i).getID());
+                Log.i(TAG, "posValue: " + posValue);
+                blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                Log.i(TAG, "districtPos: " + myString);
+                blockAdapter.getFilter().filter(posValue);
+                blockSpinner.setAdapter(blockAdapter);
 
-                            @Override
-                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -503,7 +422,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
+                villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
+                posValue = String.valueOf(blockDropDown.get(i).getID());
+                villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                villageAdaapter.getFilter().filter(posValue);
+                villageSpinner.setAdapter(villageAdaapter);
+               /* if (mCommonFunction.isNetworkAvailable() == true) {
 mCommonFunction.showProgress();
                     try {
                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -535,7 +459,7 @@ mCommonFunction.hideProgress();
                     }
                 } else {
                     mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                }*/
             }
 
             @Override
@@ -549,7 +473,6 @@ mCommonFunction.hideProgress();
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
                 village = String.valueOf(villageDataList.get(i).getID());
-//                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
 
             @Override
@@ -597,21 +520,6 @@ mCommonFunction.hideProgress();
 
 
     }
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = getActivity().getAssets().open("village.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
 
     //calender updates
     private void updateLabel() {
@@ -619,7 +527,6 @@ mCommonFunction.hideProgress();
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         tnauBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
     }
-
 
 
     // alert pop up
@@ -678,22 +585,11 @@ mCommonFunction.hideProgress();
     // final submission button validation for online and save data for offline data through database..
     private void finalSubmission() {
 
-        if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should saved in post api
-            // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
-            getAllData();
-            //mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
-        } else {
-            String offlineText = "Data saved successfully in offline data";
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                }
-            });
-        }
+        //data should saved in post api
+        // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
+        getAllData();
+
     }
 
     public void mLoadCustomToast(Activity mcontaxt, String message) {
@@ -730,7 +626,7 @@ mCommonFunction.hideProgress();
         dateField = dateFormat.format(myCalendar.getTime());
         Log.i(TAG, "dataValue" + dateField);
 
-        TNAU_Request request = new TNAU_Request();
+
         request.setVillage(village);
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
@@ -755,7 +651,39 @@ mCommonFunction.hideProgress();
         request.setTxn_id("20200212120446");
         request.setDate("");
         request.setStatus("0");
+        if (mCommonFunction.isNetworkAvailable() == true) {
+            onlineDataUpload(request);
+        } else {
+            String offlineText="";
+            if (offlineRequest==null)
+            {
+                offlineRequest= new ArrayList<>();
+                offlineRequest.add(request);
+                SharedPrefsUtils.saveArrayList(context, offlineRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
 
+            }else if(offlineRequest.size() < 5) {
+                offlineRequest.add(request);
+                SharedPrefsUtils.saveArrayList(context, offlineRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            }
+                else {
+                offlineText = "You reached the offline Store Data limit please Sync !";
+            }
+                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    }
+                });
+            }
+
+
+    }
+
+    private void onlineDataUpload(TNAU_Request request) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<TNAU_Response> userDataCall = call.getTnauResponse(request);
         userDataCall.enqueue(new Callback<TNAU_Response>() {
@@ -783,7 +711,6 @@ mCommonFunction.hideProgress();
 
             }
         });
-
     }
 
     private void uploadSecondImage(String txt_id) {

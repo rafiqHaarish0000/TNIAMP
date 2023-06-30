@@ -64,7 +64,7 @@ public interface Interface_Api
     Call<TNAU_Response> getTnauResponse(@Body TNAU_Request tnau_request);
 
     @POST("agri")
-    Call<AgriResponse> getAgriResponse(@Body Agri_Request tnau_request);
+    Call<AgriResponse> getAgriResponse(@Body Agri_Request agri_request);
     @POST("aed")
     Call<AEDResponse> getAEDResponse(@Body AEDRequest tnau_request);
     @POST("horti")

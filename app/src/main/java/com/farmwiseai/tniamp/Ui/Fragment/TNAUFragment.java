@@ -60,6 +60,8 @@ import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -502,6 +504,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (mCommonFunction.isNetworkAvailable() == true) {
+mCommonFunction.showProgress();
                     try {
                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                         Call<List<VillageData>> userDataCall = null;
@@ -515,7 +518,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                                     villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                                     villageAdaapter.getFilter().filter(posValue);
                                     villageSpinner.setAdapter(villageAdaapter);
-
+mCommonFunction.hideProgress();
                                 } else {
                                     mLoadCustomToast(getActivity(), getString(R.string.server_error));
                                 }
@@ -594,7 +597,21 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
 
     }
-
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getActivity().getAssets().open("village.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
     //calender updates
     private void updateLabel() {
@@ -603,39 +620,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         tnauBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-    //check Permission for camera intents
 
 
-    /*  @Override
-      public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-          super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-          switch (requestCode) {
-              case PERMISSION_REQUEST_CODE:
-                  if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                      Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
-
-                      // main logic
-                  } else {
-                      Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                          if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                                  != PackageManager.PERMISSION_GRANTED) {
-                              showMessageOKCancel("You need to allow access permissions",
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) {
-                                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                  requestPermission();
-                                              }
-                                          }
-                                      });
-                          }
-                      }
-                  }
-                  break;
-          }
-      }
-  */
     // alert pop up
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())

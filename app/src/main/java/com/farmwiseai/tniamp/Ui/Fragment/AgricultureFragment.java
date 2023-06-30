@@ -42,6 +42,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
@@ -116,6 +117,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     public String status;
     public BackPressListener backPressListener;
     private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
+    Agri_Request request;
 
 
     @Override
@@ -258,10 +260,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             if (farmerName.length() == 0) {
                 agricultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
-            } else if (date.length() == 0) {
+            } /*else if (date.length() == 0) {
                 agricultureBinding.dateTxt.setError("Please enter the date");
                 return false;
-            }
+            }*/
             return true;
         }
 
@@ -291,7 +293,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 }
             }
             mLoadCustomToast(getActivity(), "Data field empty,Please check.!");
-            return false;
+            return true;
 //        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
 //            if (nop.length() == 0) {
 //                agricultureBinding.noParti.setError("field empty");
@@ -319,7 +321,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 //            }
 //            return false;
 //
-
+        }
+        return true;
     }
 
 
@@ -588,6 +591,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (mCommonFunction.isNetworkAvailable() == true) {
                     try {
+                        mCommonFunction.showProgress();
                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                         Call<List<VillageData>> userDataCall = null;
                         userDataCall = call.getVillageData();
@@ -602,7 +606,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                                     Log.i(TAG, "districtPos: " + myString);
                                     villageAdaapter.getFilter().filter(posValue);
                                     villageSpinner.setAdapter(villageAdaapter);
-
+mCommonFunction.hideProgress();
                                 } else {
                                     mLoadCustomToast(getActivity(), getString(R.string.server_error));
                                 }
@@ -712,7 +716,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         };
         new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
-
+    }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())
@@ -806,7 +810,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     }
 
     private void getAllData() {
-
+        request = new Agri_Request();
         farmerName = agricultureBinding.farmerTxt.getText().toString();
         survey_no = agricultureBinding.surveyTxt.getText().toString();
         area = agricultureBinding.areaTxt.getText().toString();
@@ -820,7 +824,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         dateField = dateFormat.format(myCalendar.getTime());
         Log.i(TAG, "dataValue" + dateField);
 
-        Agri_Request request = new Agri_Request();
+
         request.setVillage(villageValue);
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);

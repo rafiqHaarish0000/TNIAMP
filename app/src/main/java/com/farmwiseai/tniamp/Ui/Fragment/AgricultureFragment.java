@@ -45,6 +45,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
@@ -52,9 +53,11 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAgricultureBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -119,6 +122,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
     Agri_Request request;
 
+    ArrayList<Agri_Request> offlineAgriRequest = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -169,7 +173,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         datePicker = agricultureBinding.dateTxt;
         vis_lyt = agricultureBinding.visibilityLyt;
         seed_lyt = agricultureBinding.seedGroupLyt;
-            iNames_lyt = agricultureBinding.othersLayout;
+        iNames_lyt = agricultureBinding.othersLayout;
 
         backPressListener = this;
 
@@ -239,22 +243,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
-        if (survey_no.length() == 0) {
-            agricultureBinding.surveyTxt.setError("Please enter survey no");
-            return false;
-        } else if (area.length() == 0) {
-            agricultureBinding.areaTxt.setError("Please enter area");
-            return false;
-        } /*else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
-            agricultureBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
-        }*/ else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
-            agricultureBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        } else if (agricultureBinding.mobileNumbertxt.toString().isEmpty()) {
-            agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
-            return false;
-        }
 
         if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
@@ -263,7 +251,22 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } /*else if (date.length() == 0) {
                 agricultureBinding.dateTxt.setError("Please enter the date");
                 return false;
-            }*/
+            }*/ else if (survey_no.length() == 0) {
+                agricultureBinding.surveyTxt.setError("Please enter survey no");
+                return false;
+            } else if (area.length() == 0) {
+                agricultureBinding.areaTxt.setError("Please enter area");
+                return false;
+            } /*else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
+            agricultureBinding.tankTxt.setError("Please enter near by tank name");
+            return false;
+        }*/ else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
+                agricultureBinding.remarksTxt.setError("Remarks not found");
+                return false;
+            } else if (agricultureBinding.mobileNumbertxt.toString().isEmpty()) {
+                agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
+            }
             return true;
         }
 
@@ -398,23 +401,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     }
 
     private void finalSubmission() {
-
-        if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should saved in post api
-            // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
-            getAllData();
-            //mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-
-        } else {
-            String offlineText = "Data saved successfully in offline data";
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                }
-            });
-        }
+        getAllData();
     }
 
 
@@ -448,39 +435,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agricultureBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<Sub_Basin_Data>> userDataCall = null;
-                        userDataCall = call.getSub_basinData();
-                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
-                            @Override
-                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    sub_basin_DropDown = response.body();
-                                    Log.i(TAG, "onResponse: " + agricultureBinding.phase1.getSelectedItemPosition());
-                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
-                                    myString = String.valueOf(agricultureBinding.phase1.getSelectedItemPosition());
-                                    subAdapter.getFilter().filter(myString);
-                                    subBasinSpinner.setAdapter(subAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
+                Log.i(TAG, "onResponse: " + agricultureBinding.phase1.getSelectedItemPosition());
+                subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                myString = String.valueOf(agricultureBinding.phase1.getSelectedItemPosition());
+                subAdapter.getFilter().filter(myString);
+                subBasinSpinner.setAdapter(subAdapter);
 
-                            @Override
-                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -493,45 +454,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<DistrictData>> userDataCall = null;
-                        userDataCall = call.getDistrictData();
-                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
-                            @Override
-                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-
-                                    districtDropDown = response.body();
-                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    districtAdapter.getFilter().filter(posValue);
-                                    districtSpinner.setAdapter(districtAdapter);
-
-                                } else {
-                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
-                                mLoadCustomToast(getActivity(), t.toString());
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
+                districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
+                posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                Log.i(TAG, "districtPos: " + myString);
+                districtAdapter.getFilter().filter(posValue);
+                districtSpinner.setAdapter(districtAdapter);
 
 
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -544,39 +474,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<BlockData>> userDataCall = null;
-                        userDataCall = call.getBlockData();
-                        userDataCall.enqueue(new Callback<List<BlockData>>() {
-                            @Override
-                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    blockDropDown = response.body();
-                                    posValue = String.valueOf(districtDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    blockAdapter.getFilter().filter(posValue);
-                                    blockSpinner.setAdapter(blockAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
+                posValue = String.valueOf(blockDropDown.get(i).getID());
+                Log.i(TAG, "posValue: " + posValue);
+                blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                blockAdapter.getFilter().filter(posValue);
+                blockSpinner.setAdapter(blockAdapter);
 
-                            @Override
-                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
 
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -589,41 +494,12 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        mCommonFunction.showProgress();
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<VillageData>> userDataCall = null;
-                        userDataCall = call.getVillageData();
-                        userDataCall.enqueue(new Callback<List<VillageData>>() {
-                            @Override
-                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    villageDataList = response.body();
-                                    posValue = String.valueOf(blockDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    villageAdaapter.getFilter().filter(posValue);
-                                    villageSpinner.setAdapter(villageAdaapter);
-mCommonFunction.hideProgress();
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
+                posValue = String.valueOf(blockDropDown.get(i).getID());
+                villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                villageAdaapter.getFilter().filter(posValue);
+                villageSpinner.setAdapter(villageAdaapter);
 
-                            @Override
-                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -752,16 +628,6 @@ mCommonFunction.hideProgress();
 
     }
 
-    private String encodeImage(Bitmap bm) {
-        Bitmap immagex = bm;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.e("LOOK", imageEncoded);
-        return imageEncoded;
-    }
 
     private String getEncodedString(Bitmap bitmap) {
 
@@ -777,29 +643,6 @@ mCommonFunction.hideProgress();
 
     }
 
-
-//    private void finalSubmission() {
-//
-//        if (mCommonFunction.isNetworkAvailable() == true) {
-//            try {
-//                getAllData();
-//                mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-//                showToast(getActivity(), SharedPrefsUtils.getString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage));
-//            } catch (Exception e) {
-//                showToast(getActivity(), e.getMessage());
-//            }
-//        } else {
-//            showToast(getActivity(), getResources().getString(R.string.network_error));
-////            String offlineText = "Data saved successfully in offline data";
-////            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-////                @Override
-////                public void onClick(DialogInterface dialogInterface, int i) {
-//////                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-////                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-////                }
-////            });
-//        }
-//    }
 
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
@@ -858,7 +701,37 @@ mCommonFunction.hideProgress();
         request.setDateRevolvingFundRelease(darf);
         request.setSeedAreaDecimal(seedra);
         request.setQuantityProcured(qop);
+        if (mCommonFunction.isNetworkAvailable() == true) {
+            onlineDataUpload(request);
+        } else {
+            String offlineText = "";
+            if (offlineAgriRequest == null) {
+                offlineAgriRequest = new ArrayList<>();
+                offlineAgriRequest.add(request);
+                SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
 
+            } else if (offlineAgriRequest.size() < 5) {
+                offlineAgriRequest.add(request);
+                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else {
+                offlineText = "You reached the offline Store Data limit please Sync !";
+            }
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
+
+
+    }
+
+    private void onlineDataUpload(Agri_Request request) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AgriResponse> userDataCall = null;
         userDataCall = call.getAgriResponse(request);
@@ -870,8 +743,7 @@ mCommonFunction.hideProgress();
                         String txt_id = String.valueOf(response.body().getResponseMessage().getAgriLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
                         uploadSecondImage(txt_id);
-//                        List<AgriResponse> agriResponses = new ArrayList<>();
-//                        agriResponses.addAll(response.body().getResponse());
+
                     } catch (Exception e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -885,7 +757,6 @@ mCommonFunction.hideProgress();
 
             }
         });
-
     }
 
     private void uploadSecondImage(String txt_id) {

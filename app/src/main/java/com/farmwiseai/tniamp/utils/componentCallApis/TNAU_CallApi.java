@@ -107,44 +107,6 @@ public class TNAU_CallApi {
             }
         });
 
-        if (commonFunction.isNetworkAvailable() == true) {
-            try {
-                Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                Call<List<ComponentData>> userDataCall = null;
-                userDataCall = call.getTNAUComponents();
-                userDataCall.enqueue(new Callback<List<ComponentData>>() {
-                    @Override
-                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            componentList = response.body();
-
-                            adapters = new ComponentAdapter(context, componentList);
-                            positionValue = "0";
-                            adapters.getFilter().filter(positionValue);
-                            componentSpinner.setAdapter(adapters);
-
-                            //position handling
-
-
-                        } else {
-                            Toast.makeText(context, "Data not found", Toast.LENGTH_SHORT).show();
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
-                        Log.d(TAG, "onFailure: " + t);
-                    }
-                });
-
-            } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-                Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
-            }
-        } else {
-            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
-        }
 
 
     }

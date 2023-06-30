@@ -29,7 +29,7 @@ import retrofit2.Response;
 public class AEDCallApi {
     private Activity activity;
     private Context context;
-    private List<ComponentData> getAllComponentData,sub_componentList;
+    private List<ComponentData> getAllComponentData, sub_componentList,stagesList;
     private ComponentAdapter adapters, componentAdapter;
     private CharSequence positionValue;
     private CharSequence positionValue2;
@@ -53,7 +53,7 @@ public class AEDCallApi {
 
     //first spinner phrase;
 
-    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, LinearLayout hideLyt) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner,Spinner thirdSpinner ,LinearLayout hideLyt, LinearLayout otherLyt) {
 
         commonFunction = new CommonFunction(activity);
 
@@ -82,17 +82,25 @@ public class AEDCallApi {
                                     try {
                                         lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                                         positionValue = String.valueOf(getAllComponentData.get(i).getID());
-                                        if (getAllComponentData.get(i).getName().contains("Model Village")) {
-                                            subComponentSpinner.setVisibility(View.GONE);
+                                        String name = getAllComponentData.get(i).getName();
+                                        if (name.equalsIgnoreCase("Model Village")) {
+                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner,thirdSpinner);
+                                            subComponentSpinner.setVisibility(View.VISIBLE);
                                             hideLyt.setVisibility(View.GONE);
-                                        } else {
+                                            otherLyt.setVisibility(View.GONE);
+                                        } else if (name.equalsIgnoreCase("Others")){
+                                            subComponentSpinner.setVisibility(View.GONE);
+                                            otherLyt.setVisibility(View.VISIBLE);
+                                            hideLyt.setVisibility(View.VISIBLE);
+                                        }
+                                        else{
                                             subComponentSpinner.setVisibility(View.VISIBLE);
                                             hideLyt.setVisibility(View.VISIBLE);
                                             Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
                                             //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner);
+                                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner,thirdSpinner);
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -131,7 +139,7 @@ public class AEDCallApi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(String posVal, Spinner secondSpinner) {
+    public void subComponenetDropDown(String posVal, Spinner secondSpinner,Spinner thirdSpinner) {
 
         commonFunction = new CommonFunction(activity);
         if (commonFunction.isNetworkAvailable() == true) {
@@ -143,9 +151,9 @@ public class AEDCallApi {
                     @Override
                     public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            getAllComponentData = response.body();
+                            sub_componentList = response.body();
 
-                            adapters = new ComponentAdapter(context, getAllComponentData);
+                            adapters = new ComponentAdapter(context, sub_componentList);
 //                            Log.d(TAG, "onItemSelected: " + getAllComponentData.get(posVal).getID());
 
                             //get id position for second filters
@@ -157,10 +165,18 @@ public class AEDCallApi {
                             secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    String names = sub_componentList.get(i).getName();
+                                    thirdSpinner.setVisibility(View.VISIBLE);
                                     try {
-                                        lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                                         positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
                                         Log.i(TAG, "posvalue2: " + positionValue2);
+                                        if (names.equalsIgnoreCase("CCMG")) {
+                                            thirdSpinner.setVisibility(View.VISIBLE);
+                                        }else {
+                                            thirdSpinner.setVisibility(View.GONE);
+                                        }
+                                        stagesDropDown(positionValue2, thirdSpinner);
+                                        lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
 //                                        stagesDropDown(positionValue2, thirdSpinner, editText);
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -195,30 +211,30 @@ public class AEDCallApi {
 
     }
 
-//    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
-//        commonFunction = new CommonFunction(activity);
-//        if (commonFunction.isNetworkAvailable() == true) {
-//            try {
-//                Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-//                Call<List<ComponentData>> userDataCall = null;
-//                userDataCall = call.getAEDComponets();
-//                userDataCall.enqueue(new Callback<List<ComponentData>>() {
-//                    @Override
-//                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
-//                        if (response.isSuccessful() && response.body() != null) {
-//
-//                            stagesList = response.body();
-//                            componentAdapter = new ComponentAdapter(context, stagesList);
-//                            componentAdapter.getFilter().filter(stagePosVal);
-//                            thirdSpinner.setAdapter(componentAdapter);
-//
-//
-//                            thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                                @Override
-//                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                                    try {
-//                                        Log.i(TAG, "names: " + stagesList.get(i).getName());
-//                                        String names = stagesList.get(i).getName();
+    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner) {
+        commonFunction = new CommonFunction(activity);
+        if (commonFunction.isNetworkAvailable() == true) {
+            try {
+                Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+                Call<List<ComponentData>> userDataCall = null;
+                userDataCall = call.getAEDComponets();
+                userDataCall.enqueue(new Callback<List<ComponentData>>() {
+                    @Override
+                    public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            stagesList = response.body();
+                            componentAdapter = new ComponentAdapter(context, stagesList);
+                            componentAdapter.getFilter().filter(stagePosVal);
+                            thirdSpinner.setAdapter(componentAdapter);
+
+
+                            thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    try {
+                                        Log.i(TAG, "names: " + stagesList.get(i).getName());
+                                        String names = stagesList.get(i).getName();
 //                                        if (names.contains("Sowing")) {
 //                                            editText.setVisibility(View.VISIBLE);
 //                                        } else if (names.contains("Planting")) {
@@ -226,39 +242,39 @@ public class AEDCallApi {
 //                                        } else {
 //                                            editText.setVisibility(View.GONE);
 //                                        }
-//                                    } catch (Exception e) {
-//
-//                                    }
-////                                    positionValue2 = String.valueOf(getAllComponentData.get(Integer.parseInt(stagePosVal)).getID());
-////                                    Log.i(TAG, "posvalue2: " + positionValue);
-////                                    stagesDropDown(positionValue2, thirdSpinner,editText);
-//                                }
-//
-//                                @Override
-//                                public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//                                }
-//                            });
-//
-//                        } else {
-//                            Toast.makeText(context, "Data not found", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
-//                        Log.d(TAG, "onFailure: " + t);
-//                    }
-//                });
-//
-//            } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-//                Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
-//            }
-//        } else {
-//            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
-//        }
-//
-//    }
+                                    } catch (Exception e) {
+
+                                    }
+//                                    positionValue2 = String.valueOf(getAllComponentData.get(Integer.parseInt(stagePosVal)).getID());
+//                                    Log.i(TAG, "posvalue2: " + positionValue);
+//                                    stagesDropDown(positionValue2, thirdSpinner,editText);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(context, "Data not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ComponentData>> call, Throwable t) {
+                        Log.d(TAG, "onFailure: " + t);
+                    }
+                });
+
+            } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+                Log.d(TAG, "apiForAllListOfTNAU: " + arrayIndexOutOfBoundsException);
+            }
+        } else {
+            Toast.makeText(context, "Connection lost,Please check your internet connectivity", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 
 }

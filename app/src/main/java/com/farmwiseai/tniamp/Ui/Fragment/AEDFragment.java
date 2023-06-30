@@ -72,10 +72,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AEDFragment extends Fragment implements View.OnClickListener,BackPressListener {
+public class AEDFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private Context context;
     private FragmentAEDBinding tnauBinding;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField,village;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village,interventionName;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -90,16 +90,17 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
     private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, genderSpinner, categorySpinner, villageSpinner;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
+            sub_componentSpinner,stageSpinner ,genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
     private AEDCallApi aedCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
     private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList;
+    private List<String> phraseList, genderList, categoryList,interventionList;
     private GPSTracker gpsTracker;
-    private LinearLayout hideLyt;
+    private LinearLayout hideLyt, otherLayt;
     private double lati, longi;
     public String intervention1; //component
     public String intervention2; //sub_componenet
@@ -121,7 +122,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
     public String date;
     public String status;
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64;
+    private String villageValue, firstImageBase64, secondImageBase64,interventionTypeVal;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -141,24 +143,26 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         remarks = tnauBinding.remarksTxt.getText().toString();
         componentSpinner = tnauBinding.componentTxt;
         sub_componentSpinner = tnauBinding.subComponentsTxt;
+        stageSpinner = tnauBinding.stageTxt;
         hideLyt = tnauBinding.visibilityLyt;
+        otherLayt = tnauBinding.othersLayout;
         backPressListener = this;
 
 
-        aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString,backPressListener);
-        aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, hideLyt);
+        aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
+        aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner,stageSpinner ,hideLyt, otherLayt);
 
-        LatLongPojo latLongPojo= new LatLongPojo();
-        latLongPojo= PermissionUtils.getLocation(getContext());
-        lat=latLongPojo.getLat();
-        lon=latLongPojo.getLon();
-        Log.i("data",lat+","+lon);
+        LatLongPojo latLongPojo = new LatLongPojo();
+        latLongPojo = PermissionUtils.getLocation(getContext());
+        lat = latLongPojo.getLat();
+        lon = latLongPojo.getLon();
+        Log.i("data", lat + "," + lon);
         setAllDataValues();
 
         return tnauBinding.getRoot();
     }
 
-    private void setAllDataValues(){
+    private void setAllDataValues() {
 
         subBasinSpinner = tnauBinding.subBasinTxt;
         districtSpinner = tnauBinding.districtTxt;
@@ -166,6 +170,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         genderSpinner = tnauBinding.genderTxt;
         categorySpinner = tnauBinding.categoryTxt;
         villageSpinner = tnauBinding.villageTxt;
+        interventionSpinner = tnauBinding.inverntionTyper;
 
 
         //phase data
@@ -416,7 +421,23 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
 
             }
         });
+        interventionList = new ArrayList<>();
+        interventionList.add("Demo");
+        interventionList.add("Sustainability");
+        interventionList.add("Adoption");
+        tnauBinding.inverntionTyper.setItem(interventionList);
+        interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                interventionTypeVal = String.valueOf(interventionSpinner.getSelectedItemPosition());
+                Log.i(TAG, "interventionType:" + interventionTypeVal);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
     }
@@ -439,12 +460,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
                 && componentSpinner.getSelectedItem() == null
                 && sub_componentSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
+                && categorySpinner.getSelectedItem() == null
+                && interventionSpinner.getSelectedItem() == null) {
+            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
         }
 
-        if(valueofPic != 0 && valueofPic != 1 && valueofPic != 2){
-            mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
+        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
         if (farmerName.length() == 0) {
@@ -535,7 +557,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
     }
 
 
-
     // alert pop up
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())
@@ -618,6 +639,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         area = tnauBinding.areaTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
+        interventionName = tnauBinding.inerventionNameTxt.getText().toString();
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -649,6 +671,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
         request.setTxn_id("20200212120446");
         request.setDate(dateField);
         request.setStatus("0");
+        request.setIntervention_type(interventionTypeVal);
+        request.setOther_intervention(interventionName);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AEDResponse> userDataCall = null;
@@ -658,12 +682,12 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
             public void onResponse(Call<AEDResponse> call, Response<AEDResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getTnauLandDeptId());
-                    Log.i(TAG, "txt_value: "+txt_id.toString());
-                    mCommonFunction.navigation(getActivity(),DashboardActivity.class);
+                    Log.i(TAG, "txt_value: " + txt_id.toString());
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                     uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
 //                        agriResponses.addAll(response.body().getResponse());
-                }else{
+                } else {
 
                 }
             }
@@ -692,16 +716,16 @@ public class AEDFragment extends Fragment implements View.OnClickListener,BackPr
                 if (response.body() != null) {
                     try {
                         String successMessage = response.body().getResponse();
-                        Log.i(TAG, "onSuccessMsg"+successMessage);
-                        mCommonFunction.navigation(getContext(),DashboardActivity.class);
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
-                        Toast.makeText(getContext(),successMessage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
-                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(getContext(),"data getting error.!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
                 }
             }
 

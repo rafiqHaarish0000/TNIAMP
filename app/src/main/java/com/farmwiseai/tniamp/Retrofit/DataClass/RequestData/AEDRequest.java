@@ -25,6 +25,24 @@ public class AEDRequest {
     public String txn_id;
     public String date;
     public String status;
+    public String intervention_type;
+    public String other_intervention;
+
+    public String getIntervention_type() {
+        return intervention_type;
+    }
+
+    public void setIntervention_type(String intervention_type) {
+        this.intervention_type = intervention_type;
+    }
+
+    public String getOther_intervention() {
+        return other_intervention;
+    }
+
+    public void setOther_intervention(String other_intervention) {
+        this.other_intervention = other_intervention;
+    }
 
     public String getVillage() {
         return village;

@@ -385,7 +385,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
-                Log.i(TAG, "posValue: " + posValue);
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
                 Log.i(TAG, "districtPos: " + myString);
                 districtAdapter.getFilter().filter(posValue);
@@ -404,10 +403,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
-                posValue = String.valueOf(districtDropDown.get(i).getID());
+                posValue = String.valueOf(blockDropDown.get(i).getID());
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
-                Log.i(TAG, "districtPos: " + myString);
                 blockAdapter.getFilter().filter(posValue);
                 blockSpinner.setAdapter(blockAdapter);
 

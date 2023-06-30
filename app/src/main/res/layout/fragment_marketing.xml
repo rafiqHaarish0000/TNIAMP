@@ -1,14 +1,961 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Ui.Fragment.MarketingFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/white"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:context=".view.ui.mainView.ui.fragment.survey_info.pager.validations.cce_survey.CCE_Survey_Activity">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1"
+                android:background="@color/color_primary"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/pop_back_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_baseline_arrow_back_24" />
+
+                <TextView
+                    style="@style/head_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="Marketing" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/phase1"
+                        style="@style/edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/phases"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/sub_basin_txt"
+                        style="@style/edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/sub_basin"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/district_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/district"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/block_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Block"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/village_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/village"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/component_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Component"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/sub_components_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/sub_components"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/nameOFTrainingSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Name of training"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/categorySpinner1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/category"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <LinearLayout
+                        android:id="@+id/othersLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/med_text2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="14dp"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/_50_100_characters" />
+
+                        <EditText
+                            android:id="@+id/inerventionNameTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="2dp"
+                            android:gravity="top|start"
+                            android:hint="@string/intervention_name"
+                            android:lines="8"
+                            android:maxLines="10"
+                            android:minLines="6"
+                            android:scrollbars="vertical"
+                            android:singleLine="false" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/categorySpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            android:visibility="gone"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="@string/category"
+                            app:smsp_hintColor="@color/grey"
+                            app:smsp_multilineError="false" />
+
+                        <EditText
+                            android:id="@+id/name_value"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="@string/name" />
+
+                        <EditText
+                            android:id="@+id/capacity"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Capacity(Mts)" />
+
+                        <EditText
+                            android:id="@+id/DOCompletion"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Date of Completion" />
+
+                        <EditText
+                            android:id="@+id/QantityStoredTXT"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Quantity stored (Mts)" />
+
+                        <EditText
+                            android:id="@+id/noOfBeneficieries"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="No of beneficieries" />
+
+                        <EditText
+                            android:id="@+id/govertShare"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Government Share" />
+
+                        <EditText
+                            android:id="@+id/contributionTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Contribution" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/venue"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="@string/venue" />
+
+                        <EditText
+                            android:id="@+id/durationTrainigTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Duration of training(Days)" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:hint="No of Trainees" />
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Male No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Female No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date From"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date To."
+                                    android:inputType="number" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/exposureVistlyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <EditText
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Name (HQ/FPC)" />
+
+                        <EditText
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Duration of Visit(Days)" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:hint="Numbers" />
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Male No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Female No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date From"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date To."
+                                    android:inputType="number" />
+                            </LinearLayout>
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:hint="Country/State Name" />
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:hint="Places visited" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/visibilityLyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/numberFPC"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Number of FPC"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/inNumberDate"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Incorporation Number and Date"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/no_village"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="No.of Village"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/noOfFigs"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="No.of FIGs"
+                            android:inputType="number" />
+
+                        <LinearLayout
+                            android:id="@+id/iec_layt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:hint="No of Members"
+                                android:inputType="number" />
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Male No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/male_others"
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    android:id="@+id/male_no"
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Female No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/female_others"
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    android:id="@+id/female_no"
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/cropSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="Crop"
+                            app:smsp_hintColor="@color/grey"
+                            app:smsp_multilineError="false" />
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/seasonSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="Season"
+                            app:smsp_hintColor="@color/grey"
+                            app:smsp_multilineError="false" />
+
+                        <EditText
+                            android:id="@+id/consultingAgency"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Name of consulting agency" />
+
+                        <EditText
+                            android:id="@+id/incorporationNumber"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Incorporation Number"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/incorporationDateTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Incorporation Date" />
+
+                        <EditText
+                            android:id="@+id/locationConsultancyTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Location of the Consulting agency" />
+
+                        <EditText
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Name of the CEO" />
+
+                        <EditText
+                            android:id="@+id/mobile_number"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="@string/mobile_number"
+                            android:inputType="number"
+                            android:singleLine="true" />
+
+                        <EditText
+                            android:id="@+id/emailTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Email" />
+
+                        <EditText
+                            android:id="@+id/infrastructureTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Infrastructure available" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/take_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <TextView
+                            style="@style/head_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:text="Take photo"
+                            android:textColor="@color/color_accent"
+                            android:textSize="28dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="18dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/image_1"
+                            android:layout_width="120dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/camera_icon" />
+
+                        <ImageView
+                            android:id="@+id/image_2"
+                            android:layout_width="120dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/camera_icon" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/remarks_txt"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/remarks" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/inverntionTyper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Intervention Type"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <Button
+                        android:id="@+id/submission_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="18dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/submit"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</layout>

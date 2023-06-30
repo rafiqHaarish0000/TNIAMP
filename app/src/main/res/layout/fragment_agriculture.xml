@@ -209,7 +209,7 @@
                         android:hint="@string/date_of_sowing_planting" />
 
                     <LinearLayout
-                        android:id="@+id/inerventionLyt"
+                        android:id="@+id/othersLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -253,6 +253,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/name_of_the_group"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             style="@style/AppEdittext"/>
                         <EditText
                             android:id="@+id/doa_txt"
@@ -279,11 +280,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/seed_from_area_raised_ha"
+                            android:inputType="number"
                             style="@style/AppEdittext"/>
                         <EditText
                             android:id="@+id/quantity_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="number"
                             android:hint="@string/quantity_to_proceed_kg"
                             style="@style/AppEdittext"/>
                     </LinearLayout>

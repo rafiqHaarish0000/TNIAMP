@@ -5,7 +5,6 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -43,29 +41,29 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentWRDFRagmentBinding;
+import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
-import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
+import com.farmwiseai.tniamp.utils.componentCallApis.WRDCallAPi;
 
 import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WRDFragment extends Fragment implements View.OnClickListener {
+public class WRDFragment extends Fragment implements View.OnClickListener, BackPressListener {
    private FragmentWRDFRagmentBinding wrdfragmentBinding;
     private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
+    private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -83,13 +81,14 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
             sub_componentSpinner, stagesSpinner,
             genderSpinner, categorySpinner;
     private EditText datePicker;
-    private AgriCallApi agriCallApi;
+    private WRDCallAPi wrdCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
-    private LinearLayout vis_lyt;
+    private LinearLayout vis_lyt, iNames_lyt;
+    public BackPressListener backPressListener;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -107,40 +106,38 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
         wrdfragmentBinding.submissionBtn.setOnClickListener(this);
         wrdfragmentBinding.image1.setOnClickListener(this);
         wrdfragmentBinding.image2.setOnClickListener(this);
-        wrdfragmentBinding.dateTxt.setOnClickListener(this);
 
 
-        farmerName = wrdfragmentBinding.farmerTxt.getText().toString();
-        survey_no = wrdfragmentBinding.surveyTxt.getText().toString();
-        area = wrdfragmentBinding.areaTxt.getText().toString();
-        near_tank = wrdfragmentBinding.tankTxt.getText().toString();
+        lengthValue = wrdfragmentBinding.lengthTxt.getText().toString();
+        lsPointValue = wrdfragmentBinding.lsPoint.getText().toString();
+        sliceNumberValue = wrdfragmentBinding.sliceNumber.getText().toString();
         remarks = wrdfragmentBinding.remarksTxt.getText().toString();
-        dateField = wrdfragmentBinding.dateTxt.getText().toString();
 
 
         componentSpinner = wrdfragmentBinding.componentTxt;
         sub_componentSpinner = wrdfragmentBinding.subComponentsTxt;
         stagesSpinner = wrdfragmentBinding.stagesTxt;
-        datePicker = wrdfragmentBinding.dateTxt;
         vis_lyt = wrdfragmentBinding.visibilityLyt;
+        iNames_lyt = wrdfragmentBinding.othersLayout;
 
-//        agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString);
-//        agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,vis_lyt);
+        backPressListener = this;
+
+        wrdCallApi = new WRDCallAPi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
+        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, iNames_lyt);
 
         setAllDropDownData();
 
 
         return wrdfragmentBinding.getRoot();
     }
-    private boolean fieldValidation(String farmerName, String category,
-                                    String survey_no, String area, String near_tank, String remarks, String date) {
+    private boolean fieldValidation(String lengthNumberTxt, String category,
+                                    String lsPointTxt, String sliceNumberTxt, String remarks, String date) {
 
-        farmerName = wrdfragmentBinding.farmerTxt.getText().toString();
-        survey_no = wrdfragmentBinding.surveyTxt.getText().toString();
-        area = wrdfragmentBinding.areaTxt.getText().toString();
-        near_tank = wrdfragmentBinding.tankTxt.getText().toString();
+        lengthNumberTxt = wrdfragmentBinding.lengthTxt.getText().toString();
+        lsPointTxt = wrdfragmentBinding.lsPoint.getText().toString();
+        sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString();
         remarks = wrdfragmentBinding.remarksTxt.getText().toString();
-        date = wrdfragmentBinding.dateTxt.getText().toString();
+
 
 
         if (wrdfragmentBinding.phase1.getSelectedItem() == null
@@ -159,23 +156,14 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
             mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
         }
 
-        if (farmerName.length() == 0) {
-            wrdfragmentBinding.farmerTxt.setError("Please enter farmer name");
+        if (lengthNumberTxt.length() == 0) {
+            wrdfragmentBinding.lengthTxt.setError("Please enter farmer name");
             return false;
-        } else if (survey_no.length() == 0) {
-            wrdfragmentBinding.surveyTxt.setError("Please enter survey no");
+        } else if (lsPointTxt.length() == 0) {
+            wrdfragmentBinding.lsPoint.setError("Please enter survey no");
             return false;
-        } else if (area.length() == 0) {
-            wrdfragmentBinding.areaTxt.setError("Please enter area");
-            return false;
-        } else if (near_tank.length() == 0) {
-            wrdfragmentBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
-        } else if (remarks.length() == 0) {
-            wrdfragmentBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        } else if (date.length() == 0) {
-            wrdfragmentBinding.dateTxt.setError("Please enter the date");
+        } else if (sliceNumberTxt.length() == 0) {
+            wrdfragmentBinding.sliceNumber.setError("Please enter area");
             return false;
         }
 
@@ -188,26 +176,16 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                updateLabel();
-            }
-        };
         switch (view.getId()) {
             case R.id.pop_back_image:
-                Intent intent = new Intent(context, DashboardActivity.class);
+                Intent intent = new Intent(getContext(), DashboardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 startActivity(intent);
                 break;
 
             case R.id.submission_btn:
-                boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField);
+                boolean checkValidaiton = fieldValidation(lengthValue,lsPointValue, sliceNumberValue, near_tank, remarks, dateField);
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -242,10 +220,6 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
 
-            case R.id.date_txt:
-                new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                break;
-
         }
     }
 
@@ -256,12 +230,9 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
         subBasinSpinner = wrdfragmentBinding.subBasinTxt;
         districtSpinner = wrdfragmentBinding.districtTxt;
         blockSpinner = wrdfragmentBinding.blockTxt;
-        genderSpinner = wrdfragmentBinding.genderTxt;
-        categorySpinner = wrdfragmentBinding.categoryTxt;
         componentSpinner = wrdfragmentBinding.componentTxt;
         sub_componentSpinner = wrdfragmentBinding.subComponentsTxt;
         stagesSpinner = wrdfragmentBinding.stagesTxt;
-        datePicker = wrdfragmentBinding.dateTxt;
 
 
         //phase data
@@ -416,51 +387,10 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        //gender dropdown list
-        genderList = new ArrayList<>();
-        genderList.add("Male");
-        genderList.add("Female");
-        wrdfragmentBinding.genderTxt.setItem(genderList);
-
-        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        //category dropdown spinner
-        categoryList = new ArrayList<>();
-        categoryList.add("SC");
-        categoryList.add("ST");
-        categoryList.add("Others");
-        wrdfragmentBinding.categoryTxt.setItem(categoryList);
-
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
     }
 
 
-    private void updateLabel() {
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        wrdfragmentBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
-    }
 
     private boolean checkPermission() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
@@ -574,5 +504,10 @@ public class WRDFragment extends Fragment implements View.OnClickListener {
 
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
+    }
+
+    @Override
+    public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
+
     }
 }

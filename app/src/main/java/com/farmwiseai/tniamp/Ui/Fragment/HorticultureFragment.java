@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,6 +26,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -33,6 +36,7 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
@@ -46,9 +50,11 @@ import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -88,14 +94,14 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     private Spinner subBasinSpinner, districtSpinner,
             blockSpinner, componentSpinner,
             sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
+            genderSpinner, categorySpinner, villageSpinner, interventionSpinner,cropstagespinner;
     private EditText datePicker;
     private HortiCallApi hortiCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
     private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList;
+    private List<String> phraseList, genderList, categoryList, interventionList;
     private LinearLayout vis_lyt, trainingLyt, iNames_lyt;
     private GPSTracker gpsTracker;
     private double lati, longi;
@@ -119,7 +125,8 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public String date;
     public String status, intName;
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64;
+    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
+    ArrayList<HortiRequest> offlineHortiRequest = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -152,13 +159,14 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         componentSpinner = horticultureBinding.componentTxt;
         sub_componentSpinner = horticultureBinding.subComponentsTxt;
         stagesSpinner = horticultureBinding.stagesTxt;
+
         datePicker = horticultureBinding.dateTxt;
         vis_lyt = horticultureBinding.visibilityLyt;
         trainingLyt = horticultureBinding.iecLayt;
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
         iNames_lyt = horticultureBinding.inerventionLyt;
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt);
+        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
         lat = latLongPojo.getLat();
@@ -203,48 +211,43 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         }
 
 
-        if (farmerName.length() == 0 && horticultureBinding.farmerTxt.getVisibility() == View.VISIBLE) {
-            horticultureBinding.farmerTxt.setError("Please enter farmer name");
-            return false;
-        } else if (survey_no.length() == 0 && horticultureBinding.surveyTxt.getVisibility() == View.VISIBLE) {
-            horticultureBinding.surveyTxt.setError("Please enter survey no");
-            return false;
-        } else if (area.length() == 0 && horticultureBinding.areaTxt.getVisibility() == View.VISIBLE) {
-            horticultureBinding.areaTxt.setError("Please enter area");
-            return false;
-        } /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
+
+        if (vis_lyt.getVisibility() == View.VISIBLE) {
+            if (farmerName.length() == 0) {
+                horticultureBinding.farmerTxt.setError("Please enter farmer name");
+                return false;
+            } /*else if (date.length() == 0) {
+                horticultureBinding.dateTxt.setError("Please enter the date");
+                return false;
+            }*/ else if (survey_no.length() == 0) {
+                horticultureBinding.surveyTxt.setError("Please enter survey no");
+                return false;
+            } else if (area.length() == 0) {
+                horticultureBinding.areaTxt.setError("Please enter area");
+                return false;
+            } /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
             horticultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
         }*/ else if (remarks.length() == 0 && horticultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
-            horticultureBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        } else if (date.length() == 0 && horticultureBinding.dateTxt.getVisibility() == View.VISIBLE) {
-            horticultureBinding.dateTxt.setError("Please enter the date");
-            return false;
+                horticultureBinding.remarksTxt.setError("Remarks not found");
+                return false;
+            }
+            return true;
         }
-    /*    if (farmerName.length() == 0) {
-            horticultureBinding.farmerTxt.setError("Please enter farmer name");
-            return false;
-        } else if (survey_no.length() == 0) {
-            horticultureBinding.surveyTxt.setError("Please enter survey no");
-            return false;
-        } else if (area.length() == 0) {
-            horticultureBinding.areaTxt.setError("Please enter area");
-            return false;
-        } *//*else if (near_tank.length() == 0) {
-            horticultureBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
-        }*//*
-        else if (remarks.length() == 0) {
-            horticultureBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        } *//*else if (date.length() == 0) {
-            horticultureBinding.dateTxt.setError("Please enter the date");
-            return false;
-        }*/
+        if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            if (intName.length() == 0) {
+                horticultureBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+            return true;
+        }
+
 
 
         return true;
+    }
+    public void showToast(Activity mcontaxt, String message) {
+        Toast.makeText(mcontaxt, message, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -252,15 +255,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
 
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                updateLabel();
-            }
-        };
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
@@ -273,10 +267,21 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category, survey_no, area, near_tank, remarks, dateField, intName);
                 if (checkValidaiton) {
-                    finalSubmission();
+                    try {
+                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        } else {
+                            //  getLocation(view);
+                            gpsTracker = new GPSTracker(getContext());
+                            lat = String.valueOf(gpsTracker.getLatitude());
+                            lon = String.valueOf(gpsTracker.getLongitude());
+                            finalSubmission();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    //do the code for save all data
-                    Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
+                    showToast(getActivity(), "Validation error");
                 }
                 break;
 
@@ -306,8 +311,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 }
                 break;
 
+
             case R.id.date_txt:
-                new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                dateFieldValidation(horticultureBinding.dateTxt);
                 break;
 
         }
@@ -327,7 +333,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         stagesSpinner = horticultureBinding.stagesTxt;
         villageSpinner = horticultureBinding.villageTxt;
         datePicker = horticultureBinding.dateTxt;
-
+        interventionSpinner = horticultureBinding.inverntionTyper;
 
         //phase data
         phraseList = new ArrayList<>();
@@ -344,39 +350,14 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<Sub_Basin_Data>> userDataCall = null;
-                        userDataCall = call.getSub_basinData();
-                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
-                            @Override
-                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    sub_basin_DropDown = response.body();
-                                    Log.i(TAG, "onResponse: " + horticultureBinding.phase1.getSelectedItemPosition());
-                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
-                                    myString = String.valueOf(horticultureBinding.phase1.getSelectedItemPosition());
-                                    subAdapter.getFilter().filter(myString);
-                                    subBasinSpinner.setAdapter(subAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
+                Log.i(TAG, "onResponse: " + horticultureBinding.phase1.getSelectedItemPosition());
+                subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                myString = String.valueOf(horticultureBinding.phase1.getSelectedItemPosition());
+                subAdapter.getFilter().filter(myString);
+                subBasinSpinner.setAdapter(subAdapter);
 
-                            @Override
-                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
 
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -389,45 +370,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
+                districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
+                posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                districtAdapter.getFilter().filter(posValue);
+                districtSpinner.setAdapter(districtAdapter);
 
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<DistrictData>> userDataCall = null;
-                        userDataCall = call.getDistrictData();
-                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
-                            @Override
-                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-
-                                    districtDropDown = response.body();
-                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    districtAdapter.getFilter().filter(posValue);
-                                    districtSpinner.setAdapter(districtAdapter);
-
-                                } else {
-                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
-                                mLoadCustomToast(getActivity(), t.toString());
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -440,39 +388,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<BlockData>> userDataCall = null;
-                        userDataCall = call.getBlockData();
-                        userDataCall.enqueue(new Callback<List<BlockData>>() {
-                            @Override
-                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    blockDropDown = response.body();
-                                    posValue = String.valueOf(districtDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    blockAdapter.getFilter().filter(posValue);
-                                    blockSpinner.setAdapter(blockAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
+                posValue = String.valueOf(districtDropDown.get(i).getID());
+                Log.i(TAG, "posValue: " + posValue);
+                blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                blockAdapter.getFilter().filter(posValue);
+                blockSpinner.setAdapter(blockAdapter);
             }
 
             @Override
@@ -484,40 +405,13 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<VillageData>> userDataCall = null;
-                        userDataCall = call.getVillageData();
-                        userDataCall.enqueue(new Callback<List<VillageData>>() {
-                            @Override
-                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    villageDataList = response.body();
-                                    posValue = String.valueOf(blockDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    villageAdaapter.getFilter().filter(posValue);
-                                    villageSpinner.setAdapter(villageAdaapter);
+                villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
+                posValue = String.valueOf(blockDropDown.get(i).getID());
+                villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                villageAdaapter.getFilter().filter(posValue);
+                villageSpinner.setAdapter(villageAdaapter);
 
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
 
-                            @Override
-                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -575,14 +469,39 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
             }
         });
+        interventionList = new ArrayList<>();
+        interventionList.add("Demo");
+        interventionList.add("Sustainability");
+        interventionList.add("Adoption");
+        horticultureBinding.inverntionTyper.setItem(interventionList);
+        interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                interventionTypeVal = String.valueOf(interventionSpinner.getSelectedItemPosition());
+                Log.i(TAG, "interventionType:" + interventionTypeVal);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
+    private void dateFieldValidation(EditText datePicker) {
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                datePicker.setText(dateFormat.format(myCalendar.getTime()));
+            }
+        };
+        new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
-    private void updateLabel() {
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        horticultureBinding.dateTxt.setText(dateFormat.format(myCalendar.getTime()));
     }
 
 
@@ -634,27 +553,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
     private void finalSubmission() {
 
-        if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should saved in post api
-            getAllData();
-
-        } else {
-            String offlineText = "Data saved successfully in offline data";
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                }
-            });
-        }
+        getAllData();
     }
 
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
-
-
 
 
     private void getAllData() {
@@ -695,8 +599,39 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setPhotoLon(lon);
         request.setTxnId("20200212120446");
         request.setStatus("0");
+        request.setInterventionType(interventionTypeVal);
+        request.setOtherIntervention(intName);
+        if (mCommonFunction.isNetworkAvailable() == true) {
+            onlineDataUpload(request);
+        } else {
+            String offlineText = "";
+            if (offlineHortiRequest == null) {
+                offlineHortiRequest = new ArrayList<>();
+                offlineHortiRequest.add(request);
+                SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else if (offlineHortiRequest.size() < 5) {
+                offlineHortiRequest.add(request);
+                SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else {
+                offlineText = "You reached the offline Store Data limit please Sync !";
+            }
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
 
 
+    }
+
+    private void onlineDataUpload(HortiRequest request) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<HortiResponse> userDataCall = null;
         userDataCall = call.getHortiResponse(request);
@@ -708,8 +643,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                     Log.i(TAG, "txt_value: " + txt_id.toString());
                     mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                     uploadSecondImage(txt_id);
-//                        List<AgriResponse> agriResponses = new ArrayList<>();
-//                        agriResponses.addAll(response.body().getResponse());
+
                 } else {
 
                 }

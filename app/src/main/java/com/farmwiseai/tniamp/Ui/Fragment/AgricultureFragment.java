@@ -481,7 +481,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
-                posValue = String.valueOf(blockDropDown.get(i).getID());
+                posValue = String.valueOf(districtDropDown.get(i).getID());
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);

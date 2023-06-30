@@ -19,7 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.farmwiseai.tniamp.ActivityNoInternet;
+import com.farmwiseai.tniamp.Ui.ActivityNoInternet;
 import com.farmwiseai.tniamp.R;
 
 import java.text.DateFormat;

@@ -50,7 +50,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         setContentView(binding.getRoot());
         username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
         lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-
         lineDeptId = "9";
 
 

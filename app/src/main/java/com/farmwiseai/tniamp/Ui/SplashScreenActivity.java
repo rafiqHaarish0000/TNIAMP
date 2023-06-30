@@ -1,11 +1,11 @@
-package com.farmwiseai.tniamp;
+package com.farmwiseai.tniamp.Ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.farmwiseai.tniamp.Ui.DashboardActivity;
+import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 

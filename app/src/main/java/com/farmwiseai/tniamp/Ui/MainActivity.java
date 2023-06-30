@@ -1,8 +1,10 @@
-package com.farmwiseai.tniamp;
+package com.farmwiseai.tniamp.Ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.farmwiseai.tniamp.R;
 
 public class MainActivity extends AppCompatActivity {
 

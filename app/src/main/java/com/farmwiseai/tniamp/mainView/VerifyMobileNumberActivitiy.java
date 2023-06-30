@@ -16,6 +16,7 @@ import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.ActivityVerifyMobileNumberActivitiyBinding;
 import com.farmwiseai.tniamp.utils.BaseActivity;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
 import retrofit2.Call;
@@ -79,6 +80,7 @@ ValidateOTP validateOTP;
                         Log.i(TAG, "onBody: " + response.code());
                         String responsemsg=validateOTP.getResponseMessage().getResponse();
                         if(responsemsg==null) {
+                            FetchDeptLookup.readDataFromFile(getApplicationContext(),"lookup.json");
                             SharedPrefsUtils.putBoolean(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.LOGIN_SESSION, true);
                             SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN, validateOTP.getResponseMessage().getSerialNo().toString());
                             SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS, validateOTP.getResponseMessage().getLineDept().toString());

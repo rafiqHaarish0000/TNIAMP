@@ -91,7 +91,7 @@ public class Agri_Request {
     @SerializedName("date_revolving_fund_release")
     @Expose
     private String dateRevolvingFundRelease;
-    @SerializedName("seed_area decimal")
+    @SerializedName("seed_area")
     @Expose
     private String seedAreaDecimal;
     @SerializedName("quantity_procured")

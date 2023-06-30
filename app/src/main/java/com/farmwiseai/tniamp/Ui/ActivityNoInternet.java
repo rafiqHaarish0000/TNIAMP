@@ -1,4 +1,4 @@
-package com.farmwiseai.tniamp;
+package com.farmwiseai.tniamp.Ui;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.databinding.ActivityNoInternetBinding;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 

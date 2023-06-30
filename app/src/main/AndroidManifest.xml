@@ -51,7 +51,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".Ui.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,7 +78,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Ui.MainActivity"
             android:exported="true">
 
             <meta-data

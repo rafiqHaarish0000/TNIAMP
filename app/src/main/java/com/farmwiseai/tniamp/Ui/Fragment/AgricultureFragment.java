@@ -269,7 +269,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             }
             return true;
         }
-
+        if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            if (intName.length() == 0) {
+                agricultureBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+            return true;
+        }
         if (seed_lyt.getVisibility() == View.VISIBLE) {
             if (nag.length() == 0) {
                 agricultureBinding.nameOfGroup.setError("field empty");

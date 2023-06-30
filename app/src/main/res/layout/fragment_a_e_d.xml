@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         app:smsp_enableFloatingLabel="true"
                         android:textSize="18sp"
-                        app:smsp_hint="@string/sub_components"
+                        app:smsp_hint="Stages"
                         android:padding="8dp"
                         android:dropDownWidth="2dp"
                         android:spinnerMode="dropdown"
@@ -194,7 +194,36 @@
                         android:visibility="gone"
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false"/>
-
+                    <LinearLayout
+                        android:id="@+id/othersLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            style="@style/med_text2"
+                            android:layout_marginTop="4dp"
+                            android:layout_gravity="start"
+                            android:text="50-100 Characters"/>
+                        <EditText
+                            android:id="@+id/inerventionNameTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="2dp"
+                            android:lines="8"
+                            android:minLines="6"
+                            android:gravity="top|start"
+                            android:maxLines="10"
+                            android:singleLine="false"
+                            android:scrollbars="vertical"
+                            android:hint="Intervention name"
+                            style="@style/AppEdittext"/>
+                    </LinearLayout>
                     <LinearLayout
                         android:id="@+id/visibilityLyt"
                         android:layout_width="match_parent"
@@ -358,20 +387,21 @@
                         android:layout_marginTop="12dp"
                         android:hint="@string/remarks" />
 
-                    <LinearLayout
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/inverntionTyper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="18dp"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/check_values"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Consider as a Test" />
-                    </LinearLayout>
+                        app:smsp_enableFloatingLabel="true"
+                        android:textSize="18sp"
+                        app:smsp_hint="Intervention Type"
+                        android:padding="8dp"
+                        android:dropDownWidth="2dp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginTop="4dp"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false"/>
 
                     <Button
                         android:id="@+id/submission_btn"

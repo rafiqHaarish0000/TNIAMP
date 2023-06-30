@@ -51,7 +51,8 @@ public class HortiCallApi {
 
     //first spinner phrase;
 
-    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt, LinearLayout trainingLyt) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt, LinearLayout trainingLyt,
+                                   LinearLayout otherLyt) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -91,15 +92,24 @@ public class HortiCallApi {
                                             public void onResponse(Call<List<ComponentData>> call, Response<List<ComponentData>> response) {
                                                 if (response.isSuccessful() && response.body() != null) {
                                                     //subComponentSpinner.setVisibility(View.VISIBLE);
-                                                    if (componentList.get(i).getName().equals("Model Village")) {
+                                                    String name = componentList.get(i).getName();
+                                                    if (name.equalsIgnoreCase("Model Village")) {
                                                         hideLyt.setVisibility(View.GONE);
                                                         trainingLyt.setVisibility(View.GONE);
+                                                        subComponentSpinner.setVisibility(View.VISIBLE);
+                                                        otherLyt.setVisibility(View.GONE);
+                                                    }else if(name.equalsIgnoreCase("Others")){
+                                                        otherLyt.setVisibility(View.VISIBLE);
+                                                        hideLyt.setVisibility(View.VISIBLE);
+                                                        trainingLyt.setVisibility(View.GONE);
                                                         subComponentSpinner.setVisibility(View.GONE);
-                                                    } else {
+                                                    }
+                                                    else {
                                                         subComponentSpinner.setVisibility(View.VISIBLE);
                                                         stageSpinner.setVisibility(View.VISIBLE);
                                                         hideLyt.setVisibility(View.VISIBLE);
                                                         trainingLyt.setVisibility(View.GONE);
+                                                        otherLyt.setVisibility(View.GONE);
                                                         Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
                                                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));

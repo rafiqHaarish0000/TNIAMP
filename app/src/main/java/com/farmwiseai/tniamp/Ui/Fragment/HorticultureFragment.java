@@ -158,7 +158,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
         iNames_lyt = horticultureBinding.inerventionLyt;
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt);
+        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
         lat = latLongPojo.getLat();
@@ -653,8 +653,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
     }
-
-
 
 
     private void getAllData() {

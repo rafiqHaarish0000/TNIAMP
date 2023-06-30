@@ -10,9 +10,9 @@ public class HortiResponse {
     @SerializedName("response")
     @Expose
     private String response;
-    @SerializedName("tnau_land_dept_id")
+    @SerializedName("responseMessage")
     @Expose
-    private Integer tnauLandDeptId;
+    private ResponseMessage responseMessage;
 
     public String getStatusCode() {
         return statusCode;
@@ -30,11 +30,28 @@ public class HortiResponse {
         this.response = response;
     }
 
-    public Integer getTnauLandDeptId() {
-        return tnauLandDeptId;
+    public ResponseMessage getResponseMessage() {
+        return responseMessage;
     }
 
-    public void setTnauLandDeptId(Integer tnauLandDeptId) {
-        this.tnauLandDeptId = tnauLandDeptId;
+    public void setResponseMessage(ResponseMessage responseMessage) {
+        this.responseMessage = responseMessage;
+    }
+
+
+    public class ResponseMessage {
+
+        @SerializedName("horti_land_dept_id")
+        @Expose
+        private Integer hortiLandDeptId;
+
+        public Integer getHortiLandDeptId() {
+            return hortiLandDeptId;
+        }
+
+        public void setHortiLandDeptId(Integer hortiLandDeptId) {
+            this.hortiLandDeptId = hortiLandDeptId;
+        }
+
     }
 }

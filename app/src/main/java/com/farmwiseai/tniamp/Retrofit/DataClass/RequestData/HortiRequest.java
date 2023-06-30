@@ -1,30 +1,87 @@
 package com.farmwiseai.tniamp.Retrofit.DataClass.RequestData;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class HortiRequest {
-    public String area;
-    public String category;
-    public String created_by;
-    public String created_date;
-    public String farmer_name;
-    public String gender;
-    public String intervention1;
-    public String intervention2;
-    public String intervention3;
-    public String remarks;
-    public String survey_no;
-    public String variety;
-    public String village;
-    public String yield;
-    public String lat;
-    public String lon;
-    public String image1;
-    public String tank_name;
-    public String txn_date;
-    public String photo_lat;
-    public String photo_lon;
-    public String txn_id;
-    public String mobile;
-    public String status;
+    @SerializedName("area")
+    @Expose
+    private String area;
+    @SerializedName("category")
+    @Expose
+    private String category;
+    @SerializedName("created_by")
+    @Expose
+    private String createdBy;
+    @SerializedName("created_date")
+    @Expose
+    private String createdDate;
+    @SerializedName("farmer_name")
+    @Expose
+    private String farmerName;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+    @SerializedName("intervention1")
+    @Expose
+    private String intervention1;
+    @SerializedName("intervention2")
+    @Expose
+    private String intervention2;
+    @SerializedName("intervention3")
+    @Expose
+    private String intervention3;
+    @SerializedName("remarks")
+    @Expose
+    private String remarks;
+    @SerializedName("survey_no")
+    @Expose
+    private String surveyNo;
+    @SerializedName("variety")
+    @Expose
+    private String variety;
+    @SerializedName("village")
+    @Expose
+    private String village;
+    @SerializedName("yield")
+    @Expose
+    private String yield;
+    @SerializedName("lat")
+    @Expose
+    private String lat;
+    @SerializedName("lon")
+    @Expose
+    private String lon;
+    @SerializedName("image1")
+    @Expose
+    private String image1;
+    @SerializedName("tank_name")
+    @Expose
+    private String tankName;
+    @SerializedName("txn_date")
+    @Expose
+    private String txnDate;
+    @SerializedName("photo_lat")
+    @Expose
+    private String photoLat;
+    @SerializedName("photo_lon")
+    @Expose
+    private String photoLon;
+    @SerializedName("txn_id")
+    @Expose
+    private String txnId;
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("intervention_type")
+    @Expose
+    private String interventionType;
+    @SerializedName("other_intervention")
+    @Expose
+    private String otherIntervention;
 
     public String getArea() {
         return area;
@@ -42,28 +99,28 @@ public class HortiRequest {
         this.category = category;
     }
 
-    public String getCreated_by() {
-        return created_by;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getCreated_date() {
-        return created_date;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(String created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public String getFarmer_name() {
-        return farmer_name;
+    public String getFarmerName() {
+        return farmerName;
     }
 
-    public void setFarmer_name(String farmer_name) {
-        this.farmer_name = farmer_name;
+    public void setFarmerName(String farmerName) {
+        this.farmerName = farmerName;
     }
 
     public String getGender() {
@@ -106,12 +163,12 @@ public class HortiRequest {
         this.remarks = remarks;
     }
 
-    public String getSurvey_no() {
-        return survey_no;
+    public String getSurveyNo() {
+        return surveyNo;
     }
 
-    public void setSurvey_no(String survey_no) {
-        this.survey_no = survey_no;
+    public void setSurveyNo(String surveyNo) {
+        this.surveyNo = surveyNo;
     }
 
     public String getVariety() {
@@ -162,44 +219,44 @@ public class HortiRequest {
         this.image1 = image1;
     }
 
-    public String getTank_name() {
-        return tank_name;
+    public String getTankName() {
+        return tankName;
     }
 
-    public void setTank_name(String tank_name) {
-        this.tank_name = tank_name;
+    public void setTankName(String tankName) {
+        this.tankName = tankName;
     }
 
-    public String getTxn_date() {
-        return txn_date;
+    public String getTxnDate() {
+        return txnDate;
     }
 
-    public void setTxn_date(String txn_date) {
-        this.txn_date = txn_date;
+    public void setTxnDate(String txnDate) {
+        this.txnDate = txnDate;
     }
 
-    public String getPhoto_lat() {
-        return photo_lat;
+    public String getPhotoLat() {
+        return photoLat;
     }
 
-    public void setPhoto_lat(String photo_lat) {
-        this.photo_lat = photo_lat;
+    public void setPhotoLat(String photoLat) {
+        this.photoLat = photoLat;
     }
 
-    public String getPhoto_lon() {
-        return photo_lon;
+    public String getPhotoLon() {
+        return photoLon;
     }
 
-    public void setPhoto_lon(String photo_lon) {
-        this.photo_lon = photo_lon;
+    public void setPhotoLon(String photoLon) {
+        this.photoLon = photoLon;
     }
 
-    public String getTxn_id() {
-        return txn_id;
+    public String getTxnId() {
+        return txnId;
     }
 
-    public void setTxn_id(String txn_id) {
-        this.txn_id = txn_id;
+    public void setTxnId(String txnId) {
+        this.txnId = txnId;
     }
 
     public String getMobile() {
@@ -218,5 +275,20 @@ public class HortiRequest {
         this.status = status;
     }
 
+    public String getInterventionType() {
+        return interventionType;
+    }
+
+    public void setInterventionType(String interventionType) {
+        this.interventionType = interventionType;
+    }
+
+    public String getOtherIntervention() {
+        return otherIntervention;
+    }
+
+    public void setOtherIntervention(String otherIntervention) {
+        this.otherIntervention = otherIntervention;
+    }
 
 }

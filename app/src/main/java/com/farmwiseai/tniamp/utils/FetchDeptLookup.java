@@ -2,6 +2,7 @@ package com.farmwiseai.tniamp.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.net.ParseException;
 import android.util.Log;
 
@@ -17,16 +18,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class FetchDeptLookup {
     String jsonResponse;
     private static CommonFunction commonFunction;
 
-    public  static List<ComponentData> getLookupValues(Activity activity) {
+    public static List<ComponentData> getLookupValues(Activity activity) {
         getAllComponentData = new ArrayList<>();
         commonFunction = new CommonFunction(activity);
         if (commonFunction.isNetworkAvailable() == true) {
@@ -73,11 +72,11 @@ public class FetchDeptLookup {
         List<ComponentData> componentDataList = null;
 
         try {
-            componentDataList= new ArrayList<>();
+            componentDataList = new ArrayList<>();
             Gson gson = new Gson();
           /*  File file = new File(context.getFilesDir(), FILE_NAME);
             FileReader fileReader = new FileReader(file);*/
-            BufferedReader bufferedReader  = new BufferedReader(
+            BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(context.getAssets().open(FILE_NAME)));
             JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -111,11 +110,11 @@ public class FetchDeptLookup {
         List<Sub_Basin_Data> subBasinDataList = null;
 
         try {
-            subBasinDataList= new ArrayList<>();
+            subBasinDataList = new ArrayList<>();
             Gson gson = new Gson();
           /*  File file = new File(context.getFilesDir(), FILE_NAME);
             FileReader fileReader = new FileReader(file);*/
-            BufferedReader bufferedReader  = new BufferedReader(
+            BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(context.getAssets().open(FILE_NAME)));
             JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -144,15 +143,16 @@ public class FetchDeptLookup {
         }
         return subBasinDataList;
     }
+
     public static List<BlockData> readBlockData(Context context, String FILE_NAME) {
         List<BlockData> blockDataList = null;
 
         try {
-            blockDataList= new ArrayList<>();
+            blockDataList = new ArrayList<>();
             Gson gson = new Gson();
           /*  File file = new File(context.getFilesDir(), FILE_NAME);
             FileReader fileReader = new FileReader(file);*/
-            BufferedReader bufferedReader  = new BufferedReader(
+            BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(context.getAssets().open(FILE_NAME)));
             JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -181,15 +181,16 @@ public class FetchDeptLookup {
         }
         return blockDataList;
     }
+
     public static List<DistrictData> readDistrictData(Context context, String FILE_NAME) {
         List<DistrictData> districtDataList = null;
 
         try {
-            districtDataList= new ArrayList<>();
+            districtDataList = new ArrayList<>();
             Gson gson = new Gson();
           /*  File file = new File(context.getFilesDir(), FILE_NAME);
             FileReader fileReader = new FileReader(file);*/
-            BufferedReader bufferedReader  = new BufferedReader(
+            BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(context.getAssets().open(FILE_NAME)));
             JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -210,15 +211,16 @@ public class FetchDeptLookup {
         }
         return districtDataList;
     }
+
     public static List<VillageData> readVillageData(Context context, String FILE_NAME) {
         List<VillageData> villageDataList = null;
 
         try {
-            villageDataList= new ArrayList<>();
+            villageDataList = new ArrayList<>();
             Gson gson = new Gson();
           /*  File file = new File(context.getFilesDir(), FILE_NAME);
             FileReader fileReader = new FileReader(file);*/
-            BufferedReader bufferedReader  = new BufferedReader(
+            BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(context.getAssets().open(FILE_NAME)));
             JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -240,4 +242,34 @@ public class FetchDeptLookup {
         return villageDataList;
     }
 
+    public static void setLookUpValues(Context context,String FILE_NAME) {
+//do something with your ArrayList
+        try {
+           String  text="data";
+            File file = new File(context.getAssets().toString(), "lookups.json");
+
+            FileOutputStream fos = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            osw.write(text);
+            osw.flush();
+            osw.close();
+            fos.close();
+
+          /*  File file = new File(context.getFilesDir(),FILE_NAME);
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(userString);
+            bufferedWriter.close();*/
+           /* AssetManager mngr = context.getAssets();
+
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open(FILE_NAME)));
+            ObjectOutputStream oos =
+                    new ObjectOutputStream(bufferedReader);
+            oos.writeObject(componentDataList);
+            oos.close();*/
+        } catch (Exception e) {
+Log.e("Exception",e.getMessage());
+        }
+    }
 }

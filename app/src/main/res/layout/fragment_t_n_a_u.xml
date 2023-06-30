@@ -223,6 +223,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:hint="@string/farmer_name" />
 
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
@@ -272,7 +273,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:inputType="number"
-                            android:maxLength="2"
+                            android:digits="1234567890."
+                            android:maxLength="4"
                             android:hint="@string/area_ha" />
 
                         <EditText

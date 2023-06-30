@@ -1,0 +1,326 @@
+[
+  {
+    "ID": 1,
+    "Name": " Dairy Interest Group",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 2,
+    "Name": "Calf Management",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 3,
+    "Name": "Mastitis Management",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 4,
+    "Name": " Infertility Management",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 5,
+    "Name": "Artificial Insemination",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 6,
+    "Name": "Fodder cultivation",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 7,
+    "Name": "Group meeting",
+    "PARENT_ID": 1,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 8,
+    "Name": "One day training",
+    "PARENT_ID": 1,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 9,
+    "Name": "One day exposure visit",
+    "PARENT_ID": 1,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 10,
+    "Name": "Follow up meeting",
+    "PARENT_ID": 1,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 11,
+    "Name": "Deworming",
+    "PARENT_ID": 2,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 12,
+    "Name": "Salt licks",
+    "PARENT_ID": 2,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 13,
+    "Name": "Prevention",
+    "PARENT_ID": 3,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 14,
+    "Name": "Treatment",
+    "PARENT_ID": 3,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 15,
+    "Name": "Infertility camp",
+    "PARENT_ID": 4,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 16,
+    "Name": "Follow up visit",
+    "PARENT_ID": 4,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 17,
+    "Name": "Estrus Synchronisation",
+    "PARENT_ID": 4,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 18,
+    "Name": "AI",
+    "PARENT_ID": 5,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 19,
+    "Name": "Pregnancy diagnosis",
+    "PARENT_ID": 5,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 20,
+    "Name": "Calf born",
+    "PARENT_ID": 5,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 21,
+    "Name": "Fodder Cholam",
+    "PARENT_ID": 6,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 22,
+    "Name": "Fodder Maize",
+    "PARENT_ID": 6,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 23,
+    "Name": "Cow Pea",
+    "PARENT_ID": 6,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 24,
+    "Name": "Agathi Seeds",
+    "PARENT_ID": 6,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 25,
+    "Name": "2nd Year",
+    "PARENT_ID": 10,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 26,
+    "Name": "3rd Year",
+    "PARENT_ID": 10,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 27,
+    "Name": "Visit 1",
+    "PARENT_ID": 16,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 28,
+    "Name": "Visit 2",
+    "PARENT_ID": 16,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 29,
+    "Name": "Visit 3",
+    "PARENT_ID": 16,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 30,
+    "Name": "Visit 1",
+    "PARENT_ID": 18,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 31,
+    "Name": "Visit 2",
+    "PARENT_ID": 18,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 32,
+    "Name": "Sowing",
+    "PARENT_ID": 21,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 33,
+    "Name": "Vegetative",
+    "PARENT_ID": 21,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 34,
+    "Name": "Sowing",
+    "PARENT_ID": 22,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 35,
+    "Name": "Vegetative",
+    "PARENT_ID": 22,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 36,
+    "Name": "Sowing",
+    "PARENT_ID": 23,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 37,
+    "Name": "Vegetative",
+    "PARENT_ID": 23,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 38,
+    "Name": "Sowing",
+    "PARENT_ID": 24,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 39,
+    "Name": "Vegetative",
+    "PARENT_ID": 24,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 40,
+    "Name": "Pregnancy verification",
+    "PARENT_ID": 4,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 41,
+    "Name": "Model Village",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 42,
+    "Name": "CCWM",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 43,
+    "Name": "SWIKC",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 44,
+    "Name": "Water walk",
+    "PARENT_ID": 42,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 45,
+    "Name": "PRA",
+    "PARENT_ID": 42,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 46,
+    "Name": "Water budgetting wall painting",
+    "PARENT_ID": 42,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 47,
+    "Name": "Village vision wall painting",
+    "PARENT_ID": 42,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 48,
+    "Name": "Initial Convergence/ Awareness Meeting",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 49,
+    "Name": "Entry Point Activity",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 50,
+    "Name": "Community Water Walk",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 51,
+    "Name": "PRA Excercise",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 52,
+    "Name": "Wall Painting- Water Budget ",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 53,
+    "Name": "Wall Painting- Village Vision",
+    "PARENT_ID": 41,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 54,
+    "Name": "Others",
+    "PARENT_ID": 0,
+    "revision_no": 1549215974
+  }
+]

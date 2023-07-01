@@ -94,7 +94,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     private Spinner subBasinSpinner, districtSpinner,
             blockSpinner, componentSpinner,
             sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner, villageSpinner, interventionSpinner,cropstagespinner;
+            genderSpinner, categorySpinner, villageSpinner, interventionSpinner, cropstagespinner;
     private EditText datePicker;
     private HortiCallApi hortiCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -159,14 +159,16 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         componentSpinner = horticultureBinding.componentTxt;
         sub_componentSpinner = horticultureBinding.subComponentsTxt;
         stagesSpinner = horticultureBinding.stagesTxt;
+        cropstagespinner = horticultureBinding.cropStages;
 
-        datePicker = horticultureBinding.dateTxt;
+                datePicker = horticultureBinding.dateTxt;
         vis_lyt = horticultureBinding.visibilityLyt;
         trainingLyt = horticultureBinding.iecLayt;
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
         iNames_lyt = horticultureBinding.inerventionLyt;
+
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
+        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, cropstagespinner,stagesSpinner ,datePicker, vis_lyt, trainingLyt, iNames_lyt);
 
         offlineHortiRequest = SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
@@ -214,7 +216,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         }
 
 
-
         if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 horticultureBinding.farmerTxt.setError("Please enter farmer name");
@@ -246,9 +247,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         }
 
 
-
         return true;
     }
+
     public void showToast(Activity mcontaxt, String message) {
         Toast.makeText(mcontaxt, message, Toast.LENGTH_SHORT).show();
     }

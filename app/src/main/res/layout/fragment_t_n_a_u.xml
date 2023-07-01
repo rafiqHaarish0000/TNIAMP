@@ -343,20 +343,21 @@
                         android:layout_marginTop="12dp"
                         android:hint="@string/remarks" />
 
-                    <LinearLayout
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/inverntionTyper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="18dp"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/check_values"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Consider as a Test" />
-                    </LinearLayout>
+                        app:smsp_enableFloatingLabel="true"
+                        android:textSize="18sp"
+                        app:smsp_hint="Intervention Type"
+                        android:padding="8dp"
+                        android:dropDownWidth="2dp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginTop="4dp"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false"/>
 
                     <Button
                         android:id="@+id/submission_btn"

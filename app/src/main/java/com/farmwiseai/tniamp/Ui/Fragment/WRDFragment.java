@@ -109,6 +109,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
     public String lat;
     public String lon;
+    public EditText wauText,memberTxt;
     ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
 
     @Override
@@ -142,11 +143,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         tankStageSpinner = wrdfragmentBinding.taskStages;
         stageSpinner = wrdfragmentBinding.stagesTxt;
         iNames_lyt = wrdfragmentBinding.othersLayout;
+        wauText = wrdfragmentBinding.nameOfWAU;
+        memberTxt = wrdfragmentBinding.noOfMembers;
 
         backPressListener = this;
 
         wrdCallApi = new WRDCallAPi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner,stageSpinner ,datePicker, iNames_lyt);
+        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner,stageSpinner ,wauText,iNames_lyt,memberTxt);
 
         offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 

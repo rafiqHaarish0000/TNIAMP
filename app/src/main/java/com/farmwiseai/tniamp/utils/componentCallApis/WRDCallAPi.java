@@ -44,8 +44,8 @@ public class WRDCallAPi {
 
     //first spinner phrase;
 
-    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner tankStageSpinner,Spinner stageSpinner ,EditText datePicker,
-                                   LinearLayout interventioNameLyt) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner tankStageSpinner, Spinner stageSpinner, EditText wauTxt,
+                                   LinearLayout interventioNameLyt,EditText memTxt) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -64,13 +64,14 @@ public class WRDCallAPi {
                     String names = getAllComponentData.get(i).getName();
                     if (names.equals("Model Village")) {
                         subComponentSpinner.setVisibility(View.VISIBLE);
+                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt,memTxt);
                         tankStageSpinner.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                     } else {
-                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner,datePicker);
+                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt,memTxt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         tankStageSpinner.setVisibility(View.GONE);
-                        datePicker.setVisibility(View.GONE);
+                        wauTxt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                     }
 
@@ -90,7 +91,7 @@ public class WRDCallAPi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner,Spinner fourthSpinner ,EditText editText) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, Spinner fourthSpinner, EditText wauTxt,EditText memTxt) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
@@ -106,13 +107,31 @@ public class WRDCallAPi {
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     Log.i(TAG, "posvalue2: " + positionValue2);
-//                    if (names.equalsIgnoreCase("Tank Bund")) {
-//                        tankStageComponent(positionValue2, thirdSpinner, fourthSpinner,editText);
-//                        thirdSpinner.setVisibility(View.VISIBLE);
-//                    } else {
-//                        thirdSpinner.setVisibility(View.GONE);
-//                    }
-                    tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
+
+                    if(names.equalsIgnoreCase("Formation of WUA")){
+                        thirdSpinner.setVisibility(View.GONE);
+                        fourthSpinner.setVisibility(View.GONE);
+                        wauTxt.setVisibility(View.VISIBLE);
+                        memTxt.setVisibility(View.VISIBLE);
+
+                    }else if(names.equalsIgnoreCase("Capacity building")){
+                        thirdSpinner.setVisibility(View.GONE);
+                        fourthSpinner.setVisibility(View.GONE);
+                        memTxt.setVisibility(View.VISIBLE);
+                        wauTxt.setVisibility(View.GONE);
+                    }else if(names.equalsIgnoreCase("Shutters")){
+                        thirdSpinner.setVisibility(View.GONE);
+                        fourthSpinner.setVisibility(View.GONE);
+                    }else if(names.equalsIgnoreCase("CCWM")){
+                        stagesDropDown(positionValue2, fourthSpinner);
+                        thirdSpinner.setVisibility(View.GONE);
+                        fourthSpinner.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        wauTxt.setVisibility(View.GONE);
+                        memTxt.setVisibility(View.GONE);
+                        tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
+                    }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
 
                 } catch (Exception e) {
@@ -143,7 +162,33 @@ public class WRDCallAPi {
                 try {
                     stageSpinner.setVisibility(View.VISIBLE);
                     positionValue2 = String.valueOf(tankStageList.get(i).getID());
-                    stagesDropDown(positionValue2,stageSpinner);
+
+                    String names = tankStageList.get(i).getName();
+                    if (names.equalsIgnoreCase("Marking Boundary Line") ||
+                            names.equalsIgnoreCase("Earthwork") ||
+                            names.equalsIgnoreCase("Foundation") ||
+                            names.equalsIgnoreCase("Erection of Boundary Stone") ||
+                            names.equalsIgnoreCase("Completion")||
+                            names.equalsIgnoreCase("Sectioning - Profile Formation")
+                            ||names.equalsIgnoreCase("Formwork of Wall")||
+                            names.equalsIgnoreCase("Concrete Work")||
+                            names.equalsIgnoreCase("Finishing")||
+                            names.equalsIgnoreCase("Casting Concrete Blocks")||
+                            names.equalsIgnoreCase("Fixing Concrete Blocks")||
+                            names.equalsIgnoreCase("Starting")||
+                            names.equalsIgnoreCase("Removing Weeds Scrub Jungle")||
+                            names.equalsIgnoreCase("Profile Formation")||
+                            names.equalsIgnoreCase("Raft Foundation")||
+                            names.equalsIgnoreCase("Revetment")||
+                            names.equalsIgnoreCase("Well stening")||
+                            names.equalsIgnoreCase("Erection of perforated")||
+                            names.equalsIgnoreCase("Parapet wall")||
+                            names.equalsIgnoreCase("Steel grill")||
+                            names.equalsIgnoreCase("Horizontal")) {
+                        stageSpinner.setVisibility(View.GONE);
+                    } else {
+                        stagesDropDown(positionValue2, stageSpinner);
+                    }
 
                 } catch (Exception e) {
 
@@ -160,8 +205,6 @@ public class WRDCallAPi {
 
     public void stagesDropDown(CharSequence stagePosVal, Spinner stageSpinner) {
 
-//        positionValue2 = String.valueOf(tankStageList.get(i).getID());
-//        Log.i(TAG, "StagePOS: "+tankStageList.get(i).getID());
         commonFunction = new CommonFunction(activity);
         stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
         adapters = new ComponentAdapter(context, stagesList);

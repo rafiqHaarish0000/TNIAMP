@@ -85,6 +85,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
     private List<VillageData> villageDataList;
+    private List<String> interventionList;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
     private ComponentAdapter adapter;
@@ -92,7 +93,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
     private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner, sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner,
+            componentSpinner, sub_componentSpinner, stagesSpinner,
+            genderSpinner, categorySpinner, villageSpinner,interventionSpinner;
     private EditText datePicker;
     private TNAU_CallApi TNAUCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -122,10 +125,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String date;
     public String status;
     public BackPressListener backPressListener;
-    private String firstImageBase64, secondImageBase64;
+    private String firstImageBase64, secondImageBase64,interventionTypeVal;
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
-    private double latitude, longitude;
 
     @Override
     public void onAttach(Context context) {
@@ -206,7 +208,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 && stagesSpinner.getSelectedItem() == null
                 && genderSpinner.getSelectedItem() == null
                 && categorySpinner.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null) {
+                && villageSpinner.getSelectedItem() == null
+                && interventionSpinner.getSelectedItem() == null) {
             mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
             return false;
         }
@@ -348,6 +351,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         genderSpinner = tnauBinding.genderTxt;
         categorySpinner = tnauBinding.categoryTxt;
         villageSpinner = tnauBinding.villageTxt;
+        interventionSpinner = tnauBinding.inverntionTyper;
 
 
         //phase data
@@ -508,6 +512,23 @@ mCommonFunction.hideProgress();
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 category = categorySpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        interventionList = new ArrayList<>();
+        interventionList.add("Demo");
+        interventionList.add("Sustainability");
+        interventionList.add("Adoption");
+        tnauBinding.inverntionTyper.setItem(interventionList);
+        interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                interventionTypeVal = String.valueOf(interventionSpinner.getSelectedItemPosition());
+                Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
             @Override

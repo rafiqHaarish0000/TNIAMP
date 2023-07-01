@@ -12,7 +12,7 @@ public class WRDResponse {
     private String response;
     @SerializedName("responseMessage")
     @Expose
-    private AgriResponse.ResponseMessage responseMessage;
+    private WRDResponse.ResponseMessage responseMessage;
 
     public String getStatusCode() {
         return statusCode;
@@ -30,11 +30,11 @@ public class WRDResponse {
         this.response = response;
     }
 
-    public AgriResponse.ResponseMessage getResponseMessage() {
+    public WRDResponse.ResponseMessage getResponseMessage() {
         return responseMessage;
     }
 
-    public void setResponseMessage(AgriResponse.ResponseMessage responseMessage) {
+    public void setResponseMessage(WRDResponse.ResponseMessage responseMessage) {
         this.responseMessage = responseMessage;
     }
 

@@ -163,13 +163,13 @@ public class HortiCallApi {
 
     }
 
-    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
+    public void stagesDropDown(CharSequence stagePosVal, Spinner stageSpinner, EditText editText) {
         commonFunction = new CommonFunction(activity);
         stagesList = FetchDeptLookup.readDataFromFile(context, "hortilookup.json");
         adapters = new ComponentAdapter(context, stagesList);
         adapters.getFilter().filter(stagePosVal);
-        thirdSpinner.setAdapter(adapters);
-        thirdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        stageSpinner.setAdapter(adapters);
+        stageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {

@@ -37,7 +37,12 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.WRDRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.WRDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
+import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentWRDFRagmentBinding;
@@ -45,32 +50,44 @@ import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
 import com.farmwiseai.tniamp.utils.FetchDeptLookup;
+import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.WRDCallAPi;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WRDFragment extends Fragment implements View.OnClickListener, BackPressListener {
-   private FragmentWRDFRagmentBinding wrdfragmentBinding;
+    private FragmentWRDFRagmentBinding wrdfragmentBinding;
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
+    public String intervention1; //component
+    public String intervention2; //sub_componenet
+    public String intervention3; // stages
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
+    private List<String> interventionList;
+    private VillageAdaapter villageAdaapter;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
     private ComponentAdapter adapter, adapter2;
@@ -79,8 +96,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private BlockAdapter blockAdapter;
     private Spinner subBasinSpinner, districtSpinner,
             blockSpinner, componentSpinner,
-            sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner;
+            sub_componentSpinner, tankStageSpinner,stageSpinner ,villageSpinner, interventionSpinner;
     private EditText datePicker;
     private WRDCallAPi wrdCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -90,11 +106,17 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout vis_lyt, iNames_lyt;
     public BackPressListener backPressListener;
+    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
+    public String lat;
+    public String lon;
+    ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -117,20 +139,28 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         componentSpinner = wrdfragmentBinding.componentTxt;
         sub_componentSpinner = wrdfragmentBinding.subComponentsTxt;
-        stagesSpinner = wrdfragmentBinding.stagesTxt;
-        vis_lyt = wrdfragmentBinding.visibilityLyt;
+        tankStageSpinner = wrdfragmentBinding.taskStages;
+        stageSpinner = wrdfragmentBinding.stagesTxt;
         iNames_lyt = wrdfragmentBinding.othersLayout;
 
         backPressListener = this;
 
-        wrdCallApi = new WRDCallAPi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
-        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, iNames_lyt);
+        wrdCallApi = new WRDCallAPi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
+        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner,stageSpinner ,datePicker, iNames_lyt);
 
+        offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+
+        LatLongPojo latLongPojo = new LatLongPojo();
+        latLongPojo = PermissionUtils.getLocation(getContext());
+        lat = latLongPojo.getLat();
+        lon = latLongPojo.getLon();
+        Log.i("data", lat + "," + lon);
         setAllDropDownData();
 
 
         return wrdfragmentBinding.getRoot();
     }
+
     private boolean fieldValidation(String lengthNumberTxt, String category,
                                     String lsPointTxt, String sliceNumberTxt, String remarks, String date) {
 
@@ -140,21 +170,20 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         remarks = wrdfragmentBinding.remarksTxt.getText().toString();
 
 
-
         if (wrdfragmentBinding.phase1.getSelectedItem() == null
                 && subBasinSpinner.getSelectedItem() == null
                 && districtSpinner.getSelectedItem() == null
                 && blockSpinner.getSelectedItem() == null
                 && componentSpinner.getSelectedItem() == null
                 && sub_componentSpinner.getSelectedItem() == null
-                && stagesSpinner.getSelectedItem() == null
-                && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(),"Empty field found.!, Please enter all the fields");
+                && tankStageSpinner.getSelectedItem() == null
+                && villageSpinner.getSelectedItem() == null
+                && interventionSpinner.getSelectedItem() == null) {
+            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
         }
 
-        if(valueofPic != 0 && valueofPic != 1 && valueofPic != 2){
-            mLoadCustomToast(getActivity(),"Image is empty, Please take 2 photos");
+        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
         if (lengthNumberTxt.length() == 0) {
@@ -186,7 +215,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 break;
 
             case R.id.submission_btn:
-                boolean checkValidaiton = fieldValidation(lengthValue,lsPointValue, sliceNumberValue, near_tank, remarks, dateField);
+                boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField);
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -233,7 +262,9 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         blockSpinner = wrdfragmentBinding.blockTxt;
         componentSpinner = wrdfragmentBinding.componentTxt;
         sub_componentSpinner = wrdfragmentBinding.subComponentsTxt;
-        stagesSpinner = wrdfragmentBinding.stagesTxt;
+        tankStageSpinner = wrdfragmentBinding.stagesTxt;
+        villageSpinner = wrdfragmentBinding.villageTxt;
+        interventionSpinner = wrdfragmentBinding.inverntionTyper;
 
 
         //phase data
@@ -286,39 +317,12 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<BlockData>> userDataCall = null;
-                        userDataCall = call.getBlockData();
-                        userDataCall.enqueue(new Callback<List<BlockData>>() {
-                            @Override
-                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    blockDropDown = response.body();
-                                    posValue = String.valueOf(districtDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    blockAdapter.getFilter().filter(posValue);
-                                    blockSpinner.setAdapter(blockAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
+                posValue = String.valueOf(districtDropDown.get(i).getID());
+                Log.i(TAG, "posValue: " + posValue);
+                blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                blockAdapter.getFilter().filter(posValue);
+                blockSpinner.setAdapter(blockAdapter);
             }
 
             @Override
@@ -327,9 +331,53 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             }
         });
 
+        blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
+                posValue = String.valueOf(blockDropDown.get(i).getID());
+                villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                villageAdaapter.getFilter().filter(posValue);
+                villageSpinner.setAdapter(villageAdaapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                villageValue = String.valueOf(villageDataList.get(i).getID());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        interventionList = new ArrayList<>();
+        interventionList.add("Demo");
+        interventionList.add("Sustainability");
+        interventionList.add("Adoption");
+        wrdfragmentBinding.inverntionTyper.setItem(interventionList);
+        interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                interventionTypeVal = String.valueOf(interventionSpinner.getSelectedItemPosition());
+                Log.i(TAG, "interventionType:" + interventionTypeVal);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
-
 
 
     private boolean checkPermission() {
@@ -395,13 +443,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 // Set the image in imageview for display
                 wrdfragmentBinding.image1.setImageBitmap(photo);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo);
+                firstImageBase64 = getEncodedString(photo);
             } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
                 wrdfragmentBinding.image2.setImageBitmap(photo2);
                 // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo2);
+                secondImageBase64 = getEncodedString(photo2);
             }
         }
 
@@ -419,19 +467,72 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         byte[] imageArr = os.toByteArray();
 
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
+        return Base64.encodeToString(imageArr, Base64.NO_WRAP);
 
 
     }
 
     private void finalSubmission() {
+        getAllData();
+    }
+
+    public void mLoadCustomToast(Activity mcontaxt, String message) {
+        CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
+    }
+
+    private void getAllData() {
+
+        remarks = wrdfragmentBinding.remarksTxt.getText().toString();
+
+        String myFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dateField = dateFormat.format(myCalendar.getTime());
+        Log.i(TAG, "dataValue" + dateField);
+
+        WRDRequest request = new WRDRequest();
+        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_date("2020-02-12 11:02:02");
+        request.setImage1(firstImageBase64.trim());
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
+        request.setIntervention3(intervention3);
+        request.setIntervention4("");
+        request.setLat(lat);
+        request.setLength(wrdfragmentBinding.lengthTxt.getText().toString());
+        request.setLon(lon);
+        request.setLs_point(wrdfragmentBinding.lsPoint.getText().toString());
+        request.setRemarks(remarks);
+        request.setSluice(wrdfragmentBinding.sliceNumber.getText().toString());
+        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setTxn_id("20200212120446");
+        request.setVillage(villageValue);
+        request.setNof_mem("");
+        request.setWua_name("");
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
+        request.setStatus("0");
+        request.setIntervention_type(interventionTypeVal);
+        request.setOther_intervention(wrdfragmentBinding.inerventionNameTxt.getText().toString());
+
 
         if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should saved in post api
-
-
+            onlineDataUpload(request);
         } else {
-            String offlineText = "Data saved successfully in offline data";
+            String offlineText = "";
+            if (offlineWRDRequest == null) {
+                offlineWRDRequest = new ArrayList<>();
+                offlineWRDRequest.add(request);
+                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else if (offlineWRDRequest.size() < 5) {
+                offlineWRDRequest.add(request);
+                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else {
+                offlineText = "You reached the offline Store Data limit please Sync !";
+            }
             showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -440,14 +541,78 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 }
             });
         }
+
+
     }
 
-    public void mLoadCustomToast(Activity mcontaxt, String message) {
-        CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
+    private void onlineDataUpload(WRDRequest request) {
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<WRDResponse> userDataCall = null;
+        userDataCall = call.getWRDResponse(request);
+        userDataCall.enqueue(new Callback<WRDResponse>() {
+            @Override
+            public void onResponse(Call<WRDResponse> call, Response<WRDResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String txt_id = String.valueOf(response.body().getResponseMessage().getWrdLandDeptId());
+                    Log.i(TAG, "txt_value: " + txt_id.toString());
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    uploadSecondImage(txt_id);
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WRDResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void uploadSecondImage(String txt_id) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        request.setDepartment_id("3");
+        request.setImg2(secondImageBase64);
+        request.setID(txt_id);
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
+//                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
+                        Toast.makeText(getContext(), "Data Saved Successfully", Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
     @Override
     public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
-
+        intervention1 = lookUpDataClass.getIntervention1();
+        intervention2 = lookUpDataClass.getIntervention2();
+        intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

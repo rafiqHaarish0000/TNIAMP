@@ -57,7 +57,7 @@ public class AEDCallApi {
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner,Spinner thirdSpinner ,LinearLayout hideLyt, LinearLayout otherLyt) {
 
         commonFunction = new CommonFunction(activity);
-        getAllComponentData = FetchDeptLookup.readDataFromFile(context, "hortilookup.json");
+        getAllComponentData = FetchDeptLookup.readDataFromFile(context, "aedlookup.json");
         adapters = new ComponentAdapter(context, getAllComponentData);
         positionValue = "0";
         adapters.getFilter().filter(positionValue);
@@ -109,7 +109,7 @@ public class AEDCallApi {
     public void subComponenetDropDown(String posVal, Spinner secondSpinner,Spinner thirdSpinner) {
 
         commonFunction = new CommonFunction(activity);
-        sub_componentList = FetchDeptLookup.readDataFromFile(context, "hortilookup.json");
+        sub_componentList = FetchDeptLookup.readDataFromFile(context, "aedlookup.json");
         adapters = new ComponentAdapter(context, sub_componentList);
         adapters.getFilter().filter(String.valueOf(posVal));
         secondSpinner.setAdapter(adapters);
@@ -147,7 +147,7 @@ public class AEDCallApi {
 
     public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner) {
         commonFunction = new CommonFunction(activity);
-        stagesList = FetchDeptLookup.readDataFromFile(context, "hortilookup.json");
+        stagesList = FetchDeptLookup.readDataFromFile(context, "aedlookup.json");
         adapters = new ComponentAdapter(context, stagesList);
         adapters.getFilter().filter(stagePosVal);
         thirdSpinner.setAdapter(adapters);

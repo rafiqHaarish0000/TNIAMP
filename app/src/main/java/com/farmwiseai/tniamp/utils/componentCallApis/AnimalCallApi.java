@@ -102,6 +102,7 @@ public class AnimalCallApi {
                                                         visLyt.setVisibility(View.GONE);
                                                         noOfCalves.setVisibility(View.GONE);
                                                         trainLyt.setVisibility(View.GONE);
+                                                        otherLyt.setVisibility(View.GONE);
                                                     } else if (names.equalsIgnoreCase("Dairy Interest Group")) {
                                                         trainLyt.setVisibility(View.VISIBLE);
                                                         visLyt.setVisibility(View.GONE);
@@ -127,6 +128,7 @@ public class AnimalCallApi {
                                                         trainLyt.setVisibility(View.GONE);
                                                         pregnancyLyt.setVisibility(View.GONE);
                                                         noOfCalves.setVisibility(View.GONE);
+                                                        otherLyt.setVisibility(View.GONE);
                                                     }else if(names.equalsIgnoreCase("Others")){
                                                         otherLyt.setVisibility(View.VISIBLE);
                                                         visLyt.setVisibility(View.VISIBLE);

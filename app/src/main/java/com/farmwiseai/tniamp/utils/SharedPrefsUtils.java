@@ -177,7 +177,7 @@ public class SharedPrefsUtils
 
     }
 
-    public  static ArrayList<Agri_Request> getHortiArrayList(Context context,PREF_KEY key){
+    public  static ArrayList<HortiRequest> getHortiArrayList(Context context,PREF_KEY key){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);

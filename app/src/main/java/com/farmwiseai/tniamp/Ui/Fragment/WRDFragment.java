@@ -44,6 +44,7 @@ import com.farmwiseai.tniamp.databinding.FragmentWRDFRagmentBinding;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
@@ -250,39 +251,12 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<Sub_Basin_Data>> userDataCall = null;
-                        userDataCall = call.getSub_basinData();
-                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
-                            @Override
-                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    sub_basin_DropDown = response.body();
-                                    Log.i(TAG, "onResponse: " + wrdfragmentBinding.phase1.getSelectedItemPosition());
-                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
-                                    myString = String.valueOf(wrdfragmentBinding.phase1.getSelectedItemPosition());
-                                    subAdapter.getFilter().filter(myString);
-                                    subBasinSpinner.setAdapter(subAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
+                subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                myString = String.valueOf(wrdfragmentBinding.phase1.getSelectedItemPosition());
+                subAdapter.getFilter().filter(myString);
+                subBasinSpinner.setAdapter(subAdapter);
 
-                            @Override
-                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -295,45 +269,11 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<DistrictData>> userDataCall = null;
-                        userDataCall = call.getDistrictData();
-                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
-                            @Override
-                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-
-                                    districtDropDown = response.body();
-                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    districtAdapter.getFilter().filter(posValue);
-                                    districtSpinner.setAdapter(districtAdapter);
-
-                                } else {
-                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
-                                mLoadCustomToast(getActivity(), t.toString());
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
+                posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                districtAdapter.getFilter().filter(posValue);
+                districtSpinner.setAdapter(districtAdapter);
             }
 
             @Override

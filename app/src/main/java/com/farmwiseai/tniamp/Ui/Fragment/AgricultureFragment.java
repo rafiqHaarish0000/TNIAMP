@@ -176,6 +176,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         backPressListener = this;
 
+        offlineAgriRequest = SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, seed_lyt, iNames_lyt);
 

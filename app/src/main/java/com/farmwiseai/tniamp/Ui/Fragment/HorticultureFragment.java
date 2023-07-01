@@ -167,6 +167,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         iNames_lyt = horticultureBinding.inerventionLyt;
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
+
+        offlineHortiRequest = SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
         lat = latLongPojo.getLat();
@@ -356,7 +359,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 myString = String.valueOf(horticultureBinding.phase1.getSelectedItemPosition());
                 subAdapter.getFilter().filter(myString);
                 subBasinSpinner.setAdapter(subAdapter);
-
 
             }
 
@@ -608,7 +610,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             if (offlineHortiRequest == null) {
                 offlineHortiRequest = new ArrayList<>();
                 offlineHortiRequest.add(request);
-                SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
                 offlineText = "Data saved successfully in offline data";
 
             } else if (offlineHortiRequest.size() < 5) {

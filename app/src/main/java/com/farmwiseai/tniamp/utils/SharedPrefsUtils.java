@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
@@ -184,5 +185,23 @@ public class SharedPrefsUtils
         Type type = new TypeToken<ArrayList<HortiRequest>>() {}.getType();
         return gson.fromJson(json, type);
     }
+    public static void saveAEDArrayList(Context context, ArrayList<AEDRequest> list , PREF_KEY key){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key.KEY, json);
+        editor.apply();
+
+    }
+
+    public  static ArrayList<AEDRequest> getAEDArrayList(Context context,PREF_KEY key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = prefs.getString(key.KEY, null);
+        Type type = new TypeToken<ArrayList<AEDRequest>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
 }
 

@@ -51,9 +51,11 @@ import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -74,8 +76,8 @@ import retrofit2.Response;
 
 public class AEDFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private Context context;
-    private FragmentAEDBinding tnauBinding;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village,interventionName;
+    private FragmentAEDBinding aedBinding;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village, interventionName;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -91,16 +93,16 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     private BlockAdapter blockAdapter;
     private VillageAdaapter villageAdaapter;
     private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
-            sub_componentSpinner,stageSpinner ,genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
+            sub_componentSpinner, stageSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
     private AEDCallApi aedCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic;
     private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList,interventionList;
+    private List<String> phraseList, genderList, categoryList, interventionList;
     private GPSTracker gpsTracker;
-    private LinearLayout hideLyt, otherLayt;
+    private LinearLayout hideLyt, otherLayt, vis_lyt, iNames_lyt;
     private double lati, longi;
     public String intervention1; //component
     public String intervention2; //sub_componenet
@@ -122,7 +124,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public String date;
     public String status;
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64,interventionTypeVal;
+    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
+    ArrayList<AEDRequest> offlineAedRequest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,27 +133,27 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         // Inflate the layout for this fragment
         mCommonFunction = new CommonFunction(getActivity());
         context = getContext();
-        tnauBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_a_e_d, container, false);
-        tnauBinding.popBackImage.setOnClickListener(this);
-        tnauBinding.submissionBtn.setOnClickListener(this);
-        tnauBinding.image1.setOnClickListener(this);
-        tnauBinding.image2.setOnClickListener(this);
+        aedBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_a_e_d, container, false);
+        aedBinding.popBackImage.setOnClickListener(this);
+        aedBinding.submissionBtn.setOnClickListener(this);
+        aedBinding.image1.setOnClickListener(this);
+        aedBinding.image2.setOnClickListener(this);
 
-        farmerName = tnauBinding.farmerTxt.getText().toString();
-        survey_no = tnauBinding.surveyTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        near_tank = tnauBinding.tankTxt.getText().toString();
-        remarks = tnauBinding.remarksTxt.getText().toString();
-        componentSpinner = tnauBinding.componentTxt;
-        sub_componentSpinner = tnauBinding.subComponentsTxt;
-        stageSpinner = tnauBinding.stageTxt;
-        hideLyt = tnauBinding.visibilityLyt;
-        otherLayt = tnauBinding.othersLayout;
+        farmerName = aedBinding.farmerTxt.getText().toString();
+        survey_no = aedBinding.surveyTxt.getText().toString();
+        area = aedBinding.areaTxt.getText().toString();
+        near_tank = aedBinding.tankTxt.getText().toString();
+        remarks = aedBinding.remarksTxt.getText().toString();
+        componentSpinner = aedBinding.componentTxt;
+        sub_componentSpinner = aedBinding.subComponentsTxt;
+        stageSpinner = aedBinding.stageTxt;
+        hideLyt = aedBinding.visibilityLyt;
+        otherLayt = aedBinding.othersLayout;
         backPressListener = this;
 
-
+        offlineAedRequest = SharedPrefsUtils.getAEDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
         aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
-        aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner,stageSpinner ,hideLyt, otherLayt);
+        aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, hideLyt, otherLayt);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
@@ -159,18 +162,18 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         Log.i("data", lat + "," + lon);
         setAllDataValues();
 
-        return tnauBinding.getRoot();
+        return aedBinding.getRoot();
     }
 
     private void setAllDataValues() {
 
-        subBasinSpinner = tnauBinding.subBasinTxt;
-        districtSpinner = tnauBinding.districtTxt;
-        blockSpinner = tnauBinding.blockTxt;
-        genderSpinner = tnauBinding.genderTxt;
-        categorySpinner = tnauBinding.categoryTxt;
-        villageSpinner = tnauBinding.villageTxt;
-        interventionSpinner = tnauBinding.inverntionTyper;
+        subBasinSpinner = aedBinding.subBasinTxt;
+        districtSpinner = aedBinding.districtTxt;
+        blockSpinner = aedBinding.blockTxt;
+        genderSpinner = aedBinding.genderTxt;
+        categorySpinner = aedBinding.categoryTxt;
+        villageSpinner = aedBinding.villageTxt;
+        interventionSpinner = aedBinding.inverntionTyper;
 
 
         //phase data
@@ -180,47 +183,22 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
         phraseList.add("Phase 4");
-        tnauBinding.phase1.setItem(phraseList);
+        aedBinding.phase1.setItem(phraseList);
 
 
         //phase drop down spinner
-        tnauBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        aedBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<Sub_Basin_Data>> userDataCall = null;
-                        userDataCall = call.getSub_basinData();
-                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
-                            @Override
-                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    sub_basin_DropDown = response.body();
-                                    Log.i(TAG, "onBody: " + response.code());
-                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
-                                    myString = String.valueOf(tnauBinding.phase1.getSelectedItemPosition());
-                                    subAdapter.getFilter().filter(myString);
-                                    subBasinSpinner.setAdapter(subAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
+                sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
+                Log.i(TAG, "onResponse: " + aedBinding.phase1.getSelectedItemPosition());
+                subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                myString = String.valueOf(aedBinding.phase1.getSelectedItemPosition());
+                subAdapter.getFilter().filter(myString);
+                subBasinSpinner.setAdapter(subAdapter);
 
-                            @Override
-                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
 
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -233,45 +211,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<DistrictData>> userDataCall = null;
-                        userDataCall = call.getDistrictData();
-                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
-                            @Override
-                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    districtDropDown = response.body();
-                                    Log.i(TAG, "onBody: " + response.code());
-                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    districtAdapter.getFilter().filter(posValue);
-                                    districtSpinner.setAdapter(districtAdapter);
-
-                                } else {
-                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
-                                mLoadCustomToast(getActivity(), t.toString());
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
+                districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
+                posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                districtAdapter.getFilter().filter(posValue);
+                districtSpinner.setAdapter(districtAdapter);
 
 
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -284,39 +230,12 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<BlockData>> userDataCall = null;
-                        userDataCall = call.getBlockData();
-                        userDataCall.enqueue(new Callback<List<BlockData>>() {
-                            @Override
-                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    blockDropDown = response.body();
-                                    posValue = String.valueOf(districtDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    blockAdapter.getFilter().filter(posValue);
-                                    blockSpinner.setAdapter(blockAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
+                posValue = String.valueOf(districtDropDown.get(i).getID());
+                Log.i(TAG, "posValue: " + posValue);
+                blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                blockAdapter.getFilter().filter(posValue);
+                blockSpinner.setAdapter(blockAdapter);
             }
 
             @Override
@@ -328,40 +247,12 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<VillageData>> userDataCall = null;
-                        userDataCall = call.getVillageData();
-                        userDataCall.enqueue(new Callback<List<VillageData>>() {
-                            @Override
-                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    villageDataList = response.body();
-                                    posValue = String.valueOf(blockDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    villageAdaapter.getFilter().filter(posValue);
-                                    villageSpinner.setAdapter(villageAdaapter);
+                villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
+                posValue = String.valueOf(blockDropDown.get(i).getID());
+                villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                villageAdaapter.getFilter().filter(posValue);
+                villageSpinner.setAdapter(villageAdaapter);
 
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
             }
 
             @Override
@@ -389,7 +280,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         genderList = new ArrayList<>();
         genderList.add("Male");
         genderList.add("Female");
-        tnauBinding.genderTxt.setItem(genderList);
+        aedBinding.genderTxt.setItem(genderList);
 
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -408,7 +299,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         categoryList.add("SC");
         categoryList.add("ST");
         categoryList.add("Others");
-        tnauBinding.categoryTxt.setItem(categoryList);
+        aedBinding.categoryTxt.setItem(categoryList);
 
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -425,7 +316,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         interventionList.add("Demo");
         interventionList.add("Sustainability");
         interventionList.add("Adoption");
-        tnauBinding.inverntionTyper.setItem(interventionList);
+        aedBinding.inverntionTyper.setItem(interventionList);
         interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -444,16 +335,17 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
     // validation for all mandatory fields
     private boolean fieldValidation(String farmerName, String category,
-                                    String survey_no, String area, String near_tank, String remarks, String date) {
+                                    String survey_no, String area, String near_tank, String remarks, String date, String intName) {
 
-        farmerName = tnauBinding.farmerTxt.getText().toString();
-        survey_no = tnauBinding.surveyTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        near_tank = tnauBinding.tankTxt.getText().toString();
-        remarks = tnauBinding.remarksTxt.getText().toString();
+        farmerName = aedBinding.farmerTxt.getText().toString();
+        survey_no = aedBinding.surveyTxt.getText().toString();
+        area = aedBinding.areaTxt.getText().toString();
+        near_tank = aedBinding.tankTxt.getText().toString();
+        remarks = aedBinding.remarksTxt.getText().toString();
+        intName = aedBinding.inerventionNameTxt.getText().toString();
 
 
-        if (tnauBinding.phase1.getSelectedItem() == null
+        if (aedBinding.phase1.getSelectedItem() == null
                 && subBasinSpinner.getSelectedItem() == null
                 && districtSpinner.getSelectedItem() == null
                 && blockSpinner.getSelectedItem() == null
@@ -469,23 +361,35 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
+
         if (farmerName.length() == 0) {
-            tnauBinding.farmerTxt.setError("Please enter farmer name");
+            aedBinding.farmerTxt.setError("Please enter farmer name");
             return false;
-        } else if (survey_no.length() == 0) {
-            tnauBinding.surveyTxt.setError("Please enter survey no");
+        } /*else if (date.length() == 0) {
+                aedBinding.dateTxt.setError("Please enter the date");
+                return false;
+            }*/ else if (survey_no.length() == 0) {
+            aedBinding.surveyTxt.setError("Please enter survey no");
             return false;
         } else if (area.length() == 0) {
-            tnauBinding.areaTxt.setError("Please enter area");
+            aedBinding.areaTxt.setError("Please enter area");
             return false;
-        } else if (near_tank.length() == 0) {
-            tnauBinding.tankTxt.setError("Please enter near by tank name");
+        } /*else if (near_tank.length() == 0 && aedBinding.tankTxt.getVisibility() == View.VISIBLE) {
+            aedBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        } else if (remarks.length() == 0) {
-            tnauBinding.remarksTxt.setError("Remarks not found");
+        }*/ else if (remarks.length() == 0 && aedBinding.remarksTxt.getVisibility() == View.VISIBLE) {
+            aedBinding.remarksTxt.setError("Remarks not found");
             return false;
-        }
 
+        }
+        if (otherLayt.getVisibility() == View.VISIBLE) {
+            if (intName.length() == 0) {
+                aedBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+
+            return true;
+        }
         return true;
     }
 
@@ -497,7 +401,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
 
         boolean checkValidaiton = fieldValidation(farmerName,
-                category, survey_no, area, near_tank, remarks, dateField);
+                category, survey_no, area, near_tank, remarks, dateField, interventionName);
 
         switch (view.getId()) {
             case R.id.pop_back_image:
@@ -527,7 +431,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
             case R.id.image_1:
                 if (PermissionUtils.checkPermission(context)) {
-                    tnauBinding.image1.setSelected(true);
+                    aedBinding.image1.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
                     takePicture = true;
@@ -541,7 +445,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
             case R.id.image_2:
                 if (PermissionUtils.checkPermission(context)) {
-                    tnauBinding.image2.setSelected(true);
+                    aedBinding.image2.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
                     takePicture = false;
@@ -573,13 +477,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             if (takePicture && valueofPic == 1) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
-                tnauBinding.image1.setImageBitmap(photo);
+                aedBinding.image1.setImageBitmap(photo);
                 // BitMap is data structure of image file which store the image in memory
                 firstImageBase64 = getEncodedString(photo);
             } else if (!takePicture && valueofPic == 2) {
                 Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
-                tnauBinding.image2.setImageBitmap(photo2);
+                aedBinding.image2.setImageBitmap(photo2);
                 // BitMap is data structure of image file which store the image in memory
                 secondImageBase64 = getEncodedString(photo2);
             }
@@ -607,7 +511,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
     // final submission button validation for online and save data for offline data through database..
     private void finalSubmission() {
-
+        getAllData();
         if (mCommonFunction.isNetworkAvailable() == true) {
             //data should saved in post api
             getAllData();
@@ -633,13 +537,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
     private void getAllData() {
 
-        farmerName = tnauBinding.farmerTxt.getText().toString();
-        survey_no = tnauBinding.surveyTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        remarks = tnauBinding.remarksTxt.getText().toString();
-        near_tank = tnauBinding.tankTxt.getText().toString();
-        interventionName = tnauBinding.inerventionNameTxt.getText().toString();
+        farmerName = aedBinding.farmerTxt.getText().toString();
+        survey_no = aedBinding.surveyTxt.getText().toString();
+        area = aedBinding.areaTxt.getText().toString();
+        area = aedBinding.areaTxt.getText().toString();
+        remarks = aedBinding.remarksTxt.getText().toString();
+        near_tank = aedBinding.tankTxt.getText().toString();
+        interventionName = aedBinding.inerventionNameTxt.getText().toString();
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -673,7 +577,37 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setStatus("0");
         request.setIntervention_type(interventionTypeVal);
         request.setOther_intervention(interventionName);
+        if (mCommonFunction.isNetworkAvailable() == true) {
+            onlineDataUpload(request);
+        } else {
+            String offlineText = "";
+            if (offlineAedRequest == null) {
+                offlineAedRequest = new ArrayList<>();
+                offlineAedRequest.add(request);
+                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
 
+            } else if (offlineAedRequest.size() < 5) {
+                offlineAedRequest.add(request);
+                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else {
+                offlineText = "You reached the offline Store Data limit please Sync !";
+            }
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
+
+
+    }
+
+    private void onlineDataUpload(AEDRequest request) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AEDResponse> userDataCall = null;
         userDataCall = call.getAEDResponse(request);
@@ -685,8 +619,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                     Log.i(TAG, "txt_value: " + txt_id.toString());
                     mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                     uploadSecondImage(txt_id);
-//                        List<AgriResponse> agriResponses = new ArrayList<>();
-//                        agriResponses.addAll(response.body().getResponse());
                 } else {
 
                 }

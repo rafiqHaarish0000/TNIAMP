@@ -413,7 +413,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
 
-
             }
 
             @Override

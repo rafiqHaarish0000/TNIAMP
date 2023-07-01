@@ -141,15 +141,9 @@ public class WRDCallAPi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-
                     stageSpinner.setVisibility(View.VISIBLE);
                     positionValue2 = String.valueOf(tankStageList.get(i).getID());
-                    Log.i(TAG, "StagePOS: "+tankStageList.get(i).getID());
-                    commonFunction = new CommonFunction(activity);
-                    stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
-                    adapters = new ComponentAdapter(context, stagesList);
-                    adapters.getFilter().filter(String.valueOf(positionValue2));
-                    stageSpinner.setAdapter(adapters);
+                    stagesDropDown(positionValue2,stageSpinner);
 
                 } catch (Exception e) {
 
@@ -164,6 +158,17 @@ public class WRDCallAPi {
 
     }
 
+    public void stagesDropDown(CharSequence stagePosVal, Spinner stageSpinner) {
+
+//        positionValue2 = String.valueOf(tankStageList.get(i).getID());
+//        Log.i(TAG, "StagePOS: "+tankStageList.get(i).getID());
+        commonFunction = new CommonFunction(activity);
+        stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
+        adapters = new ComponentAdapter(context, stagesList);
+        adapters.getFilter().filter(stagePosVal);
+        stageSpinner.setAdapter(adapters);
+
+    }
 
 
 }

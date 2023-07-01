@@ -39,6 +39,13 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
@@ -48,7 +55,11 @@ import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
+import com.farmwiseai.tniamp.utils.FetchDeptLookup;
+import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -90,6 +101,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
             sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
+    private AnimalRequest request;
     private AnimalCallApi animalCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
@@ -97,11 +109,11 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
-    private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
+    private LinearLayout vis_lyt, trainingLyt, pregLyt, iNames_lyt;
     private double lati, longi;
-    public String intervention1 = ""; //component
-    public String intervention2; //sub_componenet
-    public String intervention3; // stages
+    public String intervention1 = null; //component
+    public String intervention2 = null; //sub_componenet
+    public String intervention3 = null;  // stages
     public String farmer_name;
     public String gender;
     public String lat;
@@ -112,6 +124,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String venue;
     public BackPressListener backPressListener;
     private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
+    ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -141,13 +154,21 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         sub_componentSpinner = animalBinding.subComponentsTxt;
         stagesSpinner = animalBinding.stagesTxt;
         datePicker = animalBinding.dateTxt;
-        trainingLyt = animalBinding.trainingLayout;
         vis_lyt = animalBinding.visibilityLyt;
+        trainingLyt = animalBinding.trainingLayout;
         EditText calves = animalBinding.noOfCalves;
+        pregLyt = animalBinding.pregLyt;
+        iNames_lyt = animalBinding.othersLayout;
+        offlineARDRequest = SharedPrefsUtils.getARDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
 
         animalCallApi = new AnimalCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-            animalCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker,calves ,vis_lyt, trainingLyt);
+        animalCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, calves, vis_lyt, trainingLyt, pregLyt, iNames_lyt);
+        LatLongPojo latLongPojo = new LatLongPojo();
+        latLongPojo = PermissionUtils.getLocation(getContext());
+        lat = latLongPojo.getLat();
+        lon = latLongPojo.getLon();
+        Log.i("data", lat + "," + lon);
         setAllDropDownData();
 
 
@@ -184,39 +205,12 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         animalBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<Sub_Basin_Data>> userDataCall = null;
-                        userDataCall = call.getSub_basinData();
-                        userDataCall.enqueue(new Callback<List<Sub_Basin_Data>>() {
-                            @Override
-                            public void onResponse(Call<List<Sub_Basin_Data>> call, Response<List<Sub_Basin_Data>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    sub_basin_DropDown = response.body();
-                                    Log.i(TAG, "onResponse: " + animalBinding.phase1.getSelectedItemPosition());
-                                    subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
-                                    myString = String.valueOf(animalBinding.phase1.getSelectedItemPosition());
-                                    subAdapter.getFilter().filter(myString);
-                                    subBasinSpinner.setAdapter(subAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<Sub_Basin_Data>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
+                Log.i(TAG, "onResponse: " + animalBinding.phase1.getSelectedItemPosition());
+                subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
+                myString = String.valueOf(animalBinding.phase1.getSelectedItemPosition());
+                subAdapter.getFilter().filter(myString);
+                subBasinSpinner.setAdapter(subAdapter);
             }
 
             @Override
@@ -229,45 +223,11 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<DistrictData>> userDataCall = null;
-                        userDataCall = call.getDistrictData();
-                        userDataCall.enqueue(new Callback<List<DistrictData>>() {
-                            @Override
-                            public void onResponse(Call<List<DistrictData>> call, Response<List<DistrictData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-
-                                    districtDropDown = response.body();
-                                    posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    districtAdapter.getFilter().filter(posValue);
-                                    districtSpinner.setAdapter(districtAdapter);
-
-                                } else {
-                                    mLoadCustomToast(getActivity(), getResources().getString(R.string.server_error));
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<DistrictData>> call, Throwable t) {
-                                mLoadCustomToast(getActivity(), t.toString());
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), e.toString());
-                    }
-
-
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
+                posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
+                districtAdapter.getFilter().filter(posValue);
+                districtSpinner.setAdapter(districtAdapter);
             }
 
             @Override
@@ -280,39 +240,12 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<BlockData>> userDataCall = null;
-                        userDataCall = call.getBlockData();
-                        userDataCall.enqueue(new Callback<List<BlockData>>() {
-                            @Override
-                            public void onResponse(Call<List<BlockData>> call, Response<List<BlockData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    blockDropDown = response.body();
-                                    posValue = String.valueOf(districtDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    blockAdapter = new BlockAdapter(getContext(), blockDropDown);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    blockAdapter.getFilter().filter(posValue);
-                                    blockSpinner.setAdapter(blockAdapter);
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<BlockData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
+                posValue = String.valueOf(districtDropDown.get(i).getID());
+                Log.i(TAG, "posValue: " + posValue);
+                blockAdapter = new BlockAdapter(getContext(), blockDropDown);
+                blockAdapter.getFilter().filter(posValue);
+                blockSpinner.setAdapter(blockAdapter);
             }
 
             @Override
@@ -325,40 +258,11 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCommonFunction.isNetworkAvailable() == true) {
-                    try {
-                        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
-                        Call<List<VillageData>> userDataCall = null;
-                        userDataCall = call.getVillageData();
-                        userDataCall.enqueue(new Callback<List<VillageData>>() {
-                            @Override
-                            public void onResponse(Call<List<VillageData>> call, Response<List<VillageData>> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    villageDataList = response.body();
-                                    posValue = String.valueOf(blockDropDown.get(i).getID());
-                                    Log.i(TAG, "posValue: " + posValue);
-                                    villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
-                                    Log.i(TAG, "districtPos: " + myString);
-                                    villageAdaapter.getFilter().filter(posValue);
-                                    villageSpinner.setAdapter(villageAdaapter);
-
-                                } else {
-                                    mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<VillageData>> call, Throwable t) {
-
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        mLoadCustomToast(getActivity(), getString(R.string.server_error));
-                    }
-                } else {
-                    mLoadCustomToast(getActivity(), getString(R.string.network_error));
-                }
+                villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
+                posValue = String.valueOf(blockDropDown.get(i).getID());
+                villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
+                villageAdaapter.getFilter().filter(posValue);
+                villageSpinner.setAdapter(villageAdaapter);
             }
 
             @Override
@@ -426,7 +330,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                interventionTypeVal = interventionSpinner.getSelectedItem().toString();
+                interventionTypeVal = String.valueOf(interventionSpinner.getSelectedItemPosition());
             }
 
             @Override
@@ -618,23 +522,8 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     }
 
     private void finalSubmission() {
-
-        if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should saved in post api
-            // Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
-//            getAllData();
-            //mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-
-        } else {
-            String offlineText = "Data saved successfully in offline data";
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                }
-            });
-        }
+        getAllData();
+       
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
@@ -645,9 +534,159 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 .show();
     }
 
+    private void getAllData() {
+        request = new AnimalRequest();
+        farmerName = animalBinding.farmerTxt.getText().toString();
+        survey_no = animalBinding.surveyTxt.getText().toString();
+        area = animalBinding.areaTxt.getText().toString();
+        area = animalBinding.areaTxt.getText().toString();
+        remarks = animalBinding.remarksTxt.getText().toString();
+        dateField = animalBinding.dateTxt.getText().toString();
+        near_tank = animalBinding.tankTxt.getText().toString();
+
+        String myFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dateField = dateFormat.format(myCalendar.getTime());
+        Log.i(TAG, "dataValue" + dateField);
+
+
+        request.setVillage(villageValue);
+        request.setIntervention1(intervention1);
+        request.setIntervention2(intervention2);
+        request.setIntervention3(intervention3);
+        request.setFarmer_name(farmerName);
+        request.setGender(gender);
+        request.setCategory(category);
+        request.setSurvey_no(survey_no);
+        request.setArea(area);
+        request.setVariety(" ");
+        request.setImage1(firstImageBase64.trim());
+        request.setYield(" ");
+        request.setRemarks(remarks);
+        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_date(dateField);
+        request.setLat(lat);
+        request.setLon(lon);
+        request.setTank_name(near_tank);
+        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
+        request.setTxn_id("20200212120446");
+        request.setDate("");
+        request.setStatus("0");
+        request.setNo_of_cows(animalBinding.noOfCalves.getText().toString());
+        request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
+        request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
+        request.setMobile(animalBinding.mobileNumber.getText().toString());
+        request.setOthers_female_no(foo);
+        request.setOthers_male_no(mon);
+        request.setSc_st_female_no(fon);
+        request.setSc_st_male_no(moo);
+        request.setVenue(animalBinding.venue.getText().toString());
+        request.setIntervention_type(interventionTypeVal);
+        request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
+        if (mCommonFunction.isNetworkAvailable()) {
+            onlineDataUpload(request);
+        } else {
+            String offlineText = "";
+            if (offlineARDRequest == null) {
+                offlineARDRequest = new ArrayList<>();
+                offlineARDRequest.add(request);
+                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else if (offlineARDRequest.size() < 5) {
+                offlineARDRequest.add(request);
+                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineText = "Data saved successfully in offline data";
+
+            } else {
+                offlineText = "You reached the offline Store Data limit please Sync !";
+            }
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
+
+
+    }
+
+    private void onlineDataUpload(AnimalRequest request) {
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<AnimalResponse> userDataCall = null;
+        userDataCall = call.getAnimalResponse(request);
+        userDataCall.enqueue(new Callback<AnimalResponse>() {
+            @Override
+            public void onResponse(Call<AnimalResponse> call, Response<AnimalResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String txt_id = String.valueOf(response.body().getResponseMessage().getAgriLandDeptId());
+                        Log.i(TAG, "txt_value: " + txt_id.toString());
+                        uploadSecondImage(txt_id);
+//                        List<AgriResponse> agriResponses = new ArrayList<>();
+//                        agriResponses.addAll(response.body().getResponse());
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AnimalResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void uploadSecondImage(String txt_id) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        request.setDepartment_id("5");
+        request.setImg2(secondImageBase64.trim());
+        request.setID(txt_id);
+
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
+//                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
+                        Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     @Override
     public void onSelectedInputs(LookUpDataClass lookUpDataClass) {
-
+        intervention1 = lookUpDataClass.getIntervention1();
+        intervention2 = lookUpDataClass.getIntervention2();
+        intervention3 = lookUpDataClass.getIntervention3();
+        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 
 

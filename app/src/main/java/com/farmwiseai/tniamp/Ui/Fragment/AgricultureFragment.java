@@ -107,7 +107,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
     private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
-
     public String intervention1 = null; //component
     public String intervention2 = null; //sub_componenet
     public String intervention3 = null; // stages

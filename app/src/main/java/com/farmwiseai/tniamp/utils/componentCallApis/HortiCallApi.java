@@ -55,7 +55,6 @@ public class HortiCallApi {
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt, LinearLayout trainingLyt,LinearLayout interventioNameLyt) {
 
         commonFunction = new CommonFunction(activity);
-        positionValue = "0";
 
         componentList = FetchDeptLookup.readDataFromFile(context, "hortilookup.json");
         adapters = new ComponentAdapter(context, componentList);

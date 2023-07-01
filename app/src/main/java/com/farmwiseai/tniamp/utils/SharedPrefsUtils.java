@@ -215,6 +215,16 @@ public class SharedPrefsUtils
         Type type = new TypeToken<ArrayList<AEDRequest>>() {}.getType();
         return gson.fromJson(json, type);
     }
+    public static void saveAEDArrayList(Context context, ArrayList<AEDRequest> list , PREF_KEY key){
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key.KEY, json);
+        editor.apply();
+
+    }
     public static void saveARDArrayList(Context context, ArrayList<AnimalRequest> list , PREF_KEY key){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();

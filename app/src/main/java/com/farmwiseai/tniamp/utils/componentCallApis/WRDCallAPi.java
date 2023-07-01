@@ -51,6 +51,7 @@ public class WRDCallAPi {
         positionValue = "0";
         getAllComponentData = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
         adapters = new ComponentAdapter(context, getAllComponentData);
+        positionValue = "0";
         adapters.getFilter().filter(positionValue);
         componentSpinner.setAdapter(adapters);
         componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -58,19 +59,13 @@ public class WRDCallAPi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
+                    lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
-                    if (names.equalsIgnoreCase("Other")) {
-                        subComponentSpinner.setVisibility(View.GONE);
-                        tankStageSpinner.setVisibility(View.GONE);
-                        interventioNameLyt.setVisibility(View.VISIBLE);
-//                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, datePicker);
-
-                    } else if (names.equals("Model Village")) {
+                    if (names.equals("Model Village")) {
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         tankStageSpinner.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
-                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner,datePicker);
                     } else {
                         subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner,datePicker);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -78,8 +73,6 @@ public class WRDCallAPi {
                         datePicker.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                     }
-                    lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -109,22 +102,21 @@ public class WRDCallAPi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String names = sub_componentList.get(i).getName();
-                System.out.println(names);
                 thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     Log.i(TAG, "posvalue2: " + positionValue2);
-                    if (names.equalsIgnoreCase("Tank Bund")) {
-                        System.out.println(positionValue2);
-                        thirdSpinner.setVisibility(View.VISIBLE);
-                    } else {
-                        thirdSpinner.setVisibility(View.GONE);
-                    }
+//                    if (names.equalsIgnoreCase("Tank Bund")) {
+//                        tankStageComponent(positionValue2, thirdSpinner, fourthSpinner,editText);
+//                        thirdSpinner.setVisibility(View.VISIBLE);
+//                    } else {
+//                        thirdSpinner.setVisibility(View.GONE);
+//                    }
+                    tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
-                    tankStageComponent(positionValue2, thirdSpinner, fourthSpinner,editText);
 
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    e.printStackTrace();
                 }
 
             }
@@ -138,23 +130,27 @@ public class WRDCallAPi {
 
     }
 
-    public void tankStageComponent(CharSequence stagePosVal, Spinner tankStageSpinner, Spinner stageSpinner, EditText editText) {
+    public void tankStageComponent(CharSequence stagePosVal, Spinner tankStageSpinner, Spinner stageSpinner) {
         commonFunction = new CommonFunction(activity);
-//        tankStageList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
-
-        adapters = new ComponentAdapter(context, sub_componentList);
-//        commonFunction.showProgress();
+        tankStageList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
+        adapters = new ComponentAdapter(context, tankStageList);
         adapters.getFilter().filter(String.valueOf(stagePosVal));
         tankStageSpinner.setAdapter(adapters);
-        commonFunction.dismiss();
+
         tankStageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
+
                     stageSpinner.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "names: " + stagesList.get(i).getName());
                     positionValue2 = String.valueOf(tankStageList.get(i).getID());
-                    stagesDropDown(positionValue2, stageSpinner, editText);
+                    Log.i(TAG, "StagePOS: "+tankStageList.get(i).getID());
+                    commonFunction = new CommonFunction(activity);
+                    stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
+                    adapters = new ComponentAdapter(context, stagesList);
+                    adapters.getFilter().filter(String.valueOf(positionValue2));
+                    stageSpinner.setAdapter(adapters);
+
                 } catch (Exception e) {
 
                 }
@@ -168,41 +164,6 @@ public class WRDCallAPi {
 
     }
 
-    public void stagesDropDown(CharSequence stagePosVal, Spinner stageSpinner, EditText editText) {
-        commonFunction = new CommonFunction(activity);
-        stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
-        adapters = new ComponentAdapter(context, stagesList);
-        adapters.getFilter().filter(String.valueOf(stagePosVal));
-        stageSpinner.setAdapter(adapters);
-
-//        stageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                try {
-//                    Log.i(TAG, "names: " + stagesList.get(i).getName());
-//                    String names = stagesList.get(i).getName();
-////                    lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
-////                    backPressListener.onSelectedInputs(lookUpDataClass);
-//                    if (names.contains("Sowing")) {
-//                        editText.setVisibility(View.VISIBLE);
-//                    } else if (names.contains("Planting")) {
-//                        editText.setVisibility(View.VISIBLE);
-//                    } else {
-//                        editText.setVisibility(View.GONE);
-//                    }
-//
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
-    }
 
 
 }

@@ -207,6 +207,16 @@ public class SharedPrefsUtils
 
     }
 
+    public static void saveAEDArrayList(Context context, ArrayList<AEDRequest> list , PREF_KEY key){
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key.KEY, json);
+        editor.apply();
+
+    }
 
     public  static ArrayList<AEDRequest> getAEDArrayList(Context context,PREF_KEY key){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

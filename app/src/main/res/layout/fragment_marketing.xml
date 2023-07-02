@@ -180,7 +180,7 @@
                         app:smsp_multilineError="false" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                        android:id="@+id/nameOFTrainingSpinner"
+                        android:id="@+id/stage_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
@@ -192,26 +192,11 @@
                         android:textSize="18sp"
                         android:visibility="gone"
                         app:smsp_enableFloatingLabel="true"
-                        app:smsp_hint="Name of training"
-                        app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false" />
-                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                        android:id="@+id/categorySpinner1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="12dp"
-                        android:dropDownWidth="2dp"
-                        android:padding="8dp"
-                        android:spinnerMode="dropdown"
-                        android:textSize="18sp"
-                        android:visibility="gone"
-                        app:smsp_enableFloatingLabel="true"
-                        app:smsp_hint="@string/category"
+                        app:smsp_hint="@string/stages"
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
 
+                    <!--Other layout-->
                     <LinearLayout
                         android:id="@+id/othersLayout"
                         android:layout_width="match_parent"
@@ -244,386 +229,9 @@
                             android:scrollbars="vertical"
                             android:singleLine="false" />
                     </LinearLayout>
-
+                    <!--layout 1 farmer producer company -->
                     <LinearLayout
-                        android:id="@+id/layout2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                            android:id="@+id/categorySpinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="12dp"
-                            android:dropDownWidth="2dp"
-                            android:padding="8dp"
-                            android:spinnerMode="dropdown"
-                            android:textSize="18sp"
-                            android:visibility="gone"
-                            app:smsp_enableFloatingLabel="true"
-                            app:smsp_hint="@string/category"
-                            app:smsp_hintColor="@color/grey"
-                            app:smsp_multilineError="false" />
-
-                        <EditText
-                            android:id="@+id/name_value"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="@string/name" />
-
-                        <EditText
-                            android:id="@+id/capacity"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Capacity(Mts)" />
-
-                        <EditText
-                            android:id="@+id/DOCompletion"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Date of Completion" />
-
-                        <EditText
-                            android:id="@+id/QantityStoredTXT"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Quantity stored (Mts)" />
-
-                        <EditText
-                            android:id="@+id/noOfBeneficieries"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="No of beneficieries" />
-
-                        <EditText
-                            android:id="@+id/govertShare"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Government Share" />
-
-                        <EditText
-                            android:id="@+id/contributionTxt"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Contribution" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <EditText
-                            android:id="@+id/venue"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="@string/venue" />
-
-                        <EditText
-                            android:id="@+id/durationTrainigTxt"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Duration of training(Days)" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"
-                            android:orientation="vertical"
-                            android:visibility="visible">
-
-                            <EditText
-                                style="@style/AppEdittext"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:gravity="start"
-                                android:hint="No of Trainees" />
-
-                            <TextView
-                                style="@style/head_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="6dp"
-                                android:fontFamily="@font/poppins_medium"
-                                android:gravity="start"
-                                android:text="Male No."
-                                android:textColor="@color/black"
-                                android:textStyle="normal" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Others No"
-                                    android:inputType="number" />
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="SC/ST No."
-                                    android:inputType="number" />
-                            </LinearLayout>
-
-                            <TextView
-                                style="@style/head_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="6dp"
-                                android:fontFamily="@font/poppins_medium"
-                                android:gravity="start"
-                                android:text="Female No."
-                                android:textColor="@color/black"
-                                android:textStyle="normal" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Others No"
-                                    android:inputType="number" />
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="SC/ST No."
-                                    android:inputType="number" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Date From"
-                                    android:inputType="number" />
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Date To."
-                                    android:inputType="number" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/exposureVistlyt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <EditText
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Name (HQ/FPC)" />
-
-                        <EditText
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Duration of Visit(Days)" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"
-                            android:orientation="vertical"
-                            android:visibility="visible">
-
-                            <EditText
-                                style="@style/AppEdittext"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:gravity="start"
-                                android:hint="Numbers" />
-
-                            <TextView
-                                style="@style/head_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="6dp"
-                                android:fontFamily="@font/poppins_medium"
-                                android:gravity="start"
-                                android:text="Male No."
-                                android:textColor="@color/black"
-                                android:textStyle="normal" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Others No"
-                                    android:inputType="number" />
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="SC/ST No."
-                                    android:inputType="number" />
-                            </LinearLayout>
-
-                            <TextView
-                                style="@style/head_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="6dp"
-                                android:fontFamily="@font/poppins_medium"
-                                android:gravity="start"
-                                android:text="Female No."
-                                android:textColor="@color/black"
-                                android:textStyle="normal" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Others No"
-                                    android:inputType="number" />
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="SC/ST No."
-                                    android:inputType="number" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Date From"
-                                    android:inputType="number" />
-
-                                <EditText
-                                    style="@style/AppEdittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:gravity="start"
-                                    android:hint="Date To."
-                                    android:inputType="number" />
-                            </LinearLayout>
-                            <EditText
-                                style="@style/AppEdittext"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:hint="Country/State Name" />
-                            <EditText
-                                style="@style/AppEdittext"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:hint="Places visited" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/visibilityLyt"
+                        android:id="@+id/layout1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -863,6 +471,481 @@
                             android:layout_marginTop="12dp"
                             android:hint="Infrastructure available" />
                     </LinearLayout>
+                    <!--layout 2 construction of storage godowns-->
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/categorySpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            android:visibility="visible"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="@string/category"
+                            app:smsp_hintColor="@color/grey"
+                            app:smsp_multilineError="false" />
+
+                        <EditText
+                            android:id="@+id/name_value"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="@string/name" />
+
+                        <EditText
+                            android:id="@+id/capacity"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Capacity(Mts)" />
+
+                        <EditText
+                            android:id="@+id/DOCompletion"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Date of Completion" />
+
+                        <EditText
+                            android:id="@+id/QantityStoredTXT"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Quantity stored (Mts)" />
+
+                        <EditText
+                            android:id="@+id/noOfBeneficieries"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="No of beneficieries" />
+
+                        <EditText
+                            android:id="@+id/govertShare"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Government Share" />
+
+                        <EditText
+                            android:id="@+id/contributionTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Contribution" />
+                    </LinearLayout>
+                    <!--training layout-->
+                    <LinearLayout
+                        android:id="@+id/trainingLyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/nameOFTrainingSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            android:visibility="visible"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="Name of training"
+                            app:smsp_hintColor="@color/grey"
+                            app:smsp_multilineError="false" />
+
+                        <EditText
+                            android:id="@+id/venue"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="@string/venue" />
+
+                        <EditText
+                            android:id="@+id/durationTrainigTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Duration of training(Days)" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:hint="No of Trainees" />
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Male No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Female No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date From"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date To."
+                                    android:inputType="number" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <!--exposure layout-->
+                    <LinearLayout
+                        android:id="@+id/exposureVistlyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/exposureCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            android:visibility="visible"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="@string/category"
+                            app:smsp_hintColor="@color/grey"
+                            app:smsp_multilineError="false" />
+
+                        <EditText
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Name (HQ/FPC)" />
+
+                        <EditText
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Duration of Visit(Days)" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:hint="Numbers" />
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Male No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <TextView
+                                style="@style/head_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="start"
+                                android:text="Female No."
+                                android:textColor="@color/black"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Others No"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="SC/ST No."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date From"
+                                    android:inputType="number" />
+
+                                <EditText
+                                    style="@style/AppEdittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="start"
+                                    android:hint="Date To."
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:hint="Country/State Name" />
+
+                            <EditText
+                                style="@style/AppEdittext"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:hint="Places visited" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <!--agri layout-->
+                    <LinearLayout
+                        android:id="@+id/businessPlanLyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="SI.No"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="Name of Beneficiriey"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="Village"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="Name of the project"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="Cost of the project"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="Date of release of Grant"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/AppEdittext"
+                            android:gravity="start"
+                            android:layout_gravity="start"
+                            android:hint="Total Grant Amount"/>
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:id="@+id/take_pic"

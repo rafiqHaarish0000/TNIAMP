@@ -196,6 +196,37 @@
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
 
+                    <EditText
+                        android:id="@+id/nodalTXt"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="Nodal officer" />
+                    <EditText
+                        android:id="@+id/nameofTankTXT"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="Name of the tank" />
+                    <EditText
+                        android:id="@+id/waterTxt"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:inputType="number"
+                        android:hint="Water spread area (EWSA-Ha)" />
+                    <EditText
+                        android:id="@+id/seedStockTXt"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:inputType="number"
+                        android:hint="No.of seed stocked" />
+
                     <LinearLayout
                         android:id="@+id/othersLayout"
                         android:layout_width="match_parent"

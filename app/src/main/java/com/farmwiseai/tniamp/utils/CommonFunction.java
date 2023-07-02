@@ -124,6 +124,11 @@ public class CommonFunction
         rotateImage.startAnimation(startRotateAnimation);
     }
 
+    public void mLoadCustomToast(Activity mcontaxt, String message) {
+        CustomToast.makeText(mcontaxt, message, CustomToast.LENGTH_SHORT, 0).show();
+    }
+
+
     public void hideProgress() {
         try {
             if (progressView != null)

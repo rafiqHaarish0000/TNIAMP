@@ -49,5 +49,7 @@ dependencies {
     //spinner
     implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
     implementation "com.github.skydoves:powerspinner:1.2.6"
+    //multiple spinner
+    implementation 'com.github.AnuraganuPunalur:Multi-Selection-Spinner-Android:1.0'
 
 }

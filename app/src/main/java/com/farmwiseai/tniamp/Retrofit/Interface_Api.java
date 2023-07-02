@@ -8,6 +8,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.MarkRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.WRDRequest;
@@ -15,6 +16,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.MarkResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.WRDResponse;
@@ -93,6 +95,9 @@ public interface Interface_Api {
 
     @POST("animalhusbandary")
     Call<AnimalResponse> getAnimalResponse(@Body AnimalRequest animalRequest);
+
+    @POST("marketing")
+    Call<MarkResponse> getMarkResponse(@Body MarkRequest markRequest);
 
 }
 

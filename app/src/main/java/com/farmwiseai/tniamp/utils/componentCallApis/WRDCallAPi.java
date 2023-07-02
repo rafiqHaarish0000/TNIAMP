@@ -130,6 +130,8 @@ public class WRDCallAPi {
                     else{
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.GONE);
+                        fourthSpinner.setVisibility(View.GONE);
                         tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));

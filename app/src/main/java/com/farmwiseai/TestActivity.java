@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.anurag.multiselectionspinner.MultiSelectionSpinnerDialog;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.databinding.ActivityTestBinding;
@@ -40,6 +41,7 @@ import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -51,6 +53,7 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
     ComponentAdapter adapter, adapter2;
     Spinner firstSpinner, secondSpinner, thirdSpinner;
     EditText datePicker;
+    List<String> multiAdapterList;
     private TNAU_CallApi TNAUCallApi;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
@@ -72,6 +75,27 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
         secondSpinner = testBinding.phase2;
         thirdSpinner = testBinding.phase3;
         datePicker = testBinding.sowingDatepicker;
+
+        multiAdapterList = new ArrayList<>();
+        multiAdapterList.add("One");
+        multiAdapterList.add("Two");
+        multiAdapterList.add("Three");
+        multiAdapterList.add("Four");
+        multiAdapterList.add("Five");
+        testBinding.spinnerMultiSpinner.initMultiSpinner(this, testBinding.spinnerMultiSpinner);
+        testBinding.spinnerMultiSpinner.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
+        testBinding.spinnerMultiSpinner.setPadding(20,20,20,20);
+        testBinding.spinnerMultiSpinner.setAdapterWithOutImage(this, multiAdapterList, new MultiSelectionSpinnerDialog.OnMultiSpinnerSelectionListener() {
+            @Override
+            public void OnMultiSpinnerItemSelected(List<String> chosenItems) {
+                for (int i = 0; i < chosenItems.size(); i++) {
+                    Log.e("chosenItems", chosenItems.get(i));
+                }
+            }
+        });
+
+
+
 
         testBinding.clickable.setOnClickListener(new View.OnClickListener() {
             @Override

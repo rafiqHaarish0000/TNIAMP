@@ -258,13 +258,16 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (area.length() == 0) {
                 agricultureBinding.areaTxt.setError("Please enter area");
                 return false;
+            } else if (Double.valueOf(area) > 2.0) {
+                agricultureBinding.areaTxt.setError("Area Should be less than 2(ha)");
+                return false;
             } /*else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
             agricultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        }*/ else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
+        }*/ /*else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
                 agricultureBinding.remarksTxt.setError("Remarks not found");
                 return false;
-            } else if (agricultureBinding.mobileNumbertxt.toString().isEmpty()) {
+            }*/ else if (agricultureBinding.mobileNumbertxt.toString().isEmpty() || (agricultureBinding.mobileNumbertxt.toString().length() < 10)) {
                 agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
             }
@@ -631,6 +634,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 getEncodedString(photo2);
                 secondImageBase64 = getEncodedString(photo2);
             }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
+            toast.show();
+
         }
 
     }

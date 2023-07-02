@@ -3,6 +3,7 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -220,7 +221,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                     finalSubmission();
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Validation Error!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -537,19 +538,25 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == pic_id) {
-            if (takePicture && valueofPic == 1) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                marketingBinding.image1.setImageBitmap(photo);
-                // BitMap is data structure of image file which store the image in memory
-                firstImageBase64 = getEncodedString(photo);
-            } else if (!takePicture && valueofPic == 2) {
-                Bitmap photo2 = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                marketingBinding.image2.setImageBitmap(photo2);
-                // BitMap is data structure of image file which store the image in memory
-                secondImageBase64 = getEncodedString(photo2);
+            if (resultCode == Activity.RESULT_OK) {
+                if (takePicture && valueofPic == 1) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    marketingBinding.image1.setImageBitmap(photo);
+                    // BitMap is data structure of image file which store the image in memory
+                    firstImageBase64 = getEncodedString(photo);
+                } else if (!takePicture && valueofPic == 2) {
+                    Bitmap photo2 = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    marketingBinding.image2.setImageBitmap(photo2);
+                    // BitMap is data structure of image file which store the image in memory
+                    secondImageBase64 = getEncodedString(photo2);
+                }
             }
+        }else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+            toast.show();
+
         }
 
     }

@@ -51,8 +51,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
         lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
         lineDeptId = "9";
-
-
         binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
@@ -67,8 +65,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.navFish.setOnClickListener(this);
         binding.aboutImage.setOnClickListener(this);
         binding.logoutIcon.setOnClickListener(this);
+      //  syncOfflineData();
 
+    }
 
+    private void syncOfflineData() {
+        if(mCommonFunction.isNetworkAvailable())
+        {
+            mCommonFunction.showProgress();
+        }
     }
 
     private void showDept(String lineDeptId) {

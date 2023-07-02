@@ -223,7 +223,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                     finalSubmission();
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Data saved successfully.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Validation Error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -442,18 +442,24 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == pic_id) {
             if (takePicture && valueofPic == 1) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                wrdfragmentBinding.image1.setImageBitmap(photo);
-                // BitMap is data structure of image file which store the image in memory
-                firstImageBase64 = getEncodedString(photo);
-            } else if (!takePicture && valueofPic == 2) {
-                Bitmap photo2 = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                wrdfragmentBinding.image2.setImageBitmap(photo2);
-                // BitMap is data structure of image file which store the image in memory
-                secondImageBase64 = getEncodedString(photo2);
+                if (resultCode == Activity.RESULT_OK) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    wrdfragmentBinding.image1.setImageBitmap(photo);
+                    // BitMap is data structure of image file which store the image in memory
+                    firstImageBase64 = getEncodedString(photo);
+                } else if (!takePicture && valueofPic == 2) {
+                    Bitmap photo2 = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    wrdfragmentBinding.image2.setImageBitmap(photo2);
+                    // BitMap is data structure of image file which store the image in memory
+                    secondImageBase64 = getEncodedString(photo2);
+                }
             }
+        }else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+            toast.show();
+
         }
 
     }

@@ -82,6 +82,8 @@ public class AEDCallApi {
                     else{
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.VISIBLE);
+                        otherLyt.setVisibility(View.GONE);
+
                         Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
@@ -111,22 +113,22 @@ public class AEDCallApi {
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "aedlookup.json");
         adapters = new ComponentAdapter(context, sub_componentList);
-        adapters.getFilter().filter(String.valueOf(posVal));
+        adapters.getFilter().filter(posVal);
         secondSpinner.setAdapter(adapters);
         secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String names = sub_componentList.get(i).getName();
-                thirdSpinner.setVisibility(View.VISIBLE);
                 try {
-                    positionValue2 = String.valueOf(getAllComponentData.get(i).getID());
+                    positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     if (names.equalsIgnoreCase("CCMG")) {
                         thirdSpinner.setVisibility(View.VISIBLE);
+                        stagesDropDown(String.valueOf(sub_componentList.get(i).getID()), thirdSpinner);
+
                     }else {
                         thirdSpinner.setVisibility(View.GONE);
                     }
-                    stagesDropDown(positionValue2, thirdSpinner);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
 //                                        stagesDropDown(positionValue2, thirdSpinner, editText);
                 } catch (Exception e) {

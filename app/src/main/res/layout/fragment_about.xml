@@ -84,12 +84,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Version"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.7"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="14"
+                    android:text=": 14"
                     android:layout_weight="1"
                     style="@style/med_text"/>
             </LinearLayout>
@@ -102,13 +102,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Village Count:"
-                    android:layout_weight="0.3"
+                    android:text="Village Count"
+                    android:layout_weight="0.4"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="13704"
+                    android:text=": 13704"
                     style="@style/med_text"/>
             </LinearLayout>
             <LinearLayout
@@ -121,12 +121,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Block Count"
+                    android:layout_weight="0.5"
+                    style="@style/med_text"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=": 634"
+                    style="@style/med_text"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:weightSum="2"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="District Count"
                     android:layout_weight="0.4"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="634"
+                    android:text=": 162"
                     style="@style/med_text"/>
             </LinearLayout>
             <LinearLayout
@@ -138,31 +156,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="District Count:"
-                    android:layout_weight="0.3"
+                    android:text="Subbasin Count"
+                    android:layout_weight="0.2"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="162"
-                    style="@style/med_text"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:weightSum="2"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Subbasin Count:"
-                    android:layout_weight="0.1"
-                    style="@style/med_text"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="52"
+                    android:text=": 52"
                     style="@style/med_text"/>
             </LinearLayout>
         </LinearLayout>
@@ -205,13 +205,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Server Url:"
-                    android:layout_weight="0.6"
+                    android:text="Server Url"
+                    android:layout_weight="0.7"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="tniamp.in"
+                    android:text=": tniamp.in"
                     style="@style/med_text"/>
             </LinearLayout>
             <LinearLayout
@@ -223,13 +223,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Village Count:"
+                    android:text="Village Count"
                     android:layout_weight="0.3"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="13704"
+                    android:text=": 13704"
                     style="@style/med_text"/>
             </LinearLayout>
             <LinearLayout
@@ -247,7 +247,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="634"
+                    android:text=": 634"
                     style="@style/med_text"/>
             </LinearLayout>
             <LinearLayout
@@ -259,13 +259,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="District Count:"
+                    android:text="District Count"
                     android:layout_weight="0.3"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="162"
+                    android:text=": 162"
                     style="@style/med_text"/>
             </LinearLayout>
             <LinearLayout
@@ -277,13 +277,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Subbasin Count:"
+                    android:text="Subbasin Count"
                     android:layout_weight="0.1"
                     style="@style/med_text"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="52"
+                    android:text=": 52"
                     style="@style/med_text"/>
             </LinearLayout>
         </LinearLayout>

@@ -393,7 +393,7 @@
                         android:layout_height="wrap_content"
                         app:smsp_enableFloatingLabel="true"
                         android:textSize="18sp"
-                        app:smsp_hint="Intervention Type"
+                        app:smsp_hint="Intervention Type(Optional)"
                         android:padding="8dp"
                         android:dropDownWidth="2dp"
                         android:spinnerMode="dropdown"

@@ -81,10 +81,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
-    private List<Sub_Basin_Data> sub_basin_DropDown;
-    private List<DistrictData> districtDropDown;
-    private List<BlockData> blockDropDown;
-    private List<VillageData> villageDataList;
+    private List<Sub_Basin_Data> sub_basin_DropDown = new ArrayList<>();
+    private List<DistrictData> districtDropDown = new ArrayList<>();
+    private List<BlockData> blockDropDown = new ArrayList<>();
+    private List<VillageData> villageDataList = new ArrayList<>();
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
     private ComponentAdapter adapter, adapter2;
@@ -191,6 +191,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
+
                 sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
                 Log.i(TAG, "onResponse: " + aedBinding.phase1.getSelectedItemPosition());
                 subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
@@ -512,22 +513,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     // final submission button validation for online and save data for offline data through database..
     private void finalSubmission() {
         getAllData();
-        if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should saved in post api
-            getAllData();
-            Toast.makeText(context, "Data saved successfully", Toast.LENGTH_SHORT).show();
-            mCommonFunction.navigation(getActivity(), DashboardActivity.class);
 
-        } else {
-            String offlineText = "Data saved successfully in offline data";
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                }
-            });
-        }
     }
 
     public void mLoadCustomToast(Activity mcontaxt, String message) {

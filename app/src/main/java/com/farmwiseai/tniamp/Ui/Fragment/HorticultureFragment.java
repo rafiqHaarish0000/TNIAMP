@@ -229,7 +229,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (area.length() == 0) {
                 horticultureBinding.areaTxt.setError("Please enter area");
                 return false;
-            } /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
+            }else if(Double.valueOf(area)>2.0) {
+                horticultureBinding.areaTxt.setError("Area Should be less than 2(ha)");
+                return false;
+            }  /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
             horticultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
         }*/ else if (remarks.length() == 0 && horticultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
@@ -519,19 +522,25 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == pic_id) {
-            if (takePicture && valueofPic == 1) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                horticultureBinding.image1.setImageBitmap(photo);
-                // BitMap is data structure of image file which store the image in memory
-                firstImageBase64 = getEncodedString(photo);
-            } else if (!takePicture && valueofPic == 2) {
-                Bitmap photo2 = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                horticultureBinding.image2.setImageBitmap(photo2);
-                // BitMap is data structure of image file which store the image in memory
-                secondImageBase64 = getEncodedString(photo2);
+            if (resultCode == Activity.RESULT_OK) {
+                if (takePicture && valueofPic == 1) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    horticultureBinding.image1.setImageBitmap(photo);
+                    // BitMap is data structure of image file which store the image in memory
+                    firstImageBase64 = getEncodedString(photo);
+                } else if (!takePicture && valueofPic == 2) {
+                    Bitmap photo2 = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    horticultureBinding.image2.setImageBitmap(photo2);
+                    // BitMap is data structure of image file which store the image in memory
+                    secondImageBase64 = getEncodedString(photo2);
+                }
             }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+            toast.show();
+
         }
 
     }

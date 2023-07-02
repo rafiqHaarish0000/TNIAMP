@@ -124,8 +124,13 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String venue;
     public BackPressListener backPressListener;
     private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
-    ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<>();
+    ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -407,6 +412,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             return false;
         } else if (area.length() == 0 && animalBinding.areaTxt.getVisibility() == View.VISIBLE) {
             animalBinding.areaTxt.setError("Please enter area");
+            return false;
+        }else if(Double.valueOf(area)>2.0 && animalBinding.areaTxt.getVisibility() == View.VISIBLE) {
+            animalBinding.areaTxt.setError("Area Should be less than 2(ha)");
             return false;
         } else if (near_tank.length() == 0 && animalBinding.tankTxt.getVisibility() == View.VISIBLE) {
             animalBinding.tankTxt.setError("Please enter near by tank name");
@@ -758,6 +766,10 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 getEncodedString(photo2);
                 secondImageBase64 = getEncodedString(photo2);
             }
+        }else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+            toast.show();
+
         }
 
     }

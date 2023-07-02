@@ -233,6 +233,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (area.length() == 0) {
                 tnauBinding.areaTxt.setError("Please enter area");
                 return false;
+            }else if(Double.valueOf(area)>2.0) {
+                tnauBinding.areaTxt.setError("Area Should be less than 2(ha)");
+                return false;
             }
             return true;
 
@@ -562,23 +565,27 @@ mCommonFunction.hideProgress();
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == pic_id) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (takePicture && valueofPic == 1) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    tnauBinding.image1.setImageBitmap(photo);
+                    // BitMap is data structure of image file which store the image in memory
+                    Log.i(TAG, "base: " + getEncodedString(photo));
+                    firstImageBase64 = getEncodedString(photo);
+                } else if (!takePicture && valueofPic == 2) {
+                    Bitmap photo2 = (Bitmap) data.getExtras().get("data");
+                    // Set the image in imageview for display
+                    tnauBinding.image2.setImageBitmap(photo2);
+                    secondImageBase64 = getEncodedString(photo2);
+                    // BitMap is data structure of image file which store the image in memory
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+                toast.show();
 
-            if (takePicture && valueofPic == 1) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                tnauBinding.image1.setImageBitmap(photo);
-                // BitMap is data structure of image file which store the image in memory
-                Log.i(TAG, "base: " + getEncodedString(photo));
-                firstImageBase64 = getEncodedString(photo);
-            } else if (!takePicture && valueofPic == 2) {
-                Bitmap photo2 = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                tnauBinding.image2.setImageBitmap(photo2);
-                secondImageBase64 = getEncodedString(photo2);
-                // BitMap is data structure of image file which store the image in memory
             }
         }
-
     }
 
     //save the image in base64 format for fetch in backend data

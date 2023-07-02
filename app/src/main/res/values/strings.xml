@@ -122,9 +122,9 @@
     <string name="date_of_sowing_planting">Date of Sowing/Planting</string>
     <string name="category">Category</string>
     <string name="area_ha">Area(ha)</string>
-    <string name="remarks">Remarks</string>
+    <string name="remarks">Remarks(Optional)</string>
     <string name="gender">Gender</string>
-    <string name="near_by_tank_name">Near by Tank Name</string>
+    <string name="near_by_tank_name">Near by Tank Name(Optional)</string>
     <string name="network_error">Network connection lost,Please try again.!</string>
     <string name="server_error">Server error</string>
     <string name="used_for_fish_culture">Used for Fish Culture</string>

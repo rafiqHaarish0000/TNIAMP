@@ -58,7 +58,7 @@ public class AnimalCallApi {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
-        componentList = FetchDeptLookup.readDataFromFile(context, "ardlookup.json");
+        componentList = FetchDeptLookup.readDataFromFile(context, "ahdlookup.json");
         adapters = new ComponentAdapter(context, componentList);
         adapters.getFilter().filter(positionValue);
         componentSpinner.setAdapter(adapters);
@@ -150,7 +150,7 @@ public class AnimalCallApi {
     public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText,LinearLayout pregnancyLyt) {
 
         commonFunction = new CommonFunction(activity);
-        sub_componentList = FetchDeptLookup.readDataFromFile(context, "ardlookup.json");
+        sub_componentList = FetchDeptLookup.readDataFromFile(context, "ahdlookup.json");
         adapters = new ComponentAdapter(context, sub_componentList);
         adapters.getFilter().filter(String.valueOf(posVal));
         secondSpinner.setAdapter(adapters);
@@ -203,7 +203,7 @@ public class AnimalCallApi {
 
     public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
         commonFunction = new CommonFunction(activity);
-        stagesList = FetchDeptLookup.readDataFromFile(context, "ardlookup.json");
+        stagesList = FetchDeptLookup.readDataFromFile(context, "ahdlookup.json");
         adapters = new ComponentAdapter(context, stagesList);
         adapters.getFilter().filter(stagePosVal);
         thirdSpinner.setAdapter(adapters);

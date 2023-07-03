@@ -171,19 +171,48 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         remarks = marketingBinding.remarksTxt.getText().toString();
 
 
-        if (marketingBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && cropSpinner.getSelectedItem() == null
-                && seasonSpinner.getSelectedItem() == null
-                && categorySpinner1.getSelectedItem() == null
-                && categorySpinnerExpos.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null
-                && interventionSpinner.getSelectedItem() == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+
+        if (marketingBinding.phase1 != null && marketingBinding.phase1.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
+            return false;
+        }
+        if (marketingBinding.subBasinTxt != null && marketingBinding.subBasinTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (marketingBinding.districtTxt != null && marketingBinding.districtTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (marketingBinding.blockTxt != null && marketingBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (marketingBinding.villageTxt != null && marketingBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (marketingBinding.componentTxt != null && marketingBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (marketingBinding.subComponentsTxt != null && marketingBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
+            return false;
         }
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
@@ -613,7 +642,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setMobile(marketingBinding.mobileNumber.getText().toString());
         request.setName(marketingBinding.nameValue.getText().toString());
         request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString());
-        request.setCategory(marketingBinding.categorySpinner.getSelectedItem().toString());
+        request.setCategory("");
         request.setNof_female("");
         request.setNof_male("");
         request.setNof_mem("");

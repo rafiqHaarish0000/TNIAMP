@@ -114,6 +114,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String intervention1 = null; //component
     public String intervention2 = null; //sub_componenet
     public String intervention3 = null;  // stages
+    public String intervention4 = null;  // stages
     public String farmer_name;
     public String gender;
     public String lat;
@@ -363,42 +364,50 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         fOO = animalBinding.fScStNO.getText().toString();
 
 
-        if (componentSpinner.getVisibility() == View.VISIBLE) {
-            if (intervention1.isEmpty() && intervention1.equalsIgnoreCase("")) {
-                mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-            }
+
+        if (animalBinding.phase1 != null && animalBinding.phase1.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
             return false;
         }
-//        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && sub_componentSpinner.getSelectedItem()==null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        }
-//        } else if (genderSpinner.getVisibility() == View.VISIBLE && genderSpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        } else if (categorySpinner.getVisibility() == View.VISIBLE && categorySpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        } else if (interventionSpinner.getVisibility() == View.VISIBLE && interventionSpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        }
+        if (animalBinding.subBasinTxt != null && animalBinding.subBasinTxt.getSelectedItem() != null) {
 
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (animalBinding.districtTxt != null && animalBinding.districtTxt.getSelectedItem() != null) {
 
-//        if (agricultureBinding.phase1.getSelectedItem() == null
-//                && subBasinSpinner.getSelectedItem() == null
-//                && districtSpinner.getSelectedItem() == null
-//                && blockSpinner.getSelectedItem() == null
-//                && componentSpinner.getSelectedItem() == null
-//                && sub_componentSpinner.getSelectedItem() == null
-//                && stagesSpinner.getSelectedItem() == null
-//                && genderSpinner.getSelectedItem() == null
-//                && categorySpinner.getSelectedItem() == null
-//                && villageSpinner.getSelectedItem() == null
-//                && interventionSpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        }
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (animalBinding.blockTxt != null && animalBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (animalBinding.villageTxt != null && animalBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (animalBinding.componentTxt != null && animalBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (animalBinding.subComponentsTxt != null && animalBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
+            return false;
+        }
+
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -694,6 +703,14 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+
+        if(intervention4.equalsIgnoreCase("Harvest")){
+            animalBinding.varietyTxt.setVisibility(View.VISIBLE);
+            animalBinding.yieldTxt.setVisibility(View.VISIBLE);
+        }else{
+            animalBinding.varietyTxt.setVisibility(View.GONE);
+            animalBinding.yieldTxt.setVisibility(View.GONE);
+        }
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 

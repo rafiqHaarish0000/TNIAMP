@@ -84,7 +84,7 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
         multiAdapterList.add("Five");
         testBinding.spinnerMultiSpinner.initMultiSpinner(this, testBinding.spinnerMultiSpinner);
         testBinding.spinnerMultiSpinner.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
-        testBinding.spinnerMultiSpinner.setPadding(20,20,20,20);
+        testBinding.spinnerMultiSpinner.setPadding(20, 20, 20, 20);
         testBinding.spinnerMultiSpinner.setAdapterWithOutImage(this, multiAdapterList, new MultiSelectionSpinnerDialog.OnMultiSpinnerSelectionListener() {
             @Override
             public void OnMultiSpinnerItemSelected(List<String> chosenItems) {
@@ -95,15 +95,20 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
         });
 
 
+        List<String> phraseList;
+        phraseList = new ArrayList<>();
+        phraseList.add("one");
+        phraseList.add("two");
+        testBinding.phase1.setItem(phraseList);
 
-
+//        String pharse = testBinding.phase1.getSelectedItem();
         testBinding.clickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!testBinding.image1.isSelected()) {
-                    Log.i(TAG, "clickable: " + "false");
+                if (testBinding.phase1 != null && testBinding.phase1.getSelectedItem() != null) {
+                    Log.i(TAG, "spinnerValidate: " + "Success.!");
                 } else {
-                    Log.i(TAG, "clickable: " + "true");
+                    Log.i(TAG, "spinnerValidate: " + "Please enter the empty field");
                 }
             }
         });

@@ -200,6 +200,7 @@ public class TNAU_CallApi {
                         editText.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                    lookUpDataClass.setIntervention4(stagesList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
 

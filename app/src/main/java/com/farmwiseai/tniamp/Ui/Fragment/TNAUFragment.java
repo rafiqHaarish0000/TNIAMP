@@ -95,7 +95,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private VillageAdaapter villageAdaapter;
     private Spinner subBasinSpinner, districtSpinner, blockSpinner,
             componentSpinner, sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner, villageSpinner,interventionSpinner;
+            genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
     private TNAU_CallApi TNAUCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -108,6 +108,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
+    public String intervention4; // stages
     public String farmer_name;
     public String gender;
     public String variety;
@@ -125,7 +126,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String date;
     public String status;
     public BackPressListener backPressListener;
-    private String firstImageBase64, secondImageBase64,interventionTypeVal;
+    private String firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
 
@@ -158,6 +159,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         remarks = tnauBinding.remarksTxt.getText().toString();
         dateField = tnauBinding.dateTxt.getText().toString();
         backPressListener = this;
+        LookUpDataClass lookUpDataClass = new LookUpDataClass();
         /*
         below component spinner is vary for all the department so please refer the callApi class
         component spinner visible the other two dropdowns according to the data
@@ -180,7 +182,17 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         lat = latLongPojo.getLat();
         lon = latLongPojo.getLon();
         Log.i("data", lat + "," + lon);
+
         setAllDropDownData();
+
+//        if (lookUpDataClass.getIntervention3() != null &&
+//                lookUpDataClass.getIntervention3().equalsIgnoreCase("Harvest")) {
+//            tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
+//            tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
+//        } else {
+//            tnauBinding.varietyTxt.setVisibility(View.GONE);
+//            tnauBinding.yieldTxt.setVisibility(View.GONE);
+//        }
 
         return tnauBinding.getRoot();
 
@@ -199,18 +211,47 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
         date = "11-09-2023";
 
-        if (tnauBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && stagesSpinner.getSelectedItem() == null
-                && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null
-                && interventionSpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+
+        if (tnauBinding.phase1 != null && tnauBinding.phase1.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
+            return false;
+        }
+        if (tnauBinding.subBasinTxt != null && tnauBinding.subBasinTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (tnauBinding.districtTxt != null && tnauBinding.districtTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (tnauBinding.blockTxt != null && tnauBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (tnauBinding.villageTxt != null && tnauBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (tnauBinding.componentTxt != null && tnauBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (tnauBinding.subComponentsTxt != null && tnauBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
             return false;
         }
 
@@ -220,12 +261,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             return false;
         }
 
-//        if (tnauBinding.farmerTxt.getVisibility() == View.VISIBLE) {
-//            if (farmerName.length() == 0) {
-//                tnauBinding.farmerTxt.setError("Please enter farmer name");
-//                return false;
-//            }
-//        } else
+
         if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
             if (survey_no.length() == 0) {
                 tnauBinding.surveyTxt.setError("Please enter survey no");
@@ -233,7 +269,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (area.length() == 0) {
                 tnauBinding.areaTxt.setError("Please enter area");
                 return false;
-            }else if(Double.valueOf(area)>2.0) {
+            } else if (Double.valueOf(area) > 2.0) {
                 tnauBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
             }
@@ -354,7 +390,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         genderSpinner = tnauBinding.genderTxt;
         categorySpinner = tnauBinding.categoryTxt;
         villageSpinner = tnauBinding.villageTxt;
-     //   interventionSpinner = tnauBinding.inverntionTyper;
+        //   interventionSpinner = tnauBinding.inverntionTyper;
 
 
         //phase data
@@ -526,7 +562,7 @@ mCommonFunction.hideProgress();
         interventionList.add("Demo");
         interventionList.add("Sustainability");
         interventionList.add("Adoption");
-       // tnauBinding.inverntionTyper.setItem(interventionList);
+        // tnauBinding.inverntionTyper.setItem(interventionList);
 /*
         interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -583,7 +619,7 @@ mCommonFunction.hideProgress();
                     // BitMap is data structure of image file which store the image in memory
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
                 toast.show();
 
             }
@@ -630,7 +666,17 @@ mCommonFunction.hideProgress();
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
-        Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
+        intervention4 = lookUpDataClass.getIntervention4();
+
+        if(intervention4.equalsIgnoreCase("Harvest")){
+            tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
+            tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
+        }else{
+            tnauBinding.varietyTxt.setVisibility(View.GONE);
+            tnauBinding.yieldTxt.setVisibility(View.GONE);
+        }
+
+        Log.i(TAG, "getAllComponentValue: " + intervention1 + intervention2 + intervention3);
 
     }
 
@@ -682,31 +728,29 @@ mCommonFunction.hideProgress();
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);
         } else {
-            String offlineText="";
-            if (offlineRequest==null)
-            {
-                offlineRequest= new ArrayList<>();
+            String offlineText = "";
+            if (offlineRequest == null) {
+                offlineRequest = new ArrayList<>();
                 offlineRequest.add(request);
                 SharedPrefsUtils.saveArrayList(context, offlineRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
                 offlineText = "Data saved successfully in offline data";
 
-            }else if(offlineRequest.size() < 5) {
+            } else if (offlineRequest.size() < 5) {
                 offlineRequest.add(request);
                 SharedPrefsUtils.saveArrayList(context, offlineRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
                 offlineText = "Data saved successfully in offline data";
 
-            }
-                else {
+            } else {
                 offlineText = "You reached the offline Store Data limit please Sync !";
             }
-                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 //                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                    }
-                });
-            }
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
 
 
     }

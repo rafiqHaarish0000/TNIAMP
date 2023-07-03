@@ -432,6 +432,24 @@
                             android:layout_marginTop="12dp"
                             android:inputType="number"
                             android:hint="@string/area_ha" />
+                        <EditText
+                            android:id="@+id/varietyTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:visibility="gone"
+                            android:hint="Variety" />
+                        <EditText
+                            android:id="@+id/yieldTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:inputType="number"
+                            android:maxLength="4"
+                            android:visibility="gone"
+                            android:hint="Yield(kg/ha)" />
 
                         <EditText
                             android:id="@+id/tank_txt"

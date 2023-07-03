@@ -233,6 +233,7 @@ public class HortiCallApi {
                         editText.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention3(String.valueOf(cropList.get(i).getID()));
+                    lookUpDataClass.setIntervention4(stageList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
 

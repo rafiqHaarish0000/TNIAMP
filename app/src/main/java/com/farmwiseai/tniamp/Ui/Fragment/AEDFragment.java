@@ -346,17 +346,50 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         intName = aedBinding.inerventionNameTxt.getText().toString();
 
 
-        if (aedBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null
-                && interventionSpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+
+        if (aedBinding.phase1 != null && aedBinding.phase1.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
+            return false;
         }
+        if (aedBinding.subBasinTxt != null && aedBinding.subBasinTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (aedBinding.districtTxt != null && aedBinding.districtTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (aedBinding.blockTxt != null && aedBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (aedBinding.villageTxt != null && aedBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (aedBinding.componentTxt != null && aedBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (aedBinding.subComponentsTxt != null && aedBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
+            return false;
+        }
+
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");

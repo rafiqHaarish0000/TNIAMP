@@ -82,6 +82,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
+    public String intervention4; // stages
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
@@ -172,18 +173,49 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString();
         remarks = wrdfragmentBinding.remarksTxt.getText().toString();
 
+        if (wrdfragmentBinding.phase1 != null && wrdfragmentBinding.phase1.getSelectedItem() != null) {
 
-        if (wrdfragmentBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && tankStageSpinner.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null
-                && interventionSpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
+            return false;
         }
+        if (wrdfragmentBinding.subBasinTxt != null && wrdfragmentBinding.subBasinTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (wrdfragmentBinding.districtTxt != null && wrdfragmentBinding.districtTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (wrdfragmentBinding.blockTxt != null && wrdfragmentBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (wrdfragmentBinding.villageTxt != null && wrdfragmentBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (wrdfragmentBinding.componentTxt != null && wrdfragmentBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (wrdfragmentBinding.subComponentsTxt != null && wrdfragmentBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
+            return false;
+        }
+
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");

@@ -110,6 +110,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     public String intervention1 = null; //component
     public String intervention2 = null; //sub_componenet
     public String intervention3 = null; // stages
+    public String intervention4 = null; // stages
     public String farmer_name;
     public String gender;
     public String lat;
@@ -225,20 +226,50 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 //            return false;
 //        }
 
-        if (agricultureBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && stagesSpinner.getSelectedItem() == null
-                && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null
-                && interventionSpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+
+        if (agricultureBinding.phase1 != null && agricultureBinding.phase1.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
             return false;
         }
+        if (agricultureBinding.subBasinTxt != null && agricultureBinding.subBasinTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (agricultureBinding.districtTxt != null && agricultureBinding.districtTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (agricultureBinding.blockTxt != null && agricultureBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (agricultureBinding.villageTxt != null && agricultureBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (agricultureBinding.componentTxt != null && agricultureBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (agricultureBinding.subComponentsTxt != null && agricultureBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
+            return false;
+        }
+
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -815,6 +846,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        if(intervention4.equalsIgnoreCase("Harvest")){
+            agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
+            agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);
+        }else{
+            agricultureBinding.varietyTxt.setVisibility(View.GONE);
+            agricultureBinding.yieldTxt.setVisibility(View.GONE);
+        }
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

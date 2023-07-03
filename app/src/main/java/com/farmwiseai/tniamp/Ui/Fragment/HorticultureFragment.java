@@ -107,7 +107,8 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     private double lati, longi;
     public String intervention1; //component
     public String intervention2; //sub_componenet
-    public String intervention3; // stages
+    public String intervention3;
+    public String intervention4; // stages// stages
     public String farmer_name;
     public String gender;
     public String variety;
@@ -197,19 +198,49 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
 
 
-        if (horticultureBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && stagesSpinner.getSelectedItem() == null
-                && genderSpinner.getSelectedItem() == null
-                && categorySpinner.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null
-                && interventionSpinner.getSelectedItem() == null) {
-            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+        if (horticultureBinding.phase1 != null && horticultureBinding.phase1.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
+            return false;
         }
+        if (horticultureBinding.subBasinTxt != null && horticultureBinding.subBasinTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (horticultureBinding.districtTxt != null && horticultureBinding.districtTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (horticultureBinding.blockTxt != null && horticultureBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (horticultureBinding.villageTxt != null && horticultureBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (horticultureBinding.componentTxt != null && horticultureBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (horticultureBinding.subComponentsTxt != null && horticultureBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
+            return false;
+        }
+
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -710,6 +741,15 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+
+        if(intervention4.equalsIgnoreCase("Harvest")){
+            horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);
+            horticultureBinding.yieldTxt.setVisibility(View.VISIBLE);
+        }else{
+            horticultureBinding.varietyTxt.setVisibility(View.GONE);
+            horticultureBinding.yieldTxt.setVisibility(View.GONE);
+        }
+
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

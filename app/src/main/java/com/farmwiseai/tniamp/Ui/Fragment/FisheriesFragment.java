@@ -82,6 +82,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
+    public String intervention4; // stages
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
@@ -169,16 +170,49 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         remarks = fisheriesBinding.remarksTxt.getText().toString();
 
 
-        if (fisheriesBinding.phase1.getSelectedItem() == null
-                && subBasinSpinner.getSelectedItem() == null
-                && districtSpinner.getSelectedItem() == null
-                && blockSpinner.getSelectedItem() == null
-                && componentSpinner.getSelectedItem() == null
-                && sub_componentSpinner.getSelectedItem() == null
-                && villageSpinner.getSelectedItem() == null
-                && interventionSpinner.getSelectedItem() == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
+        if (fisheriesBinding.phase1 != null && fisheriesBinding.phase1.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
+            return false;
         }
+        if (fisheriesBinding.subBasinTxt != null && fisheriesBinding.subBasinTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
+            return false;
+        }
+        if (fisheriesBinding.districtTxt != null && fisheriesBinding.districtTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
+            return false;
+        }
+        if (fisheriesBinding.blockTxt != null && fisheriesBinding.blockTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
+            return false;
+        }
+        if (fisheriesBinding.villageTxt != null && fisheriesBinding.villageTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
+            return false;
+        }
+        if (fisheriesBinding.componentTxt != null && fisheriesBinding.componentTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
+            return false;
+        }
+        if (fisheriesBinding.subComponentsTxt != null && fisheriesBinding.subComponentsTxt.getSelectedItem() != null) {
+
+        } else {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
+            return false;
+        }
+
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");

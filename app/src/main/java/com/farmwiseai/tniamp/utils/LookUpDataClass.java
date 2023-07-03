@@ -5,6 +5,16 @@ public class LookUpDataClass {
     private String intervention2 = null;
     private String intervention3 = null;
 
+    public String getIntervention4() {
+        return intervention4;
+    }
+
+    public void setIntervention4(String intervention4) {
+        this.intervention4 = intervention4;
+    }
+
+    private String intervention4 = null;
+
     public String getIntervention1() {
         return intervention1;
     }

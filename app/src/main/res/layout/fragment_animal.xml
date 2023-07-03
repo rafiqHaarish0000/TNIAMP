@@ -514,6 +514,21 @@
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false"/>
 
+  <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="18dp"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/check_values"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Consider as a Test" />
+                    </LinearLayout>
+
                     <Button
                         android:id="@+id/submission_btn"
                         android:layout_width="match_parent"

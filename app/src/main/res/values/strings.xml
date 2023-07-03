@@ -140,6 +140,6 @@
     <string name="intervention_name">Intervention name</string>
     <string name="length_m">Length (m)</string>
     <string name="ls_point_number">LS Point Number</string>
-    <string name="slice_number">Slice Number</string>
+    <string name="slice_number">Sluice Number</string>
 
 </resources>

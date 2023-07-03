@@ -354,7 +354,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         genderSpinner = tnauBinding.genderTxt;
         categorySpinner = tnauBinding.categoryTxt;
         villageSpinner = tnauBinding.villageTxt;
-        interventionSpinner = tnauBinding.inverntionTyper;
+     //   interventionSpinner = tnauBinding.inverntionTyper;
 
 
         //phase data
@@ -526,7 +526,8 @@ mCommonFunction.hideProgress();
         interventionList.add("Demo");
         interventionList.add("Sustainability");
         interventionList.add("Adoption");
-        tnauBinding.inverntionTyper.setItem(interventionList);
+       // tnauBinding.inverntionTyper.setItem(interventionList);
+/*
         interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -539,6 +540,7 @@ mCommonFunction.hideProgress();
 
             }
         });
+*/
 
 
     }

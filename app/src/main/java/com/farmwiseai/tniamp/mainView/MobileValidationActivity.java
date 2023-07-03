@@ -51,7 +51,7 @@ public class MobileValidationActivity extends BaseActivity {
                     try {
                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                         Call<GenerateOTP> userDataCall = null;
-                        userDataCall = call.generateOTP(binding.mobileValues.getText().toString(), "OTP is", "4");
+                        userDataCall = call.generateOTP(binding.mobileValues.getText().toString(), "Your TNIAMP OTP :  ", "4");
                         userDataCall.enqueue(new Callback<GenerateOTP>() {
                             @Override
                             public void onResponse(Call<GenerateOTP> call, Response<GenerateOTP> response) {

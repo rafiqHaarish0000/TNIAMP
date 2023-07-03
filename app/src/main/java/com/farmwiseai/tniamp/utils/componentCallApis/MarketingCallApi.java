@@ -71,6 +71,7 @@ public class MarketingCallApi {
                         layoutComp1.setVisibility(View.GONE);
                         layoutTraining.setVisibility(View.GONE);
                         layoutExpo.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Others")) {
                         subComponentSpinner.setVisibility(View.GONE);
@@ -87,6 +88,7 @@ public class MarketingCallApi {
                         layoutComp2.setVisibility(View.GONE);
                         layoutTraining.setVisibility(View.GONE);
                         layoutExpo.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Construction of Storage Godowns")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, layoutTraining, layoutExpo,newReqLayt);
@@ -95,11 +97,13 @@ public class MarketingCallApi {
                         layoutComp1.setVisibility(View.GONE);
                         layoutTraining.setVisibility(View.GONE);
                         layoutExpo.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Institutional training & Exposure visit")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, layoutTraining, layoutExpo,newReqLayt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
                         layoutComp1.setVisibility(View.GONE);
                         layoutTraining.setVisibility(View.GONE);
                         layoutExpo.setVisibility(View.GONE);

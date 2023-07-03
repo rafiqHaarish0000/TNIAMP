@@ -203,6 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="Nodal officer" />
+
                     <EditText
                         android:id="@+id/nameofTankTXT"
                         style="@style/AppEdittext"
@@ -210,23 +211,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="Name of the tank" />
+
                     <EditText
                         android:id="@+id/waterTxt"
                         style="@style/AppEdittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:inputType="number"
-                        android:hint="Water spread area (EWSA-Ha)" />
+                        android:hint="Water spread area (EWSA-Ha)"
+                        android:inputType="number" />
+
                     <EditText
                         android:id="@+id/seedStockTXt"
                         style="@style/AppEdittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:inputType="number"
-                        android:hint="No.of seed stocked" />
-
+                        android:hint="No.of seed stocked"
+                        android:inputType="number" />
+                    <!--Other layout-->
                     <LinearLayout
                         android:id="@+id/othersLayout"
                         android:layout_width="match_parent"
@@ -259,146 +262,154 @@
                             android:scrollbars="vertical"
                             android:singleLine="false" />
                     </LinearLayout>
-
+                    <!--Layout 1-->
                     <LinearLayout
+                        android:id="@+id/layout1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
-
-                        <EditText
-                            android:id="@+id/lengthTxt"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Nodal officer" />
-
-                        <EditText
-                            android:id="@+id/lsPoint"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Name of the tank"
-                            android:inputType="number" />
-
-                        <EditText
-                            android:id="@+id/sliceNumber"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Water spread area()"
-                            android:inputType="number" />
-
-                        <EditText
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="No of seed stocked"
-                            android:inputType="number" />
-
-                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                            android:id="@+id/speciesStocked"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="12dp"
-                            android:dropDownWidth="2dp"
-                            android:padding="8dp"
-                            android:spinnerMode="dropdown"
-                            android:textSize="18sp"
-                            app:smsp_enableFloatingLabel="true"
-                            app:smsp_hint="Species stocked"
-                            app:smsp_hintColor="@color/grey"
-                            app:smsp_multilineError="false" />
-                    </LinearLayout>
-                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                        android:id="@+id/beneficary2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
                         android:layout_marginTop="4dp"
-                        android:layout_marginEnd="12dp"
-                        android:dropDownWidth="2dp"
-                        android:padding="8dp"
-                        android:spinnerMode="dropdown"
-                        android:textSize="18sp"
-                        android:visibility="gone"
-                        app:smsp_enableFloatingLabel="true"
-                        app:smsp_hint="Beneficiary"
-                        app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false" />
-                    <LinearLayout
-                        android:id="@+id/fishSeedLayt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
                         android:layout_marginEnd="4dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                            android:id="@+id/lesseeSpinner"
+                        <com.anurag.multiselectionspinner.MultiSpinner
+                            android:id="@+id/speciesMulti1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginStart="18dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="18dp"
+                            android:hint="Species stocks"
+                            android:padding="18dp" />
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/lessee"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="18dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="18dp"
                             android:dropDownWidth="2dp"
                             android:padding="8dp"
                             android:spinnerMode="dropdown"
                             android:textSize="18sp"
                             app:smsp_enableFloatingLabel="true"
                             app:smsp_hint="Lessee"
-                            app:smsp_hintColor="@color/grey"
+                            app:smsp_multilineError="false" />
+                    </LinearLayout>
+                    <!--Layout 2-->
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/speciesSpinner1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="4dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="Species stocks"
                             app:smsp_multilineError="false" />
 
                         <EditText
-                            android:id="@+id/feedQuantity"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Feed Quantity"
                             android:inputType="number" />
+
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                            android:id="@+id/beneficary"
+                            android:id="@+id/bene1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="4dp"
                             android:dropDownWidth="2dp"
                             android:padding="8dp"
                             android:spinnerMode="dropdown"
                             android:textSize="18sp"
                             app:smsp_enableFloatingLabel="true"
                             app:smsp_hint="Beneficiary"
-                            app:smsp_hintColor="@color/grey"
                             app:smsp_multilineError="false" />
+                    </LinearLayout>
+                    <!--Layout 3-->
+                    <LinearLayout
+                        android:id="@+id/layout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.anurag.multiselectionspinner.MultiSpinner
+                            android:id="@+id/speciesMulti2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="8dp"
+                            android:hint="Species stocks"
+                            android:padding="18dp" />
+
                         <EditText
-                            android:id="@+id/numbersReare"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Numbers reared"
+                            android:hint="Feed Quantity"
+                            android:inputType="number" />
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/bene2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="4dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="Beneficiary"
+                            app:smsp_multilineError="false" />
+
+                        <EditText
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Number reared"
                             android:inputType="number" />
                     </LinearLayout>
+                    <!--Layout 4-->
                     <LinearLayout
-                        android:id="@+id/aquacultureLyt"
+                        android:id="@+id/layout4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="4dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <EditText
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
@@ -406,13 +417,15 @@
                             android:layout_marginTop="12dp"
                             android:hint="Farm pond constructed by"
                             android:inputType="number" />
+
                         <EditText
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Beneficiary Name"
+                            android:hint="Beneficary Name"
                             android:inputType="number" />
+
                         <EditText
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
@@ -420,55 +433,57 @@
                             android:layout_marginTop="12dp"
                             android:hint="Survey No."
                             android:inputType="number" />
+
                         <EditText
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Mobile No."
-                            android:inputType="number" />
+                            android:hint="Mobile Number"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:singleLine="true" />
+
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/gender_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="4dp"
                             android:dropDownWidth="2dp"
                             android:padding="8dp"
                             android:spinnerMode="dropdown"
                             android:textSize="18sp"
                             app:smsp_enableFloatingLabel="true"
                             app:smsp_hint="Gender"
-                            app:smsp_hintColor="@color/grey"
                             app:smsp_multilineError="false" />
+
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/categorySpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="4dp"
                             android:dropDownWidth="2dp"
                             android:padding="8dp"
                             android:spinnerMode="dropdown"
                             android:textSize="18sp"
                             app:smsp_enableFloatingLabel="true"
                             app:smsp_hint="Category"
-                            app:smsp_hintColor="@color/grey"
                             app:smsp_multilineError="false" />
-                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+
+                        <com.anurag.multiselectionspinner.MultiSpinner
+                            android:id="@+id/speciesMulti3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="12dp"
-                            android:dropDownWidth="2dp"
-                            android:padding="8dp"
-                            android:spinnerMode="dropdown"
-                            android:textSize="18sp"
-                            app:smsp_enableFloatingLabel="true"
-                            app:smsp_hint="Species stocked"
-                            app:smsp_hintColor="@color/grey"
-                            app:smsp_multilineError="false" />
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="8dp"
+                            android:hint="Species stocks"
+                            android:padding="18dp" />
+
                         <EditText
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
@@ -476,6 +491,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="Feed Quantity"
                             android:inputType="number" />
+
                         <EditText
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
@@ -484,6 +500,23 @@
                             android:hint="No.of Seeds"
                             android:inputType="number" />
                     </LinearLayout>
+                    <!--Last spinner-->
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/beneFinal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="4dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Beneficiary"
+                        app:smsp_multilineError="false" />
+
                     <LinearLayout
                         android:id="@+id/visibilityLyt"
                         android:layout_width="match_parent"
@@ -493,6 +526,7 @@
                         android:layout_marginEnd="4dp"
                         android:orientation="vertical"
                         android:visibility="visible" />
+
                     <LinearLayout
                         android:id="@+id/take_pic"
                         android:layout_width="match_parent"

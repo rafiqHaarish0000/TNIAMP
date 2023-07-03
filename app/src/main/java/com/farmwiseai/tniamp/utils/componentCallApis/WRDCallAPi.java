@@ -70,7 +70,7 @@ public class WRDCallAPi {
                     } else {
                         subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt,memTxt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
-                        tankStageSpinner.setVisibility(View.GONE);
+                        tankStageSpinner.setVisibility(View.VISIBLE);
                         wauTxt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                     }
@@ -98,10 +98,10 @@ public class WRDCallAPi {
         adapters = new ComponentAdapter(context, sub_componentList);
         adapters.getFilter().filter(String.valueOf(posVal));
         secondSpinner.setAdapter(adapters);
+        thirdSpinner.setVisibility(View.VISIBLE);
         secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                 String names = sub_componentList.get(i).getName();
                 thirdSpinner.setVisibility(View.VISIBLE);
                 try {
@@ -130,7 +130,7 @@ public class WRDCallAPi {
                     else{
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
-                        thirdSpinner.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.VISIBLE);
                         fourthSpinner.setVisibility(View.GONE);
                         tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
                     }

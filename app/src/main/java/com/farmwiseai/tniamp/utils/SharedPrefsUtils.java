@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.FishRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.MarkRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
@@ -213,10 +214,28 @@ public class SharedPrefsUtils
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<WRDRequest>>() {}.getType();
+        Type type = new TypeToken<ArrayList<MarkRequest>>() {}.getType();
         return gson.fromJson(json, type);
     }
     public static void saveMarkArrayList(Context context, ArrayList<MarkRequest> list , PREF_KEY key){
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key.KEY, json);
+        editor.apply();
+
+    }
+
+    public  static ArrayList<FishRequest> getFishArrayList(Context context, PREF_KEY key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = prefs.getString(key.KEY, null);
+        Type type = new TypeToken<ArrayList<FishRequest>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+    public static void saveFishArrayList(Context context, ArrayList<FishRequest> list , PREF_KEY key){
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();

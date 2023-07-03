@@ -412,7 +412,7 @@
             android:visibility="gone">
 
             <com.anurag.multiselectionspinner.MultiSpinner
-                android:id="@+id/species1"
+                android:id="@+id/speciesMulti1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
@@ -447,14 +447,20 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <com.anurag.multiselectionspinner.MultiSpinner
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/speciesSpinner1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:hint="Species stocks"
-                android:padding="18dp" />
+                android:layout_marginEnd="4dp"
+                android:dropDownWidth="2dp"
+                android:padding="8dp"
+                android:spinnerMode="dropdown"
+                android:textSize="18sp"
+                app:smsp_enableFloatingLabel="true"
+                app:smsp_hint="Species stocks"
+                app:smsp_multilineError="false" />
 
             <EditText
                 android:id="@+id/seedStockTXt"
@@ -466,6 +472,7 @@
                 android:inputType="number" />
 
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/bene1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -491,6 +498,7 @@
             android:visibility="gone">
 
             <com.anurag.multiselectionspinner.MultiSpinner
+                android:id="@+id/speciesMulti2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -508,6 +516,7 @@
                 android:inputType="number" />
 
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/bene2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -539,6 +548,7 @@
             android:layout_marginEnd="4dp"
             android:orientation="vertical"
             android:visibility="gone">
+
             <EditText
                 style="@style/AppEdittext"
                 android:layout_width="match_parent"
@@ -546,6 +556,7 @@
                 android:layout_marginTop="12dp"
                 android:hint="Farm pond constructed by"
                 android:inputType="number" />
+
             <EditText
                 style="@style/AppEdittext"
                 android:layout_width="match_parent"
@@ -553,6 +564,7 @@
                 android:layout_marginTop="12dp"
                 android:hint="Beneficary Name"
                 android:inputType="number" />
+
             <EditText
                 style="@style/AppEdittext"
                 android:layout_width="match_parent"
@@ -560,15 +572,19 @@
                 android:layout_marginTop="12dp"
                 android:hint="Survey No."
                 android:inputType="number" />
+
             <EditText
                 style="@style/AppEdittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:hint="Mobile Number"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="10"
+                android:singleLine="true" />
 
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/gender_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -583,6 +599,7 @@
                 app:smsp_multilineError="false" />
 
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/categorySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -597,6 +614,7 @@
                 app:smsp_multilineError="false" />
 
             <com.anurag.multiselectionspinner.MultiSpinner
+                android:id="@+id/speciesMulti3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -621,6 +639,21 @@
                 android:hint="No.of Seeds"
                 android:inputType="number" />
         </LinearLayout>
+        <!--Last spinner-->
+        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            android:id="@+id/beneFinal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="4dp"
+            android:dropDownWidth="2dp"
+            android:padding="8dp"
+            android:spinnerMode="dropdown"
+            android:textSize="18sp"
+            app:smsp_enableFloatingLabel="true"
+            app:smsp_hint="Beneficiary"
+            app:smsp_multilineError="false" />
 
     </LinearLayout>
 

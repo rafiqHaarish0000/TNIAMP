@@ -679,7 +679,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     private void uploadSecondImage(String txt_id) {
 
         SecondImageRequest request = new SecondImageRequest();
-        request.setDepartment_id("3");
+        request.setDepartment_id("7");
         request.setImg2(secondImageBase64);
         request.setID(txt_id);
 

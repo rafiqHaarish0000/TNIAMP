@@ -7,6 +7,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.GenerateOTP;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.FishRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.MarkRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
@@ -15,6 +16,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.WRDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.FishResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.MarkResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
@@ -81,7 +83,6 @@ public interface Interface_Api {
     Call<TNAU_Response> getTnauResponse(@Body TNAU_Request tnau_request);
 
     @POST("agri")
-
     Call<AgriResponse> getAgriResponse(@Body Agri_Request agri_request);
 
     @POST("aed")
@@ -98,6 +99,9 @@ public interface Interface_Api {
 
     @POST("marketing")
     Call<MarkResponse> getMarkResponse(@Body MarkRequest markRequest);
+
+    @POST("fishery")
+    Call<FishResponse> getFishRespone(@Body FishRequest fishRequest);
 
 }
 

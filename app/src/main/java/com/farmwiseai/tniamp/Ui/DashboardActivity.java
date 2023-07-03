@@ -8,16 +8,20 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.Manifest;
 import android.widget.Toast;
 
 import com.farmwiseai.tniamp.R;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Ui.Fragment.AEDFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AboutFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AgricultureFragment;
@@ -32,8 +36,13 @@ import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
 import com.farmwiseai.tniamp.mainView.VerifyMobileNumberActivitiy;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.OfflineDataSyncFile;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityDashboardBinding binding;
@@ -42,6 +51,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     int countData;
     private GPSTracker gpsTracker;
     private static final int PERMISSION_REQUEST_CODE = 200;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +75,28 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.navFish.setOnClickListener(this);
         binding.aboutImage.setOnClickListener(this);
         binding.logoutIcon.setOnClickListener(this);
-      //  syncOfflineData();
+/*
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                syncOfflineData();
+            }
 
+
+        }, 2000);
+*/
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+             //   Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
+                syncOfflineData();
+            }
+        });
     }
 
     private void syncOfflineData() {
-        if(mCommonFunction.isNetworkAvailable())
-        {
-            mCommonFunction.showProgress();
+        if (mCommonFunction.isNetworkAvailable()) {
+            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+            myAsyncTasks.execute();
         }
     }
 
@@ -328,4 +352,57 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 PERMISSION_REQUEST_CODE);
     }
 
+    public class MyAsyncTasks extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+            progressDialog = new ProgressDialog(DashboardActivity.this);
+            progressDialog.setMessage("Please Wait Data sync is In progress");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                if (aedRequests != null && aedRequests.size() > 0) {
+                    for (int i = 0; i < aedRequests.size(); i++) {
+                        current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i));
+                    }
+                    // return the data to onPostExecute method
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            Log.d("data", s.toString());
+            // dismiss the progress dialog after receiving data from API
+
+            try {
+                if (s.equalsIgnoreCase("success"))
+                    binding.notificationCount.setVisibility(View.GONE);
+                progressDialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+    }
 }

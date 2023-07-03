@@ -11,4 +11,5 @@
     <color name="gold_med">#ab804b</color>
     <color name="gold">#cea774</color>
     <color name="gold_light">#edd3b2</color>
+    <color name="red">#FF0000</color>
 </resources>

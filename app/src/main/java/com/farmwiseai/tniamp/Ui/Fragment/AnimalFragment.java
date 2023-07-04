@@ -124,6 +124,12 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String status;
     public String venue;
     public BackPressListener backPressListener;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
     private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
 
@@ -231,6 +237,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                subBasinValue = sub_basin_DropDown.get(i).getNAME();
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
                 districtAdapter.getFilter().filter(posValue);
                 districtSpinner.setAdapter(districtAdapter);
@@ -248,6 +255,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
+                districtValue = districtDropDown.get(i).getNAME();
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);
@@ -266,6 +274,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
+                blockValue = blockDropDown.get(i).getNAME();
                 villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
@@ -364,48 +373,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         fOO = animalBinding.fScStNO.getText().toString();
 
 
-
-        if (animalBinding.phase1 != null && animalBinding.phase1.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
-            return false;
-        }
-        if (animalBinding.subBasinTxt != null && animalBinding.subBasinTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
-            return false;
-        }
-        if (animalBinding.districtTxt != null && animalBinding.districtTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
-            return false;
-        }
-        if (animalBinding.blockTxt != null && animalBinding.blockTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
-            return false;
-        }
-        if (animalBinding.villageTxt != null && animalBinding.villageTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
-            return false;
-        }
-        if (animalBinding.componentTxt != null && animalBinding.componentTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
-            return false;
-        }
-        if (animalBinding.subComponentsTxt != null && animalBinding.subComponentsTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
-            return false;
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageName == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
 
@@ -703,6 +673,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        intervention4 = lookUpDataClass.getIntervention4();
 
         if(intervention4.equalsIgnoreCase("Harvest")){
             animalBinding.varietyTxt.setVisibility(View.VISIBLE);

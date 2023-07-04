@@ -107,10 +107,16 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout vis_lyt, iNames_lyt;
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String villageValue,firstImageBase64, secondImageBase64, interventionTypeVal;
     public String lat;
     public String lon;
     public EditText wauText,memberTxt;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
     ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
 
     @Override
@@ -173,47 +179,10 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString();
         remarks = wrdfragmentBinding.remarksTxt.getText().toString();
 
-        if (wrdfragmentBinding.phase1 != null && wrdfragmentBinding.phase1.getSelectedItem() != null) {
 
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
-            return false;
-        }
-        if (wrdfragmentBinding.subBasinTxt != null && wrdfragmentBinding.subBasinTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
-            return false;
-        }
-        if (wrdfragmentBinding.districtTxt != null && wrdfragmentBinding.districtTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
-            return false;
-        }
-        if (wrdfragmentBinding.blockTxt != null && wrdfragmentBinding.blockTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
-            return false;
-        }
-        if (wrdfragmentBinding.villageTxt != null && wrdfragmentBinding.villageTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
-            return false;
-        }
-        if (wrdfragmentBinding.componentTxt != null && wrdfragmentBinding.componentTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
-            return false;
-        }
-        if (wrdfragmentBinding.subComponentsTxt != null && wrdfragmentBinding.subComponentsTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
-            return false;
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageName == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
 
@@ -337,6 +306,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                subBasinValue = sub_basin_DropDown.get(i).getNAME();
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
                 districtAdapter.getFilter().filter(posValue);
                 districtSpinner.setAdapter(districtAdapter);
@@ -354,6 +324,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
+                districtValue = districtDropDown.get(i).getNAME();
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);
@@ -371,6 +342,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
+                blockValue = blockDropDown.get(i).getNAME();
                 villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
@@ -386,6 +358,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageValue = String.valueOf(villageDataList.get(i).getID());
+                villageValue = villageDataList.get(i).getNAME();
             }
 
             @Override
@@ -654,6 +627,8 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        componentValue = lookUpDataClass.getComponentValue();
+        subComponentValue = lookUpDataClass.getSubComponentValue();
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

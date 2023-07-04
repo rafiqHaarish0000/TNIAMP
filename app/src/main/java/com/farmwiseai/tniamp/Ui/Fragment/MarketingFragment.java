@@ -111,6 +111,12 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     public String lat;
     public String lon;
     public EditText wauText, memberTxt;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
     ArrayList<MarkRequest> offlineMarkRequest = new ArrayList<>();
 
     @Override
@@ -170,65 +176,16 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         remarks = marketingBinding.remarksTxt.getText().toString();
 
-
-
-        if (marketingBinding.phase1 != null && marketingBinding.phase1.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
-            return false;
-        }
-        if (marketingBinding.subBasinTxt != null && marketingBinding.subBasinTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
-            return false;
-        }
-        if (marketingBinding.districtTxt != null && marketingBinding.districtTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
-            return false;
-        }
-        if (marketingBinding.blockTxt != null && marketingBinding.blockTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
-            return false;
-        }
-        if (marketingBinding.villageTxt != null && marketingBinding.villageTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
-            return false;
-        }
-        if (marketingBinding.componentTxt != null && marketingBinding.componentTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
-            return false;
-        }
-        if (marketingBinding.subComponentsTxt != null && marketingBinding.subComponentsTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
-            return false;
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageName == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
-//        if (lengthNumberTxt.length() == 0) {
-//            marketingBinding.lengthTxt.setError("Please enter farmer name");
-//            return false;
-//        } else if (lsPointTxt.length() == 0) {
-//            marketingBinding.lsPoint.setError("Please enter survey no");
-//            return false;
-//        } else if (sliceNumberTxt.length() == 0) {
-//            marketingBinding.sliceNumber.setError("Please enter area");
-//            return false;
-//        }
+
 
 
         return true;
@@ -336,6 +293,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                subBasinValue = sub_basin_DropDown.get(i).getNAME();
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
                 districtAdapter.getFilter().filter(posValue);
                 districtSpinner.setAdapter(districtAdapter);
@@ -353,6 +311,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
+                districtValue = districtDropDown.get(i).getNAME();
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);
@@ -370,6 +329,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
+                blockValue = blockDropDown.get(i).getNAME();
                 villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
@@ -385,6 +345,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageValue = String.valueOf(villageDataList.get(i).getID());
+                villageValue = villageDataList.get(i).getNAME();
             }
 
             @Override
@@ -770,6 +731,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        componentValue = lookUpDataClass.getComponentValue();
+        subComponentValue = lookUpDataClass.getSubComponentValue();
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

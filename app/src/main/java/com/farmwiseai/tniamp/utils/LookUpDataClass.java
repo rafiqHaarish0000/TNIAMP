@@ -4,6 +4,24 @@ public class LookUpDataClass {
     private String intervention1 = null;
     private String intervention2 = null;
     private String intervention3 = null;
+    private String componentValue = null;
+    private String subComponentValue = null;
+
+    public String getComponentValue() {
+        return componentValue;
+    }
+
+    public void setComponentValue(String componentValue) {
+        this.componentValue = componentValue;
+    }
+
+    public String getSubComponentValue() {
+        return subComponentValue;
+    }
+
+    public void setSubComponentValue(String subComponentValue) {
+        this.subComponentValue = subComponentValue;
+    }
 
     public String getIntervention4() {
         return intervention4;

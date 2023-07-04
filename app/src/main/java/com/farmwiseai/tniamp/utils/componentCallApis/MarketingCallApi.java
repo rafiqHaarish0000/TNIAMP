@@ -61,6 +61,7 @@ public class MarketingCallApi {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
+                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
                     if (names.equalsIgnoreCase("Model Village")) {
@@ -151,6 +152,7 @@ public class MarketingCallApi {
                 String names = sub_componentList.get(i).getName();
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
+
                     Log.i(TAG, "posvalue2: " + positionValue2);
 
                     if (names.equalsIgnoreCase("Training")) {
@@ -171,6 +173,7 @@ public class MarketingCallApi {
                         newReqlayt.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
 
                 } catch (Exception e) {
                     e.printStackTrace();

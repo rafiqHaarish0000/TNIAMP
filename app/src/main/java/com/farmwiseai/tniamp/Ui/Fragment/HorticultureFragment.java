@@ -125,8 +125,15 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public String txn_id;
     public String date;
     public String status, intName;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
+
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String  villageValue,firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<HortiRequest> offlineHortiRequest = new ArrayList<>();
 
     @Override
@@ -197,50 +204,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         date = horticultureBinding.dateTxt.getText().toString();
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
 
-
-        if (horticultureBinding.phase1 != null && horticultureBinding.phase1.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
-            return false;
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageName == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
-        if (horticultureBinding.subBasinTxt != null && horticultureBinding.subBasinTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
-            return false;
-        }
-        if (horticultureBinding.districtTxt != null && horticultureBinding.districtTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
-            return false;
-        }
-        if (horticultureBinding.blockTxt != null && horticultureBinding.blockTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
-            return false;
-        }
-        if (horticultureBinding.villageTxt != null && horticultureBinding.villageTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
-            return false;
-        }
-        if (horticultureBinding.componentTxt != null && horticultureBinding.componentTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
-            return false;
-        }
-        if (horticultureBinding.subComponentsTxt != null && horticultureBinding.subComponentsTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
-            return false;
-        }
-
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -409,6 +376,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                subBasinValue = sub_basin_DropDown.get(i).getNAME();
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
                 districtAdapter.getFilter().filter(posValue);
                 districtSpinner.setAdapter(districtAdapter);
@@ -427,6 +395,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
+                districtValue = districtDropDown.get(i).getNAME();
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);
@@ -444,6 +413,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
+                blockValue = blockDropDown.get(i).getNAME();
                 villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
@@ -460,6 +430,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageValue = String.valueOf(villageDataList.get(i).getID());
+                villageName = villageDataList.get(i).getNAME();
             }
 
             @Override
@@ -741,6 +712,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        intervention4 = lookUpDataClass.getIntervention4();
+        componentValue = lookUpDataClass.getComponentValue();
+        subComponentValue = lookUpDataClass.getSubComponentValue();
 
         if(intervention4.equalsIgnoreCase("Harvest")){
             horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);

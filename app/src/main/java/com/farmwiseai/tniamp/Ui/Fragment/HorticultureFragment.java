@@ -2,6 +2,7 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -133,7 +134,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public String subComponentValue = null;
 
     public BackPressListener backPressListener;
-    private String  villageValue,firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<HortiRequest> offlineHortiRequest = new ArrayList<>();
 
     @Override
@@ -169,14 +170,14 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         stagesSpinner = horticultureBinding.stagesTxt;
         cropstagespinner = horticultureBinding.cropStages;
 
-                datePicker = horticultureBinding.dateTxt;
+        datePicker = horticultureBinding.dateTxt;
         vis_lyt = horticultureBinding.visibilityLyt;
         trainingLyt = horticultureBinding.iecLayt;
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
         iNames_lyt = horticultureBinding.inerventionLyt;
 
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, cropstagespinner,stagesSpinner ,datePicker, vis_lyt, trainingLyt, iNames_lyt);
+        hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, cropstagespinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
 
         offlineHortiRequest = SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
@@ -227,7 +228,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (area.length() == 0) {
                 horticultureBinding.areaTxt.setError("Please enter area");
                 return false;
-            }else if(Double.valueOf(area)>2.0) {
+            } else if (Double.valueOf(area) > 2.0) {
                 horticultureBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
             }  /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
@@ -236,8 +237,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         }*/ else if (remarks.length() == 0 && horticultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
                 horticultureBinding.remarksTxt.setError("Remarks not found");
                 return false;
+            } else if (horticultureBinding.mobileNumbertxt.toString().isEmpty() || (horticultureBinding.mobileNumbertxt.toString().length() < 10)) {
+                horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
             }
-            return true;
         }
         if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (intName.length() == 0) {
@@ -250,6 +253,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
         return true;
     }
+
 
     public void showToast(Activity mcontaxt, String message) {
         Toast.makeText(mcontaxt, message, Toast.LENGTH_SHORT).show();
@@ -273,8 +277,8 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                         category, survey_no, area, near_tank, remarks, dateField, intName);
                 if (checkValidaiton) {
                     try {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
                         } else {
                             //  getLocation(view);
                             gpsTracker = new GPSTracker(getContext());
@@ -540,7 +544,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 }
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
-            Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
             toast.show();
 
         }
@@ -716,10 +720,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
 
-        if(intervention4.equalsIgnoreCase("Harvest")){
+        if (intervention4.equalsIgnoreCase("Harvest")) {
             horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             horticultureBinding.yieldTxt.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             horticultureBinding.varietyTxt.setVisibility(View.GONE);
             horticultureBinding.yieldTxt.setVisibility(View.GONE);
         }

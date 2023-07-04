@@ -187,7 +187,13 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             return false;
         }
 
-
+        if (otherLyt.getVisibility() == View.VISIBLE) {
+            if (marketingBinding.inerventionNameTxt.getText().length() == 0) {
+                marketingBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+            return true;
+        }
 
 
         return true;

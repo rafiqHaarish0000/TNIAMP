@@ -2,6 +2,7 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -234,6 +235,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageValue == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            return false;
         }
 
 
@@ -271,10 +273,14 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         else if (!tnauBinding.image1.isSelected() && !tnauBinding.image2.isSelected()) {
             Toast.makeText(getActivity(), "Please capture photo", Toast.LENGTH_LONG).show();
             return false;
-        }
+        } else if (tnauBinding.mobileNumbertxt.toString().isEmpty() || (tnauBinding.mobileNumbertxt.toString().length() < 10)) {
+            tnauBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+            return false;
 
+        }
         return true;
     }
+
 
 
     // click event for finalSubmission button and others
@@ -306,8 +312,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
                     try {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
                         } else {
                             //  getLocation(view);
                             gpsTracker = new GPSTracker(getContext());

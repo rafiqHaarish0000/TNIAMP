@@ -174,13 +174,13 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Erection of Boundary Stone") ||
                             names.equalsIgnoreCase("Completion")||
                             names.equalsIgnoreCase("Sectioning - Profile Formation")
-                            ||names.equalsIgnoreCase("Formwork of Wall")||
+                            ||names.equalsIgnoreCase("Formwork for Wall")||
                             names.equalsIgnoreCase("Concrete Work")||
                             names.equalsIgnoreCase("Finishing")||
-                            names.equalsIgnoreCase("Casting Concrete Blocks")||
+                            names.equalsIgnoreCase(" Casting Concrete Blocks")||
                             names.equalsIgnoreCase("Fixing Concrete Blocks")||
                             names.equalsIgnoreCase("Starting")||
-                            names.equalsIgnoreCase("Removing Weeds Scrub Jungle")||
+                            names.equalsIgnoreCase("Removing Weeds- Scrub Jungle")||
                             names.equalsIgnoreCase("Profile Formation")||
                             names.equalsIgnoreCase("Raft Foundation")||
                             names.equalsIgnoreCase("Revetment")||
@@ -188,7 +188,15 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Erection of perforated")||
                             names.equalsIgnoreCase("Parapet wall")||
                             names.equalsIgnoreCase("Steel grill")||
-                            names.equalsIgnoreCase("Horizontal")) {
+                            names.equalsIgnoreCase("Horizontal")||
+                            names.equalsIgnoreCase("Jungle Clearence")||
+                            names.equalsIgnoreCase("Removing the Silt")||
+                            names.equalsIgnoreCase("Formwork for Cut-off wall")||
+                            names.equalsIgnoreCase("Formwork")||
+                            names.equalsIgnoreCase("Formwork for BodyWall")||
+                            names.equalsIgnoreCase("Well stening concrete work")||
+                            names.equalsIgnoreCase("Erection of perforated PVC pipe")||
+                            names.equalsIgnoreCase("Steel grill cover")) {
                         stageSpinner.setVisibility(View.GONE);
                     } else {
                         stagesDropDown(positionValue2, stageSpinner);

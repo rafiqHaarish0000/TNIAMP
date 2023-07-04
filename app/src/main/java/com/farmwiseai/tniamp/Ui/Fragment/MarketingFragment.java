@@ -179,10 +179,12 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            return false;
         }
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
 
 

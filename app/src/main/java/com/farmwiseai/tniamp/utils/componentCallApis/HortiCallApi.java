@@ -141,7 +141,11 @@ public class HortiCallApi {
                     } else if (names.equalsIgnoreCase("Exposure")) {
                         hideLayout.setVisibility(View.VISIBLE);
                         cropSpinner.setVisibility(View.GONE);
-                    } else if (names.equalsIgnoreCase("Vegetables")) {
+                    } else if (names.equalsIgnoreCase("Vegetables")
+                            || names.equalsIgnoreCase("Fruits")
+                            || names.equalsIgnoreCase("Spices")
+                            || names.equalsIgnoreCase("Flowers")
+                            || names.equalsIgnoreCase("Plantation Crops")) {
                         hideLayout.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.VISIBLE);
@@ -227,7 +231,9 @@ public class HortiCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     String names = stageList.get(i).getName();
-                    if (names.equalsIgnoreCase("Date of Sowing")) {
+                    if (names.equalsIgnoreCase("Date of Sowing")||
+                            names.equalsIgnoreCase("Date of Planting")
+                            ||names.equalsIgnoreCase("Date of Transplanting")) {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("Planting")) {
                         editText.setVisibility(View.VISIBLE);

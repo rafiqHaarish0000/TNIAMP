@@ -102,7 +102,7 @@ public class AgriCallApi {
                     } else if (names.equalsIgnoreCase("Cono Weeding")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
                         stageSpinner.setVisibility(View.GONE);
-                        hideLyt.setVisibility(View.GONE);
+                        hideLyt.setVisibility(View.VISIBLE);
                         seedLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
 
@@ -168,7 +168,8 @@ public class AgriCallApi {
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("First") || names.contains("Field")) {
                         thirdSpinner.setVisibility(View.GONE);
-                    } else if (names.contains("Harvest")) {
+                    } else if (names.contains("Harvest")||names.contains("2nd Cono Weeding")||
+                            names.contains("1st Cono weeding")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("SWIKC") || names.contains("Water walk") || names.contains("PRA Excercise") || names.contains("SWIC Centre") || names.contains("CCMG") || names.contains("Farmers Discussion") || names.contains("Village Vision") || names.contains("Entry Point Activity") || names.contains("Awareness Meeting") || names.contains("Water budgetting wall painting") || names.contains("Village vision wall painting")) {

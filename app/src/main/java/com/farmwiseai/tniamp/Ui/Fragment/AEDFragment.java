@@ -384,6 +384,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             return false;
 
         }
+
         if (otherLayt.getVisibility() == View.VISIBLE) {
             if (intName.length() == 0) {
                 aedBinding.inerventionNameTxt.setError("field empty");

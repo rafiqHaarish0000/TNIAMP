@@ -179,11 +179,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            return false;
         }
 
 
         if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
 
 
@@ -609,11 +611,11 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                     // BitMap is data structure of image file which store the image in memory
                     secondImageBase64 = getEncodedString(photo2);
                 }
-            }
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
-            toast.show();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
+                toast.show();
 
+            }
         }
 
     }

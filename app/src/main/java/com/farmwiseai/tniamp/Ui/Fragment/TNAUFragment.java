@@ -31,6 +31,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
@@ -125,6 +126,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String txn_id;
     public String date;
     public String status;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageValue = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
     public BackPressListener backPressListener;
     private String firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
@@ -144,6 +151,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
         tnauBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_t_n_a_u, container, false);
 
+        gender = null;
+        category = null;
 
         tnauBinding.popBackImage.setOnClickListener(this);
         tnauBinding.submissionBtn.setOnClickListener(this);
@@ -198,6 +207,16 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
     }
 
+    private void setSpinnerError(Spinner spinner, String errorMessage) {
+        View selectedView = spinner.getSelectedView();
+        if (selectedView != null) {
+            spinner.requestFocus();
+            mCommonFunction.mLoadCustomToast(getActivity(), errorMessage);
+            spinner.performClick(); // to open the spinner list if error is found.
+
+        }
+    }
+
     // validation for all mandatory fields
     private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date) {
@@ -212,47 +231,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         date = "11-09-2023";
 
 
-        if (tnauBinding.phase1 != null && tnauBinding.phase1.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
-            return false;
-        }
-        if (tnauBinding.subBasinTxt != null && tnauBinding.subBasinTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
-            return false;
-        }
-        if (tnauBinding.districtTxt != null && tnauBinding.districtTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
-            return false;
-        }
-        if (tnauBinding.blockTxt != null && tnauBinding.blockTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
-            return false;
-        }
-        if (tnauBinding.villageTxt != null && tnauBinding.villageTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
-            return false;
-        }
-        if (tnauBinding.componentTxt != null && tnauBinding.componentTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
-            return false;
-        }
-        if (tnauBinding.subComponentsTxt != null && tnauBinding.subComponentsTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
-            return false;
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageValue == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
 
@@ -260,7 +241,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
-
 
         if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
             if (survey_no.length() == 0) {
@@ -428,8 +408,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                subBasinValue = sub_basin_DropDown.get(i).getNAME();
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
-                Log.i(TAG, "districtPos: " + myString);
+                Log.i(TAG, "subBasinPos: " + posValue);
                 districtAdapter.getFilter().filter(posValue);
                 districtSpinner.setAdapter(districtAdapter);
 
@@ -447,6 +428,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
+                districtValue = districtDropDown.get(i).getNAME();
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);
@@ -465,6 +447,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
+                blockValue = blockDropDown.get(i).getNAME();
                 villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
@@ -513,6 +496,7 @@ mCommonFunction.hideProgress();
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
+                villageValue = villageDataList.get(i).getNAME();
                 village = String.valueOf(villageDataList.get(i).getID());
             }
 
@@ -532,6 +516,7 @@ mCommonFunction.hideProgress();
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 gender = genderSpinner.getSelectedItem().toString();
+
             }
 
             @Override
@@ -668,13 +653,17 @@ mCommonFunction.hideProgress();
         intervention3 = lookUpDataClass.getIntervention3();
         intervention4 = lookUpDataClass.getIntervention4();
 
-        if(intervention4.equalsIgnoreCase("Harvest")){
+        componentValue = lookUpDataClass.getComponentValue();
+        subComponentValue = lookUpDataClass.getSubComponentValue();
+
+        if (intervention4.equalsIgnoreCase("Harvest")) {
             tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
             tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tnauBinding.varietyTxt.setVisibility(View.GONE);
             tnauBinding.yieldTxt.setVisibility(View.GONE);
         }
+
 
         Log.i(TAG, "getAllComponentValue: " + intervention1 + intervention2 + intervention3);
 

@@ -60,6 +60,7 @@ public class WRDCallAPi {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
+                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
                     if (names.equals("Model Village")) {
@@ -106,6 +107,7 @@ public class WRDCallAPi {
                 thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
 
                     if(names.equalsIgnoreCase("Formation of WUA")){

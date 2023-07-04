@@ -61,6 +61,7 @@ public class AgriCallApi {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
+                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
 
@@ -151,6 +152,7 @@ public class AgriCallApi {
 
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);

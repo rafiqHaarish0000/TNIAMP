@@ -118,8 +118,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     public String tank_name;
     public String date;
     public String status;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
     public BackPressListener backPressListener;
-    private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String villageValue,category, firstImageBase64, secondImageBase64, interventionTypeVal;
     Agri_Request request;
 
     ArrayList<Agri_Request> offlineAgriRequest = new ArrayList<>();
@@ -212,68 +218,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
 
 
-//        if (sub_componentSpinner.getVisibility() == View.VISIBLE && sub_componentSpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        } else if (genderSpinner.getVisibility() == View.VISIBLE && genderSpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        } else if (categorySpinner.getVisibility() == View.VISIBLE && categorySpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        } else if (interventionSpinner.getVisibility() == View.VISIBLE && interventionSpinner.getSelectedItem() == null) {
-//            mLoadCustomToast(getActivity(), "Empty field found.!, Please enter all the fields");
-//            return false;
-//        }
-
-
-        if (agricultureBinding.phase1 != null && agricultureBinding.phase1.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
-            return false;
-        }
-        if (agricultureBinding.subBasinTxt != null && agricultureBinding.subBasinTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
-            return false;
-        }
-        if (agricultureBinding.districtTxt != null && agricultureBinding.districtTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
-            return false;
-        }
-        if (agricultureBinding.blockTxt != null && agricultureBinding.blockTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
-            return false;
-        }
-        if (agricultureBinding.villageTxt != null && agricultureBinding.villageTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
-            return false;
-        }
-        if (agricultureBinding.componentTxt != null && agricultureBinding.componentTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
-            return false;
-        }
-        if (agricultureBinding.subComponentsTxt != null && agricultureBinding.subComponentsTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
-            return false;
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageName == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
-
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
-            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
-        }
 
 
         if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -338,33 +287,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             }
             mLoadCustomToast(getActivity(), "Data field empty,Please check.!");
             return true;
-//        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
-//            if (nop.length() == 0) {
-//                agricultureBinding.noParti.setError("field empty");
-//                return false;
-//            } else if (moN.length() == 0) {
-//                {
-//                    agricultureBinding.maleOthers.setError("field empty");
-//                    return false;
-//                }
-//            } else if (mOO.length() == 0) {
-//                {
-//                    agricultureBinding.maleOthers.setError("field empty");
-//                    return false;
-//                }
-//            } else if (foN.length() == 0) {
-//                {
-//                    agricultureBinding.maleOthers.setError("field empty");
-//                    return false;
-//                }
-//            } else if (fOO.length() == 0) {
-//                {
-//                    agricultureBinding.maleOthers.setError("field empty");
-//                    return false;
-//                }
-//            }
-//            return false;
-//
         }
         return true;
     }
@@ -497,6 +419,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                subBasinValue = sub_basin_DropDown.get(i).getNAME();
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
                 Log.i(TAG, "districtPos: " + myString);
                 districtAdapter.getFilter().filter(posValue);
@@ -517,6 +440,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
+                districtValue = districtDropDown.get(i).getNAME();
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);
@@ -537,6 +461,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
+                blockValue = blockDropDown.get(i).getNAME();
                 villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
@@ -554,6 +479,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
                 villageValue = String.valueOf(villageDataList.get(i).getID());
+                villageName = villageDataList.get(i).getNAME();
             }
 
             @Override
@@ -846,6 +772,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        intervention4 = lookUpDataClass.getIntervention4();
+
+        componentValue = lookUpDataClass.getComponentValue();
+        subComponentValue = lookUpDataClass.getSubComponentValue();
+
         if(intervention4.equalsIgnoreCase("Harvest")){
             agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);

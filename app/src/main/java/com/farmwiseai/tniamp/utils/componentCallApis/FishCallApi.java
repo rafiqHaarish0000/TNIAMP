@@ -61,6 +61,7 @@ public class FishCallApi {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
+                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
                     if (names.equalsIgnoreCase("Model Village")) {
@@ -176,6 +177,7 @@ public class FishCallApi {
                 String names = sub_componentList.get(i).getName();
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     if(names.equalsIgnoreCase("Long Seasonal tanks")||
                     names.equalsIgnoreCase("Short Seasonal tanks")){

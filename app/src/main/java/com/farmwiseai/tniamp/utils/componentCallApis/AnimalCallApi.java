@@ -72,6 +72,7 @@ public class AnimalCallApi {
                     try {
                         lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                         positionValue = String.valueOf(componentList.get(i).getID());
+                        lookUpDataClass.setComponentValue(componentList.get(i).getName());
                         String names = componentList.get(i).getName();
                         if (names.contains("Model Village")) {
                             subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
@@ -163,6 +164,7 @@ public class AnimalCallApi {
 
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     if (names.equalsIgnoreCase("Group meeting") || names.equalsIgnoreCase("One day training") ||
                             names.equalsIgnoreCase("One day exposure visit") || names.equalsIgnoreCase("Infertility camp") ||

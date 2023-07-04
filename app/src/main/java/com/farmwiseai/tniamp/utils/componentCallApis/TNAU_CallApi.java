@@ -66,6 +66,7 @@ public class TNAU_CallApi {
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     positionValue = String.valueOf(componentList.get(i).getID());
+                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
 
                     subComponentSpinner.setVisibility(View.VISIBLE);
@@ -123,6 +124,7 @@ public class TNAU_CallApi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String names = sub_componentList.get(i).getName();
+                lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                 thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     if (names.contains("Sowing")) {

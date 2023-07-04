@@ -123,8 +123,14 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public String txn_id;
     public String date;
     public String status;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String  villageValue,firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<AEDRequest> offlineAedRequest;
 
     @Override
@@ -267,6 +273,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
                 village = String.valueOf(villageDataList.get(i).getID());
+                villageName = villageDataList.get(i).getNAME();
 //                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
 
@@ -346,48 +353,9 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         intName = aedBinding.inerventionNameTxt.getText().toString();
 
 
-
-        if (aedBinding.phase1 != null && aedBinding.phase1.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter phases");
-            return false;
-        }
-        if (aedBinding.subBasinTxt != null && aedBinding.subBasinTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basin");
-            return false;
-        }
-        if (aedBinding.districtTxt != null && aedBinding.districtTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter districts");
-            return false;
-        }
-        if (aedBinding.blockTxt != null && aedBinding.blockTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter blocks");
-            return false;
-        }
-        if (aedBinding.villageTxt != null && aedBinding.villageTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter village");
-            return false;
-        }
-        if (aedBinding.componentTxt != null && aedBinding.componentTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter component");
-            return false;
-        }
-        if (aedBinding.subComponentsTxt != null && aedBinding.subComponentsTxt.getSelectedItem() != null) {
-
-        } else {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please enter sub basins");
-            return false;
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageName == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
 
@@ -693,6 +661,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        componentValue = lookUpDataClass.getComponentValue();
+        subComponentValue = lookUpDataClass.getSubComponentValue();
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

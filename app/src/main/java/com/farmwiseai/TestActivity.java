@@ -211,6 +211,16 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
 
     }
 
+    private void setSpinnerError(Spinner spinner, String errorMessage){
+        View selectedView = spinner.getSelectedView();
+        if (selectedView != null) {
+            spinner.requestFocus();
+            Toast.makeText(TestActivity.this,errorMessage,Toast.LENGTH_SHORT).show();
+            spinner.performClick(); // to open the spinner list if error is found.
+
+        }
+    }
+
 
     private void getLocation(View view) {
         gpsTracker = new GPSTracker(TestActivity.this);

@@ -31,7 +31,6 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
@@ -63,8 +62,6 @@ import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,7 +75,7 @@ import retrofit2.Response;
 public class TNAUFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village,mobileNumber;
     public static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -219,9 +216,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
     // validation for all mandatory fields
     private boolean fieldValidation(String farmerName, String category,
-                                    String survey_no, String area, String near_tank, String remarks, String date) {
+                                    String survey_no, String area, String near_tank, String remarks, String date, String mobileNumber) {
 
-        farmerName = tnauBinding.farmerTxt.getText().toString();
+        farmerName = tnauBinding.farmerTxt.getText().toString().trim();
         survey_no = tnauBinding.surveyTxt.getText().toString();
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
@@ -271,8 +268,21 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         else if (!tnauBinding.image1.isSelected() && !tnauBinding.image2.isSelected()) {
             Toast.makeText(getActivity(), "Please capture photo", Toast.LENGTH_LONG).show();
             return false;
-        }
+        } else if (gender == null) {
+            Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
+            return false;
 
+        } else if (category == null) {
+            Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
+            return false;
+        }else if (farmerName.isEmpty()||farmerName.length()==0) {
+            Toast.makeText(getActivity(), "Please Enter Farmer Name", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else if (farmerName.isEmpty()||farmerName.length()==0) {
+            Toast.makeText(getActivity(), "Please Enter Farmer Name", Toast.LENGTH_LONG).show();
+            return false;
+        }
         return true;
     }
 
@@ -293,7 +303,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         };
 
         boolean checkValidaiton = fieldValidation(farmerName,
-                category, survey_no, area, near_tank, remarks, dateField);
+                category, survey_no, area, near_tank, remarks, dateField,mobileNumber);
 
         switch (view.getId()) {
             case R.id.pop_back_image:

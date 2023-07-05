@@ -63,7 +63,6 @@ public class MarketingCallApi {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                     lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
-                    backPressListener.onSelectedInputs(lookUpDataClass);
                     String names = getAllComponentData.get(i).getName();
                     if (names.equalsIgnoreCase("Model Village")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, layoutTraining, layoutExpo,newReqLayt);
@@ -120,6 +119,7 @@ public class MarketingCallApi {
                         layoutExpo.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
                     }
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
                     e.printStackTrace();

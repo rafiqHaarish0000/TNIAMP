@@ -75,6 +75,7 @@ public class WRDCallAPi {
                         wauTxt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                     }
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -137,6 +138,7 @@ public class WRDCallAPi {
                         tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -201,6 +203,7 @@ public class WRDCallAPi {
                     } else {
                         stagesDropDown(positionValue2, stageSpinner);
                     }
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
 
@@ -219,9 +222,26 @@ public class WRDCallAPi {
 
         commonFunction = new CommonFunction(activity);
         stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
+
         adapters = new ComponentAdapter(context, stagesList);
         adapters.getFilter().filter(stagePosVal);
         stageSpinner.setAdapter(adapters);
+        stageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try{
+                    lookUpDataClass.setIntervention3(stagesList.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
+                }catch (Exception e){
+
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
     }
 

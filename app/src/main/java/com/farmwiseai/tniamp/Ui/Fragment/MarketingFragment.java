@@ -3,6 +3,7 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -138,6 +139,13 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         marketingBinding.submissionBtn.setOnClickListener(this);
         marketingBinding.image1.setOnClickListener(this);
         marketingBinding.image2.setOnClickListener(this);
+        marketingBinding.dateFrom.setOnClickListener(this);
+        marketingBinding.dateFrom1.setOnClickListener(this);
+        marketingBinding.dateTo.setOnClickListener(this);
+        marketingBinding.dateTo2.setOnClickListener(this);
+        marketingBinding.incorporationDateTxt.setOnClickListener(this);
+        marketingBinding.inNumberDate.setOnClickListener(this);
+        marketingBinding.DOCompletion.setOnClickListener(this);
 
 
         remarks = marketingBinding.remarksTxt.getText().toString();
@@ -181,28 +189,66 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
-            return false;
         }
 
-        if (valueofPic == 0) {
+        else if (valueofPic == 0) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
 
-        if (otherLyt.getVisibility() == View.VISIBLE) {
+        else if (otherLyt.getVisibility() == View.VISIBLE) {
             if (marketingBinding.inerventionNameTxt.getText().length() == 0) {
                 marketingBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
             return true;
         }
-
+        else if (layout1.getVisibility() == View.VISIBLE) {
+            if (marketingBinding.numberFPC.getText().length() == 0) {
+                marketingBinding.numberFPC.setError("field empty");
+                return false;
+            }else if(marketingBinding.incorporationNumber.getText().length() == 0){
+                marketingBinding.incorporationNumber.setError("field empty");
+                return false;
+            }
+            else if(marketingBinding.noVillage.getText().length() == 0){
+                marketingBinding.noVillage.setError("field empty");
+                return false;
+            }
+            else if(marketingBinding.noOfFigs.getText().length() == 0){
+                marketingBinding.noOfFigs.setError("field empty");
+                return false;
+            }
+            else if(marketingBinding.noOfMembers.getText().length() == 0){
+                marketingBinding.noOfMembers.setError("field empty");
+                return false;
+            }
+            else if(marketingBinding.maleOthers.getText().length() == 0){
+                marketingBinding.maleOthers.setError("field empty");
+                return false;
+            }
+            else if(marketingBinding.maleNo.getText().length() == 0){
+                marketingBinding.maleNo.setError("field empty");
+                return false;
+            }
+            else if(marketingBinding.femaleOthers.getText().length() == 0){
+                marketingBinding.femaleOthers.setError("field empty");
+                return false;
+            }
+            else if(marketingBinding.maleNo.getText().length() == 0){
+                marketingBinding.maleNo.setError("field empty");
+                return false;
+            }
+            return true;
+        }
 
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
+        boolean checkValidaiton = fieldValidation(near_tank, remarks, dateField);
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(getContext(), DashboardActivity.class);
@@ -212,7 +258,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 break;
 
             case R.id.submission_btn:
-                boolean checkValidaiton = fieldValidation(near_tank, remarks, dateField);
+
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -397,7 +443,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageValue = String.valueOf(villageDataList.get(i).getID());
-                villageValue = villageDataList.get(i).getNAME();
+                villageName = villageDataList.get(i).getNAME();
             }
 
             @Override

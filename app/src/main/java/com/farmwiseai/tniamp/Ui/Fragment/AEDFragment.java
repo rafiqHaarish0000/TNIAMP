@@ -378,10 +378,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         } /*else if (near_tank.length() == 0 && aedBinding.tankTxt.getVisibility() == View.VISIBLE) {
             aedBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        }*/ else if (remarks.length() == 0 && aedBinding.remarksTxt.getVisibility() == View.VISIBLE) {
-            aedBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        }
+        }*/
              else if (aedBinding.mobileNumbertxt.toString().isEmpty() || (aedBinding.mobileNumbertxt.toString().length() < 10)) {
                 aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;

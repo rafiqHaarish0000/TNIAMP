@@ -107,10 +107,10 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private List<String> phraseList, genderList, categoryList, interventionList;
     private LinearLayout vis_lyt, trainingLyt, pregLyt, iNames_lyt;
     private double lati, longi;
-    public String intervention1 = null; //component
-    public String intervention2 = null; //sub_componenet
-    public String intervention3 = null;  // stages
-    public String intervention4 = null;  // stages
+    public String intervention1; //component
+    public String intervention2; //sub_componenet
+    public String intervention3;  // stages
+    public String intervention4;  // stages
     public String farmer_name;
     public String gender;
     public String lat;
@@ -169,6 +169,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         EditText calves = animalBinding.noOfCalves;
         pregLyt = animalBinding.pregLyt;
         iNames_lyt = animalBinding.othersLayout;
+
+        backPressListener = this;
+
         offlineARDRequest = SharedPrefsUtils.getARDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
 
@@ -289,6 +292,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
                 villageValue = String.valueOf(villageDataList.get(i).getID());
+                villageName = String.valueOf(villageDataList.get(i).getNAME());
             }
 
             @Override
@@ -371,66 +375,65 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         fOO = animalBinding.fScStNO.getText().toString();
 
 
+
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null || gender == null ||
-                category1 == null) {
+                villageName == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            return false;
         }
 
-
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        else if (valueofPic == 0 ) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
 
-        if (farmerName.length() == 0 && animalBinding.farmerTxt.getVisibility() == View.VISIBLE) {
-            animalBinding.farmerTxt.setError("Please enter farmer name");
-            return false;
-        } else if (survey_no.length() == 0 && animalBinding.surveyTxt.getVisibility() == View.VISIBLE) {
-            animalBinding.surveyTxt.setError("Please enter survey no");
-            return false;
-        } else if (area.length() == 0 && animalBinding.areaTxt.getVisibility() == View.VISIBLE) {
-            animalBinding.areaTxt.setError("Please enter area");
-            return false;
-        } else if (Double.valueOf(area) > 2.0 && animalBinding.areaTxt.getVisibility() == View.VISIBLE) {
-            animalBinding.areaTxt.setError("Area Should be less than 2(ha)");
-            return false;
-        } else if (near_tank.length() == 0 && animalBinding.tankTxt.getVisibility() == View.VISIBLE) {
-            animalBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
-        } else if (remarks.length() == 0 && animalBinding.remarksTxt.getVisibility() == View.VISIBLE) {
-            animalBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        } else if (date.length() == 0 && animalBinding.dateTxt.getVisibility() == View.VISIBLE) {
-            animalBinding.dateTxt.setError("Please enter the date");
-            return false;
-        } else if (animalBinding.mobileNumber.toString().isEmpty() || (animalBinding.mobileNumber.toString().length() < 10)) {
-            animalBinding.mobileNumber.setError("Please enter the valid mobile number");
-            return false;
-        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
-            if (moN.length() == 0) {
-                {
-                    animalBinding.maleNo.setError("field empty");
-                    return false;
-                }
-            } else if (mOO.length() == 0) {
-                {
-                    animalBinding.otherNo.setError("field empty");
-                    return false;
-                }
-            } else if (foN.length() == 0) {
-                {
-                    animalBinding.femaleNo.setError("field empty");
-                    return false;
-                }
-            } else if (fOO.length() == 0) {
-                {
-                    animalBinding.femaleOthers.setError("field empty");
-                    return false;
-                }
+
+        else if (vis_lyt.getVisibility() == View.VISIBLE) {
+            if (farmerName.length() == 0) {
+                animalBinding.farmerTxt.setError("Please enter farmer name");
+                return false;
+            } else if (survey_no.length() == 0) {
+                animalBinding.surveyTxt.setError("Please enter survey no");
+                return false;
+            } else if (area.length() == 0) {
+                animalBinding.areaTxt.setError("Please enter area");
+                return false;
+            } else if (Double.valueOf(area) > 2.0) {
+                animalBinding.areaTxt.setError("Area Should be less than 2(ha)");
+                return false;
+            } else if (animalBinding.mobileNumber.length() == 0 || (animalBinding.mobileNumber.length() < 10)) {
+                animalBinding.mobileNumber.setError("Please enter the valid mobile number");
+                return false;
             }
-            return false;
+            return true;
 
         }
+
+//        else if (trainingLyt.getVisibility() == View.VISIBLE) {
+//            if (moN.length() == 0) {
+//                {
+//                    animalBinding.maleNo.setError("field empty");
+//                    return false;
+//                }
+//            } else if (mOO.length() == 0) {
+//                {
+//                    animalBinding.otherNo.setError("field empty");
+//                    return false;
+//                }
+//            } else if (foN.length() == 0) {
+//                {
+//                    animalBinding.femaleNo.setError("field empty");
+//                    return false;
+//                }
+//            } else if (fOO.length() == 0) {
+//                {
+//                    animalBinding.femaleOthers.setError("field empty");
+//                    return false;
+//                }
+//            }
+//            return true;
+//
+//        }
 
         return true;
     }
@@ -470,7 +473,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                         e.printStackTrace();
                     }
                 } else {
-                    mLoadCustomToast(getActivity(), "Validation error");
+                    mLoadCustomToast(getActivity(), "Server error");
                 }
                 break;
             case R.id.image_1:
@@ -570,8 +573,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setArea(area);
         request.setVariety(" ");
         request.setImage1(firstImageBase64.trim());
-        request.setYield(" ");
+        request.setYield("String");
         request.setRemarks(remarks);
+        request.setFish_culture("null");
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date(dateField);
         request.setLat(lat);
@@ -583,17 +587,18 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setTxn_id("20200212120446");
         request.setDate("");
         request.setStatus("0");
-        request.setNo_of_cows(animalBinding.noOfCalves.getText().toString());
-        request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
+        request.setNo_of_cows("1");
+        request.setNo_of_calves("1");
         request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
         request.setMobile(animalBinding.mobileNumber.getText().toString());
-        request.setOthers_female_no(foo);
-        request.setOthers_male_no(mon);
-        request.setSc_st_female_no(fon);
-        request.setSc_st_male_no(moo);
+        request.setOthers_female_no("1");
+        request.setOthers_male_no("1");
+        request.setSc_st_female_no("1");
+        request.setSc_st_male_no("1");
         request.setVenue(animalBinding.venue.getText().toString());
         request.setIntervention_type(interventionTypeVal);
         request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
+
         if (mCommonFunction.isNetworkAvailable()) {
             onlineDataUpload(request);
         } else {
@@ -695,15 +700,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
-        intervention4 = lookUpDataClass.getIntervention4();
+        componentValue = lookUpDataClass.getComponentValue();
+        subComponentValue = lookUpDataClass.getSubComponentValue();
 
-        if (intervention4.equalsIgnoreCase("Harvest")) {
-            animalBinding.varietyTxt.setVisibility(View.VISIBLE);
-            animalBinding.yieldTxt.setVisibility(View.VISIBLE);
-        } else {
-            animalBinding.varietyTxt.setVisibility(View.GONE);
-            animalBinding.yieldTxt.setVisibility(View.GONE);
-        }
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 

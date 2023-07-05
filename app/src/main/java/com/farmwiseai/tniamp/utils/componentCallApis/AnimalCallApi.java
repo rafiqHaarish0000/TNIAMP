@@ -73,7 +73,6 @@ public class AnimalCallApi {
                         lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                         positionValue = String.valueOf(componentList.get(i).getID());
                         lookUpDataClass.setComponentValue(componentList.get(i).getName());
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         String names = componentList.get(i).getName();
                         if (names.contains("Model Village")) {
                             subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
@@ -130,6 +129,7 @@ public class AnimalCallApi {
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
                             subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
+                            backPressListener.onSelectedInputs(lookUpDataClass);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -166,7 +166,6 @@ public class AnimalCallApi {
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
-                    backPressListener.onSelectedInputs(lookUpDataClass);
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     if (names.equalsIgnoreCase("Group meeting") || names.equalsIgnoreCase("One day training") ||
                             names.equalsIgnoreCase("One day exposure visit") || names.equalsIgnoreCase("Infertility camp") ||
@@ -191,6 +190,7 @@ public class AnimalCallApi {
                     }
                     stagesDropDown(positionValue2, thirdSpinner, editText);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -218,7 +218,7 @@ public class AnimalCallApi {
                     Log.i(TAG, "names: " + stagesList.get(i).getName());
 
                     String names = stagesList.get(i).getName();
-
+                    lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
                     if (names.equalsIgnoreCase("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.contains("Planting")) {
@@ -226,8 +226,6 @@ public class AnimalCallApi {
                     } else {
                         editText.setVisibility(View.GONE);
                     }
-                    lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
-                    lookUpDataClass.setIntervention4(stagesList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
 

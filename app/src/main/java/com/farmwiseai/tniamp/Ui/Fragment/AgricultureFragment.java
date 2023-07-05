@@ -3,7 +3,6 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -12,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -42,10 +40,8 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
-import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
-import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
@@ -81,7 +77,7 @@ import retrofit2.Response;
 public class AgricultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentAgricultureBinding agricultureBinding;
     private Context context;
-    private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName;
+    private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName, mobileNumber;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -126,7 +122,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     public String subComponentValue = null;
     public BackPressListener backPressListener;
     DatePickerDialog picker;
-    private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String villageValue, category1, firstImageBase64, secondImageBase64, interventionTypeVal;
     Agri_Request request;
 
     ArrayList<Agri_Request> offlineAgriRequest = new ArrayList<>();
@@ -172,6 +168,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         seedra = agricultureBinding.areaRaisedTxt.getText().toString();
         qop = agricultureBinding.quantityTxt.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
+        mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
 
 
         componentSpinner = agricultureBinding.componentTxt;
@@ -203,7 +200,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date,
                                     String nag, String dag, String dafr, String seedra, String qop,
-                                    String intName) {
+                                    String intName, String mobileNumber) {
 
         farmerName = agricultureBinding.farmerTxt.getText().toString().trim();
         survey_no = agricultureBinding.surveyTxt.getText().toString();
@@ -217,22 +214,25 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         seedra = agricultureBinding.areaRaisedTxt.getText().toString();
         qop = agricultureBinding.quantityTxt.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
+        mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null || subComponentValue == null ||
+                gender == null || category1 == null)
+        {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
-
+        else if (valueofPic == 0 ) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
+        }
 
         else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 agricultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
-            } /*else if (date.length() == 0) {
-                agricultureBinding.dateTxt.setError("Please enter the date");
-                return false;
-            }*/ else if (survey_no.length() == 0) {
+            } else if (survey_no.length() == 0) {
                 agricultureBinding.surveyTxt.setError("Please enter survey no");
                 return false;
             } else if (area.length() == 0) {
@@ -241,26 +241,19 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (Double.valueOf(area) > 2.0) {
                 agricultureBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
-            } /*else if (near_tank.length() == 0 && agricultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
-            agricultureBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
-        }*/ /*else if (remarks.length() == 0 && agricultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
-                agricultureBinding.remarksTxt.setError("Remarks not found");
-                return false;
-            }*/ else if (agricultureBinding.mobileNumbertxt.toString().isEmpty() || (agricultureBinding.mobileNumbertxt.toString().length() < 10)) {
+            } else if (mobileNumber.length() == 0 || (mobileNumber.length() < 10)) {
                 agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
             }
             return true;
-        }
-        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (intName.length() == 0) {
                 agricultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
-            return true;
-        }
-        else if (seed_lyt.getVisibility() == View.VISIBLE) {
+
+        } else if (seed_lyt.getVisibility() == View.VISIBLE) {
             if (nag.length() == 0) {
                 agricultureBinding.nameOfGroup.setError("field empty");
                 return false;
@@ -285,11 +278,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     return false;
                 }
             }
-            else if (valueofPic == 0) {
-                mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
-                return false;
-            }
-
             return true;
         }
         return true;
@@ -310,7 +298,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName);
+                        category1, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName, mobileNumber);
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -520,7 +508,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                category = categorySpinner.getSelectedItem().toString();
+                category1 = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -653,16 +641,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setIntervention3(intervention3);
         request.setFarmerName(farmerName);
         request.setGender(gender);
-        request.setCategory(category);
+        request.setCategory(category1);
         request.setSurveyNo(survey_no);
         request.setArea(area);
-        request.setVariety(" ");
+        request.setVariety("");
         request.setImage1(firstImageBase64.trim());
-        request.setYield(" ");
+        request.setYield("");
         request.setRemarks(remarks);
         request.setCreatedBy("f55356773fce5b11");
-        request.setCreatedDate(dateField);
-        request.setCategory("f55356773fce5b11");
         request.setCreatedDate(dateField);
         request.setLat(lat);
         request.setLon(lon);
@@ -680,6 +666,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setDateRevolvingFundRelease(darf);
         request.setSeedAreaDecimal(seedra);
         request.setQuantityProcured(qop);
+
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);
         } else {

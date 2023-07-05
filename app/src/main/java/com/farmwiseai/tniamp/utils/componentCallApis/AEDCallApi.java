@@ -91,6 +91,7 @@ public class AEDCallApi {
 
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner,thirdSpinner);
                     }
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -132,6 +133,7 @@ public class AEDCallApi {
                         thirdSpinner.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 //                                        stagesDropDown(positionValue2, thirdSpinner, editText);
                 } catch (Exception e) {
                     e.printStackTrace();

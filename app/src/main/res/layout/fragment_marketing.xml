@@ -290,6 +290,7 @@
                             android:visibility="visible">
 
                             <EditText
+                                android:id="@id/noOfMembers"
                                 style="@style/AppEdittext"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

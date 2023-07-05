@@ -47,6 +47,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentWRDFRagmentBinding;
+import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.CustomToast;
@@ -94,6 +95,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private CharSequence posValue = "0";
     private ComponentAdapter adapter, adapter2;
     private SubBasinAdapter subAdapter;
+    private GPSTracker gpsTracker;
     private DistrictAdapter districtAdapter;
     private BlockAdapter blockAdapter;
     private Spinner subBasinSpinner, districtSpinner,
@@ -174,26 +176,23 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     }
 
     private boolean fieldValidation(String lengthNumberTxt, String category,
-                                    String lsPointTxt, String sliceNumberTxt, String remarks, String date) {
+                                    String lsPointTxt, String sliceNumberTxt, String date) {
 
         lengthNumberTxt = wrdfragmentBinding.lengthTxt.getText().toString();
         lsPointTxt = wrdfragmentBinding.lsPoint.getText().toString();
         sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString();
-        remarks = wrdfragmentBinding.remarksTxt.getText().toString();
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null
-        ) {
+                villageName == null)
+        {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
-
-
-        if (valueofPic == 0 ) {
+        else if (valueofPic == 0 ) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
-
-        if (lengthNumberTxt.length() == 0) {
+        else if (lengthNumberTxt.length() == 0) {
             wrdfragmentBinding.lengthTxt.setError("Please enter farmer name");
             return false;
         } else if (lsPointTxt.length() == 0) {
@@ -204,15 +203,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             return false;
         }
 
-        if (iNames_lyt.getVisibility() == View.VISIBLE) {
+        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.inerventionNameTxt.getText().length() == 0) {
                 wrdfragmentBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
             return true;
         }
-
-
         return true;
     }
 
@@ -220,6 +217,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
+        boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, dateField);
 
         switch (view.getId()) {
             case R.id.pop_back_image:
@@ -230,12 +228,23 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 break;
 
             case R.id.submission_btn:
-                boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField);
                 if (checkValidaiton) {
-                    finalSubmission();
+                    try {
+                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        } else {
+                            //  getLocation(view);
+                            gpsTracker = new GPSTracker(getContext());
+                            lat = String.valueOf(gpsTracker.getLatitude());
+                            lon = String.valueOf(gpsTracker.getLongitude());
+                            finalSubmission();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Validation Error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -302,9 +311,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 myString = String.valueOf(wrdfragmentBinding.phase1.getSelectedItemPosition());
                 subAdapter.getFilter().filter(myString);
                 subBasinSpinner.setAdapter(subAdapter);
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -369,7 +376,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageValue = String.valueOf(villageDataList.get(i).getID());
-                villageValue = villageDataList.get(i).getNAME();
+                villageName = villageDataList.get(i).getNAME();
             }
 
             @Override
@@ -457,25 +464,26 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == pic_id) {
-            if (takePicture && valueofPic == 1) {
-                if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (takePicture && valueofPic == 1) {
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
                     // Set the image in imageview for display
                     wrdfragmentBinding.image1.setImageBitmap(photo);
                     // BitMap is data structure of image file which store the image in memory
+                    Log.i(TAG, "base: " + getEncodedString(photo));
                     firstImageBase64 = getEncodedString(photo);
                 } else if (!takePicture && valueofPic == 2) {
                     Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                     // Set the image in imageview for display
                     wrdfragmentBinding.image2.setImageBitmap(photo2);
-                    // BitMap is data structure of image file which store the image in memory
                     secondImageBase64 = getEncodedString(photo2);
+                    // BitMap is data structure of image file which store the image in memory
                 }
-            }
-        }else if (resultCode == Activity.RESULT_CANCELED) {
-            Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
-            toast.show();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
+                toast.show();
 
+            }
         }
 
     }
@@ -515,6 +523,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         Log.i(TAG, "dataValue" + dateField);
 
         WRDRequest request = new WRDRequest();
+
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date("2020-02-12 11:02:02");
         request.setImage1(firstImageBase64.trim());

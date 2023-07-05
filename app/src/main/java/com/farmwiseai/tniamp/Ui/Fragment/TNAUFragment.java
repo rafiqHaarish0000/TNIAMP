@@ -133,6 +133,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private String firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
+    DatePickerDialog picker;
 
     @Override
     public void onAttach(Context context) {
@@ -165,7 +166,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         remarks = tnauBinding.remarksTxt.getText().toString();
         dateField = tnauBinding.dateTxt.getText().toString();
         backPressListener = this;
-        LookUpDataClass lookUpDataClass = new LookUpDataClass();
         /*
         below component spinner is vary for all the department so please refer the callApi class
         component spinner visible the other two dropdowns according to the data
@@ -234,12 +234,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         }
 
 
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        else if (valueofPic == 0 ) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
 
-        if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
+        else if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
             if (survey_no.length() == 0) {
                 tnauBinding.surveyTxt.setError("Please enter survey no");
                 return false;
@@ -252,23 +252,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             }
             return true;
 
-//        } else if (near_tank.length() == 0) {
-//            tnauBinding.tankTxt.setError("Please enter near by tank name");
-//            return false;
+        }
 
-        }
-        if (remarks.length() == 0) {
-            tnauBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        }
-//        else if (date.length() == 0) {
-//            tnauBinding.dateTxt.setError("Please enter the date");
-//            return false;
-//        }
-        else if (!tnauBinding.image1.isSelected() && !tnauBinding.image2.isSelected()) {
-            Toast.makeText(getActivity(), "Please capture photo", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (gender == null) {
+        else if (gender == null) {
             Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
             return false;
 
@@ -363,10 +349,30 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 break;
 
             case R.id.date_txt:
-                new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                dateFieldValidation(tnauBinding.dateTxt);
                 break;
 
         }
+    }
+
+    private void dateFieldValidation(EditText datePicker) {
+
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        picker.show();
+
+
     }
 
 

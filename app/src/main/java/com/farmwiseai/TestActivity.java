@@ -43,6 +43,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,6 +55,7 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
     Spinner firstSpinner, secondSpinner, thirdSpinner;
     EditText datePicker;
     List<String> multiAdapterList;
+    List<String> listadapter2;
     private TNAU_CallApi TNAUCallApi;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
@@ -63,6 +65,9 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
     private GPSTracker gpsTracker;
     double lat, longi;
     LocationManager locationManager;
+    boolean[] selectedLanguage;
+    ArrayList<Integer> langList = new ArrayList<>();
+    String[] langArray = {"Java", "C++", "Kotlin", "C", "Python", "Javascript"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +81,18 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
         thirdSpinner = testBinding.phase3;
         datePicker = testBinding.sowingDatepicker;
 
-        multiAdapterList = new ArrayList<>();
-        multiAdapterList.add("One");
-        multiAdapterList.add("Two");
-        multiAdapterList.add("Three");
-        multiAdapterList.add("Four");
-        multiAdapterList.add("Five");
-        testBinding.spinnerMultiSpinner.initMultiSpinner(this, testBinding.spinnerMultiSpinner);
-        testBinding.spinnerMultiSpinner.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
-        testBinding.spinnerMultiSpinner.setPadding(20, 20, 20, 20);
-        testBinding.spinnerMultiSpinner.setAdapterWithOutImage(this, multiAdapterList, new MultiSelectionSpinnerDialog.OnMultiSpinnerSelectionListener() {
+        selectedLanguage = new boolean[langArray.length];
+        testBinding.speciesStockedTxt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void OnMultiSpinnerItemSelected(List<String> chosenItems) {
-                for (int i = 0; i < chosenItems.size(); i++) {
-                    Log.e("chosenItems", chosenItems.get(i));
-                }
-            }
+            public void onClick(View view) {
+                alertMessageForSpicies(TestActivity.this, "Select Language", selectedLanguage, langArray, langList);}
+
+        });
+        testBinding.speciesStockedTxt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertMessageForSpicies(TestActivity.this, "Select Language", selectedLanguage, langArray, langList);}
+
         });
 
 
@@ -211,15 +212,68 @@ public class TestActivity extends AppCompatActivity implements LocationListener 
 
     }
 
-    private void setSpinnerError(Spinner spinner, String errorMessage){
-        View selectedView = spinner.getSelectedView();
-        if (selectedView != null) {
-            spinner.requestFocus();
-            Toast.makeText(TestActivity.this,errorMessage,Toast.LENGTH_SHORT).show();
-            spinner.performClick(); // to open the spinner list if error is found.
+    private void alertMessageForSpicies(Context context, String title, boolean[] selectedLanguage, String[] items,
+                                        ArrayList<Integer> values) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        }
+        // set title
+        builder.setTitle(title);
+
+        // set dialog non cancelable
+        builder.setCancelable(false);
+
+        builder.setMultiChoiceItems(items, selectedLanguage, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                // check condition
+                if (b) {
+                    // when checkbox selected
+                    // Add position  in lang list
+                    values.add(i);
+                    // Sort array list
+                    Collections.sort(values);
+                } else {
+                    // when checkbox unselected
+                    // Remove position from langList
+                    values.remove(Integer.valueOf(i));
+                }
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Initialize string builder
+                StringBuilder stringBuilder = new StringBuilder();
+                // use for loop
+                for (int j = 0; j < values.size(); j++) {
+                    // concat array value
+                    stringBuilder.append(items[values.get(j)]);
+                    // check condition
+                    if (j != values.size() - 1) {
+                        // When j value  not equal
+                        // to lang list size - 1
+                        // add comma
+                        stringBuilder.append(", ");
+                    }
+                }
+                // set text on textView
+                testBinding.speciesStockedTxt.setText(stringBuilder.toString());
+                testBinding.speciesStockedTxt2.setText(stringBuilder.toString());
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            }
+        });
+        // show dialog
+        builder.show();
     }
+
 
 
     private void getLocation(View view) {

@@ -29,6 +29,33 @@
             app:smsp_hintColor="#388E3C"
             app:smsp_multilineError="false" />
 
+        <EditText
+            android:id="@+id/speciesStockedTxt"
+            style="@style/AppEdittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Speicies stocked"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:drawableEnd="@drawable/drop_down"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/speciesStockedTxt2"
+            style="@style/AppEdittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Speicies stocked"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:drawableEnd="@drawable/drop_down"
+            android:inputType="number" />
+
         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
@@ -46,15 +73,7 @@
             app:smsp_hintColor="#388E3C"
             app:smsp_multilineError="false" />
 
-        <com.anurag.multiselectionspinner.MultiSpinner
-            android:id="@+id/spinnerMultiSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="18dp"
-            android:hint="Species stocks"
-            android:padding="18dp" />
+
 
         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
             android:id="@+id/phase2"

@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.anurag.multiselectionspinner.MultiSelectionSpinnerDialog;
 import com.anurag.multiselectionspinner.MultiSpinner;
+import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
@@ -65,6 +66,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -119,6 +121,9 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    boolean[] selectedLanguage;
+    ArrayList<Integer> langList = new ArrayList<>();
+    String[] langArray = {"Cata", "Rahul", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
     ArrayList<FishRequest> offlineMarkRequest = new ArrayList<>();
 
     @Override
@@ -188,6 +193,14 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             return false;
         }
 
+        if (otherLyt.getVisibility() == View.VISIBLE) {
+            if (fisheriesBinding.inerventionNameTxt.getText().length() == 0) {
+                fisheriesBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+            return true;
+        }
+
 
         return true;
     }
@@ -251,22 +264,11 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         sub_componentSpinner = fisheriesBinding.subComponentsTxt;
         villageSpinner = fisheriesBinding.villageTxt;
         interventionSpinner = fisheriesBinding.inverntionTyper;
-        multiSpinner1 = fisheriesBinding.speciesMulti1;
-        multiSpinner2 = fisheriesBinding.speciesMulti2;
-        multiSpinner3 = fisheriesBinding.speciesMulti3;
         lesseeSpinner = fisheriesBinding.lessee;
         beneficarySpinner = fisheriesBinding.bene1;
         beneficarySpinner1 = fisheriesBinding.bene2;
         categorySpinner = fisheriesBinding.categorySpinner;
         genderSpinner = fisheriesBinding.genderTxt;
-
-        //multiSpinnerAdapters
-        multiAdapterList = new ArrayList<>();
-        multiAdapterList.add("Cata");
-        multiAdapterList.add("Rahu");
-        multiAdapterList.add("Mrigal");
-        multiAdapterList.add("Common carp");
-        multiAdapterList.add("Grass carp");
 
         categoryList = new ArrayList<>();
         categoryList.add("SC");
@@ -406,38 +408,22 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-        fisheriesBinding.speciesMulti1.initMultiSpinner(getContext(), fisheriesBinding.speciesMulti1);
-        fisheriesBinding.speciesMulti2.initMultiSpinner(getContext(), fisheriesBinding.speciesMulti2);
-        fisheriesBinding.speciesMulti3.initMultiSpinner(getContext(), fisheriesBinding.speciesMulti3);
-
-        fisheriesBinding.speciesMulti1.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
-        fisheriesBinding.speciesMulti1.setPadding(20, 20, 20, 20);
-        fisheriesBinding.speciesMulti1.setAdapterWithOutImage(getContext(), multiAdapterList, new MultiSelectionSpinnerDialog.OnMultiSpinnerSelectionListener() {
+        fisheriesBinding.speciesStockedTxt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void OnMultiSpinnerItemSelected(List<String> chosenItems) {
-                for (int i = 0; i < chosenItems.size(); i++) {
-                    Log.e("chosenItems", chosenItems.get(i));
-                }
+            public void onClick(View view) {
+                alertMessageForSpicies(getContext(), "Species Stocked", selectedLanguage, langArray, langList);
             }
         });
-        fisheriesBinding.speciesMulti2.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
-        fisheriesBinding.speciesMulti2.setPadding(20, 20, 20, 20);
-        fisheriesBinding.speciesMulti2.setAdapterWithOutImage(getContext(), multiAdapterList, new MultiSelectionSpinnerDialog.OnMultiSpinnerSelectionListener() {
+        fisheriesBinding.speciesStockedTxt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void OnMultiSpinnerItemSelected(List<String> chosenItems) {
-                for (int i = 0; i < chosenItems.size(); i++) {
-                    Log.e("chosenItems", chosenItems.get(i));
-                }
+            public void onClick(View view) {
+                alertMessageForSpicies(getContext(), "Species Stocked", selectedLanguage, langArray, langList);
             }
         });
-        fisheriesBinding.speciesMulti3.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
-        fisheriesBinding.speciesMulti3.setPadding(20, 20, 20, 20);
-        fisheriesBinding.speciesMulti3.setAdapterWithOutImage(getContext(), multiAdapterList, new MultiSelectionSpinnerDialog.OnMultiSpinnerSelectionListener() {
+        fisheriesBinding.speciesStockedTxt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void OnMultiSpinnerItemSelected(List<String> chosenItems) {
-                for (int i = 0; i < chosenItems.size(); i++) {
-                    Log.e("chosenItems", chosenItems.get(i));
-                }
+            public void onClick(View view) {
+                alertMessageForSpicies(getContext(), "Species Stocked", selectedLanguage, langArray, langList);
             }
         });
 
@@ -536,6 +522,69 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             }
         });
 
+    }
+
+    private void alertMessageForSpicies(Context context, String title, boolean[] selectedLanguage, String[] items,
+                                        ArrayList<Integer> values) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        // set title
+        builder.setTitle(title);
+
+        // set dialog non cancelable
+        builder.setCancelable(false);
+
+        builder.setMultiChoiceItems(items, selectedLanguage, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                // check condition
+                if (b) {
+                    // when checkbox selected
+                    // Add position  in lang list
+                    values.add(i);
+                    // Sort array list
+                    Collections.sort(values);
+                } else {
+                    // when checkbox unselected
+                    // Remove position from langList
+                    values.remove(Integer.valueOf(i));
+                }
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Initialize string builder
+                StringBuilder stringBuilder = new StringBuilder();
+                // use for loop
+                for (int j = 0; j < values.size(); j++) {
+                    // concat array value
+                    stringBuilder.append(items[values.get(j)]);
+                    // check condition
+                    if (j != values.size() - 1) {
+                        // When j value  not equal
+                        // to lang list size - 1
+                        // add comma
+                        stringBuilder.append(", ");
+                    }
+                }
+                // set text on textView
+                fisheriesBinding.speciesStockedTxt.setText(stringBuilder.toString());
+                fisheriesBinding.speciesStockedTxt1.setText(stringBuilder.toString());
+                fisheriesBinding.speciesStockedTxt2.setText(stringBuilder.toString());
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            }
+        });
+        // show dialog
+        builder.show();
     }
 
 

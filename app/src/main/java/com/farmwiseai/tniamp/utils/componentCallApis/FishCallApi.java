@@ -183,7 +183,11 @@ public class FishCallApi {
                     names.equalsIgnoreCase("Short Seasonal tanks")){
                         stageSpinner.setVisibility(View.VISIBLE);
                         stagesDropDown(positionValue2,stageSpinner);
-                    }else{
+                    }else if(names.equalsIgnoreCase("CCMG")){
+                        stageSpinner.setVisibility(View.VISIBLE);
+                        stagesDropDown(positionValue2,stageSpinner);
+                    }
+                    else{
                         stageSpinner.setVisibility(View.GONE);
                     }
                     stagesDropDown(positionValue2,stageSpinner);

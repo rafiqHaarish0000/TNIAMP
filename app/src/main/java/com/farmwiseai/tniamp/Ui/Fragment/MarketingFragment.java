@@ -48,6 +48,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentMarketingBinding;
+import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.FetchDeptLookup;
@@ -87,6 +88,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
+    private GPSTracker gpsTracker;
     private List<VillageData> villageDataList;
     private List<String> interventionList,category1,categoryExpo,traningList,cropList,seasonList;
     private VillageAdaapter villageAdaapter;
@@ -258,12 +260,24 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 break;
 
             case R.id.submission_btn:
-
+                Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
-                    finalSubmission();
+                    try {
+                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                        } else {
+                            //  getLocation(view);
+                            gpsTracker = new GPSTracker(getContext());
+                            lat = String.valueOf(gpsTracker.getLatitude());
+                            lon = String.valueOf(gpsTracker.getLongitude());
+                            finalSubmission();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Validation Error!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -276,7 +290,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
 
@@ -289,7 +303,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                     // Start the activity with camera_intent, and request pic id
                     startActivityForResult(camera_intent, pic_id);
                 } else {
-                    requestPermission();
+                    PermissionUtils.requestPermission(getActivity());
                 }
                 break;
             case R.id.dateFrom:
@@ -702,9 +716,9 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setName(marketingBinding.nameValue.getText().toString());
         request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString());
         request.setCategory("");
-        request.setNof_female("");
-        request.setNof_male("");
-        request.setNof_mem("");
+        request.setNof_female("1");
+        request.setNof_male("1");
+        request.setNof_mem("1");
         request.setNof_village(villageValue);
         request.setNumber_trainees(trainingVal);
         request.setTraining_name(trainingVal);
@@ -720,11 +734,11 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setRemarks(remarks);
         request.setTxn_id("20191127172744");
         request.setDate("");
-        request.setNof_village("");
-        request.setOthers_female_no("");
-        request.setOthers_male_no("");
-        request.setSc_st_male_no("");
-        request.setSc_st_female_no("");
+        request.setNof_village("1");
+        request.setOthers_female_no("1");
+        request.setOthers_male_no("1");
+        request.setSc_st_male_no("1");
+        request.setSc_st_female_no("1");
         request.setVenue(marketingBinding.venue.getText().toString());
         request.setStatus("0");
 

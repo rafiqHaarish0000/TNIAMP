@@ -133,7 +133,7 @@ public class WRDCallAPi {
                     else{
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
-                        thirdSpinner.setVisibility(View.VISIBLE);
+                        thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.GONE);
                         tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
                     }

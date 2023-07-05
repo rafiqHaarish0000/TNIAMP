@@ -166,18 +166,20 @@ public class HortiCallApi {
                         cropSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                     }else if(names.equalsIgnoreCase("CCWM")){
+                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
+                        stageSpinner.setVisibility(View.GONE);
                         hideLayout.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.GONE);
-                        stageSpinner.setVisibility(View.VISIBLE);
                     }
                     else {
                         hideLayout.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
+                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
                     }
                     Log.i(TAG, "posvalue2: " + positionValue2);
-                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
+                    lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
                     e.printStackTrace();

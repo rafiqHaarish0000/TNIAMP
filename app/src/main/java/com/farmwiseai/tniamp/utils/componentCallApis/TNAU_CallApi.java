@@ -67,21 +67,18 @@ public class TNAU_CallApi {
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     positionValue = String.valueOf(componentList.get(i).getID());
                     lookUpDataClass.setComponentValue(componentList.get(i).getName());
-                    backPressListener.onSelectedInputs(lookUpDataClass);
                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
 
                     subComponentSpinner.setVisibility(View.VISIBLE);
                     String names = componentList.get(i).getName();
-                    subComponentSpinner.setVisibility(View.VISIBLE);
+                    //subComponentSpinner.setVisibility(View.VISIBLE);
                     if (names.equals("Model Village")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
                         hideLyt.setVisibility(View.GONE);
                         subComponentSpinner.setVisibility(View.GONE);
                         backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                     } else if (names.contains("GHG emission")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
                         subComponentSpinner.setVisibility(View.GONE);
                         backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
@@ -225,4 +222,3 @@ public class TNAU_CallApi {
 
 
 }
-

@@ -668,7 +668,7 @@
   {
     "ID": 121,
     "Name": "SWIKC",
-    "PARENT_ID": 119,
+    "PARENT_ID": 120,
     "revision_no": 1549215974
   },
   {
@@ -685,62 +685,44 @@
   },
   {
     "ID": 124,
-    "Name": "Water budgetting wall painting",
+    "Name": "Water Budget - Wall Painting",
     "PARENT_ID": 120,
     "revision_no": 1549215974
   },
   {
     "ID": 125,
-    "Name": "Village vision wall painting",
+    "Name": "Village Vision - Wall Painting",
     "PARENT_ID": 120,
     "revision_no": 1549215974
   },
   {
     "ID": 126,
-    "Name": "Initial Convergence/ Awareness Meeting",
+    "Name": "Initial Convergence",
     "PARENT_ID": 119,
     "revision_no": 1549215974
   },
   {
     "ID": 127,
-    "Name": "Entry Point Activity",
+    "Name": "Entry Level Activity",
     "PARENT_ID": 119,
     "revision_no": 1549215974
   },
   {
     "ID": 128,
-    "Name": "Community Water Walk",
+    "Name": "Awareness Meeting",
     "PARENT_ID": 119,
     "revision_no": 1549215974
   },
   {
     "ID": 129,
-    "Name": "PRA Excercise",
+    "Name": "Farmers Discussion (DSS)",
     "PARENT_ID": 119,
     "revision_no": 1549215974
   },
   {
     "ID": 130,
     "Name": "CCMG",
-    "PARENT_ID": 119,
-    "revision_no": 1549215974
-  },
-  {
-    "ID": 131,
-    "Name": "SWIK Centre",
-    "PARENT_ID": 119,
-    "revision_no": 1549215974
-  },
-  {
-    "ID": 132,
-    "Name": "Wall Painting- Water Budget ",
-    "PARENT_ID": 119,
-    "revision_no": 1549215974
-  },
-  {
-    "ID": 133,
-    "Name": "Wall Painting- Village Vision",
-    "PARENT_ID": 119,
+    "PARENT_ID": 120,
     "revision_no": 1549215974
   },
   {

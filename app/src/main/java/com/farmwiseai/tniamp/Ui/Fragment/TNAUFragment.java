@@ -32,7 +32,6 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
@@ -64,8 +63,6 @@ import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.TNAU_CallApi;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -79,7 +76,7 @@ import retrofit2.Response;
 public class TNAUFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village;
+    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village;
     public static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -102,7 +99,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private TNAU_CallApi TNAUCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private GPSTracker gpsTracker;
@@ -137,7 +134,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private String firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
-
+    DatePickerDialog picker;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -153,7 +150,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         tnauBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_t_n_a_u, container, false);
 
         gender = null;
-        category = null;
+        category1 = null;
 
         tnauBinding.popBackImage.setOnClickListener(this);
         tnauBinding.submissionBtn.setOnClickListener(this);
@@ -222,7 +219,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date) {
 
-        farmerName = tnauBinding.farmerTxt.getText().toString();
+        farmerName = tnauBinding.farmerTxt.getText().toString().trim();
         survey_no = tnauBinding.surveyTxt.getText().toString();
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
@@ -233,18 +230,19 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageValue == null || componentValue == null || subComponentValue == null) {
+                villageValue == null || componentValue == null || subComponentValue == null||
+        gender == null||category1== null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
             return false;
         }
 
 
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        else if (valueofPic == 0) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
 
-        if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
+        else if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
             if (survey_no.length() == 0) {
                 tnauBinding.surveyTxt.setError("Please enter survey no");
                 return false;
@@ -254,6 +252,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (Double.valueOf(area) > 2.0) {
                 tnauBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
+            } else if (farmerName.length() == 0) {
+                tnauBinding.farmerTxt.setError("Please enter farmer name");
+                return false;
             }
             return true;
 
@@ -262,25 +263,18 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 //            return false;
 
         }
-        if (remarks.length() == 0) {
-            tnauBinding.remarksTxt.setError("Remarks not found");
-            return false;
-        }
+
 //        else if (date.length() == 0) {
 //            tnauBinding.dateTxt.setError("Please enter the date");
 //            return false;
 //        }
-        else if (!tnauBinding.image1.isSelected() && !tnauBinding.image2.isSelected()) {
-            Toast.makeText(getActivity(), "Please capture photo", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (tnauBinding.mobileNumbertxt.toString().isEmpty() || (tnauBinding.mobileNumbertxt.toString().length() < 10)) {
+        else if (tnauBinding.mobileNumbertxt.toString().isEmpty() || (tnauBinding.mobileNumbertxt.toString().length() < 10)) {
             tnauBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
             return false;
 
         }
         return true;
     }
-
 
 
     // click event for finalSubmission button and others
@@ -299,7 +293,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         };
 
         boolean checkValidaiton = fieldValidation(farmerName,
-                category, survey_no, area, near_tank, remarks, dateField);
+                category1, survey_no, area, near_tank, remarks, dateField);
 
         switch (view.getId()) {
             case R.id.pop_back_image:
@@ -359,10 +353,29 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 break;
 
             case R.id.date_txt:
-                new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                dateFieldValidation(tnauBinding.dateTxt);
                 break;
 
         }
+    }
+    private void dateFieldValidation(EditText datePicker) {
+
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        picker.show();
+
+
     }
 
 
@@ -541,7 +554,7 @@ mCommonFunction.hideProgress();
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                category = categorySpinner.getSelectedItem().toString();
+                category1 = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -702,7 +715,7 @@ mCommonFunction.hideProgress();
         request.setIntervention3(intervention3);
         request.setFarmer_name(farmerName);
         request.setGender(gender);
-        request.setCategory(category);
+        request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setVariety("null");

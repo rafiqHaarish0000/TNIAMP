@@ -329,6 +329,7 @@
                             app:smsp_multilineError="false" />
 
                         <EditText
+                            android:id="@+id/feedQuality"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -400,6 +401,7 @@
                             app:smsp_multilineError="false" />
 
                         <EditText
+                            android:id="@+id/num"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

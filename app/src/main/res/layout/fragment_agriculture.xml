@@ -310,12 +310,14 @@
                         android:orientation="vertical"
                         android:visibility="visible">
 
+
                         <EditText
                             android:id="@+id/farmer_txt"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="@string/farmer_name" />
 

@@ -64,6 +64,7 @@ public class HortiCallApi {
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     positionValue = String.valueOf(componentList.get(i).getID());
                     lookUpDataClass.setComponentValue(componentList.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
                     String names = componentList.get(i).getName();
                     if (names.equalsIgnoreCase("Others")) {
@@ -133,6 +134,7 @@ public class HortiCallApi {
                 String names = sub_componentList.get(i).getName();
                 lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                 lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
+                backPressListener.onSelectedInputs(lookUpDataClass);
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     if (names.equalsIgnoreCase("Training")) {

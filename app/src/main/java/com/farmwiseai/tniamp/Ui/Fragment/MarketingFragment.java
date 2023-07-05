@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -101,7 +103,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     private MarketingCallApi marketingCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout layout1, layout2, layoutTrain, layoutExpo, otherLyt,newReqLayout;
@@ -118,7 +120,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     public String componentValue = null;
     public String subComponentValue = null;
     ArrayList<MarkRequest> offlineMarkRequest = new ArrayList<>();
-
+    DatePickerDialog picker;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -182,7 +184,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             return false;
         }
 
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        if (valueofPic == 0) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
@@ -244,8 +246,50 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                     requestPermission();
                 }
                 break;
+            case R.id.dateFrom:
+                dateFieldValidation(marketingBinding.dateFrom);
+                break;
+            case R.id.dateTo:
+                dateFieldValidation(marketingBinding.dateTo);
+                break;
+            case R.id.dateFrom1:
+                dateFieldValidation(marketingBinding.dateFrom1);
+                break;
+            case R.id.dateTo2:
+                dateFieldValidation(marketingBinding.dateTo2);
+                break;
+            case R.id.incorporationDateTxt:
+                dateFieldValidation(marketingBinding.incorporationDateTxt);
+                break;
+            case R.id.inNumberDate:
+                dateFieldValidation(marketingBinding.inNumberDate);
+                break;
+            case R.id.DOCompletion:
+                dateFieldValidation(marketingBinding.DOCompletion);
+                break;
+
 
         }
+    }
+
+    private void dateFieldValidation(EditText datePicker) {
+
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        picker.show();
+
+
     }
 
     private void setAllDropDownData() {
@@ -637,9 +681,6 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setSc_st_female_no("");
         request.setVenue(marketingBinding.venue.getText().toString());
         request.setStatus("0");
-
-
-
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);

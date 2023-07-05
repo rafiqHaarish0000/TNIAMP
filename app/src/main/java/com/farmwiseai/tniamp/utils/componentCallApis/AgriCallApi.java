@@ -63,6 +63,7 @@ public class AgriCallApi {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                     lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                     String names = getAllComponentData.get(i).getName();
 
                     if (names.equalsIgnoreCase("Others")) {
@@ -153,6 +154,7 @@ public class AgriCallApi {
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);

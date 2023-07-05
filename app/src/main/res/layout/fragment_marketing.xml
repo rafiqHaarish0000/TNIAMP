@@ -255,6 +255,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:hint="Incorporation Number and Date"
                             android:inputType="number" />
 
@@ -428,6 +432,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:hint="Incorporation Date" />
 
                         <EditText
@@ -520,6 +528,10 @@
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_marginTop="12dp"
                             android:hint="Date of Completion" />
 
@@ -695,21 +707,31 @@
                                 android:orientation="horizontal">
 
                                 <EditText
+                                    android:id="@+id/dateFrom1"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start"
                                     android:gravity="start"
                                     android:hint="Date From"
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
                                     android:inputType="number" />
 
                                 <EditText
+                                    android:id="@+id/dateTo2"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start"
                                     android:gravity="start"
                                     android:hint="Date To."
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
                                     android:inputType="number" />
                             </LinearLayout>
                         </LinearLayout>
@@ -852,21 +874,31 @@
                                 android:orientation="horizontal">
 
                                 <EditText
+                                    android:id="@+id/dateFrom"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start"
                                     android:gravity="start"
                                     android:hint="Date From"
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
                                     android:inputType="number" />
 
                                 <EditText
+                                    android:id="@+id/dateTo"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start"
                                     android:gravity="start"
                                     android:hint="Date To."
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
                                     android:inputType="number" />
                             </LinearLayout>
 

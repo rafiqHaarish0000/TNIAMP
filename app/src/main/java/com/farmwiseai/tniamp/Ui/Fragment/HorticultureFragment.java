@@ -37,7 +37,6 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
-import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
@@ -77,7 +76,7 @@ import retrofit2.Response;
 public class HorticultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
     FragmentHorticultureBinding horticultureBinding;
     private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category, survey_no, area, near_tank, remarks, dateField;
+    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category1, survey_no, area, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -100,7 +99,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     private HortiCallApi hortiCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
     private LinearLayout vis_lyt, trainingLyt, iNames_lyt;
@@ -132,7 +131,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
-
+    DatePickerDialog picker;
     public BackPressListener backPressListener;
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<HortiRequest> offlineHortiRequest = new ArrayList<>();
@@ -158,7 +157,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         horticultureBinding.dateTxt.setOnClickListener(this);
 
 
-        farmerName = horticultureBinding.farmerTxt.getText().toString();
+        farmerName = horticultureBinding.farmerTxt.getText().toString().trim();
         survey_no = horticultureBinding.surveyTxt.getText().toString();
         area = horticultureBinding.areaTxt.getText().toString();
         near_tank = horticultureBinding.tankTxt.getText().toString();
@@ -197,7 +196,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date, String intName) {
 
-        farmerName = horticultureBinding.farmerTxt.getText().toString();
+        farmerName = horticultureBinding.farmerTxt.getText().toString().trim();
         survey_no = horticultureBinding.surveyTxt.getText().toString();
         area = horticultureBinding.areaTxt.getText().toString();
         near_tank = horticultureBinding.tankTxt.getText().toString();
@@ -206,16 +205,18 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null || subComponentValue == null || gender == null || category1 == null
+        ) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        else if (valueofPic == 0) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
 
 
-        if (vis_lyt.getVisibility() == View.VISIBLE) {
+        else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 horticultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
@@ -242,7 +243,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 return false;
             }
         }
-        if (iNames_lyt.getVisibility() == View.VISIBLE) {
+        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (intName.length() == 0) {
                 horticultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
@@ -274,7 +275,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField, intName);
+                        category1, survey_no, area, near_tank, remarks, dateField, intName);
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -472,7 +473,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                category = categorySpinner.getSelectedItem().toString();
+                category1 = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -500,18 +501,20 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     }
 
     private void dateFieldValidation(EditText datePicker) {
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-                datePicker.setText(dateFormat.format(myCalendar.getTime()));
-            }
-        };
-        new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        picker.show();
 
     }
 
@@ -599,7 +602,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setIntervention3(intervention3);
         request.setFarmerName(farmerName);
         request.setGender(gender);
-        request.setCategory(category);
+        request.setCategory(category1);
         request.setSurveyNo(survey_no);
         request.setArea(area);
         request.setVariety(" ");

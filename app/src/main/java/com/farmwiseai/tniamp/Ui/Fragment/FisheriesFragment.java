@@ -106,7 +106,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     private FishCallApi fishCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic = 0;
     private CommonFunction mCommonFunction;
     private LinearLayout layout1, layout2, layout3, layout4, otherLyt;
     public BackPressListener backPressListener;
@@ -158,9 +158,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         layout3 = fisheriesBinding.layout3;
         layout4 = fisheriesBinding.layout4;
 
-
         backPressListener = this;
-
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layout3, layout4, otherLyt, beneficaryFinal);
 
@@ -178,29 +176,89 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     private boolean fieldValidation(String category,
                                     String remarks, String date) {
 
+
         remarks = fisheriesBinding.remarksTxt.getText().toString();
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
             return false;
-        }
-
-
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        } else if (valueofPic == 0) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
+        } else if (fisheriesBinding.nodalTXt.getText().toString().length() == 0) {
+            fisheriesBinding.nodalTXt.setError("Do not empty field");
+            return false;
+        } else if (fisheriesBinding.nameofTankTXT.getText().toString().length() == 0) {
+            fisheriesBinding.nameofTankTXT.setError("Do not empty field");
+            return false;
+        } else if (fisheriesBinding.waterTxt.getText().toString().length() == 0) {
+            fisheriesBinding.waterTxt.setError("Do not empty field");
+            return false;
+        } else if (fisheriesBinding.seedStockTXt.getText().toString().length() == 0) {
+            fisheriesBinding.seedStockTXt.setError("Do not empty field");
+            return false;
         }
-
-        if (otherLyt.getVisibility() == View.VISIBLE) {
+        //layout 1
+        else if (layout1.getVisibility() == View.VISIBLE) {
+            if (lesseVal.length() == 0) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                return false;
+            } else if (fisheriesBinding.speciesStockedTxt.getText().toString().length() == 0) {
+                fisheriesBinding.speciesStockedTxt.setError("Do not empty field");
+                return false;
+            }
+            return true;
+        }
+        //layout 2
+        else if (layout2.getVisibility() == View.VISIBLE) {
+            if (benVal.length() == 0) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                return false;
+            } else if (fisheriesBinding.feedQuality.getText().toString().isEmpty()) {
+                fisheriesBinding.feedQuality.setError("Do not empty field");
+                return false;
+            }
+            return true;
+        }
+        //layout 3
+        else if (layout3.getVisibility() == View.VISIBLE) {
+            if (benVal.length() == 0) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                return false;
+            } else if (fisheriesBinding.num.getText().toString().isEmpty()) {
+                fisheriesBinding.num.setError("Do not empty field");
+                return false;
+            }
+            return true;
+        } else if (layout4.getVisibility() == View.VISIBLE) {
+            if (genderVal.length() == 0) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                return false;
+            } else if (catVal.length() == 0) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                return false;
+            }
+            return true;
+        } else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
+            if (benVal.length() == 0) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                return false;
+            } else if (catVal.length() == 0) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                return false;
+            }
+            return true;
+        }
+        //other layout
+        else if (otherLyt.getVisibility() == View.VISIBLE) {
             if (fisheriesBinding.inerventionNameTxt.getText().length() == 0) {
                 fisheriesBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
             return true;
         }
-
 
         return true;
     }
@@ -704,7 +762,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         request.setBeneficiary_name(benVal);
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date("2020-02-12 11:02:02");
-        request.setFeed_qty("");
+        request.setFeed_qty(fisheriesBinding.speciesStockedTxt.getText().toString());
         request.setHarvested("");
         request.setImage1(firstImageBase64.trim());
         request.setIntervention1(intervention1);

@@ -102,7 +102,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private AgriCallApi agriCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic = 0;
     private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
@@ -125,7 +125,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     public String componentValue = null;
     public String subComponentValue = null;
     public BackPressListener backPressListener;
-    private String villageValue,category, firstImageBase64, secondImageBase64, interventionTypeVal;
+    DatePickerDialog picker;
+    private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
     Agri_Request request;
 
     ArrayList<Agri_Request> offlineAgriRequest = new ArrayList<>();
@@ -204,7 +205,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                                     String nag, String dag, String dafr, String seedra, String qop,
                                     String intName) {
 
-        farmerName = agricultureBinding.farmerTxt.getText().toString();
+        farmerName = agricultureBinding.farmerTxt.getText().toString().trim();
         survey_no = agricultureBinding.surveyTxt.getText().toString();
         area = agricultureBinding.areaTxt.getText().toString();
         near_tank = agricultureBinding.tankTxt.getText().toString();
@@ -224,8 +225,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         }
 
 
-
-        if (vis_lyt.getVisibility() == View.VISIBLE) {
+        else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 agricultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
@@ -253,14 +253,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             }
             return true;
         }
-        if (iNames_lyt.getVisibility() == View.VISIBLE) {
+        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (intName.length() == 0) {
                 agricultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
             return true;
         }
-        if (seed_lyt.getVisibility() == View.VISIBLE) {
+        else if (seed_lyt.getVisibility() == View.VISIBLE) {
             if (nag.length() == 0) {
                 agricultureBinding.nameOfGroup.setError("field empty");
                 return false;
@@ -285,7 +285,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     return false;
                 }
             }
-            mLoadCustomToast(getActivity(), "Data field empty,Please check.!");
+            else if (valueofPic == 0) {
+                mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+                return false;
+            }
+
             return true;
         }
         return true;
@@ -546,18 +550,22 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
 
     private void dateFieldValidation(EditText datePicker) {
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-                datePicker.setText(dateFormat.format(myCalendar.getTime()));
-            }
-        };
-        new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        picker.show();
+
 
     }
 
@@ -777,10 +785,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
 
-        if(intervention4.equalsIgnoreCase("Harvest")){
+        if (intervention4.equalsIgnoreCase("Harvest")) {
             agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             agricultureBinding.varietyTxt.setVisibility(View.GONE);
             agricultureBinding.yieldTxt.setVisibility(View.GONE);
         }

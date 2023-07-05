@@ -39,11 +39,8 @@ import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
-import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
-import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
-import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
@@ -65,7 +62,6 @@ import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
-import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
 import com.farmwiseai.tniamp.utils.componentCallApis.AnimalCallApi;
 
 import java.io.ByteArrayOutputStream;
@@ -130,7 +126,8 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
-    private String villageValue, category, firstImageBase64, secondImageBase64, interventionTypeVal;
+    DatePickerDialog picker;
+    private String villageValue, category1, firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
 
     @Override
@@ -138,6 +135,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         super.onAttach(context);
         this.context = context;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -327,7 +325,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                category = categorySpinner.getSelectedItem().toString();
+                category1 = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -361,7 +359,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                                     String nag, String dag, String dafr, String seedra, String qop, String nop,
                                     String moN, String mOO, String foN, String fOO, String intName) {
 
-        farmerName = animalBinding.farmerTxt.getText().toString();
+        farmerName = animalBinding.farmerTxt.getText().toString().trim();
         survey_no = animalBinding.surveyTxt.getText().toString();
         area = animalBinding.areaTxt.getText().toString();
         near_tank = animalBinding.tankTxt.getText().toString();
@@ -374,7 +372,8 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null || subComponentValue == null || gender == null ||
+                category1 == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
@@ -392,7 +391,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         } else if (area.length() == 0 && animalBinding.areaTxt.getVisibility() == View.VISIBLE) {
             animalBinding.areaTxt.setError("Please enter area");
             return false;
-        }else if(Double.valueOf(area)>2.0 && animalBinding.areaTxt.getVisibility() == View.VISIBLE) {
+        } else if (Double.valueOf(area) > 2.0 && animalBinding.areaTxt.getVisibility() == View.VISIBLE) {
             animalBinding.areaTxt.setError("Area Should be less than 2(ha)");
             return false;
         } else if (near_tank.length() == 0 && animalBinding.tankTxt.getVisibility() == View.VISIBLE) {
@@ -403,6 +402,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             return false;
         } else if (date.length() == 0 && animalBinding.dateTxt.getVisibility() == View.VISIBLE) {
             animalBinding.dateTxt.setError("Please enter the date");
+            return false;
+        } else if (animalBinding.mobileNumber.toString().isEmpty() || (animalBinding.mobileNumber.toString().length() < 10)) {
+            animalBinding.mobileNumber.setError("Please enter the valid mobile number");
             return false;
         } else if (trainingLyt.getVisibility() == View.VISIBLE) {
             if (moN.length() == 0) {
@@ -451,7 +453,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 break;
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop,
+                        category1, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop,
                         nop, mon, moo, fon, foo, intName);
                 if (checkValidaiton) {
                     try {
@@ -496,10 +498,30 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 break;
 
             case R.id.date_txt:
-                new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                dateFieldValidation(animalBinding.dateTxt);
                 break;
 
         }
+    }
+
+    private void dateFieldValidation(EditText datePicker) {
+
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        picker.show();
+
+
     }
 
     private void updateLabel() {
@@ -510,7 +532,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
     private void finalSubmission() {
         getAllData();
-       
+
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
@@ -543,7 +565,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setIntervention3(intervention3);
         request.setFarmer_name(farmerName);
         request.setGender(gender);
-        request.setCategory(category);
+        request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setVariety(" ");
@@ -675,10 +697,10 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         intervention3 = lookUpDataClass.getIntervention3();
         intervention4 = lookUpDataClass.getIntervention4();
 
-        if(intervention4.equalsIgnoreCase("Harvest")){
+        if (intervention4.equalsIgnoreCase("Harvest")) {
             animalBinding.varietyTxt.setVisibility(View.VISIBLE);
             animalBinding.yieldTxt.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             animalBinding.varietyTxt.setVisibility(View.GONE);
             animalBinding.yieldTxt.setVisibility(View.GONE);
         }
@@ -754,8 +776,8 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 getEncodedString(photo2);
                 secondImageBase64 = getEncodedString(photo2);
             }
-        }else if (resultCode == Activity.RESULT_CANCELED) {
-            Toast toast = Toast.makeText(getContext(),"Canceled, no photo selected.", Toast.LENGTH_LONG);
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
             toast.show();
 
         }

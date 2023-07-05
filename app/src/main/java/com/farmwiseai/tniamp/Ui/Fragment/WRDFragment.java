@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -102,7 +103,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private WRDCallAPi wrdCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic=0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout vis_lyt, iNames_lyt;
@@ -117,6 +118,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    DatePickerDialog picker;
     ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
 
     @Override
@@ -181,12 +183,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null || subComponentValue == null
+        ) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
 
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        if (valueofPic == 0 ) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 

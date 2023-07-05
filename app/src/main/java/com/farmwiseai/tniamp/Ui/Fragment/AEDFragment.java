@@ -2,7 +2,6 @@ package com.farmwiseai.tniamp.Ui.Fragment;
 
 import static android.content.ContentValues.TAG;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -77,7 +75,7 @@ import retrofit2.Response;
 public class AEDFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private Context context;
     private FragmentAEDBinding aedBinding;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village, interventionName;
+    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, interventionName;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -98,7 +96,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     private AEDCallApi aedCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
     private GPSTracker gpsTracker;
@@ -312,7 +310,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                category = categorySpinner.getSelectedItem().toString();
+                category1 = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -345,7 +343,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     private boolean fieldValidation(String farmerName, String category,
                                     String survey_no, String area, String near_tank, String remarks, String date, String intName) {
 
-        farmerName = aedBinding.farmerTxt.getText().toString();
+        farmerName = aedBinding.farmerTxt.getText().toString().trim();
         survey_no = aedBinding.surveyTxt.getText().toString();
         area = aedBinding.areaTxt.getText().toString();
         near_tank = aedBinding.tankTxt.getText().toString();
@@ -354,12 +352,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null || subComponentValue == null||
+        gender == null||category1 == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
 
-        if (valueofPic != 0 && valueofPic != 1 && valueofPic != 2) {
+        if (valueofPic == 0) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
         }
 
@@ -408,7 +407,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
 
         boolean checkValidaiton = fieldValidation(farmerName,
-                category, survey_no, area, near_tank, remarks, dateField, interventionName);
+                category1, survey_no, area, near_tank, remarks, dateField, interventionName);
 
         switch (view.getId()) {
             case R.id.pop_back_image:
@@ -549,7 +548,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setIntervention3("65");
         request.setFarmer_name(farmerName);
         request.setGender(gender);
-        request.setCategory(category);
+        request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setVariety(" ");

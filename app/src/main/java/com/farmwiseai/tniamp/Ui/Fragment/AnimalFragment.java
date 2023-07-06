@@ -379,7 +379,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
         }
 

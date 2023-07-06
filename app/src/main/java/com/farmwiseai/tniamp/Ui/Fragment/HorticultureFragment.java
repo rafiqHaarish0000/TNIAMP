@@ -208,7 +208,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null  || gender == null || category1 == null
         ) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
         }
 
         /*else if (valueofPic == 0||valueofPic==1) {

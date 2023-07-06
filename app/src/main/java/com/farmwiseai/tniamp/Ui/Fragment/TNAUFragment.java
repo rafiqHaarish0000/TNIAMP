@@ -231,7 +231,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageValue == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;

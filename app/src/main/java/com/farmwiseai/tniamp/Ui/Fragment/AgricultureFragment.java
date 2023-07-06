@@ -221,7 +221,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null ||
                 gender == null || category1 == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
         } /*else if (valueofPic == 0 || valueofPic == 1) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;

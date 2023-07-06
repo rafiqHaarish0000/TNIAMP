@@ -125,7 +125,7 @@ public class AEDCallApi {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
-                    if (names.equalsIgnoreCase("CCMG")) {
+                    if (names.equalsIgnoreCase("CCWM")) {
                         thirdSpinner.setVisibility(View.VISIBLE);
                         stagesDropDown(String.valueOf(sub_componentList.get(i).getID()), thirdSpinner);
 

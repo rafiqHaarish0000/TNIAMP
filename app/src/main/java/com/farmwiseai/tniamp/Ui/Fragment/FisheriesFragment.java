@@ -183,7 +183,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null ) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -204,7 +204,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         //layout 1
         else if (layout1.getVisibility() == View.VISIBLE) {
             if (lesseVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (fisheriesBinding.speciesStockedTxt.getText().toString().length() == 0) {
                 fisheriesBinding.speciesStockedTxt.setError("Do not empty field");
@@ -215,7 +215,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         //layout 2
         else if (layout2.getVisibility() == View.VISIBLE) {
             if (benVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (fisheriesBinding.feedQuality.getText().toString().isEmpty()) {
                 fisheriesBinding.feedQuality.setError("Do not empty field");
@@ -226,7 +226,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         //layout 3
         else if (layout3.getVisibility() == View.VISIBLE) {
             if (benVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (fisheriesBinding.num.getText().toString().isEmpty()) {
                 fisheriesBinding.num.setError("Do not empty field");
@@ -235,19 +235,19 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             return true;
         } else if (layout4.getVisibility() == View.VISIBLE) {
             if (genderVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (catVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             }
             return true;
         } else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
             if (benVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (catVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             }
             return true;

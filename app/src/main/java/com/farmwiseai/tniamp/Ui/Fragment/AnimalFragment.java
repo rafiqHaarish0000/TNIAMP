@@ -101,7 +101,8 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private AnimalCallApi animalCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic=0;
+    private int valueofPicCount = 0;
     private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
@@ -382,7 +383,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             return false;
         }
 
-        else if (valueofPic == 0 ) {
+        else if (valueofPicCount == 0||valueofPicCount< 2 ) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
@@ -473,12 +474,14 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                         e.printStackTrace();
                     }
                 } else {
-                    mLoadCustomToast(getActivity(), "Server error");
+                 //   mLoadCustomToast(getActivity(), "Server error");
                 }
                 break;
             case R.id.image_1:
                 if (checkPermission()) {
+
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -491,6 +494,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             case R.id.image_2:
                 if (checkPermission()) {
                     valueofPic = 2;
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id

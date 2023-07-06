@@ -75,7 +75,7 @@ import retrofit2.Response;
 public class TNAUFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village,mobileNumber;
+    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village, mobileNumber;
     public static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -98,7 +98,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     private TNAU_CallApi TNAUCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic;
+    private int valueofPic = 0;
+    private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private GPSTracker gpsTracker;
@@ -229,17 +230,15 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageValue == null || componentValue == null || subComponentValue == null) {
+                villageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
-        }
-
-
-        else if (valueofPic == 0 ) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        }
-
-        else if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
+        } else if (valueofPic == 1) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
+        } else if (tnauBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
             if (survey_no.length() == 0) {
                 tnauBinding.surveyTxt.setError("Please enter survey no");
                 return false;
@@ -252,23 +251,21 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             }
             return true;
 
-        }
-
-        else if (gender == null) {
+        } else if (gender == null || genderSpinner.getVisibility() == View.VISIBLE) {
             Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
             return false;
 
-        } else if (category == null) {
+        } else if (category == null || categorySpinner.getVisibility() == View.VISIBLE) {
             Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
             return false;
-        }else if (farmerName.isEmpty()||farmerName.length()==0) {
+        } else if (farmerName.isEmpty() || farmerName.length() == 0) {
             Toast.makeText(getActivity(), "Please Enter Farmer Name", Toast.LENGTH_LONG).show();
             return false;
         }
-        else if (farmerName.isEmpty()||farmerName.length()==0) {
+       /* else if (farmerName.isEmpty()||farmerName.length()==0) {
             Toast.makeText(getActivity(), "Please Enter Farmer Name", Toast.LENGTH_LONG).show();
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -288,8 +285,6 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             }
         };
 
-        boolean checkValidaiton = fieldValidation(farmerName,
-                category, survey_no, area, near_tank, remarks, dateField,mobileNumber);
 
         switch (view.getId()) {
             case R.id.pop_back_image:
@@ -299,6 +294,9 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 break;
 
             case R.id.submission_btn:
+                boolean checkValidaiton = fieldValidation(farmerName,
+                        category, survey_no, area, near_tank, remarks, dateField, mobileNumber);
+
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
                     try {
@@ -316,7 +314,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                     }
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -325,6 +323,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                     tnauBinding.image1.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -339,6 +338,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                     tnauBinding.image2.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id

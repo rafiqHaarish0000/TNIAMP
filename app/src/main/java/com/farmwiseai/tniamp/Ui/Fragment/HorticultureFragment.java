@@ -100,6 +100,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
+    private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
     private LinearLayout vis_lyt, trainingLyt, iNames_lyt;
@@ -205,17 +206,20 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null || gender == null || category1 == null
+                villageName == null  || gender == null || category1 == null
         ) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
-        else if (valueofPic == 0) {
+        /*else if (valueofPic == 0||valueofPic==1) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
+        }*/
+
+        else if (valueofPicCount == 0||valueofPicCount< 2 ) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
-
-
         else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 horticultureBinding.farmerTxt.setError("Please enter farmer name");
@@ -291,7 +295,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                         e.printStackTrace();
                     }
                 } else {
-                    showToast(getActivity(), "Validation error");
+                  //  showToast(getActivity(), "Validation error");
                 }
                 break;
 
@@ -299,6 +303,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 if (PermissionUtils.checkPermission(context)) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -312,6 +317,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 if (PermissionUtils.checkPermission(context)) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id

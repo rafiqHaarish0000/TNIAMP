@@ -107,6 +107,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
+    private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout layout1, layout2, layoutTrain, layoutExpo, otherLyt,newReqLayout;
@@ -189,12 +190,12 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         remarks = marketingBinding.remarksTxt.getText().toString();
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null ) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
 
-        else if (valueofPic == 0) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+        else if (valueofPicCount == 0||valueofPicCount< 2 ) {
+            Toast.makeText(getActivity(), "Image is empty, Please take 2 photos",Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -250,7 +251,6 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        boolean checkValidaiton = fieldValidation(near_tank, remarks, dateField);
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(getContext(), DashboardActivity.class);
@@ -260,6 +260,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 break;
 
             case R.id.submission_btn:
+                boolean checkValidaiton = fieldValidation(near_tank, remarks, dateField);
+
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
                     try {
@@ -277,7 +279,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                     }
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -285,6 +287,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -298,6 +301,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id

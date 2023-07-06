@@ -97,6 +97,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
+    private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
     private GPSTracker gpsTracker;
@@ -128,7 +129,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public String componentValue = null;
     public String subComponentValue = null;
     public BackPressListener backPressListener;
-    private String  villageValue,firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<AEDRequest> offlineAedRequest;
 
     @Override
@@ -218,6 +219,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
+                subBasinValue = sub_basin_DropDown.get(i).getNAME();
+
                 districtAdapter = new DistrictAdapter(getContext(), districtDropDown);
                 districtAdapter.getFilter().filter(posValue);
                 districtSpinner.setAdapter(districtAdapter);
@@ -237,6 +240,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
+                districtValue = districtDropDown.get(i).getNAME();
+
                 Log.i(TAG, "posValue: " + posValue);
                 blockAdapter = new BlockAdapter(getContext(), blockDropDown);
                 blockAdapter.getFilter().filter(posValue);
@@ -254,6 +259,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
+                blockValue = blockDropDown.get(i).getNAME();
+
                 villageAdaapter = new VillageAdaapter(getContext(), villageDataList);
                 villageAdaapter.getFilter().filter(posValue);
                 villageSpinner.setAdapter(villageAdaapter);
@@ -271,6 +278,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i(TAG, "onValue: " + villageDataList.get(i).getNAME());
                 village = String.valueOf(villageDataList.get(i).getID());
+                villageValue = String.valueOf(villageDataList.get(i).getID());
+
                 villageName = villageDataList.get(i).getNAME();
 //                SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.VILLAGE_NAME, villageDataList.get(i).getNAME());
             }
@@ -352,14 +361,15 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null||
-        gender == null||category1 == null) {
+                villageName == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
+            return false;
         }
 
 
-        if (valueofPic == 0) {
+        if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
 
 
@@ -375,13 +385,15 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         } else if (area.length() == 0) {
             aedBinding.areaTxt.setError("Please enter area");
             return false;
-        } /*else if (near_tank.length() == 0 && aedBinding.tankTxt.getVisibility() == View.VISIBLE) {
+        } else if (Double.valueOf(area) > 2.0) {
+            aedBinding.areaTxt.setError("Area Should be less than 2(ha)");
+            return false;
+        }/*else if (near_tank.length() == 0 && aedBinding.tankTxt.getVisibility() == View.VISIBLE) {
             aedBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        }*/
-             else if (aedBinding.mobileNumbertxt.toString().isEmpty() || (aedBinding.mobileNumbertxt.toString().length() < 10)) {
-                aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
-                return false;
+        }*/ else if (aedBinding.mobileNumbertxt.toString().isEmpty() || (aedBinding.mobileNumbertxt.toString().length() < 10)) {
+            aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+            return false;
 
         }
 
@@ -403,9 +415,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public void onClick(View view) {
 
 
-        boolean checkValidaiton = fieldValidation(farmerName,
-                category1, survey_no, area, near_tank, remarks, dateField, interventionName);
-
         switch (view.getId()) {
             case R.id.pop_back_image:
                 Intent intent = new Intent(context, DashboardActivity.class);
@@ -416,6 +425,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
             case R.id.submission_btn:
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
+                boolean checkValidaiton = fieldValidation(farmerName,
+                        category1, survey_no, area, near_tank, remarks, dateField, interventionName);
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -428,7 +439,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                     }
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -436,7 +447,9 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 if (PermissionUtils.checkPermission(context)) {
                     aedBinding.image1.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
+
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -451,6 +464,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                     aedBinding.image2.setSelected(true);
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -476,7 +490,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == pic_id) {
+        if (requestCode == pic_id && resultCode == Activity.RESULT_OK) {
             if (takePicture && valueofPic == 1) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 // Set the image in imageview for display
@@ -490,6 +504,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 // BitMap is data structure of image file which store the image in memory
                 secondImageBase64 = getEncodedString(photo2);
             }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast toast = Toast.makeText(getContext(), "Canceled, no photo selected.", Toast.LENGTH_LONG);
+            toast.show();
+
         }
 
     }
@@ -637,9 +655,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                     try {
                         String successMessage = response.body().getResponse();
                         Log.i(TAG, "onSuccessMsg" + successMessage);
-                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
                         Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
+
 
                     } catch (Exception e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

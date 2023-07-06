@@ -106,6 +106,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic=0;
+    private  int valueofPicCount=0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout vis_lyt, iNames_lyt;
@@ -188,7 +189,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
         }
-        else if (valueofPic == 0 ) {
+        else if (valueofPicCount == 0||valueofPicCount< 2 ) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
@@ -217,7 +218,6 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, dateField);
 
         switch (view.getId()) {
             case R.id.pop_back_image:
@@ -228,6 +228,8 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 break;
 
             case R.id.submission_btn:
+                boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, dateField);
+
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -244,7 +246,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                     }
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -252,6 +254,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -265,6 +268,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id

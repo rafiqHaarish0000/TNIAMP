@@ -99,6 +99,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
+    private int valueofPicCount = 0;
     private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList, interventionList;
@@ -218,17 +219,16 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null ||
-                gender == null || category1 == null)
-        {
+                villageName == null ||
+                gender == null || category1 == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
-        }
-        else if (valueofPic == 0 ) {
+        } /*else if (valueofPic == 0 || valueofPic == 1) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        }
-
-        else if (vis_lyt.getVisibility() == View.VISIBLE) {
+        }*/ else if (valueofPicCount == 0 || valueofPicCount < 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
+        } else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 agricultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
@@ -314,13 +314,14 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                         e.printStackTrace();
                     }
                 } else {
-                    showToast(getActivity(), "Validation error");
+                  //  showToast(getActivity(), "Validation error");
                 }
                 break;
 
             case R.id.image_1:
                 if (PermissionUtils.checkPermission(context)) {
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -333,6 +334,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             case R.id.image_2:
                 if (PermissionUtils.checkPermission(context)) {
                     valueofPic = 2;
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id

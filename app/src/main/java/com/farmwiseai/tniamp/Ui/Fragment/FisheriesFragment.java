@@ -107,6 +107,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
+    private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private LinearLayout layout1, layout2, layout3, layout4, otherLyt;
     public BackPressListener backPressListener;
@@ -181,10 +182,10 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null) {
+                villageName == null ) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Do not empty mandatory fields.!");
             return false;
-        } else if (valueofPic == 0) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (fisheriesBinding.nodalTXt.getText().toString().length() == 0) {
@@ -279,7 +280,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                     finalSubmission();
                 } else {
                     //do the code for save all data
-                    Toast.makeText(context, "Validation Error!", Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(context, "Validation Error!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -287,6 +288,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 1;
+                    valueofPicCount++;
                     takePicture = true;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id
@@ -300,6 +302,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 if (checkPermission()) {
                     Log.i(TAG, "onClick: " + "granded.!");
                     valueofPic = 2;
+
+                    valueofPicCount++;
                     takePicture = false;
                     Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // Start the activity with camera_intent, and request pic id

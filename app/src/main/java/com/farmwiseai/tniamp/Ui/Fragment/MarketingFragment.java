@@ -101,7 +101,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     private Spinner subBasinSpinner, districtSpinner,
             blockSpinner, componentSpinner,
             sub_componentSpinner, cropSpinner, seasonSpinner, categorySpinner1,
-            categorySpinnerExpos, villageSpinner, interventionSpinner,trainingSpinner;
+            categorySpinnerExpos, villageSpinner, interventionSpinner,trainingSpinner,stageSpinner;
     private EditText datePicker;
     private MarketingCallApi marketingCallApi;
     final Calendar myCalendar = Calendar.getInstance();
@@ -156,7 +156,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         componentSpinner = marketingBinding.componentTxt;
         sub_componentSpinner = marketingBinding.subComponentsTxt;
-
+        stageSpinner = marketingBinding.stageTxt;
         otherLyt = marketingBinding.othersLayout;
         layout1 = marketingBinding.layout1;
         layout2 = marketingBinding.layout2;
@@ -169,8 +169,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         backPressListener = this;
 
         marketingCallApi = new MarketingCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        marketingCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, layout1, layout2, layoutTrain, layoutExpo, otherLyt,newReqLayout);
-
+        marketingCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layoutTrain, layoutExpo, otherLyt, newReqLayout);
         offlineMarkRequest = SharedPrefsUtils.getMarkArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
         LatLongPojo latLongPojo = new LatLongPojo();
@@ -371,7 +370,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         cropSpinner = marketingBinding.cropSpinner;
         seasonSpinner = marketingBinding.seasonSpinner;
         trainingSpinner = marketingBinding.nameOFTrainingSpinner;
-
+        stageSpinner = marketingBinding.stageTxt;
 
 
         //phase data

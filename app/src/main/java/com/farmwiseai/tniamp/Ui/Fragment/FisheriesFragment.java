@@ -242,7 +242,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 return false;
             }
             return true;
-        } else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
+        } else if (beneficaryFinal.getVisibility() == View.VISIBLE||beneficarySpinner.getVisibility() == View.VISIBLE||beneficarySpinner1.getVisibility() == View.VISIBLE) {
             if (benVal.length() == 0) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
@@ -776,7 +776,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         request.setLat(lat);
         request.setLon(lon);
         request.setNo_of_stocks_req("");
-        request.setNodal_officer("");
+        request.setNodal_officer(fisheriesBinding.nodalTXt.toString());
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
         request.setPond_constructed_by("");

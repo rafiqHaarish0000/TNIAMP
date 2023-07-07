@@ -195,6 +195,7 @@
                         app:smsp_hint="@string/stages"
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
+
                     <LinearLayout
                         android:id="@+id/othersLayout"
                         android:layout_width="match_parent"
@@ -224,16 +225,21 @@
                             android:lines="8"
                             android:maxLines="10"
                             android:minLines="6"
+                            android:maxLength="100"
+                            android:inputType="text"
                             android:scrollbars="vertical"
                             android:singleLine="false" />
                     </LinearLayout>
+
                     <EditText
                         android:id="@+id/nodalTXt"
                         style="@style/AppEdittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="Nodal officer" />
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                        android:hint="Nodal officer"
+                        android:inputType="text" />
 
                     <EditText
                         android:id="@+id/nameofTankTXT"
@@ -241,7 +247,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="Name of the tank" />
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                        android:hint="Name of the tank"
+                        android:inputType="text" />
 
                     <EditText
                         android:id="@+id/waterTxt"
@@ -250,7 +258,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="Water spread area (EWSA-Ha)"
-                        android:inputType="number" />
+                        android:digits="1234567890."
+                        android:inputType="number"
+                        android:maxLength="4"/>
 
                     <EditText
                         android:id="@+id/seedStockTXt"
@@ -279,12 +289,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Species stocked"
                             android:clickable="false"
                             android:cursorVisible="false"
+                            android:drawableEnd="@drawable/drop_down"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            android:drawableEnd="@drawable/drop_down"
+                            android:hint="Species stocked"
                             android:inputType="number" />
 
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
@@ -369,12 +379,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Species stocked"
                             android:clickable="false"
                             android:cursorVisible="false"
+                            android:drawableEnd="@drawable/drop_down"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            android:drawableEnd="@drawable/drop_down"
+                            android:hint="Species stocked"
                             android:inputType="number" />
 
                         <EditText
@@ -490,12 +500,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Species stocked"
                             android:clickable="false"
                             android:cursorVisible="false"
+                            android:drawableEnd="@drawable/drop_down"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            android:drawableEnd="@drawable/drop_down"
+                            android:hint="Species stocked"
                             android:inputType="number" />
 
                         <EditText
@@ -597,10 +607,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="@string/remarks"
-                        android:inputType="text"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                        />
+                        android:hint="@string/remarks"
+                        android:inputType="text" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/inverntionTyper"
@@ -618,7 +627,7 @@
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
 
-  <LinearLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"

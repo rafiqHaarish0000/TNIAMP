@@ -353,6 +353,8 @@
                             android:lines="8"
                             android:maxLines="10"
                             android:minLines="6"
+                            android:maxLength="100"
+                            android:inputType="text"
                             android:scrollbars="vertical"
                             android:singleLine="false" />
                     </LinearLayout>

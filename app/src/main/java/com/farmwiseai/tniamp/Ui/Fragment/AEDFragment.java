@@ -367,12 +367,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         }
 
 
-        if (valueofPicCount == 0 || valueofPicCount < 2) {
-            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
-            return false;
-        }
-
-
         if (farmerName.length() == 0) {
             aedBinding.farmerTxt.setError("Please enter farmer name");
             return false;
@@ -391,7 +385,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         }/*else if (near_tank.length() == 0 && aedBinding.tankTxt.getVisibility() == View.VISIBLE) {
             aedBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        }*/ else if (aedBinding.mobileNumbertxt.toString().isEmpty() || (aedBinding.mobileNumbertxt.toString().length() < 10)) {
+
+        }*/
+        String mobielnumber = aedBinding.mobileNumbertxt.toString().trim();
+        if (mobielnumber.isEmpty() || (mobielnumber.length() < 10)) {
             aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
             return false;
 
@@ -404,6 +401,10 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             }
 
             return true;
+        }
+        if (valueofPicCount == 0 || valueofPicCount < 2) {
+            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+            return false;
         }
         return true;
     }

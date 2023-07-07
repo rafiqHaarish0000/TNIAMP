@@ -45,7 +45,7 @@ public class WRDCallAPi {
     //first spinner phrase;
 
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner tankStageSpinner, Spinner stageSpinner, EditText wauTxt,
-                                   LinearLayout interventioNameLyt,EditText memTxt) {
+                                   LinearLayout interventioNameLyt, EditText memTxt) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -65,11 +65,16 @@ public class WRDCallAPi {
                     String names = getAllComponentData.get(i).getName();
                     if (names.equals("Model Village")) {
                         subComponentSpinner.setVisibility(View.VISIBLE);
-                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt,memTxt);
+                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt, memTxt);
                         tankStageSpinner.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
+                    }else if (names.equalsIgnoreCase("Others")){
+                        subComponentSpinner.setVisibility(View.GONE);
+                        tankStageSpinner.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
+                        interventioNameLyt.setVisibility(View.VISIBLE);
                     } else {
-                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt,memTxt);
+                        subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt, memTxt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         tankStageSpinner.setVisibility(View.VISIBLE);
                         wauTxt.setVisibility(View.GONE);
@@ -93,7 +98,7 @@ public class WRDCallAPi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, Spinner fourthSpinner, EditText wauTxt,EditText memTxt) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, Spinner fourthSpinner, EditText wauTxt, EditText memTxt) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
@@ -111,30 +116,31 @@ public class WRDCallAPi {
                     lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
 
-                    if(names.equalsIgnoreCase("Formation of WUA")){
+                    if (names.equalsIgnoreCase("Formation of WUA")) {
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.GONE);
                         wauTxt.setVisibility(View.VISIBLE);
                         memTxt.setVisibility(View.VISIBLE);
 
-                    }else if(names.equalsIgnoreCase("Capacity building")){
+                    } else if (names.equalsIgnoreCase("Capacity building")) {
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.GONE);
                         memTxt.setVisibility(View.VISIBLE);
                         wauTxt.setVisibility(View.GONE);
-                    }else if(names.equalsIgnoreCase("Shutters")){
+                    } else if (names.equalsIgnoreCase("Shutters")||(names.equalsIgnoreCase("others"))|
+                            (names.equalsIgnoreCase("Revetment"))||
+                            (names.equalsIgnoreCase("Desilting / Regarding")) ) {
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.GONE);
-                    }else if(names.equalsIgnoreCase("CCWM")){
+                    } else if (names.equalsIgnoreCase("CCWM")) {
                         stagesDropDown(positionValue2, fourthSpinner);
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.VISIBLE);
-                    }
-                    else{
+                    } else {
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
-                        thirdSpinner.setVisibility(View.GONE);
-                        fourthSpinner.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.VISIBLE);
+                        fourthSpinner.setVisibility(View.VISIBLE);
                         tankStageComponent(positionValue2, thirdSpinner, fourthSpinner);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
@@ -174,33 +180,42 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Earthwork") ||
                             names.equalsIgnoreCase("Foundation") ||
                             names.equalsIgnoreCase("Erection of Boundary Stone") ||
-                            names.equalsIgnoreCase("Completion")||
+                            names.equalsIgnoreCase("Completion") ||
                             names.equalsIgnoreCase("Sectioning - Profile Formation")
-                            ||names.equalsIgnoreCase("Formwork for Wall")||
-                            names.equalsIgnoreCase("Concrete Work")||
-                            names.equalsIgnoreCase("Finishing")||
-                            names.equalsIgnoreCase(" Casting Concrete Blocks")||
-                            names.equalsIgnoreCase("Fixing Concrete Blocks")||
-                            names.equalsIgnoreCase("Starting")||
-                            names.equalsIgnoreCase("Removing Weeds- Scrub Jungle")||
-                            names.equalsIgnoreCase("Profile Formation")||
-                            names.equalsIgnoreCase("Raft Foundation")||
-                            names.equalsIgnoreCase("Revetment")||
-                            names.equalsIgnoreCase("Well stening")||
-                            names.equalsIgnoreCase("Erection of perforated")||
-                            names.equalsIgnoreCase("Parapet wall")||
-                            names.equalsIgnoreCase("Steel grill")||
-                            names.equalsIgnoreCase("Horizontal")||
-                            names.equalsIgnoreCase("Jungle Clearence")||
-                            names.equalsIgnoreCase("Removing the Silt")||
-                            names.equalsIgnoreCase("Formwork for Cut-off wall")||
-                            names.equalsIgnoreCase("Formwork")||
-                            names.equalsIgnoreCase("Formwork for BodyWall")||
-                            names.equalsIgnoreCase("Well stening concrete work")||
-                            names.equalsIgnoreCase("Erection of perforated PVC pipe")||
+                            || names.equalsIgnoreCase("Formwork for Wall") ||
+                            names.equalsIgnoreCase("Concrete Work") ||
+                            names.equalsIgnoreCase("Finishing") ||
+                            names.equalsIgnoreCase("Casting Concrete Blocks") ||
+                            names.equalsIgnoreCase("Fixing Concrete Blocks") ||
+                            names.equalsIgnoreCase("Starting") ||
+                            names.equalsIgnoreCase("Removing Weeds - Scrub Jungle") ||
+                            names.equalsIgnoreCase("Profile Formation") ||
+                            names.equalsIgnoreCase("Raft Foundation") ||
+                            names.equalsIgnoreCase("Revetment") ||
+                            names.equalsIgnoreCase("Well stening") ||
+                            names.equalsIgnoreCase("Erection of perforated") ||
+                            names.equalsIgnoreCase("Parapet wall") ||
+                            names.equalsIgnoreCase("Steel grill") ||
+                            names.equalsIgnoreCase("Horizontal") ||
+                            names.equalsIgnoreCase("Jungle Clearance") ||
+                            names.equalsIgnoreCase("Removing the Slit") ||
+                            names.equalsIgnoreCase("Formwork for Cut-off wall") ||
+                            names.equalsIgnoreCase("Formwork") ||
+                            names.equalsIgnoreCase("Formwork for BodyWall") ||
+                            names.equalsIgnoreCase("Well stening concrete work") ||
+                            names.equalsIgnoreCase("Erection of perforated PVC pipe") ||
+                            names.equalsIgnoreCase("Initial") ||
+                            names.equalsIgnoreCase("Syphon") ||
+                            names.equalsIgnoreCase("Aquaduct") ||
+                            names.equalsIgnoreCase("Culvert") ||
+                            names.equalsIgnoreCase("Drop") ||
+                            names.equalsIgnoreCase("Regulator") ||
+                            names.equalsIgnoreCase("Under tunnel") ||
+
                             names.equalsIgnoreCase("Steel grill cover")) {
                         stageSpinner.setVisibility(View.GONE);
                     } else {
+                        stageSpinner.setVisibility(View.VISIBLE);
                         stagesDropDown(positionValue2, stageSpinner);
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
@@ -229,13 +244,14 @@ public class WRDCallAPi {
         stageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                try{
+                try {
                     lookUpDataClass.setIntervention3(stagesList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 

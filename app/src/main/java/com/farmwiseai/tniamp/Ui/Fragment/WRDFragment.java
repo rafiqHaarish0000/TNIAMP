@@ -204,13 +204,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             return false;
         }
 
-        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+     /*   else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.inerventionNameTxt.getText().length() == 0) {
                 wrdfragmentBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
             return true;
-        }
+        }*/
         return true;
     }
 

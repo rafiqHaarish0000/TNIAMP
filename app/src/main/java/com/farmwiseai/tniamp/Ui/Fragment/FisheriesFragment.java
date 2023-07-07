@@ -124,7 +124,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     public String subComponentValue = null;
     boolean[] selectedLanguage;
     ArrayList<Integer> langList = new ArrayList<>();
-    String[] langArray = {"Cata", "Rahul", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
+    String[] langArray = {"Catla", "Rahul", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
     ArrayList<FishRequest> offlineMarkRequest = new ArrayList<>();
 
     @Override
@@ -476,13 +476,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 alertMessageForSpicies(getContext(), "Species Stocked", selectedLanguage, langArray, langList);
             }
         });
-        fisheriesBinding.speciesStockedTxt.setOnClickListener(new View.OnClickListener() {
+        fisheriesBinding.speciesStockedTxt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertMessageForSpicies(getContext(), "Species Stocked", selectedLanguage, langArray, langList);
             }
         });
-        fisheriesBinding.speciesStockedTxt.setOnClickListener(new View.OnClickListener() {
+        fisheriesBinding.speciesStockedTxt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertMessageForSpicies(getContext(), "Species Stocked", selectedLanguage, langArray, langList);

@@ -51,7 +51,8 @@ public class TNAU_CallApi {
 
     //first spinner phrase;
 
-    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt,
+                                   EditText variety,EditText yield ) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -78,15 +79,21 @@ public class TNAU_CallApi {
                         backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("GHG emission")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else {
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.VISIBLE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                         Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));

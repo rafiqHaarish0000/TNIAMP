@@ -733,7 +733,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
 
-        if (intervention4.equalsIgnoreCase("Harvest")) {
+        if (intervention4.equalsIgnoreCase("Harvest")||
+                intervention4.equalsIgnoreCase("1st Harvest")||
+                intervention4.equalsIgnoreCase("Last Harvest")) {
             horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             horticultureBinding.yieldTxt.setVisibility(View.VISIBLE);
         } else {

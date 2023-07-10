@@ -180,9 +180,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         stagesSpinner = tnauBinding.stagesTxt;
         datePicker = tnauBinding.dateTxt;
         hideLyt = tnauBinding.visibilityLyt;
+        EditText variety = tnauBinding.varietyTxt;
+        EditText yeild = tnauBinding.yieldTxt;
 
         TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt);
+        TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt, variety, yeild);
       /*  LookUpDataClass lookUpDataClass = new LookUpDataClass();
         Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
       */
@@ -232,7 +234,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageValue == null||gender == null||category1 ==null) {
+                villageValue == null || gender == null || category1 == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -678,6 +680,7 @@ mCommonFunction.hideProgress();
 
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+
 
         if (intervention4.equalsIgnoreCase("Harvest") ||
                 intervention4.equalsIgnoreCase("Harvest of Pulse") ||

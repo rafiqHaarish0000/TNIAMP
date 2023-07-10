@@ -55,6 +55,7 @@ import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.ValidationUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -243,6 +244,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 horticultureBinding.remarksTxt.setError("Remarks not found");
                 return false;
             } else if (horticultureBinding.mobileNumbertxt.toString().isEmpty() || (horticultureBinding.mobileNumbertxt.toString().length() < 10)) {
+                horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
+            } else if (!ValidationUtils.isValidMobileNumber(horticultureBinding.mobileNumbertxt.toString().trim())) {
                 horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
             }

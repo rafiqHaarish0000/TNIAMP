@@ -54,6 +54,7 @@ import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.ValidationUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -67,6 +68,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,7 +138,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
     DatePickerDialog picker;
-
+String regex = "^[6-9][0-9]{9}$";
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -225,7 +228,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
         //  date = tnauBinding.dateTxt.getText().toString();
-
+        mobileNumber = tnauBinding.mobileNumbertxt.getText().toString().trim();
         date = "11-09-2023";
 
 
@@ -248,6 +251,13 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (Double.valueOf(area) > 2.0) {
                 tnauBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
+            } else if (mobileNumber.isEmpty() || mobileNumber.length() < 10) {
+
+                tnauBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
+            } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
+                tnauBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
             }
             return true;
 
@@ -262,10 +272,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             Toast.makeText(getActivity(), "Please Enter Farmer Name", Toast.LENGTH_LONG).show();
             return false;
         }
-       /* else if (farmerName.isEmpty()||farmerName.length()==0) {
-            Toast.makeText(getActivity(), "Please Enter Farmer Name", Toast.LENGTH_LONG).show();
-            return false;
-        }*/
+
+
         return true;
     }
 

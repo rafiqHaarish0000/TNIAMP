@@ -54,6 +54,7 @@ import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.ValidationUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -387,11 +388,14 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             return false;
 
         }*/
-        String mobielnumber = aedBinding.mobileNumbertxt.toString().trim();
-        if (mobielnumber.isEmpty() || (mobielnumber.length() < 10)) {
+        String mobileNumber = aedBinding.mobileNumbertxt.toString().trim();
+        if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
             aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
             return false;
 
+        } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
+            aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+            return false;
         }
 
         if (otherLayt.getVisibility() == View.VISIBLE) {

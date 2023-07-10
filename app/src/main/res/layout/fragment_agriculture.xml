@@ -372,7 +372,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="@string/survey_no" />
+                            android:hint="@string/survey_no"
+                            android:inputType="text"
+                            android:maxLength="10"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
+                            />
 
                         <EditText
                             android:id="@+id/area_txt"

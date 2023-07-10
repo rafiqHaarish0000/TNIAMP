@@ -54,6 +54,7 @@ import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.ValidationUtils;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -241,7 +242,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (Double.valueOf(area) > 2.0) {
                 agricultureBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
-            } else if (mobileNumber.length() == 0 || (mobileNumber.length() < 10)) {
+            } else if (mobileNumber.isEmpty() || mobileNumber.length() < 10) {
+
+                agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
+            } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
             }

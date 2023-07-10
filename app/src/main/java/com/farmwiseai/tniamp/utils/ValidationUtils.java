@@ -42,7 +42,7 @@ public class ValidationUtils {
 
     public boolean isValidMobile(String mobile) {
         Pattern p = Pattern.compile("^[56789]\\d{9,9}$");
-        if (mobile == null && mobile.equals("") && mobile.length()!=10)  {
+        if (mobile == null && mobile.equals("") && mobile.length() != 10) {
             return false;
         } else {
             Matcher m = p.matcher(mobile);
@@ -50,19 +50,30 @@ public class ValidationUtils {
         }
     }
 
+    public static boolean isValidMobileNumber(String s) {
+
+        // The given argument to compile() method
+        // is regular expression. With the help of
+        // regular expression we can validate mobile
+        // number.
+        // 2) Then contains 6,7 or 8 or 9.
+        // 3) Then contains 9 digits
+        Pattern p = Pattern.compile("[6-9][0-9]{9}");
+
+        // Pattern class contains matcher() method
+        // to find matching between given number
+        // and regular expression
+        Matcher m = p.matcher(s);
+        return (m.find() && m.group().equals(s));
+    }
 
     public boolean isOTPNumber(String mobile) {
 
-        if (mobile.equals(""))
-        {
+        if (mobile.equals("")) {
             return false;
-        }
-        else if(mobile.length() != 4)
-        {
+        } else if (mobile.length() != 4) {
             return false;
-        }
-        else
-        {
+        } else {
 
 
             return true;
@@ -87,12 +98,9 @@ public class ValidationUtils {
         }*/
 
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        if (email.matches(emailPattern))
-        {
+        if (email.matches(emailPattern)) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -119,18 +127,18 @@ public class ValidationUtils {
 
     public boolean isValidAge(String age) {
         Pattern p = Pattern.compile("^[1-9]{1,3}$");
-        if (age == null||age.equals("")) {
+        if (age == null || age.equals("")) {
             return false;
-        }else {
+        } else {
             Matcher m = p.matcher(age);
             return m.matches();
         }
     }
 
     public boolean isEmptyEditText(String s) {
-        if(s == null|| s.equals("")){
+        if (s == null || s.equals("")) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }

@@ -57,6 +57,7 @@ import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.ValidationUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -375,7 +376,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         foN = animalBinding.femaleNo.getText().toString();
         fOO = animalBinding.fScStNO.getText().toString();
 
-
+String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null) {
@@ -402,7 +403,10 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             } else if (Double.valueOf(area) > 2.0) {
                 animalBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
-            } else if (animalBinding.mobileNumber.length() == 0 || (animalBinding.mobileNumber.length() < 10)) {
+            }  if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
+                animalBinding.mobileNumber.setError("Please enter the valid mobile number");
+                return false;
+            } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
                 animalBinding.mobileNumber.setError("Please enter the valid mobile number");
                 return false;
             }

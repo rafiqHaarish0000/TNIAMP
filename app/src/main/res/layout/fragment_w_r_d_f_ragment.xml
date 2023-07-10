@@ -269,10 +269,12 @@
                         style="@style/AppEdittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="text"
                         android:visibility="gone"
                         android:layout_marginTop="12dp"
-                        android:hint="Name of WUA" />
+                        android:hint="Name of WUA"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                        />
                     <EditText
                         android:id="@+id/noOfMembers"
                         style="@style/AppEdittext"

@@ -362,7 +362,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null) {
+                villageName == null|| gender == null || category1 == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
         }

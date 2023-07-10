@@ -197,7 +197,7 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Parapet wall") ||
                             names.equalsIgnoreCase("Steel grill") ||
                             names.equalsIgnoreCase("Horizontal") ||
-                            names.equalsIgnoreCase("Jungle Clearance") ||
+                            names.equalsIgnoreCase("Jungle Clearence") ||
                             names.equalsIgnoreCase("Removing the Slit") ||
                             names.equalsIgnoreCase("Formwork for Cut-off wall") ||
                             names.equalsIgnoreCase("Formwork") ||
@@ -211,7 +211,6 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Drop") ||
                             names.equalsIgnoreCase("Regulator") ||
                             names.equalsIgnoreCase("Under tunnel") ||
-
                             names.equalsIgnoreCase("Steel grill cover")) {
                         stageSpinner.setVisibility(View.GONE);
                     } else {

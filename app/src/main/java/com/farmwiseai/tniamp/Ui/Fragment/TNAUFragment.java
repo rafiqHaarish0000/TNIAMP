@@ -68,8 +68,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,7 +76,7 @@ import retrofit2.Response;
 public class TNAUFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private FragmentTNAUBinding tnauBinding;
     private Context context;
-    private String farmerName, category, survey_no, area, near_tank, remarks, dateField, village, mobileNumber;
+    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, mobileNumber;
     public static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -138,7 +136,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
     DatePickerDialog picker;
-String regex = "^[6-9][0-9]{9}$";
+    String regex = "^[6-9][0-9]{9}$";
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -154,7 +153,7 @@ String regex = "^[6-9][0-9]{9}$";
         tnauBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_t_n_a_u, container, false);
 
         gender = null;
-        category = null;
+        category1 = null;
 
         tnauBinding.popBackImage.setOnClickListener(this);
         tnauBinding.submissionBtn.setOnClickListener(this);
@@ -233,7 +232,7 @@ String regex = "^[6-9][0-9]{9}$";
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageValue == null) {
+                villageValue == null||gender == null||category1 ==null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -265,7 +264,7 @@ String regex = "^[6-9][0-9]{9}$";
             Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
             return false;
 
-        } else if (category == null || categorySpinner.getVisibility() == View.VISIBLE) {
+        } else if (category1 == null || categorySpinner.getVisibility() == View.VISIBLE) {
             Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
             return false;
         } else if (farmerName.isEmpty() || farmerName.length() == 0) {
@@ -303,7 +302,7 @@ String regex = "^[6-9][0-9]{9}$";
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category, survey_no, area, near_tank, remarks, dateField, mobileNumber);
+                        category1, survey_no, area, near_tank, remarks, dateField, mobileNumber);
 
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
@@ -559,7 +558,7 @@ mCommonFunction.hideProgress();
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                category = categorySpinner.getSelectedItem().toString();
+                category1 = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -680,7 +679,11 @@ mCommonFunction.hideProgress();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
 
-        if (intervention4.equalsIgnoreCase("Harvest")) {
+        if (intervention4.equalsIgnoreCase("Harvest") ||
+                intervention4.equalsIgnoreCase("Harvest of Pulse") ||
+                intervention4.equalsIgnoreCase("Harvest of Rice") ||
+                intervention4.equalsIgnoreCase("1st Harvest") ||
+                intervention4.equalsIgnoreCase("Last Harvest")) {
             tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
             tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
         } else {
@@ -720,7 +723,7 @@ mCommonFunction.hideProgress();
         request.setIntervention3(intervention3);
         request.setFarmer_name(farmerName);
         request.setGender(gender);
-        request.setCategory(category);
+        request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setVariety("null");

@@ -77,7 +77,7 @@ import retrofit2.Response;
 public class HorticultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
     FragmentHorticultureBinding horticultureBinding;
     private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category1, survey_no, area, near_tank, remarks, dateField;
+    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category1, survey_no, area, near_tank, remarks, dateField, mobileNumber;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -176,7 +176,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         trainingLyt = horticultureBinding.iecLayt;
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
         iNames_lyt = horticultureBinding.inerventionLyt;
-
+        mobileNumber = horticultureBinding.mobileNumbertxt.getText().toString();
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, cropstagespinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
 
@@ -195,8 +195,8 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
     }
 
-    private boolean fieldValidation(String farmerName, String category,
-                                    String survey_no, String area, String near_tank, String remarks, String date, String intName) {
+    private boolean fieldValidation(String farmerName, String category, String gender,
+                                    String survey_no, String area, String near_tank, String remarks, String date, String intName, String mobileNumber) {
 
         farmerName = horticultureBinding.farmerTxt.getText().toString().trim();
         survey_no = horticultureBinding.surveyTxt.getText().toString();
@@ -205,11 +205,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         remarks = horticultureBinding.remarksTxt.getText().toString();
         date = horticultureBinding.dateTxt.getText().toString();
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
-
+        mobileNumber = horticultureBinding.mobileNumbertxt.getText().toString().trim();
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null  || gender == null || category1 == null
+                villageName == null || gender == null || category == null
         ) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
         }
 
         /*else if (valueofPic == 0||valueofPic==1) {
@@ -217,21 +218,22 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             return false;
         }*/
 
-        else if (valueofPicCount == 0||valueofPicCount< 2 ) {
+        else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        }
-        else if (vis_lyt.getVisibility() == View.VISIBLE) {
+        } else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 horticultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
             } /*else if (date.length() == 0) {
                 horticultureBinding.dateTxt.setError("Please enter the date");
                 return false;
-            }*/ else if (survey_no.length() == 0) {
+            }*/
+            if (survey_no.length() == 0) {
                 horticultureBinding.surveyTxt.setError("Please enter survey no");
                 return false;
-            } else if (area.length() == 0) {
+            }
+            if (area.length() == 0) {
                 horticultureBinding.areaTxt.setError("Please enter area");
                 return false;
             } else if (Double.valueOf(area) > 2.0) {
@@ -240,18 +242,19 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             }  /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
             horticultureBinding.tankTxt.setError("Please enter near by tank name");
             return false;
-        }*/ else if (remarks.length() == 0 && horticultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
+        }*/ /*else if (remarks.length() == 0 && horticultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
                 horticultureBinding.remarksTxt.setError("Remarks not found");
                 return false;
-            } else if (horticultureBinding.mobileNumbertxt.toString().isEmpty() || (horticultureBinding.mobileNumbertxt.toString().length() < 10)) {
+            } */
+            if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
                 horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            } else if (!ValidationUtils.isValidMobileNumber(horticultureBinding.mobileNumbertxt.toString().trim())) {
+            } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
                 horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
             }
-        }
-        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            return true;
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (intName.length() == 0) {
                 horticultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
@@ -283,7 +286,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category1, survey_no, area, near_tank, remarks, dateField, intName);
+                        category1, gender, survey_no, area, near_tank, remarks, dateField, intName, mobileNumber);
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -299,7 +302,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                         e.printStackTrace();
                     }
                 } else {
-                  //  showToast(getActivity(), "Validation error");
+                    //  showToast(getActivity(), "Validation error");
                 }
                 break;
 
@@ -671,7 +674,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getHortiLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                     uploadSecondImage(txt_id);
 
                 } else {
@@ -704,9 +706,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                     try {
                         String successMessage = response.body().getResponse();
                         Log.i(TAG, "onSuccessMsg" + successMessage);
-                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
-                        Toast.makeText(getContext(), "Data Saved Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 
                     } catch (Exception e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

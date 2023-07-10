@@ -102,6 +102,7 @@ public class HortiCallApi {
                         datePicker.setVisibility(View.GONE);
                         trainingLyt.setVisibility(View.GONE);
                         visLyt.setVisibility(View.VISIBLE);
+                        interventioNameLyt.setVisibility(View.GONE);
                         subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner ,datePicker, trainingLyt);
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
@@ -166,10 +167,11 @@ public class HortiCallApi {
                         cropSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                     }else if(names.equalsIgnoreCase("CCWM")){
-                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
-                        stageSpinner.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.VISIBLE);
                         hideLayout.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.GONE);
+                        stagesDropDown(String.valueOf(sub_componentList.get(i).getID()),stageSpinner,editText);
+
                     }
                     else {
                         hideLayout.setVisibility(View.GONE);

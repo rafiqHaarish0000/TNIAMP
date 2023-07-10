@@ -1,7 +1,7 @@
 [
   {
     "ID": 1,
-    "Name": " Dairy Interest Group",
+    "Name": "Dairy Interest Group",
     "PARENT_ID": 0,
     "revision_no": 1549215974
   },
@@ -19,7 +19,7 @@
   },
   {
     "ID": 4,
-    "Name": " Infertility Management",
+    "Name": "Infertility Management",
     "PARENT_ID": 0,
     "revision_no": 1549215974
   },
@@ -231,12 +231,6 @@
     "ID": 39,
     "Name": "Vegetative",
     "PARENT_ID": 24,
-    "revision_no": 1549215974
-  },
-  {
-    "ID": 40,
-    "Name": "Pregnancy verification",
-    "PARENT_ID": 4,
     "revision_no": 1549215974
   },
   {

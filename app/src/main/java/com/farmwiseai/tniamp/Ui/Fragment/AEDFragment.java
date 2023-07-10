@@ -76,7 +76,7 @@ import retrofit2.Response;
 public class AEDFragment extends Fragment implements View.OnClickListener, BackPressListener {
     private Context context;
     private FragmentAEDBinding aedBinding;
-    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, interventionName;
+    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, interventionName, mobileNumber;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
     private List<ComponentData> componentDropDown;
@@ -156,7 +156,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         hideLyt = aedBinding.visibilityLyt;
         otherLayt = aedBinding.othersLayout;
         backPressListener = this;
-
+        mobileNumber = aedBinding.mobileNumbertxt.getText().toString();
         offlineAedRequest = SharedPrefsUtils.getAEDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
         aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, hideLyt, otherLayt);
@@ -350,8 +350,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     }
 
     // validation for all mandatory fields
-    private boolean fieldValidation(String farmerName, String category,
-                                    String survey_no, String area, String near_tank, String remarks, String date, String intName) {
+    private boolean fieldValidation(String farmerName, String category, String gender,
+                                    String survey_no, String area, String near_tank, String remarks, String date, String intName, String mobileNumber) {
 
         farmerName = aedBinding.farmerTxt.getText().toString().trim();
         survey_no = aedBinding.surveyTxt.getText().toString();
@@ -359,10 +359,11 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         near_tank = aedBinding.tankTxt.getText().toString();
         remarks = aedBinding.remarksTxt.getText().toString();
         intName = aedBinding.inerventionNameTxt.getText().toString();
+        mobileNumber = aedBinding.mobileNumbertxt.getText().toString().trim();
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null|| gender == null || category1 == null) {
+                villageName == null || gender == null || category == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
         }
@@ -383,30 +384,21 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         } else if (Double.valueOf(area) > 2.0) {
             aedBinding.areaTxt.setError("Area Should be less than 2(ha)");
             return false;
-        }/*else if (near_tank.length() == 0 && aedBinding.tankTxt.getVisibility() == View.VISIBLE) {
-            aedBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
-
-        }*/
-        String mobileNumber = aedBinding.mobileNumbertxt.toString().trim();
+        }
         if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
             aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
             return false;
 
-        } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
+        } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
             aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
             return false;
-        }
-
-        if (otherLayt.getVisibility() == View.VISIBLE) {
+        } else if (otherLayt.getVisibility() == View.VISIBLE) {
             if (intName.length() == 0) {
                 aedBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
 
-            return true;
-        }
-        if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
@@ -431,7 +423,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             case R.id.submission_btn:
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 boolean checkValidaiton = fieldValidation(farmerName,
-                        category1, survey_no, area, near_tank, remarks, dateField, interventionName);
+                        category1, gender, survey_no, area, near_tank, remarks, dateField, interventionName, mobileNumber);
                 if (checkValidaiton) {
                     try {
                         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -628,7 +620,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getTnauLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                     uploadSecondImage(txt_id);
                 } else {
 

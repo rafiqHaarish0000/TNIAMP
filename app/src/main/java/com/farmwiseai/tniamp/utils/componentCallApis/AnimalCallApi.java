@@ -86,18 +86,21 @@ public class AnimalCallApi {
                             trainLyt.setVisibility(View.VISIBLE);
                             visLyt.setVisibility(View.GONE);
                             noOfCalves.setVisibility(View.GONE);
+                            otherLyt.setVisibility(View.GONE);
                         } else if (names.equalsIgnoreCase("Calf Management") || names.equalsIgnoreCase("Mastitis Management")) {
                             subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
                             noOfCalves.setVisibility(View.VISIBLE);
                             noOfCalves.setHint("No of Calves");
                             trainLyt.setVisibility(View.GONE);
                             visLyt.setVisibility(View.GONE);
+                            otherLyt.setVisibility(View.GONE);
                         } else if (names.equalsIgnoreCase(" Infertility Management")||names.equalsIgnoreCase("Artificial Insemination")) {
                             subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
                             trainLyt.setVisibility(View.GONE);
                             noOfCalves.setVisibility(View.VISIBLE);
                             noOfCalves.setHint("No of Cows");
                             visLyt.setVisibility(View.GONE);
+                            otherLyt.setVisibility(View.GONE);
                         }else if(names.equalsIgnoreCase("Fodder cultivation")){
                             subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
                             subComponentSpinner.setVisibility(View.VISIBLE);
@@ -124,6 +127,7 @@ public class AnimalCallApi {
                             trainLyt.setVisibility(View.VISIBLE);
                             pregnancyLyt.setVisibility(View.GONE);
                             noOfCalves.setVisibility(View.GONE);
+                            otherLyt.setVisibility(View.GONE);
                             Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
                             //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));

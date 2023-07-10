@@ -229,7 +229,8 @@
                             android:maxLength="100"
                             android:inputType="text"
                             android:scrollbars="vertical"
-                            android:singleLine="false" />
+                            android:singleLine="false"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                     </LinearLayout>
                     <!--layout 1 farmer producer company -->
                     <LinearLayout

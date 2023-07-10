@@ -377,14 +377,20 @@
                 style="@style/AppEdittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/seed_from_area_raised_ha" />
+                android:hint="@string/seed_from_area_raised_ha"
+                android:digits="1234567890."
+                android:inputType="number"
+                android:maxLength="4"/>
 
             <EditText
                 android:id="@+id/quantity_txt"
                 style="@style/AppEdittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/quantity_to_proceed_kg" />
+                android:hint="@string/quantity_to_proceed_kg"
+                android:digits="1234567890."
+                android:inputType="number"
+                android:maxLength="4"/>
         </LinearLayout>
 
         <LinearLayout
@@ -416,7 +422,8 @@
                 android:maxLines="10"
                 android:minLines="6"
                 android:scrollbars="vertical"
-                android:singleLine="false" />
+                android:singleLine="false"
+                android:inputType="text"/>
         </LinearLayout>
 
         <!--Layout 1-->

@@ -42,6 +42,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.MarkResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
@@ -64,8 +65,12 @@ import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AnimalCallApi;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -102,7 +107,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private AnimalCallApi animalCallApi;
     final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
-    private int valueofPic=0;
+    private int valueofPic = 0;
     private int valueofPicCount = 0;
     private GPSTracker gpsTracker;
     private CommonFunction mCommonFunction;
@@ -114,7 +119,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String intervention3;  // stages
     public String intervention4;  // stages
     public String farmer_name;
-    public String gender;
+    public String gender = "";
     public String lat;
     public String lon;
     public String tank_name;
@@ -129,7 +134,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String componentValue = null;
     public String subComponentValue = null;
     DatePickerDialog picker;
-    private String villageValue, category1, firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String villageValue, category1 = "", firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
 
     @Override
@@ -376,21 +381,16 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         foN = animalBinding.femaleNo.getText().toString();
         fOO = animalBinding.fScStNO.getText().toString();
 
-String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
+        String mobileNumber = animalBinding.mobileNumber.getText().toString().trim();
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
-        }
-
-        else if (valueofPicCount == 0||valueofPicCount< 2 ) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        }
-
-
-        else if (vis_lyt.getVisibility() == View.VISIBLE) {
+        } else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0) {
                 animalBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
@@ -403,7 +403,8 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
             } else if (Double.valueOf(area) > 2.0) {
                 animalBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
-            }  if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
+            }
+            if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
                 animalBinding.mobileNumber.setError("Please enter the valid mobile number");
                 return false;
             } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
@@ -478,7 +479,7 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
                         e.printStackTrace();
                     }
                 } else {
-                 //   mLoadCustomToast(getActivity(), "Server error");
+                    //   mLoadCustomToast(getActivity(), "Server error");
                 }
                 break;
             case R.id.image_1:
@@ -573,7 +574,11 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
         request.setVillage(villageValue);
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
-        request.setIntervention3(intervention3);
+        if (intervention3 != null) {
+            request.setIntervention3(intervention3);
+        } else {
+            request.setIntervention3("1");
+        }
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category1);
@@ -597,6 +602,15 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
         request.setStatus("0");
         request.setNo_of_cows("1");
         request.setNo_of_calves("1");
+        if (animalBinding.noOfFarmers.getText().toString().equalsIgnoreCase("")) {
+            request.setNo_of_farmers("11");
+
+        } else {
+            request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
+
+        }
+
+
         request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
         request.setMobile(animalBinding.mobileNumber.getText().toString());
         request.setOthers_female_no("1");
@@ -606,6 +620,19 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
         request.setVenue(animalBinding.venue.getText().toString());
         request.setIntervention_type(interventionTypeVal);
         request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        try {
+            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+            request = new ObjectMapper().readValue(json, AnimalRequest.class);
+            System.out.println(json);
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         if (mCommonFunction.isNetworkAvailable()) {
             onlineDataUpload(request);
@@ -637,16 +664,35 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
 
     }
 
-    private void onlineDataUpload(AnimalRequest request) {
+    private void onlineDataUpload(AnimalRequest animalRequest) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AnimalResponse> userDataCall = null;
-        userDataCall = call.getAnimalResponse(request);
+        userDataCall = call.getAnimalResponse(animalRequest);
         userDataCall.enqueue(new Callback<AnimalResponse>() {
+            @Override
+            public void onResponse(Call<AnimalResponse> call, Response<AnimalResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String txt_id = String.valueOf(response.body().getResponseMessage().getAnimallanddeptid());
+                    Log.i(TAG, "txt_value: " + txt_id.toString());
+                    uploadSecondImage(txt_id);
+
+                } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AnimalResponse> call, Throwable t) {
+
+            }
+        });
+        /*userDataCall.enqueue(new Callback<AnimalResponse>() {
             @Override
             public void onResponse(Call<AnimalResponse> call, Response<AnimalResponse> response) {
                 if (response.body() != null) {
                     try {
-                        String txt_id = String.valueOf(response.body().getResponseMessage().getAgriLandDeptId());
+                        String txt_id = String.valueOf(response.body().getResponseMessage().getAnimallanddeptid());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
                         uploadSecondImage(txt_id);
 //                        List<AgriResponse> agriResponses = new ArrayList<>();
@@ -663,7 +709,7 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
             public void onFailure(Call<AnimalResponse> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 
     private void uploadSecondImage(String txt_id) {
@@ -683,9 +729,9 @@ String mobileNumber=animalBinding.mobileNumber.getText().toString().trim();
                     try {
                         String successMessage = response.body().getResponse();
                         Log.i(TAG, "onSuccessMsg" + successMessage);
-                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
                         Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 
                     } catch (Exception e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

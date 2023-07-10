@@ -356,7 +356,8 @@
                             android:maxLength="100"
                             android:inputType="text"
                             android:scrollbars="vertical"
-                            android:singleLine="false" />
+                            android:singleLine="false"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                     </LinearLayout>
 
                     <LinearLayout

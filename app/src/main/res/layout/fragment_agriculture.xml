@@ -235,13 +235,14 @@
                             android:layout_marginTop="2dp"
                             android:gravity="top|start"
                             android:hint="Intervention name"
+                            android:inputType="text"
                             android:lines="8"
+                            android:maxLength="100"
                             android:maxLines="10"
                             android:minLines="6"
-                            android:maxLength="100"
-                            android:inputType="text"
                             android:scrollbars="vertical"
-                            android:singleLine="false" />
+                            android:singleLine="false"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -289,14 +290,17 @@
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:digits="1234567890."
                             android:hint="@string/seed_from_area_raised_ha"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:maxLength="4" />
 
                         <EditText
                             android:id="@+id/quantity_txt"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:digits="1234567890."
                             android:hint="@string/quantity_to_proceed_kg"
                             android:inputType="number" />
                     </LinearLayout>
@@ -319,9 +323,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="@string/farmer_name" />
+                            android:hint="@string/farmer_name"
+                            android:inputType="text" />
 
                         <EditText
                             android:id="@+id/mobileNumbertxt"
@@ -372,11 +376,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
                             android:hint="@string/survey_no"
                             android:inputType="text"
-                            android:maxLength="10"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
-                            />
+                            android:maxLength="10" />
 
                         <EditText
                             android:id="@+id/area_txt"
@@ -388,24 +391,26 @@
                             android:hint="@string/area_ha"
                             android:inputType="number"
                             android:maxLength="4" />
+
                         <EditText
                             android:id="@+id/varietyTxt"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:visibility="gone"
-                            android:hint="Variety" />
+                            android:hint="Variety"
+                            android:visibility="gone" />
+
                         <EditText
                             android:id="@+id/yieldTxt"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:hint="Yield(kg/ha)"
                             android:inputType="number"
                             android:maxLength="4"
-                            android:visibility="gone"
-                            android:hint="Yield(kg/ha)" />
+                            android:visibility="gone" />
 
                         <EditText
                             android:id="@+id/tank_txt"
@@ -413,10 +418,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="@string/near_by_tank_name"
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            />
+                            android:hint="@string/near_by_tank_name"
+                            android:inputType="text" />
                     </LinearLayout>
 
 
@@ -476,10 +480,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="@string/remarks"
-                        android:inputType="text"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                        />
+                        android:hint="@string/remarks"
+                        android:inputType="text" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/inverntionTyper"
@@ -497,7 +500,7 @@
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
 
-  <LinearLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"

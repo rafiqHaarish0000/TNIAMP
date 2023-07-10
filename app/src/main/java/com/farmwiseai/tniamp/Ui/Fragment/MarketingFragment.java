@@ -785,10 +785,10 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getMarketinglanddeptid());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
                     uploadSecondImage(txt_id);
 
                 } else {
+                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -818,9 +818,9 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                     try {
                         String successMessage = response.body().getResponse();
                         Log.i(TAG, "onSuccessMsg" + successMessage);
-                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
-                        Toast.makeText(getContext(), "Data Saved Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 
                     } catch (Exception e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

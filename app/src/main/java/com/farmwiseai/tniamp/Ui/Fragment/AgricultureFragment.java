@@ -223,6 +223,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 villageName == null ||
                 gender == null || category1 == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+            return false;
         } /*else if (valueofPic == 0 || valueofPic == 1) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
@@ -319,7 +320,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                         e.printStackTrace();
                     }
                 } else {
-                  //  showToast(getActivity(), "Validation error");
+                    //  showToast(getActivity(), "Validation error");
                 }
                 break;
 
@@ -749,9 +750,9 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     try {
                         String successMessage = response.body().getResponse();
                         Log.i(TAG, "onSuccessMsg" + successMessage);
-                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 //                        SharedPrefsUtils.putString(getContext(), SharedPrefsUtils.PREF_KEY.SuccessMessage, successMessage);
                         Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+                        mCommonFunction.navigation(getContext(), DashboardActivity.class);
 
                     } catch (Exception e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

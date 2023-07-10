@@ -11,7 +11,7 @@ android {
         minSdk 21
         targetSdk 33
         versionCode 1
-        versionName "1.5"
+        versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,5 +51,6 @@ dependencies {
     implementation "com.github.skydoves:powerspinner:1.2.6"
     //multiple spinner
     implementation 'com.github.AnuraganuPunalur:Multi-Selection-Spinner-Android:1.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
 
 }

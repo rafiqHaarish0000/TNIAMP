@@ -53,7 +53,7 @@ public class AnimalCallApi {
 
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner,
                                    Spinner stageSpinner, EditText datePicker, EditText noOfCalves,
-                                   LinearLayout visLyt, LinearLayout trainLyt,LinearLayout pregnancyLyt,
+                                   LinearLayout visLyt, LinearLayout trainLyt, LinearLayout pregnancyLyt,
                                    LinearLayout otherLyt) {
 
         commonFunction = new CommonFunction(activity);
@@ -67,78 +67,81 @@ public class AnimalCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 subComponentSpinner.setVisibility(View.VISIBLE);
+                positionValue = String.valueOf(componentList.get(i).getID());
+                Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
+                try {
+                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     positionValue = String.valueOf(componentList.get(i).getID());
-                    Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
-                    try {
-                        lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
-                        positionValue = String.valueOf(componentList.get(i).getID());
-                        lookUpDataClass.setComponentValue(componentList.get(i).getName());
-                        String names = componentList.get(i).getName();
-                        if (names.contains("Model Village")) {
-                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
-                            subComponentSpinner.setVisibility(View.VISIBLE);
-                            stageSpinner.setVisibility(View.GONE);
-                            visLyt.setVisibility(View.GONE);
-                            noOfCalves.setVisibility(View.GONE);
-                            trainLyt.setVisibility(View.GONE);
-                            otherLyt.setVisibility(View.GONE);
-                        } else if (names.equalsIgnoreCase("Dairy Interest Group")) {
-                            trainLyt.setVisibility(View.VISIBLE);
-                            visLyt.setVisibility(View.GONE);
-                            noOfCalves.setVisibility(View.GONE);
-                            otherLyt.setVisibility(View.GONE);
-                        } else if (names.equalsIgnoreCase("Calf Management") || names.equalsIgnoreCase("Mastitis Management")) {
-                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
-                            noOfCalves.setVisibility(View.VISIBLE);
-                            noOfCalves.setHint("No of Calves");
-                            trainLyt.setVisibility(View.GONE);
-                            visLyt.setVisibility(View.GONE);
-                            otherLyt.setVisibility(View.GONE);
-                        } else if (names.equalsIgnoreCase(" Infertility Management")||names.equalsIgnoreCase("Artificial Insemination")) {
-                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
-                            trainLyt.setVisibility(View.GONE);
-                            noOfCalves.setVisibility(View.VISIBLE);
-                            noOfCalves.setHint("No of Cows");
-                            visLyt.setVisibility(View.GONE);
-                            otherLyt.setVisibility(View.GONE);
-                        }else if(names.equalsIgnoreCase("Fodder cultivation")){
-                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
-                            subComponentSpinner.setVisibility(View.VISIBLE);
-                            stageSpinner.setVisibility(View.VISIBLE);
-                            visLyt.setVisibility(View.VISIBLE);
-                            datePicker.setVisibility(View.GONE);
-                            trainLyt.setVisibility(View.GONE);
-                            pregnancyLyt.setVisibility(View.GONE);
-                            noOfCalves.setVisibility(View.GONE);
-                            otherLyt.setVisibility(View.GONE);
-                        }else if(names.equalsIgnoreCase("Others")){
-                            otherLyt.setVisibility(View.VISIBLE);
-                            visLyt.setVisibility(View.VISIBLE);
-                            subComponentSpinner.setVisibility(View.GONE);
-                            stageSpinner.setVisibility(View.GONE);
-                            datePicker.setVisibility(View.GONE);
-                            trainLyt.setVisibility(View.GONE);
-                            noOfCalves.setVisibility(View.GONE);
-                            pregnancyLyt.setVisibility(View.GONE);
-                        } else {
-                            subComponentSpinner.setVisibility(View.VISIBLE);
-                            stageSpinner.setVisibility(View.GONE);
-                            datePicker.setVisibility(View.GONE);
-                            trainLyt.setVisibility(View.VISIBLE);
-                            pregnancyLyt.setVisibility(View.GONE);
-                            noOfCalves.setVisibility(View.GONE);
-                            otherLyt.setVisibility(View.GONE);
-                            Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
-                            //save data for offline data..
+                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
+                    String names = componentList.get(i).getName();
+                    if (names.contains("Model Village")) {
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
+                        stageSpinner.setVisibility(View.GONE);
+                        visLyt.setVisibility(View.GONE);
+                        noOfCalves.setVisibility(View.GONE);
+                        trainLyt.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                    } else if (names.equalsIgnoreCase("Dairy Interest Group")) {
+                        trainLyt.setVisibility(View.VISIBLE);
+                        visLyt.setVisibility(View.GONE);
+                        noOfCalves.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
+
+                    } else if (names.equalsIgnoreCase("Calf Management") || names.equalsIgnoreCase("Mastitis Management")) {
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        noOfCalves.setVisibility(View.VISIBLE);
+                        noOfCalves.setHint("No of Calves");
+                        trainLyt.setVisibility(View.GONE);
+                        visLyt.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                    } else if (names.equalsIgnoreCase(" Infertility Management") || names.equalsIgnoreCase("Artificial Insemination")) {
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        trainLyt.setVisibility(View.GONE);
+                        noOfCalves.setVisibility(View.VISIBLE);
+                        noOfCalves.setHint("No of Cows");
+                        visLyt.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                    } else if (names.equalsIgnoreCase("Fodder cultivation")) {
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
+                        stageSpinner.setVisibility(View.VISIBLE);
+                        visLyt.setVisibility(View.VISIBLE);
+                        datePicker.setVisibility(View.GONE);
+                        trainLyt.setVisibility(View.GONE);
+                        pregnancyLyt.setVisibility(View.GONE);
+                        noOfCalves.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                    } else if (names.equalsIgnoreCase("Others")) {
+                        otherLyt.setVisibility(View.VISIBLE);
+                        visLyt.setVisibility(View.VISIBLE);
+                        subComponentSpinner.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
+                        trainLyt.setVisibility(View.GONE);
+                        noOfCalves.setVisibility(View.GONE);
+                        pregnancyLyt.setVisibility(View.GONE);
+                    } else {
+                        subComponentSpinner.setVisibility(View.VISIBLE);
+                        stageSpinner.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
+                        trainLyt.setVisibility(View.VISIBLE);
+                        pregnancyLyt.setVisibility(View.GONE);
+                        noOfCalves.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                        Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
+                        //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                            subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker,pregnancyLyt);
-                            backPressListener.onSelectedInputs(lookUpDataClass);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
                     }
-                                
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
             }
 
@@ -149,11 +152,10 @@ public class AnimalCallApi {
         });
 
 
-
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText,LinearLayout pregnancyLyt) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText, LinearLayout pregnancyLyt) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "ahdlookup.json");
@@ -184,11 +186,10 @@ public class AnimalCallApi {
                     } else if (names.equalsIgnoreCase("Pregnancy diagnosis")) {
                         pregnancyLyt.setVisibility(View.VISIBLE);
                         thirdSpinner.setVisibility(View.GONE);
-                    }else if (names.contains("SWIKC")||names.contains("Water walk")||names.contains("PRA Excercise")||names.contains("SWIC Centre")||names.contains("CCMG")||names.contains("Farmers Discussion")||names.contains("Village Vision")||names.contains("Entry Point Activity")||names.contains("Awareness Meeting")) {
+                    } else if (names.contains("SWIKC") || names.contains("Water walk") || names.contains("PRA Excercise") || names.contains("SWIC Centre") || names.contains("CCMG") || names.contains("Farmers Discussion") || names.contains("Village Vision") || names.contains("Entry Point Activity") || names.contains("Awareness Meeting")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
                     }

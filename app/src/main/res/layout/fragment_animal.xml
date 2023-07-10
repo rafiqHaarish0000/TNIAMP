@@ -63,137 +63,138 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
                     android:orientation="vertical">
+
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/phase1"
+                        style="@style/edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="@string/phases"
-                        style="@style/edit_text"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
                         android:dropDownWidth="2dp"
                         android:spinnerMode="dropdown"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
-                        android:layout_marginTop="4dp"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/phases"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/sub_basin_txt"
+                        style="@style/edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="@string/sub_basin"
-                        style="@style/edit_text"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="12dp"
                         android:dropDownWidth="2dp"
                         android:spinnerMode="dropdown"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
-                        android:layout_marginTop="8dp"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/sub_basin"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/district_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="@string/district"
-                        android:padding="8dp"
-                        android:dropDownWidth="2dp"
-                        android:spinnerMode="dropdown"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/district"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/block_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="Block"
-                        android:padding="8dp"
-                        android:dropDownWidth="2dp"
-                        android:spinnerMode="dropdown"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Block"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/village_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="@string/village"
-                        android:padding="8dp"
-                        android:dropDownWidth="2dp"
-                        android:spinnerMode="dropdown"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/village"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/component_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="Component"
-                        android:padding="8dp"
-                        android:dropDownWidth="2dp"
-                        android:spinnerMode="dropdown"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Component"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/sub_components_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="@string/sub_components"
-                        android:padding="8dp"
-                        android:dropDownWidth="2dp"
-                        android:spinnerMode="dropdown"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
                         android:visibility="gone"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/sub_components"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/stages_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="@string/stages"
-                        android:padding="8dp"
-                        android:dropDownWidth="2dp"
-                        android:spinnerMode="dropdown"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
                         android:visibility="gone"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/stages"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
                     <EditText
                         android:id="@+id/date_txt"
@@ -201,12 +202,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="gone"
                         android:clickable="false"
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="@string/date_of_sowing_planting" />
+                        android:hint="@string/date_of_sowing_planting"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/othersLayout"
@@ -214,29 +215,34 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="4dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <TextView
+                            style="@style/med_text2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            style="@style/med_text2"
-                            android:layout_marginTop="4dp"
                             android:layout_gravity="start"
-                            android:text="50-100 Characters"/>
+                            android:layout_marginStart="14dp"
+                            android:layout_marginTop="4dp"
+                            android:text="50-100 Characters" />
+
                         <EditText
                             android:id="@+id/inerventionNameTxt"
+                            style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
                             android:layout_marginTop="2dp"
-                            android:lines="8"
-                            android:minLines="6"
                             android:gravity="top|start"
-                            android:maxLines="10"
-                            android:singleLine="false"
-                            android:scrollbars="vertical"
                             android:hint="Intervention name"
-                            style="@style/AppEdittext"/>
+                            android:inputType="text"
+                            android:lines="8"
+                            android:maxLength="100"
+                            android:maxLines="10"
+                            android:minLines="6"
+                            android:scrollbars="vertical"
+                            android:singleLine="false"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -245,78 +251,93 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="4dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <EditText
                             android:id="@+id/noOfFarmers"
                             style="@style/AppEdittext"
-                            android:inputType="number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="@string/no_of_farmers" />
+                            android:hint="@string/no_of_farmers"
+                            android:inputType="number" />
+
                         <EditText
                             android:id="@+id/venue"
                             style="@style/AppEdittext"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="@string/venue" />
+                            android:hint="@string/venue"
+                            android:inputType="text" />
+
                         <TextView
                             android:id="@+id/male_no"
+                            style="@style/head_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/head_text"
                             android:layout_marginTop="12dp"
-                            android:textColor="@color/grey"
-                            android:text="Male Nos."/>
+                            android:inputType="number"
+                            android:text="Male Nos."
+                            android:textColor="@color/grey" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
                             android:layout_marginStart="18dp"
                             android:layout_marginEnd="18dp"
                             android:orientation="horizontal">
+
                             <EditText
                                 android:id="@+id/otherNo"
+                                style="@style/AppEdittext2"
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                style="@style/AppEdittext2"
-                                android:hint="Other No."/>
+                                android:hint="Other No."
+                                android:inputType="number" />
+
                             <EditText
                                 android:id="@+id/sc_st_NO"
+                                style="@style/AppEdittext2"
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                style="@style/AppEdittext2"
-                                android:hint="SC/ST No."/>
+                                android:hint="SC/ST No."
+                                android:inputType="number" />
                         </LinearLayout>
+
                         <TextView
                             android:id="@+id/female_no"
+                            style="@style/head_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/head_text"
                             android:layout_marginTop="8dp"
-                            android:textColor="@color/grey"
-                            android:text="Female Nos."/>
+                            android:text="Female Nos."
+                            android:textColor="@color/grey" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
                             android:layout_marginStart="18dp"
                             android:layout_marginEnd="18dp"
                             android:orientation="horizontal">
+
                             <EditText
                                 android:id="@+id/female_others"
+                                style="@style/AppEdittext2"
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                style="@style/AppEdittext2"
-                                android:hint="Other No."/>
+                                android:hint="Other No."
+                                android:inputType="number" />
+
                             <EditText
                                 android:id="@+id/f_sc_st_NO"
+                                style="@style/AppEdittext2"
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                style="@style/AppEdittext2"
-                                android:hint="SC/ST No."/>
+                                android:hint="SC/ST No."
+                                android:inputType="number" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -327,38 +348,44 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="gone"
-                        android:hint="@string/no_of_calves" />
+                        android:hint="@string/no_of_calves"
+                        android:inputType="number"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:id="@+id/pregLyt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"
                         android:layout_marginEnd="18dp"
-                        android:visibility="gone"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="Pregnancy verification"/>
+                            android:text="Pregnancy verification" />
+
                         <RadioGroup
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:orientation="horizontal">
+
                             <RadioButton
                                 android:id="@+id/radioYes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
-                                android:text="Yes"/>
+                                android:text="Yes" />
+
                             <RadioButton
                                 android:id="@+id/radioNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="No"/>
+                                android:text="No" />
                         </RadioGroup>
                     </LinearLayout>
 
@@ -368,59 +395,61 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="4dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <EditText
                             android:id="@+id/farmer_txt"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="@string/farmer_name" />
+                            android:hint="@string/farmer_name"
+                            android:inputType="text" />
+
                         <EditText
                             android:id="@+id/mobile_number"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:ems="10"
                             android:hint="@string/mobile_number"
                             android:inputType="number"
-                            android:maxLength="10"
-                            android:ems="10"/>
+                            android:maxLength="10" />
 
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/gender_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:smsp_enableFloatingLabel="true"
-                            android:textSize="18sp"
-                            app:smsp_hint="@string/gender"
-                            android:padding="8dp"
-                            android:dropDownWidth="2dp"
-                            android:spinnerMode="dropdown"
                             android:layout_marginStart="12dp"
-                            android:layout_marginEnd="12dp"
                             android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="@string/gender"
                             app:smsp_hintColor="@color/grey"
-                            app:smsp_multilineError="false"/>
+                            app:smsp_multilineError="false" />
 
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/category_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:smsp_enableFloatingLabel="true"
-                            android:textSize="18sp"
-                            app:smsp_hint="@string/category"
-                            android:padding="8dp"
-                            android:dropDownWidth="2dp"
-                            android:spinnerMode="dropdown"
                             android:layout_marginStart="12dp"
-                            android:layout_marginEnd="12dp"
                             android:layout_marginTop="4dp"
+                            android:layout_marginEnd="12dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="@string/category"
                             app:smsp_hintColor="@color/grey"
-                            app:smsp_multilineError="false"/>
+                            app:smsp_multilineError="false" />
 
                         <EditText
                             android:id="@+id/survey_txt"
@@ -428,11 +457,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
                             android:hint="@string/survey_no"
                             android:inputType="text"
-                            android:maxLength="10"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
-                            />
+                            android:maxLength="10" />
 
                         <EditText
                             android:id="@+id/area_txt"
@@ -440,26 +468,28 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:inputType="number"
-                            android:hint="@string/area_ha" />
+                            android:hint="@string/area_ha"
+                            android:inputType="number" />
+
                         <EditText
                             android:id="@+id/varietyTxt"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:visibility="gone"
-                            android:hint="Variety" />
+                            android:hint="Variety"
+                            android:visibility="gone" />
+
                         <EditText
                             android:id="@+id/yieldTxt"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:hint="Yield(kg/ha)"
                             android:inputType="number"
                             android:maxLength="4"
-                            android:visibility="gone"
-                            android:hint="Yield(kg/ha)" />
+                            android:visibility="gone" />
 
                         <EditText
                             android:id="@+id/tank_txt"
@@ -467,20 +497,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="@string/near_by_tank_name"
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            />
+                            android:hint="@string/near_by_tank_name"
+                            android:inputType="text" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/take_pic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="18dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="18dp"
-                        android:layout_gravity="center"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="8dp">
@@ -493,8 +522,8 @@
                             android:layout_marginStart="8dp"
                             android:gravity="center"
                             android:text="Take photo"
-                            android:textSize="28dp"
-                            android:textColor="@color/color_accent"/>
+                            android:textColor="@color/color_accent"
+                            android:textSize="28dp" />
 
                     </LinearLayout>
 
@@ -502,23 +531,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
                         android:layout_marginStart="18dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="18dp"
+                        android:gravity="center"
                         android:orientation="horizontal">
+
                         <ImageView
                             android:id="@+id/image_1"
                             android:layout_width="120dp"
                             android:layout_height="80dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/camera_icon"/>
+                            android:src="@drawable/camera_icon" />
+
                         <ImageView
                             android:id="@+id/image_2"
                             android:layout_width="120dp"
                             android:layout_height="80dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/camera_icon"/>
+                            android:src="@drawable/camera_icon" />
                     </LinearLayout>
 
                     <EditText
@@ -527,28 +558,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="@string/remarks"
-                        android:inputType="text"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                        />
+                        android:hint="@string/remarks"
+                        android:inputType="text" />
 
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/inverntionTyper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:smsp_enableFloatingLabel="true"
-                        android:textSize="18sp"
-                        app:smsp_hint="Intervention Type"
-                        android:padding="8dp"
-                        android:dropDownWidth="2dp"
-                        android:spinnerMode="dropdown"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Intervention Type"
                         app:smsp_hintColor="@color/grey"
-                        app:smsp_multilineError="false"/>
+                        app:smsp_multilineError="false" />
 
-  <LinearLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"
@@ -569,9 +599,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"
                         android:layout_marginEnd="18dp"
-                        android:text="@string/submit"
                         android:fontFamily="@font/poppins_bold"
-                        android:textColor="@color/white"/>
+                        android:text="@string/submit"
+                        android:textColor="@color/white" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

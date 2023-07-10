@@ -1,9 +1,9 @@
 package com.farmwiseai.tniamp.utils;
 
 public class LookUpDataClass {
-    private String intervention1 = null;
-    private String intervention2 = null;
-    private String intervention3 = null;
+    private String intervention1;
+    private String intervention2;
+    private String intervention3 ;
     private String componentValue = null;
     private String subComponentValue = null;
 

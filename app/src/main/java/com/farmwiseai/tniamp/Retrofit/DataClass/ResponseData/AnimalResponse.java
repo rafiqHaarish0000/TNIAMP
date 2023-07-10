@@ -12,7 +12,7 @@ public class AnimalResponse {
     private String response;
     @SerializedName("responseMessage")
     @Expose
-    private AgriResponse.ResponseMessage responseMessage;
+    private ResponseMessage responseMessage;
 
     public String getStatusCode() {
         return statusCode;
@@ -30,11 +30,11 @@ public class AnimalResponse {
         this.response = response;
     }
 
-    public AgriResponse.ResponseMessage getResponseMessage() {
+    public ResponseMessage getResponseMessage() {
         return responseMessage;
     }
 
-    public void setResponseMessage(AgriResponse.ResponseMessage responseMessage) {
+    public void setResponseMessage(ResponseMessage responseMessage) {
         this.responseMessage = responseMessage;
     }
 

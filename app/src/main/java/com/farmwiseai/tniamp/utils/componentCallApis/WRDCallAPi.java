@@ -68,16 +68,21 @@ public class WRDCallAPi {
                         subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt, memTxt, interventioNameLyt);
                         tankStageSpinner.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
+                        wauTxt.setVisibility(View.GONE);
+                        memTxt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Others")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         tankStageSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.VISIBLE);
+                        wauTxt.setVisibility(View.GONE);
+                        memTxt.setVisibility(View.GONE);
                     } else {
                         subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt, memTxt, interventioNameLyt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         tankStageSpinner.setVisibility(View.VISIBLE);
                         wauTxt.setVisibility(View.GONE);
+                        memTxt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
@@ -212,7 +217,9 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Parapet wall") ||
                             names.equalsIgnoreCase("Steel grill") ||
                             names.equalsIgnoreCase("Horizontal") ||
-                            names.equalsIgnoreCase("Jungle Clearence") ||
+                            names.equalsIgnoreCase("Jungle Clearance") ||
+                            names.equalsIgnoreCase("Strengthening of Bund") ||
+                            names.equalsIgnoreCase("Model Sectioning of Bund") ||
                             names.equalsIgnoreCase("Removing the Slit") ||
                             names.equalsIgnoreCase("Formwork for Cut-off wall") ||
                             names.equalsIgnoreCase("Formwork") ||

@@ -389,6 +389,7 @@
                             android:inputType="number" />
 
                         <EditText
+                            android:id="@+id/feedQuality1"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -432,6 +433,7 @@
                         android:visibility="gone">
 
                         <EditText
+                            android:id="@+id/farmPond"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -440,6 +442,7 @@
                             android:inputType="number" />
 
                         <EditText
+                            android:id="@+id/beneName"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -448,6 +451,7 @@
                             android:inputType="number" />
 
                         <EditText
+                            android:id="@+id/surveyVal"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -456,6 +460,7 @@
                             android:inputType="number" />
 
                         <EditText
+                            android:id="@+id/mobileVal"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -510,6 +515,7 @@
                             android:inputType="number" />
 
                         <EditText
+                            android:id="@+id/feedQuality2"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -518,6 +524,7 @@
                             android:inputType="number" />
 
                         <EditText
+                            android:id="@+id/numbOfSeeds"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

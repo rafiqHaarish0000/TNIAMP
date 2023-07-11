@@ -55,6 +55,7 @@ import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
+import com.farmwiseai.tniamp.utils.ValidationUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
@@ -122,6 +123,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String lessNameVal;
+    public String benNameVal;
+    public String benNameVal1;
+    public String benNameValfinal;
+    public String genderNameVal;
+    public String catNameVal;
+    public String speciesNameVal;
     boolean[] selectedLanguage;
     ArrayList<Integer> langList = new ArrayList<>();
     String[] langArray = {"Catla", "Rahul", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
@@ -136,6 +144,15 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        lessNameVal = null;
+        benNameVal = null;
+        benNameVal1 = null;
+        benNameValfinal = null;
+        genderNameVal = null;
+        catNameVal = null;
+        speciesNameVal = null;
+
         mCommonFunction = new CommonFunction(getActivity());
         // Inflate the layout for this fragment
         fisheriesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_fisheries, container, false);
@@ -143,7 +160,6 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         fisheriesBinding.submissionBtn.setOnClickListener(this);
         fisheriesBinding.image1.setOnClickListener(this);
         fisheriesBinding.image2.setOnClickListener(this);
-
 
         remarks = fisheriesBinding.remarksTxt.getText().toString();
 
@@ -170,6 +186,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         lat = latLongPojo.getLat();
         lon = latLongPojo.getLon();
         Log.i("data", lat + "," + lon);
+
+
         setAllDropDownData();
         return fisheriesBinding.getRoot();
     }
@@ -180,9 +198,14 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         remarks = fisheriesBinding.remarksTxt.getText().toString();
 
+        Log.i(TAG, "modelVillage: "+componentValue);
+
+        if(componentValue.equalsIgnoreCase("Others")){
+            subComponentValue = "Dummy data";
+        }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null ) {
+                villageName == null ||componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
@@ -194,16 +217,20 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         } else if (fisheriesBinding.nameofTankTXT.getText().toString().length() == 0) {
             fisheriesBinding.nameofTankTXT.setError("Do not empty field");
             return false;
-        } else if (fisheriesBinding.waterTxt.getText().toString().length() == 0) {
-            fisheriesBinding.waterTxt.setError("Do not empty field");
+        }else if (fisheriesBinding.waterTxt.getText().toString().isEmpty()
+                || Double.valueOf(fisheriesBinding.waterTxt.getText().toString()) > 2.0) {
+            fisheriesBinding.waterTxt.setError("Area Should be less than 2(ha)");
             return false;
         } else if (fisheriesBinding.seedStockTXt.getText().toString().length() == 0) {
             fisheriesBinding.seedStockTXt.setError("Do not empty field");
             return false;
         }
+        else if(componentValue.equalsIgnoreCase("Model Village")){
+            return true;
+        }
         //layout 1
         else if (layout1.getVisibility() == View.VISIBLE) {
-            if (lesseVal.length() == 0) {
+            if (lessNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (fisheriesBinding.speciesStockedTxt.getText().toString().length() == 0) {
@@ -214,7 +241,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         }
         //layout 2
         else if (layout2.getVisibility() == View.VISIBLE) {
-            if (benVal.length() == 0) {
+            if (benNameVal == null || speciesNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (fisheriesBinding.feedQuality.getText().toString().isEmpty()) {
@@ -225,28 +252,61 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         }
         //layout 3
         else if (layout3.getVisibility() == View.VISIBLE) {
-            if (benVal.length() == 0) {
+            if (benNameVal1 == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
-            } else if (fisheriesBinding.num.getText().toString().isEmpty()) {
+            }else if(fisheriesBinding.speciesStockedTxt1.getText().toString().length() == 0){
+                fisheriesBinding.speciesStockedTxt1.setError("Do not empty field");
+                return false;
+            }
+            else if (fisheriesBinding.feedQuality1.getText().toString().isEmpty()) {
+                fisheriesBinding.feedQuality1.setError("Do not empty field");
+                return false;
+            }else if (fisheriesBinding.num.getText().toString().isEmpty()) {
                 fisheriesBinding.num.setError("Do not empty field");
                 return false;
             }
             return true;
         } else if (layout4.getVisibility() == View.VISIBLE) {
-            if (genderVal.length() == 0) {
+            if (genderNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
-            } else if (catVal.length() == 0) {
+            } else if (catNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             }
-            return true;
-        } else if (beneficaryFinal.getVisibility() == View.VISIBLE||beneficarySpinner.getVisibility() == View.VISIBLE||beneficarySpinner1.getVisibility() == View.VISIBLE) {
-            if (benVal.length() == 0) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+            else if (fisheriesBinding.farmPond.getText().length() == 0) {
+                fisheriesBinding.farmPond.setError("Do not empty field");
                 return false;
-            } else if (catVal.length() == 0) {
+            }else if (fisheriesBinding.beneName.getText().length() == 0) {
+                fisheriesBinding.beneName.setError("Do not empty field");
+                return false;
+            }else if (fisheriesBinding.surveyVal.getText().length() == 0) {
+                fisheriesBinding.surveyVal.setError("Do not empty field");
+                return false;
+            }else if (fisheriesBinding.mobileVal.getText().length() == 0 ||
+                    fisheriesBinding.mobileVal.length() < 10) {
+                fisheriesBinding.mobileVal.setError("Please enter the valid mobile number");
+                return false;
+            } else if (!ValidationUtils.isValidMobileNumber(fisheriesBinding.mobileVal.getText().toString())) {
+                fisheriesBinding.mobileVal.setError("Please enter the valid mobile number");
+                return false;
+            }
+            else if (fisheriesBinding.feedQuality2.getText().length() == 0) {
+                fisheriesBinding.feedQuality2.setError("Do not empty field");
+                return false;
+            }
+            else if (fisheriesBinding.numbOfSeeds.getText().length() == 0) {
+                fisheriesBinding.numbOfSeeds.setError("Do not empty field");
+                return false;
+            }
+            else if (fisheriesBinding.speciesStockedTxt2.getText().length() == 0) {
+                fisheriesBinding.speciesStockedTxt2.setError("Do not empty field");
+                return false;
+            }
+            return true;
+        } else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
+            if (benNameValfinal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             }
@@ -254,12 +314,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         }
         //other layout
         else if (otherLyt.getVisibility() == View.VISIBLE) {
-            if (fisheriesBinding.inerventionNameTxt.getText().length() == 0) {
+            if (fisheriesBinding.inerventionNameTxt.getText().toString().isEmpty()) {
                 fisheriesBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
             return true;
         }
+
 
         return true;
     }
@@ -280,7 +341,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                     finalSubmission();
                 } else {
                     //do the code for save all data
-                //    Toast.makeText(context, "Validation Error!", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(context, "Validation Error!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -494,6 +555,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 lesseVal = String.valueOf(lesseeSpinner.getSelectedItemPosition());
+                lessNameVal = lesseeSpinner.getSelectedItem().toString();
                 Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
@@ -508,6 +570,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 benVal = String.valueOf(beneficarySpinner.getSelectedItemPosition());
+                benNameVal = beneficarySpinner.getSelectedItem().toString();
                 Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
@@ -522,6 +585,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 benVal = String.valueOf(beneficarySpinner1.getSelectedItemPosition());
+                benNameVal1 = beneficarySpinner1.getSelectedItem().toString();
                 Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
@@ -536,6 +600,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 benVal = String.valueOf(beneficaryFinal.getSelectedItemPosition());
+                benNameValfinal = beneficaryFinal.getSelectedItem().toString();
                 Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
@@ -545,11 +610,12 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             }
         });
         fisheriesBinding.speciesSpinner1.setItem(speciesList);
-        beneficaryFinal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        fisheriesBinding.speciesSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                benVal = String.valueOf(beneficaryFinal.getSelectedItemPosition());
-                Log.i(TAG, "interventionType:" + interventionTypeVal);
+//                benVal = String.valueOf(beneficaryFinal.getSelectedItemPosition());
+                speciesNameVal = fisheriesBinding.speciesSpinner1.getSelectedItem().toString();
+//                Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
             @Override
@@ -562,6 +628,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 catVal = String.valueOf(categorySpinner.getSelectedItemPosition());
+                catNameVal = categorySpinner.getSelectedItem().toString();
                 Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
@@ -575,6 +642,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 genderVal = String.valueOf(genderSpinner.getSelectedItemPosition());
+                genderNameVal = genderSpinner.getSelectedItem().toString();
                 Log.i(TAG, "interventionType:" + interventionTypeVal);
             }
 
@@ -896,6 +964,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         intervention3 = lookUpDataClass.getIntervention3();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+//        Log.i(TAG, "modelVillage: "+componentValue);
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

@@ -426,6 +426,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 return false;
             } else if (genderValue == null || catNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+                return false;
             }
             return true;
 

@@ -414,12 +414,12 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         beneList = new ArrayList<>();
         beneList.add("FCS");
-        beneList.add("WUA");
+        beneList.add("SHG");
         beneList.add("Others");
 
         //phase data
         phraseList = new ArrayList<>();
-        phraseList.add("Choose phase");
+      phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
@@ -945,7 +945,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 

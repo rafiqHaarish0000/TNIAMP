@@ -52,7 +52,7 @@ public class TNAU_CallApi {
     //first spinner phrase;
 
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, EditText datePicker, LinearLayout hideLyt,
-                                   EditText variety,EditText yield ) {
+                                   EditText variety, EditText yield) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -74,8 +74,10 @@ public class TNAU_CallApi {
                     String names = componentList.get(i).getName();
                     //subComponentSpinner.setVisibility(View.VISIBLE);
                     if (names.equals("Model Village")) {
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
+
                         hideLyt.setVisibility(View.GONE);
-                        subComponentSpinner.setVisibility(View.GONE);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
@@ -88,9 +90,17 @@ public class TNAU_CallApi {
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
                         yield.setVisibility(View.GONE);
+                    } else if (names.contains("Red gram promotion ")) {
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
+                        backPressListener.onSelectedInputs(lookUpDataClass);
+                        stageSpinner.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else {
                         subComponentSpinner.setVisibility(View.VISIBLE);
-                        stageSpinner.setVisibility(View.VISIBLE);
+                        stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
                         variety.setVisibility(View.GONE);
                         yield.setVisibility(View.GONE);
@@ -116,7 +126,6 @@ public class TNAU_CallApi {
         });
 
 
-
     }
 
     //second spinner phrase;
@@ -132,7 +141,7 @@ public class TNAU_CallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String names = sub_componentList.get(i).getName();
                 lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
-                thirdSpinner.setVisibility(View.VISIBLE);
+              //  thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
@@ -165,6 +174,9 @@ public class TNAU_CallApi {
                         editText.setVisibility(View.GONE);
                         backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("SWIKC") || names.contains("Water walk") || names.contains("PRA Excercise") || names.contains("SWIC Centre") || names.contains("CCMG") || names.contains("Farmers Discussion") || names.contains("Village Vision") || names.contains("Entry Point Activity") || names.contains("Awareness Meeting") || names.contains("Water budgetting wall painting") || names.contains("Village vision wall painting")) {
+                        editText.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.GONE);
                     } else {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
@@ -184,7 +196,6 @@ public class TNAU_CallApi {
 
             }
         });
-
 
 
     }
@@ -222,7 +233,6 @@ public class TNAU_CallApi {
 
             }
         });
-
 
 
     }

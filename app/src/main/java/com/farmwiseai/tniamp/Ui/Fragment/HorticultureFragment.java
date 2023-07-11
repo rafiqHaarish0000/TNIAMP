@@ -714,7 +714,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -734,9 +734,11 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intervention4 = lookUpDataClass.getIntervention4();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-
-        if (intervention4.equalsIgnoreCase("Harvest")||
-                intervention4.equalsIgnoreCase("1st Harvest")||
+        if (componentValue.equalsIgnoreCase("Micro Irrigation") || componentValue.equalsIgnoreCase(" Shade Net") || componentValue.equalsIgnoreCase("Mulching")) {
+            horticultureBinding.varietyTxt.setVisibility(View.GONE);
+            horticultureBinding.yieldTxt.setVisibility(View.GONE);
+        } else if (intervention4.equalsIgnoreCase("Harvest") ||
+                intervention4.equalsIgnoreCase("1st Harvest") ||
                 intervention4.equalsIgnoreCase("Last Harvest")) {
             horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             horticultureBinding.yieldTxt.setVisibility(View.VISIBLE);

@@ -596,7 +596,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                     uploadSecondImage(txt_id);
 
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -634,7 +634,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 

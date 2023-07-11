@@ -1056,7 +1056,7 @@
                         android:spinnerMode="dropdown"
                         android:textSize="18sp"
                         app:smsp_enableFloatingLabel="true"
-                        app:smsp_hint="Intervention Type"
+                        app:smsp_hint="Intervention Type (Optional)"
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
 

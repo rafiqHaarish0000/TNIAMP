@@ -184,7 +184,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
         //phase data
         phraseList = new ArrayList<>();
-        phraseList.add("Choose phase");
+      phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
@@ -660,7 +660,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -395,7 +395,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         genderSpinner = tnauBinding.genderTxt;
         categorySpinner = tnauBinding.categoryTxt;
         villageSpinner = tnauBinding.villageTxt;
-        //   interventionSpinner = tnauBinding.inverntionTyper;
+        interventionSpinner = tnauBinding.inverntionTyper;
 
 
         //phase data
@@ -572,8 +572,8 @@ mCommonFunction.hideProgress();
         interventionList.add("Demo");
         interventionList.add("Sustainability");
         interventionList.add("Adoption");
-        // tnauBinding.inverntionTyper.setItem(interventionList);
-/*
+        tnauBinding.inverntionTyper.setItem(interventionList);
+
         interventionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -586,7 +586,6 @@ mCommonFunction.hideProgress();
 
             }
         });
-*/
 
 
     }
@@ -680,13 +679,15 @@ mCommonFunction.hideProgress();
 
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+        if (componentValue.equalsIgnoreCase("Pesticide free village ")) {
+            tnauBinding.varietyTxt.setVisibility(View.GONE);
+            tnauBinding.yieldTxt.setVisibility(View.GONE);
 
-
-        if (intervention4.equalsIgnoreCase("Harvest") ||
+        } else if (intervention4.equalsIgnoreCase("Harvest") ||
                 intervention4.equalsIgnoreCase("Harvest of Pulse") ||
                 intervention4.equalsIgnoreCase("Harvest of Rice") ||
                 intervention4.equalsIgnoreCase("1st Harvest") ||
-                intervention4.equalsIgnoreCase("Last Harvest")) {
+                intervention4.equalsIgnoreCase("Last Harvest") || subComponentValue.equalsIgnoreCase("Harvest")) {
             tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
             tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
         } else {
@@ -829,7 +830,7 @@ mCommonFunction.hideProgress();
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 

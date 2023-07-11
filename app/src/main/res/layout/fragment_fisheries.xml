@@ -261,7 +261,7 @@
                         android:hint="Water spread area (EWSA-Ha)"
                         android:digits="1234567890."
                         android:inputType="number"
-                        android:maxLength="4"/>
+                        android:maxLength="5"/>
 
                     <EditText
                         android:id="@+id/seedStockTXt"
@@ -270,7 +270,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="No.of seed stocked"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:digits="1234567890."
+                        android:maxLength="4"/>
                     <!--Other layout-->
 
                     <!--Layout 1-->
@@ -631,7 +633,7 @@
                         android:spinnerMode="dropdown"
                         android:textSize="18sp"
                         app:smsp_enableFloatingLabel="true"
-                        app:smsp_hint="Intervention Type"
+                        app:smsp_hint="Intervention Type (Optional)"
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
 

@@ -318,7 +318,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="@string/near_by_tank_name"
                             android:inputType="text"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^,/*()_- \ "
                             />
                     </LinearLayout>
 
@@ -381,7 +381,21 @@
                         android:inputType="text"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         />
-
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/inverntionTyper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Intervention Type (Optional)"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

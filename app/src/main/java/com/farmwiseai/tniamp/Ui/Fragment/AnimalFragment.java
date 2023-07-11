@@ -213,7 +213,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         //phase data
         phraseList = new ArrayList<>();
-        phraseList.add("Choose phase");
+       phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
@@ -677,7 +677,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                     uploadSecondImage(txt_id);
 
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -737,7 +737,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 

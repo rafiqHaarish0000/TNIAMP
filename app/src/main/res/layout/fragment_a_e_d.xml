@@ -360,7 +360,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="@string/near_by_tank_name"
                             android:inputType="text"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^,/*()_- \"
                             />
                     </LinearLayout>
 
@@ -438,7 +438,7 @@
                         android:spinnerMode="dropdown"
                         android:textSize="18sp"
                         app:smsp_enableFloatingLabel="true"
-                        app:smsp_hint="Intervention Type(Optional)"
+                        app:smsp_hint="Intervention Type (Optional)"
                         app:smsp_hintColor="@color/grey"
                         app:smsp_multilineError="false" />
 

@@ -184,7 +184,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
         //phase data
         phraseList = new ArrayList<>();
-    //    phraseList.add("Choose phase");
+      phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");

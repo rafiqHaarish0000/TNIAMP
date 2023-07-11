@@ -358,7 +358,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         //phase data
         phraseList = new ArrayList<>();
-      //  phraseList.add("Choose phase");
+      phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");

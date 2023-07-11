@@ -228,14 +228,15 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
-        //  date = tnauBinding.dateTxt.getText().toString();
+         date = tnauBinding.dateTxt.getText().toString();
         mobileNumber = tnauBinding.mobileNumbertxt.getText().toString().trim();
-        date = "11-09-2023";
+        //date = "11-09-2023";
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageValue == null || gender == null || category1 == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+                villageValue == null || componentValue == null || subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
@@ -259,22 +260,33 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 tnauBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
+            } else if (  gender==null&& genderSpinner.getVisibility() == View.VISIBLE) {
+
+                Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
+                return false;
+
+            } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
+                Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
+                return false;
+            } else if (farmerName.isEmpty() || farmerName.length() == 0) {
+               tnauBinding.farmerTxt.setError("Please Enter Farmer Name");
+                return false;
+            }else if(date.isEmpty()&& datePicker.getVisibility()==View.VISIBLE)
+            {
+                tnauBinding.dateTxt.setError("Please select the date");
+                return  false;
+            }else if(tnauBinding.yieldTxt.getText().toString().isEmpty()&& tnauBinding.yieldTxt.getVisibility()==View.VISIBLE)
+            {
+                tnauBinding.yieldTxt.setError("Please enter the yield");
+                return  false;
             }
-            return true;
+            else if(tnauBinding.varietyTxt.getText().toString().isEmpty()&& tnauBinding.varietyTxt.getVisibility()==View.VISIBLE)
+            {
+                tnauBinding.varietyTxt.setError("Please enter the variety");
+                return  false;
+            }
 
-        } else if (gender == null || genderSpinner.getVisibility() == View.VISIBLE) {
-            Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
-            return false;
-
-        } else if (category1 == null || categorySpinner.getVisibility() == View.VISIBLE) {
-            Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (farmerName.isEmpty() || farmerName.length() == 0) {
-            Toast.makeText(getActivity(), "Please Enter Farmer Name", Toast.LENGTH_LONG).show();
-            return false;
         }
-
-
         return true;
     }
 
@@ -794,7 +806,7 @@ mCommonFunction.hideProgress();
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 

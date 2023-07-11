@@ -102,7 +102,9 @@ public class AgriCallApi {
                     } else if (names.equalsIgnoreCase("Cono Weeding")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
                         stageSpinner.setVisibility(View.GONE);
-                        hideLyt.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
+                        hideLyt.setVisibility(View.VISIBLE);
+                        trainingLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
 

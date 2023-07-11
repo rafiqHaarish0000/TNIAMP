@@ -156,8 +156,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agricultureBinding.dateTxt.setOnClickListener(this);
         agricultureBinding.doaTxt.setOnClickListener(this);
         agricultureBinding.dorfTxt.setOnClickListener(this);
-
-
         farmerName = agricultureBinding.farmerTxt.getText().toString();
         survey_no = agricultureBinding.surveyTxt.getText().toString();
         area = agricultureBinding.areaTxt.getText().toString();
@@ -171,8 +169,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         qop = agricultureBinding.quantityTxt.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
         mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
-
-
         componentSpinner = agricultureBinding.componentTxt;
         sub_componentSpinner = agricultureBinding.subComponentsTxt;
         stagesSpinner = agricultureBinding.stagesTxt;
@@ -386,7 +382,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         //phase data
         phraseList = new ArrayList<>();
-        phraseList.add("Choose phase");
+       // phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
@@ -758,7 +754,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -779,8 +775,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-
-        if (intervention4.equalsIgnoreCase("Harvest")) {
+        if (componentValue.equalsIgnoreCase("Farmers Field School") || componentValue.equalsIgnoreCase(" IPM village-Vermicompost")) {
+            agricultureBinding.varietyTxt.setVisibility(View.GONE);
+            agricultureBinding.yieldTxt.setVisibility(View.GONE);
+        } else if (intervention4.equalsIgnoreCase("Harvest")||subComponentValue.equalsIgnoreCase("Harvest")) {
             agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);
         } else {

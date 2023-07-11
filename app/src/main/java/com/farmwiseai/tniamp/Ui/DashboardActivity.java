@@ -87,7 +87,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 */
         this.runOnUiThread(new Runnable() {
             public void run() {
-             //   Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
                 syncOfflineData();
             }
         });
@@ -405,4 +405,21 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         }
 
     }
-}
+
+    int doubleBackToExitPressed = 0;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressed < 2) {
+            doubleBackToExitPressed++;
+
+            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+        } else {
+            finish();
+            super.onBackPressed();
+        }
+    }
+    }

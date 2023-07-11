@@ -65,9 +65,9 @@ import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.AnimalCallApi;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.annotation.JsonInclude;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -126,6 +126,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String date;
     public String status;
     public String venue;
+    public String noFarmer;
     public BackPressListener backPressListener;
     public String subBasinValue = null;
     public String districtValue = null;
@@ -135,6 +136,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String subComponentValue = null;
     DatePickerDialog picker;
     private String villageValue, category1 = "", firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String genderValue, catNameVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
 
     @Override
@@ -147,6 +149,10 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        genderValue = null;
+        catNameVal = null;
+
         mCommonFunction = new CommonFunction(getActivity());
 
         animalBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_animal, container, false);
@@ -213,7 +219,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         //phase data
         phraseList = new ArrayList<>();
-       phraseList.add("Choose phase");
+        phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
@@ -318,6 +324,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 gender = genderSpinner.getSelectedItem().toString();
+                genderValue = genderSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -337,6 +344,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 category1 = categorySpinner.getSelectedItem().toString();
+                catNameVal = categorySpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -380,13 +388,19 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         mOO = animalBinding.scStNO.getText().toString();
         foN = animalBinding.femaleNo.getText().toString();
         fOO = animalBinding.fScStNO.getText().toString();
+        noFarmer = animalBinding.fScStNO.getText().toString();
+        venue = animalBinding.fScStNO.getText().toString();
 
         String mobileNumber = animalBinding.mobileNumber.getText().toString().trim();
 
+        if (componentValue != null) {
+            if (componentValue.equalsIgnoreCase("Others"))
+                subComponentValue = "Dummy data";
+        }
+
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null) {
+                villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-            return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
@@ -410,36 +424,49 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
                 animalBinding.mobileNumber.setError("Please enter the valid mobile number");
                 return false;
+            } else if (genderValue == null || catNameVal == null) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             }
             return true;
 
+        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
+
+            if (animalBinding.noOfFarmers.getText().toString().isEmpty()) {
+                animalBinding.noOfFarmers.setError("field empty");
+                return false;
+            } else if (animalBinding.venue.getText().toString().isEmpty()) {
+                animalBinding.venue.setError("field empty");
+                return false;
+            } else if (animalBinding.otherNo.getText().toString().isEmpty()) {
+                {
+                    animalBinding.otherNo.setError("field empty");
+                    return false;
+                }
+            } else if (animalBinding.scStNO.getText().toString().isEmpty()) {
+                {
+                    animalBinding.scStNO.setError("field empty");
+                    return false;
+                }
+            } else if (animalBinding.femaleOthers.getText().toString().isEmpty()) {
+                {
+                    animalBinding.femaleOthers.setError("field empty");
+                    return false;
+                }
+            } else if (animalBinding.fScStNO.getText().toString().isEmpty()) {
+                {
+                    animalBinding.fScStNO.setError("field empty");
+                    return false;
+                }
+            }
+        }
+        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            Log.i(TAG, "businessPlan: " + true);
+            if (animalBinding.inerventionNameTxt.getText().toString().isEmpty()) {
+                animalBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
         }
 
-//        else if (trainingLyt.getVisibility() == View.VISIBLE) {
-//            if (moN.length() == 0) {
-//                {
-//                    animalBinding.maleNo.setError("field empty");
-//                    return false;
-//                }
-//            } else if (mOO.length() == 0) {
-//                {
-//                    animalBinding.otherNo.setError("field empty");
-//                    return false;
-//                }
-//            } else if (foN.length() == 0) {
-//                {
-//                    animalBinding.femaleNo.setError("field empty");
-//                    return false;
-//                }
-//            } else if (fOO.length() == 0) {
-//                {
-//                    animalBinding.femaleOthers.setError("field empty");
-//                    return false;
-//                }
-//            }
-//            return true;
-//
-//        }
 
         return true;
     }
@@ -602,37 +629,37 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setStatus("0");
         request.setNo_of_cows("1");
         request.setNo_of_calves("1");
-        if (animalBinding.noOfFarmers.getText().toString().equalsIgnoreCase("")) {
-            request.setNo_of_farmers("11");
-
-        } else {
-            request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
-
-        }
-
-
-        request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
-        request.setMobile(animalBinding.mobileNumber.getText().toString());
+        request.setNo_of_farmers("11");
+//        if (animalBinding.noOfFarmers.getText().toString().equalsIgnoreCase("")) {
+//            request.setNo_of_farmers("11");
+//
+//        } else {
+//            request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
+//
+//        }
+        request.setNo_of_farmers("1");
+        request.setMobile("");
         request.setOthers_female_no("1");
         request.setOthers_male_no("1");
         request.setSc_st_female_no("1");
         request.setSc_st_male_no("1");
-        request.setVenue(animalBinding.venue.getText().toString());
-        request.setIntervention_type(interventionTypeVal);
-        request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        request.setVenue("a");
+        request.setIntervention_type("3");
+        request.setOther_intervention("");
 
-        try {
-            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
-            request = new ObjectMapper().readValue(json, AnimalRequest.class);
-            System.out.println(json);
-
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//
+//        try {
+//            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+//            request = new ObjectMapper().readValue(json, AnimalRequest.class);
+//            System.out.println(json);
+//
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         if (mCommonFunction.isNetworkAvailable()) {
             onlineDataUpload(request);

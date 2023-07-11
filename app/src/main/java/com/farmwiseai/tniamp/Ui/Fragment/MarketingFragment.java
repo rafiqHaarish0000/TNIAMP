@@ -220,7 +220,6 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
-            return true;
         }
         //layout 1
         else if (layout1.getVisibility() == View.VISIBLE) {
@@ -285,7 +284,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.infrastructureTxt.setError("field empty");
                 return false;
             }
-            return true;
+
         }
         //layout 2
         else if (layout2.getVisibility() == View.VISIBLE) {
@@ -316,7 +315,6 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.contributionTxt.setError("field empty");
                 return false;
             }
-            return true;
         }
         //training layout
         else if (marketingBinding.trainingLyt.getVisibility() == View.VISIBLE) {
@@ -350,7 +348,6 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.dateTo.setError("field empty");
                 return false;
             }
-            return true;
         }
         //exposure layout
         else if (marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE) {
@@ -381,7 +378,6 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.places.setError("field empty");
                 return false;
             }
-            return true;
         }
         //newReqLayout
         else if (newReqLayout.getVisibility() == View.VISIBLE) {

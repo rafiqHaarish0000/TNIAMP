@@ -368,7 +368,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null || subComponentValue == null  || gender == null || category == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-            return false;
+//            return false;
         }
 
 
@@ -404,7 +404,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
-        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+        else if (aedBinding.othersLayout.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
             if (aedBinding.inerventionNameTxt.getText().toString().isEmpty()) {
                 aedBinding.inerventionNameTxt.setError("field empty");

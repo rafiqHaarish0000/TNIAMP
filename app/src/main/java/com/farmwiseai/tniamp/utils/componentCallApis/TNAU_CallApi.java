@@ -65,27 +65,21 @@ public class TNAU_CallApi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
+                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
                     positionValue = String.valueOf(componentList.get(i).getID());
-                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
-                    Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
-
                     subComponentSpinner.setVisibility(View.VISIBLE);
                     String names = componentList.get(i).getName();
                     //subComponentSpinner.setVisibility(View.VISIBLE);
                     if (names.equals("Model Village")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
-
                         hideLyt.setVisibility(View.GONE);
                         subComponentSpinner.setVisibility(View.VISIBLE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
                         yield.setVisibility(View.GONE);
                     } else if (names.contains("GHG emission")) {
                         subComponentSpinner.setVisibility(View.GONE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
@@ -93,7 +87,6 @@ public class TNAU_CallApi {
                     } else if (names.contains("Red gram promotion ")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
                         subComponentSpinner.setVisibility(View.VISIBLE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
@@ -111,6 +104,9 @@ public class TNAU_CallApi {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
 
                     }
+                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 
 
                 } catch (Exception e) {
@@ -139,40 +135,32 @@ public class TNAU_CallApi {
         secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                 String names = sub_componentList.get(i).getName();
-                lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
               //  thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("Planting")) {
                         editText.setVisibility(View.VISIBLE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("Installation")) {
                         editText.setVisibility(View.GONE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("Milky")) {
                         editText.setVisibility(View.GONE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("First") || names.contains("Field")) {
                         thirdSpinner.setVisibility(View.GONE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                     } else if (names.contains("Harvest")) {
                         editText.setVisibility(View.GONE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("Group formation")) {
                         editText.setVisibility(View.GONE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("Meetings")) {
                         editText.setVisibility(View.GONE);
-                        backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("CCWM")) {
                         editText.setVisibility(View.GONE);
@@ -182,7 +170,9 @@ public class TNAU_CallApi {
                         thirdSpinner.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
-                    positionValue2 = String.valueOf(sub_componentList.get(i).getID());
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
+
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     stagesDropDown(positionValue2, thirdSpinner, editText);
                 } catch (Exception e) {

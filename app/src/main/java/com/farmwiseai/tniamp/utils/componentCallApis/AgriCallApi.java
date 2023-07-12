@@ -58,11 +58,9 @@ public class AgriCallApi {
         componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                subComponentSpinner.setVisibility(View.VISIBLE);
+                //  subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
-                    lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
-                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
-                    backPressListener.onSelectedInputs(lookUpDataClass);
+
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
 
@@ -72,10 +70,11 @@ public class AgriCallApi {
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
                         seedLyt.setVisibility(View.GONE);
-                        trainingLyt.setVisibility(View.GONE);
+                       // trainingLyt.setVisibility(View.GONE);
 
                     } else if (names.equalsIgnoreCase("Model Village")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
@@ -86,40 +85,46 @@ public class AgriCallApi {
                         stageSpinner.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.VISIBLE);
                         interventioNameLyt.setVisibility(View.GONE);
-                        trainingLyt.setVisibility(View.GONE);
+                      //  trainingLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Farmers Field School")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
-                        trainingLyt.setVisibility(View.GONE);
+                      //  trainingLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("IPM village-Vermicompost")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
-                        trainingLyt.setVisibility(View.VISIBLE);
+                      //  trainingLyt.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("Cono Weeding")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
                         seedLyt.setVisibility(View.GONE);
-                        interventioNameLyt.setVisibility(View.GONE);
+                      //  interventioNameLyt.setVisibility(View.GONE);
 
                     } else {
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
+                        interventioNameLyt.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
-                        trainingLyt.setVisibility(View.GONE);
+                    //    trainingLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
-                        interventioNameLyt.setVisibility(View.GONE);
                         Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
 
                     }
+                    lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
+                    lookUpDataClass.setComponentValue(names);
+                   backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
                     e.printStackTrace();

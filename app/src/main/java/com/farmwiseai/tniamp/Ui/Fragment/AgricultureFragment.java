@@ -176,9 +176,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         vis_lyt = agricultureBinding.visibilityLyt;
         seed_lyt = agricultureBinding.seedGroupLyt;
         iNames_lyt = agricultureBinding.othersLayout;
-
         backPressListener = this;
-
         offlineAgriRequest = SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
@@ -213,7 +211,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         qop = agricultureBinding.quantityTxt.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString();
         mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
-
+        if (componentValue != null) {
+            if (componentValue.equalsIgnoreCase("Others"))
+                subComponentValue = "Dummy data";
+        }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null
@@ -226,7 +227,37 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        } else if (vis_lyt.getVisibility() == View.VISIBLE) {
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            if (intName.isEmpty() || intName.length() == 0)
+                agricultureBinding.inerventionNameTxt.setError("field empty");
+            return false;
+        } else if (seed_lyt.getVisibility() == View.VISIBLE) {
+            if (nag.length() == 0) {
+                agricultureBinding.nameOfGroup.setError("field empty");
+                return false;
+            } else if (dag.length() == 0) {
+                {
+                    agricultureBinding.doaTxt.setError("field empty");
+                    return false;
+                }
+            } else if (dafr.length() == 0) {
+                {
+                    agricultureBinding.dorfTxt.setError("field empty");
+                    return false;
+                }
+            } else if (seedra.length() == 0) {
+                {
+                    agricultureBinding.areaRaisedTxt.setError("field empty");
+                    return false;
+                }
+            } else if (qop.length() == 0) {
+                {
+                    agricultureBinding.quantityTxt.setError("field empty");
+                    return false;
+                }
+            }
+
+        }else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0 || farmerName.isEmpty()) {
                 agricultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
@@ -263,36 +294,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (agricultureBinding.varietyTxt.getText().toString().isEmpty() && agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 agricultureBinding.varietyTxt.setError("Please enter the variety");
                 return false;
-            }
-
-        } else if (iNames_lyt.getVisibility() == View.VISIBLE && (intName.length() == 0)) {
-
-            agricultureBinding.inerventionNameTxt.setError("field empty");
-            return false;
-        } else if (seed_lyt.getVisibility() == View.VISIBLE) {
-            if (nag.length() == 0) {
-                agricultureBinding.nameOfGroup.setError("field empty");
-                return false;
-            } else if (dag.length() == 0) {
-                {
-                    agricultureBinding.doaTxt.setError("field empty");
-                    return false;
-                }
-            } else if (dafr.length() == 0) {
-                {
-                    agricultureBinding.dorfTxt.setError("field empty");
-                    return false;
-                }
-            } else if (seedra.length() == 0) {
-                {
-                    agricultureBinding.areaRaisedTxt.setError("field empty");
-                    return false;
-                }
-            } else if (qop.length() == 0) {
-                {
-                    agricultureBinding.quantityTxt.setError("field empty");
-                    return false;
-                }
             }
 
         }

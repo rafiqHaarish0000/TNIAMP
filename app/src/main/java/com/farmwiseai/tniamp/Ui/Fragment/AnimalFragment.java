@@ -600,12 +600,20 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
 
         request.setVillage(villageValue);
-        request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
+        if (intervention1 != null) {
+            request.setIntervention1(intervention1);
+        } else {
+            request.setIntervention1("1");
+        }
+        if (intervention2 != null) {
+            request.setIntervention2(intervention2);
+        } else {
+            request.setIntervention2("2");
+        }
         if (intervention3 != null) {
             request.setIntervention3(intervention3);
         } else {
-            request.setIntervention3("1");
+            request.setIntervention3("3");
         }
         request.setFarmer_name(farmerName);
         request.setGender(gender);

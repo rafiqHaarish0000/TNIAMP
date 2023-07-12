@@ -208,10 +208,6 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        } else if (componentValue.equalsIgnoreCase("Model Village")) {
-            return true;
-        } else if (componentValue.equalsIgnoreCase("Agri Entrepreneurship")) {
-            return true;
         }
         //other layout
         else if (otherLyt.getVisibility() == View.VISIBLE) {

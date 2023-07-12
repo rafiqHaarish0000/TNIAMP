@@ -459,6 +459,11 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                     return false;
                 }
             }
+        }else if(animalBinding.noOfCalves.getVisibility() == View.VISIBLE){
+            if(animalBinding.noOfCalves.getText().toString().isEmpty()){
+                animalBinding.noOfCalves.setError("field empty");
+                return false;
+            }
         }
         else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);

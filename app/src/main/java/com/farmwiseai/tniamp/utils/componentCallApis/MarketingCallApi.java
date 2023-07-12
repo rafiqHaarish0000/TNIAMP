@@ -62,6 +62,7 @@ public class MarketingCallApi {
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                     lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
                     if (names.equalsIgnoreCase("Model Village")) {

@@ -73,6 +73,7 @@ public class AnimalCallApi {
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     positionValue = String.valueOf(componentList.get(i).getID());
                     lookUpDataClass.setComponentValue(componentList.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                     String names = componentList.get(i).getName();
                     if (names.contains("Model Village")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
@@ -116,7 +117,7 @@ public class AnimalCallApi {
                         otherLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Others")) {
                         otherLyt.setVisibility(View.VISIBLE);
-                        visLyt.setVisibility(View.VISIBLE);
+                        visLyt.setVisibility(View.GONE);
                         subComponentSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);

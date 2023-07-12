@@ -68,6 +68,7 @@ public class AEDCallApi {
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                     lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String name = getAllComponentData.get(i).getName();
                     if (name.equalsIgnoreCase("Model Village")) {
@@ -77,8 +78,10 @@ public class AEDCallApi {
                         otherLyt.setVisibility(View.GONE);
                     } else if (name.equalsIgnoreCase("Others")){
                         subComponentSpinner.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.VISIBLE);
+
                     }
                     else{
                         subComponentSpinner.setVisibility(View.VISIBLE);

@@ -133,6 +133,8 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String genderNameVal;
+    public String catVal;
     DatePickerDialog picker;
     public BackPressListener backPressListener;
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
@@ -147,6 +149,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        genderNameVal = null;
+        catVal = null;
+
         mCommonFunction = new CommonFunction(getActivity());
 
         horticultureBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_horticulture, container, false);
@@ -206,18 +211,17 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         date = horticultureBinding.dateTxt.getText().toString();
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
         mobileNumber = horticultureBinding.mobileNumbertxt.getText().toString().trim();
-        if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || gender == null || category == null
-        ) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
-            return false;
+
+        if (componentValue != null) {
+            if (componentValue.equalsIgnoreCase("Others"))
+                subComponentValue = "Dummy data";
         }
 
-        /*else if (valueofPic == 0||valueofPic==1) {
-            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
-            return false;
-        }*/
-
+        if (subBasinValue == null || districtValue == null || blockValue == null ||
+                villageName == null||componentValue==null|| subComponentValue == null)
+        {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+        }
         else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
@@ -225,10 +229,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             if (farmerName.length() == 0) {
                 horticultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
-            } /*else if (date.length() == 0) {
-                horticultureBinding.dateTxt.setError("Please enter the date");
-                return false;
-            }*/
+            }
             if (survey_no.length() == 0) {
                 horticultureBinding.surveyTxt.setError("Please enter survey no");
                 return false;
@@ -239,23 +240,39 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (Double.valueOf(area) > 2.0) {
                 horticultureBinding.areaTxt.setError("Area Should be less than 2(ha)");
                 return false;
-            }  /*else if (near_tank.length() == 0 && horticultureBinding.tankTxt.getVisibility() == View.VISIBLE) {
-            horticultureBinding.tankTxt.setError("Please enter near by tank name");
-            return false;
-        }*/ /*else if (remarks.length() == 0 && horticultureBinding.remarksTxt.getVisibility() == View.VISIBLE) {
-                horticultureBinding.remarksTxt.setError("Remarks not found");
-                return false;
-            } */
+            }
             if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
                 horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
             } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
                 horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
+            }else if(genderNameVal == null || catVal == null){
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+                return false;
             }
             return true;
-        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
-            if (intName.length() == 0) {
+        }
+        else if(trainingLyt.getVisibility() == View.VISIBLE){
+            if(horticultureBinding.noOfParticipants.getText().toString().isEmpty()){
+                horticultureBinding.noOfParticipants.setError("Do not empty field");
+                return false;
+            }else if(horticultureBinding.maleOthers.getText().toString().isEmpty()){
+                horticultureBinding.maleOthers.setError("Do not empty field");
+                return false;
+            }else if(horticultureBinding.maleNo.getText().toString().isEmpty()){
+                horticultureBinding.maleOthers.setError("Do not empty field");
+                return false;
+            }else if(horticultureBinding.femaleOthers.getText().toString().isEmpty()){
+                horticultureBinding.femaleOthers.setError("Do not empty field");
+                return false;
+            }else if(horticultureBinding.femaleNo.getText().toString().isEmpty()){
+                horticultureBinding.femaleNo.setError("Do not empty field");
+                return false;
+            }
+        }
+        else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
+            if (horticultureBinding.inerventionNameTxt.getText().toString().isEmpty()) {
                 horticultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
@@ -468,6 +485,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 gender = genderSpinner.getSelectedItem().toString();
+                genderNameVal = genderSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -487,6 +505,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 category1 = categorySpinner.getSelectedItem().toString();
+                catVal = categorySpinner.getSelectedItem().toString();
             }
 
             @Override

@@ -200,8 +200,9 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         Log.i(TAG, "modelVillage: "+componentValue);
 
-        if(componentValue.equalsIgnoreCase("Others")){
-            subComponentValue = "Dummy data";
+        if(componentValue != null){
+            if(componentValue.equalsIgnoreCase("Others"))
+                subComponentValue = "Dummy data";
         }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
@@ -228,6 +229,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         else if(componentValue.equalsIgnoreCase("Model Village")){
             return true;
         }
+
         //layout 1
         else if (layout1.getVisibility() == View.VISIBLE) {
             if (lessNameVal == null) {

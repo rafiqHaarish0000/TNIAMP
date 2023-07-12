@@ -451,6 +451,7 @@
                             android:hint="Location of the Consulting agency" />
 
                         <EditText
+                            android:id="@+id/nameOfCeo"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -545,6 +546,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:inputType="number"
                             android:hint="Quantity stored (Mts)" />
 
                         <EditText
@@ -553,6 +555,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:inputType="number"
                             android:hint="No of beneficieries" />
 
                         <EditText
@@ -561,6 +564,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:inputType="number"
                             android:hint="Government Share" />
 
                         <EditText
@@ -613,6 +617,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="number"
                             android:hint="Duration of training(Days)" />
 
                         <LinearLayout
@@ -624,6 +633,7 @@
                             android:visibility="visible">
 
                             <EditText
+                                android:id="@+id/noOftrainee"
                                 style="@style/AppEdittext"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -632,6 +642,7 @@
                                 android:hint="No of Trainees" />
 
                             <TextView
+
                                 style="@style/head_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -650,6 +661,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
+                                    android:id="@+id/traineeOtherNo"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -659,6 +671,7 @@
                                     android:inputType="number" />
 
                                 <EditText
+                                    android:id="@+id/traineeSCSTNO"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -687,6 +700,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
+                                    android:id="@+id/traineeOtherNoF"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -696,6 +710,7 @@
                                     android:inputType="number" />
 
                                 <EditText
+                                    android:id="@+id/traineeSCSTNOF"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -769,6 +784,7 @@
                             app:smsp_multilineError="false" />
 
                         <EditText
+                            android:id="@+id/nameHq"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -776,6 +792,7 @@
                             android:hint="Name (HQ/FPC)" />
 
                         <EditText
+                            android:id="@+id/durationVisit"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -791,6 +808,7 @@
                             android:visibility="visible">
 
                             <EditText
+                                android:id="@+id/exposeNumber"
                                 style="@style/AppEdittext"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -817,6 +835,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
+                                    android:id="@+id/otherNoE"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -826,6 +845,7 @@
                                     android:inputType="number" />
 
                                 <EditText
+                                    android:id="@+id/sc_st_NOE"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -854,6 +874,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
+                                    android:id="@+id/otherNoEF"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -863,6 +884,7 @@
                                     android:inputType="number" />
 
                                 <EditText
+                                    android:id="@+id/sc_st_NOEF"
                                     style="@style/AppEdittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -907,6 +929,7 @@
                             </LinearLayout>
 
                             <EditText
+                                android:id="@+id/country"
                                 style="@style/AppEdittext"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -914,6 +937,7 @@
                                 android:hint="Country/State Name" />
 
                             <EditText
+                                android:id="@+id/places"
                                 style="@style/AppEdittext"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -932,6 +956,7 @@
                         android:layout_marginTop="4dp"
                         android:orientation="vertical">
                         <EditText
+                            android:id="@+id/sINo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppEdittext"
@@ -939,6 +964,7 @@
                             android:layout_gravity="start"
                             android:hint="SI.No"/>
                         <EditText
+                            android:id="@+id/nameOfbene"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppEdittext"
@@ -946,6 +972,7 @@
                             android:layout_gravity="start"
                             android:hint="Name of Beneficiriey"/>
                         <EditText
+                            android:id="@+id/villageName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppEdittext"
@@ -953,6 +980,7 @@
                             android:layout_gravity="start"
                             android:hint="Village"/>
                         <EditText
+                            android:id="@+id/nameOfProject"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppEdittext"
@@ -960,6 +988,7 @@
                             android:layout_gravity="start"
                             android:hint="Name of the project"/>
                         <EditText
+                            android:id="@+id/costOfProject"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppEdittext"
@@ -967,18 +996,25 @@
                             android:layout_gravity="start"
                             android:hint="Cost of the project"/>
                         <EditText
+                            android:id="@+id/dateOfRealease"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppEdittext"
                             android:gravity="start"
                             android:layout_gravity="start"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:hint="Date of release of Grant"/>
                         <EditText
+                            android:id="@+id/totalGrant"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/AppEdittext"
                             android:gravity="start"
                             android:layout_gravity="start"
+                            android:inputType="number"
                             android:hint="Total Grant Amount"/>
                     </LinearLayout>
 

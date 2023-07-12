@@ -470,7 +470,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="@string/area_ha"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:digits="1234567890."/>
 
                         <EditText
                             android:id="@+id/varietyTxt"

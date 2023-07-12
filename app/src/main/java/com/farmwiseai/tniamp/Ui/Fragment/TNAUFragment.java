@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -154,7 +155,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
 
         gender = null;
         category1 = null;
-
+        tnauBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         tnauBinding.popBackImage.setOnClickListener(this);
         tnauBinding.submissionBtn.setOnClickListener(this);
         tnauBinding.image1.setOnClickListener(this);
@@ -228,7 +229,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
-         date = tnauBinding.dateTxt.getText().toString();
+        date = tnauBinding.dateTxt.getText().toString();
         mobileNumber = tnauBinding.mobileNumbertxt.getText().toString().trim();
         //date = "11-09-2023";
 
@@ -260,7 +261,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 tnauBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            } else if (  gender==null&& genderSpinner.getVisibility() == View.VISIBLE) {
+            } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
 
                 Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
                 return false;
@@ -269,21 +270,17 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
                 return false;
             } else if (farmerName.isEmpty() || farmerName.length() == 0) {
-               tnauBinding.farmerTxt.setError("Please Enter Farmer Name");
+                tnauBinding.farmerTxt.setError("Please Enter Farmer Name");
                 return false;
-            }else if(date.isEmpty()&& datePicker.getVisibility()==View.VISIBLE)
-            {
+            } else if (date.isEmpty() && datePicker.getVisibility() == View.VISIBLE) {
                 tnauBinding.dateTxt.setError("Please select the date");
-                return  false;
-            }else if(tnauBinding.yieldTxt.getText().toString().isEmpty()&& tnauBinding.yieldTxt.getVisibility()==View.VISIBLE)
-            {
+                return false;
+            } else if (tnauBinding.yieldTxt.getText().toString().isEmpty() && tnauBinding.yieldTxt.getVisibility() == View.VISIBLE) {
                 tnauBinding.yieldTxt.setError("Please enter the yield");
-                return  false;
-            }
-            else if(tnauBinding.varietyTxt.getText().toString().isEmpty()&& tnauBinding.varietyTxt.getVisibility()==View.VISIBLE)
-            {
+                return false;
+            } else if (tnauBinding.varietyTxt.getText().toString().isEmpty() && tnauBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 tnauBinding.varietyTxt.setError("Please enter the variety");
-                return  false;
+                return false;
             }
 
         }

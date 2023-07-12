@@ -21,6 +21,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -148,6 +149,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         darf = null;
         seedra = null;
         qop = null;
+        agricultureBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         agricultureBinding.popBackImage.setOnClickListener(this);
         agricultureBinding.submissionBtn.setOnClickListener(this);
@@ -209,7 +211,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         dafr = agricultureBinding.dorfTxt.getText().toString();
         seedra = agricultureBinding.areaRaisedTxt.getText().toString();
         qop = agricultureBinding.quantityTxt.getText().toString();
-        intName = agricultureBinding.inerventionNameTxt.getText().toString();
+        intName = agricultureBinding.inerventionNameTxt.getText().toString().trim();
         mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
         if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))

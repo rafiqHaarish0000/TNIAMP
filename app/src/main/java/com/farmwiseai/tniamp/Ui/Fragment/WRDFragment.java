@@ -22,6 +22,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -137,6 +138,9 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         wrdfragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_w_r_d_f_ragment, container, false);
 
+        wrdfragmentBinding.lengthTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        wrdfragmentBinding.lsPoint.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        wrdfragmentBinding.sliceNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         wrdfragmentBinding.popBackImage.setOnClickListener(this);
         wrdfragmentBinding.submissionBtn.setOnClickListener(this);
@@ -189,14 +193,14 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         }
 
         if (wrdfragmentBinding.noOfMembers.getVisibility() == View.VISIBLE) {
-            if(wrdfragmentBinding.noOfMembers.getText().toString().isEmpty()){
+            if (wrdfragmentBinding.noOfMembers.getText().toString().isEmpty()) {
                 wrdfragmentBinding.noOfMembers.setError("Do not empty field");
                 return false;
             }
         }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null|| subComponentValue == null) {
+                villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -216,7 +220,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 return false;
             }
         } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
-            if (wrdfragmentBinding.inerventionNameTxt.getText().toString().isEmpty()) {
+            if (wrdfragmentBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 wrdfragmentBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }

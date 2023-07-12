@@ -216,10 +216,10 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Parapet wall") ||
                             names.equalsIgnoreCase("Steel grill") ||
                             names.equalsIgnoreCase("Horizontal") ||
-                            names.equalsIgnoreCase("Jungle Clearance") ||
+                           /* names.equalsIgnoreCase("Jungle Clearance") ||
                             names.equalsIgnoreCase("Strengthening of Bund") ||
                             names.equalsIgnoreCase("Model Sectioning of Bund") ||
-                            names.equalsIgnoreCase("Removing the Slit") ||
+                            names.equalsIgnoreCase("Removing the Slit") ||*/
                             names.equalsIgnoreCase("Formwork for Cut-off wall") ||
                             names.equalsIgnoreCase("Formwork") ||
                             names.equalsIgnoreCase("Formwork for BodyWall") ||
@@ -234,7 +234,8 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Under tunnel") ||
                             names.equalsIgnoreCase("Steel grill cover") ||
                             names.equalsIgnoreCase("Before") ||
-                            names.equalsIgnoreCase("After")
+                            names.equalsIgnoreCase("After") ||
+                            names.equalsIgnoreCase("Jungle Clearence")
                          /*  || names.equalsIgnoreCase("Strengthening of Bund") ||
                             names.equalsIgnoreCase("Model Sectioning of Bund") ||
                             names.equalsIgnoreCase("Jungle Clearance") ||

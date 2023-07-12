@@ -216,18 +216,18 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null ||
-                gender == null || category1 == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+                villageName == null || componentValue == null
+        ) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } /*else if (valueofPic == 0 || valueofPic == 1) {
-            mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        }*/ else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
-            if (farmerName.length() == 0) {
+            if (farmerName.length() == 0 || farmerName.isEmpty()) {
                 agricultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
             } else if (survey_no.length() == 0) {
@@ -246,15 +246,29 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            }
-            return true;
+            } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
 
-        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
-            if (intName.length() == 0) {
-                agricultureBinding.inerventionNameTxt.setError("field empty");
+                Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
+                return false;
+
+            } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
+                Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
+                return false;
+            } else if (date.isEmpty() && datePicker.getVisibility() == View.VISIBLE) {
+                agricultureBinding.dateTxt.setError("Please select the date");
+                return false;
+            } else if (agricultureBinding.yieldTxt.getText().toString().isEmpty() && agricultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+                agricultureBinding.yieldTxt.setError("Please enter the yield");
+                return false;
+            } else if (agricultureBinding.varietyTxt.getText().toString().isEmpty() && agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+                agricultureBinding.varietyTxt.setError("Please enter the variety");
                 return false;
             }
 
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE && (intName.length() == 0)) {
+
+            agricultureBinding.inerventionNameTxt.setError("field empty");
+            return false;
         } else if (seed_lyt.getVisibility() == View.VISIBLE) {
             if (nag.length() == 0) {
                 agricultureBinding.nameOfGroup.setError("field empty");
@@ -280,7 +294,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     return false;
                 }
             }
-            return true;
+
         }
         return true;
     }
@@ -778,7 +792,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         if (componentValue.equalsIgnoreCase("Farmers Field School") || componentValue.equalsIgnoreCase(" IPM village-Vermicompost")) {
             agricultureBinding.varietyTxt.setVisibility(View.GONE);
             agricultureBinding.yieldTxt.setVisibility(View.GONE);
-        } else if (intervention4.equalsIgnoreCase("Harvest")||subComponentValue.equalsIgnoreCase("Harvest")) {
+        } else if (intervention4.equalsIgnoreCase("Harvest") || subComponentValue.equalsIgnoreCase("Harvest")) {
             agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);
         } else {

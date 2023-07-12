@@ -62,6 +62,7 @@ public class AgriCallApi {
                 try {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                     lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
+                    backPressListener.onSelectedInputs(lookUpDataClass);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
 
@@ -102,9 +103,7 @@ public class AgriCallApi {
                     } else if (names.equalsIgnoreCase("Cono Weeding")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
                         stageSpinner.setVisibility(View.GONE);
-                        datePicker.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
-                        trainingLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
 
@@ -121,7 +120,7 @@ public class AgriCallApi {
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
                     }
-                    backPressListener.onSelectedInputs(lookUpDataClass);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -155,7 +154,6 @@ public class AgriCallApi {
 
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
-                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
@@ -171,18 +169,33 @@ public class AgriCallApi {
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("First") || names.contains("Field")) {
                         thirdSpinner.setVisibility(View.GONE);
-                    } else if (names.contains("Harvest")||names.contains("2nd Cono Weeding")||
+                    } else if (names.contains("Harvest") || names.contains("2nd Cono Weeding") ||
                             names.contains("1st Cono weeding")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
-                    } else if (names.contains("SWIKC") || names.contains("Water walk") || names.contains("PRA Excercise") || names.contains("SWIC Centre") || names.contains("CCMG") || names.contains("Farmers Discussion") || names.contains("Village Vision") || names.contains("Entry Point Activity") || names.contains("Awareness Meeting") || names.contains("Water budgetting wall painting") || names.contains("Village vision wall painting")) {
+                    } else if (names.equalsIgnoreCase("SWIKC")
+                            || names.equalsIgnoreCase("Water walk") ||
+                            names.equalsIgnoreCase("PRA Excercise") ||
+                            names.equalsIgnoreCase("Initial convergence") ||
+                            names.equalsIgnoreCase("CCMG") ||
+                            names.equalsIgnoreCase("Farmers Discussion (DSS)") ||
+                            names.equalsIgnoreCase("Village Vision") ||
+                            names.equalsIgnoreCase("Entry Level Activity") ||
+                            names.equalsIgnoreCase("Awareness Meeting")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.equalsIgnoreCase("CCWM")) {
+                        editText.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.VISIBLE);
+                        stagesDropDown(positionValue2, thirdSpinner, editText);
+
                     } else {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
+                        stagesDropDown(positionValue2, thirdSpinner, editText);
+
                     }
-                    stagesDropDown(positionValue2, thirdSpinner, editText);
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {

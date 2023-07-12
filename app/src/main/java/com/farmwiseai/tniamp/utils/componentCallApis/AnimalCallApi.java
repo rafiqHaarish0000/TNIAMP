@@ -185,7 +185,7 @@ public class AnimalCallApi {
                             names.equalsIgnoreCase("Treatment") || names.equalsIgnoreCase("Prevention")) {
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Pregnancy diagnosis")) {
-                        pregnancyLyt.setVisibility(View.VISIBLE);
+                        pregnancyLyt.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("SWIKC") || names.contains("Water walk") || names.contains("PRA Excercise") || names.contains("SWIC Centre") || names.contains("CCMG") || names.contains("Farmers Discussion") || names.contains("Village Vision") || names.contains("Entry Point Activity") || names.contains("Awareness Meeting")) {
                         editText.setVisibility(View.GONE);

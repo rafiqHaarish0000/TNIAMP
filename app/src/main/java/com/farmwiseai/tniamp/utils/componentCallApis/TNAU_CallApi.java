@@ -174,12 +174,12 @@ public class TNAU_CallApi {
                         editText.setVisibility(View.GONE);
                         backPressListener.onSelectedInputs(lookUpDataClass);
                         thirdSpinner.setVisibility(View.GONE);
-                    } else if (names.contains("SWIKC") || names.contains("Water walk") || names.contains("PRA Excercise") || names.contains("SWIC Centre") || names.contains("CCMG") || names.contains("Farmers Discussion") || names.contains("Village Vision") || names.contains("Entry Point Activity") || names.contains("Awareness Meeting") || names.contains("Water budgetting wall painting") || names.contains("Village vision wall painting")) {
-                        editText.setVisibility(View.GONE);
-                        thirdSpinner.setVisibility(View.GONE);
-                    } else {
+                    } else if (names.contains("CCWM")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
+                    }else {
+                        editText.setVisibility(View.VISIBLE);
+                        thirdSpinner.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());

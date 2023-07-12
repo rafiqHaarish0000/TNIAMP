@@ -166,15 +166,15 @@ public class TNAU_CallApi {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
                     }else {
-                        editText.setVisibility(View.VISIBLE);
-                        thirdSpinner.setVisibility(View.GONE);
+                        editText.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.VISIBLE);
                     }
+                    stagesDropDown(positionValue2, thirdSpinner, editText);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
-
                     Log.i(TAG, "posvalue2: " + positionValue2);
-                    stagesDropDown(positionValue2, thirdSpinner, editText);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

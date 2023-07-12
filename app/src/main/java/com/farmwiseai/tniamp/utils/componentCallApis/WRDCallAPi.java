@@ -134,8 +134,7 @@ public class WRDCallAPi {
                         wauTxt.setVisibility(View.GONE);
                         linIntervention.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Shutters") || (names.equalsIgnoreCase("others")) |
-                            (names.equalsIgnoreCase("Revetment")) ||
-                            (names.equalsIgnoreCase("Desilting / Regarding"))) {
+                            (names.equalsIgnoreCase("Revetment"))) {
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.GONE);
                         linIntervention.setVisibility(View.GONE);

@@ -188,6 +188,8 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         lsPointTxt = wrdfragmentBinding.lsPoint.getText().toString();
         sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString();
 
+
+
         if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
@@ -207,13 +209,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (lengthNumberTxt.length() == 0) {
-            wrdfragmentBinding.lengthTxt.setError("Please enter farmer name");
+            wrdfragmentBinding.lengthTxt.setError("Please enter length number");
             return false;
         } else if (lsPointTxt.length() == 0) {
-            wrdfragmentBinding.lsPoint.setError("Please enter survey no");
+            wrdfragmentBinding.lsPoint.setError("Please enter LS point number");
             return false;
         } else if (sliceNumberTxt.length() == 0) {
-            wrdfragmentBinding.sliceNumber.setError("Please enter area");
+            wrdfragmentBinding.sliceNumber.setError("Please enter sluice number");
             return false;
         } else if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.nameOfWAU.getText().toString().isEmpty()) {

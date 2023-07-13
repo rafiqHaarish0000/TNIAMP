@@ -128,7 +128,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     private int valueofPic = 0;
     private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
-    private LinearLayout layout1, layout2, layout3, layout4, otherLyt,linFishTankInfo;
+    private LinearLayout layout1, layout2, layout3, layout4, layout5, otherLyt, linFishTankInfo;
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal,
             genderVal, catVal, lesseVal, benVal;
 
@@ -172,10 +172,11 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         layout2 = fisheriesBinding.layout2;
         layout3 = fisheriesBinding.layout3;
         layout4 = fisheriesBinding.layout4;
+        layout5 = fisheriesBinding.layout5;
 
         backPressListener = this;
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layout3, layout4, otherLyt, beneficaryFinal,linFishTankInfo);
+        fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layout3, layout4, layout5, otherLyt, beneficaryFinal, linFishTankInfo);
 
         offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
@@ -299,9 +300,28 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 return false;
             }
             return true;
-        } else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
+        }
+        //beneficary value
+        else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
             if (benNameValfinal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+                return false;
+            }
+            return true;
+        }
+        //layout 5
+        else if (fisheriesBinding.layout5.getVisibility() == View.VISIBLE) {
+            if (fisheriesBinding.volumeOfWater.getText().toString().isEmpty()) {
+                fisheriesBinding.volumeOfWater.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.removeSeeds.getText().toString().isEmpty()) {
+                fisheriesBinding.volumeOfWater.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.addGift.getText().toString().isEmpty()) {
+                fisheriesBinding.addGift.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.farmPond1.getText().toString().isEmpty()) {
+                fisheriesBinding.farmPond1.setError("Do not empty field");
                 return false;
             }
             return true;

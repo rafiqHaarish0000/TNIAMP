@@ -543,6 +543,50 @@
                             android:hint="No.of Seeds"
                             android:inputType="number" />
                     </LinearLayout>
+                    <!--Layout 5-->
+                    <LinearLayout
+                        android:id="@+id/layout5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <EditText
+                            android:id="@+id/volumeOfWater"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Add volume of water in (m3)"
+                            android:inputType="number" />
+                        <EditText
+                            android:id="@+id/removeSeeds"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Remove number of seeds"
+                            android:inputType="number" />
+                        <EditText
+                            android:id="@+id/addGift"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Add GIFT Tilapia"
+                            android:inputType="number" />
+                        <EditText
+                            android:id="@+id/farmPond1"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Farm pond constructed by"
+                            android:inputType="text" />
+                    </LinearLayout>
+
                     <!--Last spinner-->
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/beneFinal"

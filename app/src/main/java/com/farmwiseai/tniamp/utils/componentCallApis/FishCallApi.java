@@ -44,7 +44,7 @@ public class FishCallApi {
     //first spinner phrase;
 
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner , LinearLayout layoutComp1,
-                                   LinearLayout layoutComp2, LinearLayout layout3, LinearLayout layout4,
+                                   LinearLayout layoutComp2, LinearLayout layout3, LinearLayout layout4,LinearLayout layout5,
                                    LinearLayout otherLyt, Spinner beneficarySpinner, LinearLayout linFishTankInfo) {
 
         commonFunction = new CommonFunction(activity);
@@ -73,6 +73,7 @@ public class FishCallApi {
                         layoutComp1.setVisibility(View.GONE);
                         layout3.setVisibility(View.GONE);
                         layout4.setVisibility(View.GONE);
+                        layout5.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Others")) {
@@ -82,6 +83,7 @@ public class FishCallApi {
                         layoutComp1.setVisibility(View.GONE);
                         layout3.setVisibility(View.GONE);
                         layout4.setVisibility(View.GONE);
+                        layout5.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.VISIBLE);
@@ -92,6 +94,7 @@ public class FishCallApi {
                         layoutComp2.setVisibility(View.GONE);
                         layout3.setVisibility(View.GONE);
                         layout4.setVisibility(View.GONE);
+                        layout5.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.VISIBLE);
@@ -103,6 +106,7 @@ public class FishCallApi {
                         layoutComp1.setVisibility(View.GONE);
                         layout3.setVisibility(View.GONE);
                         layout4.setVisibility(View.GONE);
+                        layout5.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
@@ -115,6 +119,7 @@ public class FishCallApi {
                         layoutComp1.setVisibility(View.GONE);
                         layout3.setVisibility(View.VISIBLE);
                         layout4.setVisibility(View.GONE);
+                        layout5.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
@@ -128,6 +133,7 @@ public class FishCallApi {
                         layoutComp1.setVisibility(View.GONE);
                         layout3.setVisibility(View.GONE);
                         layout4.setVisibility(View.VISIBLE);
+                        layout5.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
@@ -142,10 +148,23 @@ public class FishCallApi {
                         layout3.setVisibility(View.GONE);
                         layout4.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
+                        layout5.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.VISIBLE);
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
+                    }else if(names.equalsIgnoreCase("Fish culture in Modular tanks")){
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner);
+                        layout5.setVisibility(View.VISIBLE);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
+                        layoutComp2.setVisibility(View.GONE);
+                        layoutComp1.setVisibility(View.GONE);
+                        layout3.setVisibility(View.GONE);
+                        layout4.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
+                        beneficarySpinner.setVisibility(View.GONE);
+                        linFishTankInfo.setVisibility(View.GONE);
                     }
                     else {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner);
@@ -155,6 +174,7 @@ public class FishCallApi {
                         layoutComp2.setVisibility(View.GONE);
                         layout3.setVisibility(View.GONE);
                         layout4.setVisibility(View.GONE);
+                        layout5.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.VISIBLE);

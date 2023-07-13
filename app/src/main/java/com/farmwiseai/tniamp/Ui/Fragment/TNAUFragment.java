@@ -137,6 +137,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     TNAU_Request request;
     DatePickerDialog picker;
     String regex = "^[6-9][0-9]{9}$";
+    EditText varity, yeild;
 
     @Override
     public void onAttach(Context context) {
@@ -180,11 +181,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         stagesSpinner = tnauBinding.stagesTxt;
         datePicker = tnauBinding.dateTxt;
         hideLyt = tnauBinding.visibilityLyt;
-        EditText variety = tnauBinding.varietyTxt;
-        EditText yeild = tnauBinding.yieldTxt;
+        varity = tnauBinding.varietyTxt;
+        yeild = tnauBinding.yieldTxt;
 
         TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt, variety, yeild);
+        TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt, varity, yeild);
       /*  LookUpDataClass lookUpDataClass = new LookUpDataClass();
         Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
       */
@@ -228,7 +229,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         area = tnauBinding.areaTxt.getText().toString();
         near_tank = tnauBinding.tankTxt.getText().toString();
         remarks = tnauBinding.remarksTxt.getText().toString();
-         date = tnauBinding.dateTxt.getText().toString();
+        date = tnauBinding.dateTxt.getText().toString();
         mobileNumber = tnauBinding.mobileNumbertxt.getText().toString().trim();
         //date = "11-09-2023";
 
@@ -260,7 +261,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 tnauBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            } else if (  gender==null&& genderSpinner.getVisibility() == View.VISIBLE) {
+            } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
 
                 Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
                 return false;
@@ -269,21 +270,17 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
                 return false;
             } else if (farmerName.isEmpty() || farmerName.length() == 0) {
-               tnauBinding.farmerTxt.setError("Please Enter Farmer Name");
+                tnauBinding.farmerTxt.setError("Please Enter Farmer Name");
                 return false;
-            }else if(date.isEmpty()&& datePicker.getVisibility()==View.VISIBLE)
-            {
+            } else if (date.isEmpty() && datePicker.getVisibility() == View.VISIBLE) {
                 tnauBinding.dateTxt.setError("Please select the date");
-                return  false;
-            }else if(tnauBinding.yieldTxt.getText().toString().isEmpty()&& tnauBinding.yieldTxt.getVisibility()==View.VISIBLE)
-            {
+                return false;
+            } else if (tnauBinding.yieldTxt.getText().toString().isEmpty() && tnauBinding.yieldTxt.getVisibility() == View.VISIBLE) {
                 tnauBinding.yieldTxt.setError("Please enter the yield");
-                return  false;
-            }
-            else if(tnauBinding.varietyTxt.getText().toString().isEmpty()&& tnauBinding.varietyTxt.getVisibility()==View.VISIBLE)
-            {
+                return false;
+            } else if (tnauBinding.varietyTxt.getText().toString().isEmpty() && tnauBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 tnauBinding.varietyTxt.setError("Please enter the variety");
-                return  false;
+                return false;
             }
 
         }
@@ -691,22 +688,16 @@ mCommonFunction.hideProgress();
 
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-        if (componentValue.equalsIgnoreCase("Pesticide free village ")) {
-            tnauBinding.varietyTxt.setVisibility(View.GONE);
-            tnauBinding.yieldTxt.setVisibility(View.GONE);
 
-        } else if (intervention4.equalsIgnoreCase("Harvest") ||
-                intervention4.equalsIgnoreCase("Harvest of Pulse") ||
-                intervention4.equalsIgnoreCase("Harvest of Rice") ||
-                intervention4.equalsIgnoreCase("1st Harvest") ||
-                intervention4.equalsIgnoreCase("Last Harvest") || subComponentValue.equalsIgnoreCase("Harvest")) {
-            tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
-            tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
-        } else {
-            tnauBinding.varietyTxt.setVisibility(View.GONE);
-            tnauBinding.yieldTxt.setVisibility(View.GONE);
-        }
-
+//        if (intervention4.equalsIgnoreCase("Harvest") ||
+//                intervention4.equalsIgnoreCase("Harvest of Pulse") ||
+//                intervention4.equalsIgnoreCase("Harvest of Rice") ||
+//                intervention4.equalsIgnoreCase("1st Harvest") ||
+//                intervention4.equalsIgnoreCase("Last Harvest") ||
+//                subComponentValue.equalsIgnoreCase("Harvest")) {
+//            tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
+//            tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
+//        }
 
         Log.i(TAG, "getAllComponentValue: " + intervention1 + intervention2 + intervention3);
 

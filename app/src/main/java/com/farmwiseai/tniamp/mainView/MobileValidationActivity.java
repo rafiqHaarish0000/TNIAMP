@@ -69,7 +69,8 @@ public class MobileValidationActivity extends BaseActivity {
                                         startActivity(i);
                                     }
                                 } else {
-                                    mLoadCustomToast(getParent(), "MobileNumber Not registered");
+//                                    mLoadCustomToast(getParent(), "MobileNumber Not registered");
+                                    commonFunction.navigation(MobileValidationActivity.this,RegistrationActivity.class);
 
                                 }
                             }

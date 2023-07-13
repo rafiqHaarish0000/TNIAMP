@@ -204,8 +204,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 myString = String.valueOf(aedBinding.phase1.getSelectedItemPosition());
                 subAdapter.getFilter().filter(myString);
                 subBasinSpinner.setAdapter(subAdapter);
-
-
             }
 
             @Override

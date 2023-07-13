@@ -65,27 +65,32 @@ public class TNAU_CallApi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
+                    Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
                     positionValue = String.valueOf(componentList.get(i).getID());
                     subComponentSpinner.setVisibility(View.VISIBLE);
                     String names = componentList.get(i).getName();
                     //subComponentSpinner.setVisibility(View.VISIBLE);
                     if (names.equals("Model Village")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker, variety, yield);
                         hideLyt.setVisibility(View.GONE);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
                         yield.setVisibility(View.GONE);
-                    } else if (names.contains("GHG emission")) {
+                    } else if (names.equalsIgnoreCase("GHG emission") ||
+                            names.equalsIgnoreCase("Pesticide free Village") ||
+                            names.equalsIgnoreCase("Area Expansion") ||
+                            names.equalsIgnoreCase("Model Village") ||
+                            names.equalsIgnoreCase("High Density Planting") ||
+                            names.equalsIgnoreCase("TNAU-special intervention")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
                         yield.setVisibility(View.GONE);
                     } else if (names.contains("Red gram promotion ")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker, variety, yield);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
@@ -101,7 +106,7 @@ public class TNAU_CallApi {
                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker, variety, yield);
 
                     }
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
@@ -125,7 +130,8 @@ public class TNAU_CallApi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText,
+                                      EditText varity, EditText yield) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "lookup.json");
@@ -137,7 +143,7 @@ public class TNAU_CallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                 String names = sub_componentList.get(i).getName();
-              //  thirdSpinner.setVisibility(View.VISIBLE);
+                //  thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
@@ -165,11 +171,11 @@ public class TNAU_CallApi {
                     } else if (names.contains("CCWM")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
                     }
-                    stagesDropDown(positionValue2, thirdSpinner, editText);
+                    stagesDropDown(positionValue2, thirdSpinner, editText, varity, yield);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
@@ -190,7 +196,7 @@ public class TNAU_CallApi {
 
     }
 
-    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
+    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText, EditText varitey, EditText yield) {
         commonFunction = new CommonFunction(activity);
         stagesList = FetchDeptLookup.readDataFromFile(context, "lookup.json");
         adapters = new ComponentAdapter(context, stagesList);
@@ -206,8 +212,16 @@ public class TNAU_CallApi {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.contains("Planting")) {
                         editText.setVisibility(View.VISIBLE);
+                    } else if (names.equalsIgnoreCase("Harvest") ||
+                            names.equalsIgnoreCase("Harvest of Pulse") ||
+                            names.equalsIgnoreCase("Harvest of Rice")) {
+                        editText.setVisibility(View.GONE);
+                        varitey.setVisibility(View.VISIBLE);
+                        yield.setVisibility(View.VISIBLE);
                     } else {
                         editText.setVisibility(View.GONE);
+                        varitey.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
                     lookUpDataClass.setIntervention4(stagesList.get(i).getName());

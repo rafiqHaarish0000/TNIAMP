@@ -9,6 +9,7 @@ import android.util.Log;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
+import com.farmwiseai.tniamp.Retrofit.DataClass.DepartmentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
@@ -271,5 +272,35 @@ public class FetchDeptLookup {
         } catch (Exception e) {
 Log.e("Exception",e.getMessage());
         }
+    }
+
+    public static List<DepartmentData> readDepartmentData(Context context, String FILE_NAME) {
+        List<DepartmentData> departmentDataList = null;
+
+        try {
+            departmentDataList = new ArrayList<>();
+            Gson gson = new Gson();
+          /*  File file = new File(context.getFilesDir(), FILE_NAME);
+            FileReader fileReader = new FileReader(file);*/
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open(FILE_NAME)));
+            JsonArray jsonArray = new JsonParser().parse(bufferedReader).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement str = jsonArray.get(i);
+                DepartmentData obj = gson.fromJson(str, DepartmentData.class);
+                departmentDataList.add(obj);
+                System.out.println(obj);
+                System.out.println(str);
+                System.out.println("-------");
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return departmentDataList;
     }
 }

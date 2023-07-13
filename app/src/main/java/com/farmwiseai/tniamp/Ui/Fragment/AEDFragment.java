@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -160,6 +161,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         offlineAedRequest = SharedPrefsUtils.getAEDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
         aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, hideLyt, otherLayt);
+
+        aedBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
@@ -367,48 +370,48 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
-        }
-
-
-        if (farmerName.length() == 0) {
-            aedBinding.farmerTxt.setError("Please enter farmer name");
-            return false;
-        } /*else if (date.length() == 0) {
-                aedBinding.dateTxt.setError("Please enter the date");
-                return false;
-            }*/ else if (survey_no.length() == 0) {
-            aedBinding.surveyTxt.setError("Please enter survey no");
-            return false;
-        } else if (area.length() == 0) {
-            aedBinding.areaTxt.setError("Please enter area");
-            return false;
-        } else if (Double.valueOf(area) > 2.0) {
-            aedBinding.areaTxt.setError("Area Should be less than 2(ha)");
-            return false;
-        }
-        if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
-            aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
-            return false;
-
-        } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
-            aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
-            return false;
-        } else if (otherLayt.getVisibility() == View.VISIBLE) {
-            if (intName.length() == 0) {
-                aedBinding.inerventionNameTxt.setError("field empty");
-                return false;
-            }
-        } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
-
-            Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
-            return false;
-
-        } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
-            Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
-            return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
+        }
+
+        if (aedBinding.visibilityLyt.getVisibility() == View.VISIBLE) {
+            if (farmerName.length() == 0) {
+                aedBinding.farmerTxt.setError("Please enter farmer name");
+                return false;
+            } /*else if (date.length() == 0) {
+                aedBinding.dateTxt.setError("Please enter the date");
+                return false;
+            }*/ else if (survey_no.length() == 0) {
+                aedBinding.surveyTxt.setError("Please enter survey no");
+                return false;
+            } else if (area.length() == 0) {
+                aedBinding.areaTxt.setError("Please enter area");
+                return false;
+
+            } else if (Double.parseDouble(area) > 2.0) {
+                aedBinding.areaTxt.setError("Area Should be less than 2(ha)");
+                return false;
+            } else if (mobileNumber.isEmpty() || (mobileNumber.length() < 10)) {
+                aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
+
+            } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
+                aedBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                return false;
+            } else if (otherLayt.getVisibility() == View.VISIBLE) {
+                if (intName.length() == 0) {
+                    aedBinding.inerventionNameTxt.setError("field empty");
+                    return false;
+                }
+            } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
+                Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
+                return false;
+            } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
+                Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            return true;
         } else if (aedBinding.othersLayout.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
             if (aedBinding.inerventionNameTxt.getText().toString().isEmpty()) {
@@ -416,6 +419,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 return false;
             }
         }
+
         return true;
     }
 

@@ -30,6 +30,7 @@ public class AgriCallApi {
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
     public LookUpDataClass lookUpDataClass;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public AgriCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
@@ -63,7 +64,9 @@ public class AgriCallApi {
 
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
-
+                    compName = getAllComponentData.get(i).getName();
+                    subCompName = null;
+                    stageName = null;
                     if (names.equalsIgnoreCase("Others")) {
                         interventioNameLyt.setVisibility(View.VISIBLE);
                         subComponentSpinner.setVisibility(View.GONE);
@@ -124,8 +127,10 @@ public class AgriCallApi {
 
                     }
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
-                    lookUpDataClass.setComponentValue(names);
-                    backPressListener.onSelectedInputs(lookUpDataClass);
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
+                   backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -155,7 +160,8 @@ public class AgriCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String names = sub_componentList.get(i).getName();
-
+                subCompName = sub_componentList.get(i).getName();
+                stageName = null;
                 thirdSpinner.setVisibility(View.VISIBLE);
 
                 try {
@@ -201,8 +207,11 @@ public class AgriCallApi {
                         stagesDropDown(positionValue2, thirdSpinner, editText);
 
                     }
-                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
+                 //   lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -231,6 +240,8 @@ public class AgriCallApi {
                 try {
                     Log.i(TAG, "names: " + stagesList.get(i).getName());
                     String names = stagesList.get(i).getName();
+                    stageName = stagesList.get(i).getName();
+
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.contains("Planting")) {
@@ -240,6 +251,9 @@ public class AgriCallApi {
                     }
                     lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
                     lookUpDataClass.setIntervention4(stagesList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
 

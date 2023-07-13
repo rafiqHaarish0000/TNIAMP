@@ -75,37 +75,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TNAUFragment extends Fragment implements View.OnClickListener, BackPressListener {
-    private FragmentTNAUBinding tnauBinding;
-    private Context context;
-    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, mobileNumber;
     public static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    private List<ComponentData> componentDropDown;
-    private List<Sub_Basin_Data> sub_basin_DropDown;
-    private List<DistrictData> districtDropDown;
-    private List<BlockData> blockDropDown;
-    private List<VillageData> villageDataList;
-    private List<String> interventionList;
-    private CharSequence myString = "0";
-    private CharSequence posValue = "0";
-    private ComponentAdapter adapter;
-    private SubBasinAdapter subAdapter;
-    private DistrictAdapter districtAdapter;
-    private BlockAdapter blockAdapter;
-    private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner,
-            componentSpinner, sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
-    private EditText datePicker;
-    private TNAU_CallApi TNAUCallApi;
     final Calendar myCalendar = Calendar.getInstance();
-    private boolean takePicture;
-    private int valueofPic = 0;
-    private int valueofPicCount = 0;
-    private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList;
-    private GPSTracker gpsTracker;
-    private LinearLayout hideLyt;
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
@@ -132,13 +104,43 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String villageValue = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String stagevalue = null;
+    public String stagelastvalue = null;
     public BackPressListener backPressListener;
-    private String firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
     TNAU_Request request;
     DatePickerDialog picker;
     String regex = "^[6-9][0-9]{9}$";
     EditText varity, yeild;
+    private FragmentTNAUBinding tnauBinding;
+    private Context context;
+    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, mobileNumber;
+    private List<ComponentData> componentDropDown;
+    private List<Sub_Basin_Data> sub_basin_DropDown;
+    private List<DistrictData> districtDropDown;
+    private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
+    private List<String> interventionList;
+    private CharSequence myString = "0";
+    private CharSequence posValue = "0";
+    private ComponentAdapter adapter;
+    private SubBasinAdapter subAdapter;
+    private DistrictAdapter districtAdapter;
+    private BlockAdapter blockAdapter;
+    private VillageAdaapter villageAdaapter;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner,
+            componentSpinner, sub_componentSpinner, stagesSpinner,
+            genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
+    private EditText datePicker;
+    private TNAU_CallApi TNAUCallApi;
+    private boolean takePicture;
+    private int valueofPic = 0;
+    private int valueofPicCount = 0;
+    private CommonFunction mCommonFunction;
+    private List<String> phraseList, genderList, categoryList;
+    private GPSTracker gpsTracker;
+    private LinearLayout hideLyt;
+    private String firstImageBase64, secondImageBase64, interventionTypeVal;
 
     @Override
     public void onAttach(Context context) {
@@ -233,13 +235,33 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         date = tnauBinding.dateTxt.getText().toString();
         mobileNumber = tnauBinding.mobileNumbertxt.getText().toString().trim();
         //date = "11-09-2023";
-        if (componentValue != null) {
+       /* if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
-                subComponentValue = "Dummy data";
+              //  subComponentValue = "Dummy data";
         }
+        if (subComponentValue != null) {
+            if (componentValue.equalsIgnoreCase("Others")) {
+                stagevalue = "Dummy data";
+                stagelastvalue = "Dummy data";
+            }
+        }*/
+        /*if (stagevalue == null) {
+            stagevalue = "Dummy data";
+            stagelastvalue = "Dummy data";
+        }
+        if (stagelastvalue == null) {
+
+            stagelastvalue = "Dummy data";
+        }*/
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageValue == null || componentValue == null || subComponentValue == null) {
+                villageValue == null || componentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stagesSpinner.getVisibility() == View.VISIBLE && stagevalue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
@@ -692,6 +714,9 @@ mCommonFunction.hideProgress();
 
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+        stagevalue = lookUpDataClass.getStageValue();
+        stagelastvalue = lookUpDataClass.getStagelastvalue();
+
 
 //        if (intervention4.equalsIgnoreCase("Harvest") ||
 //                intervention4.equalsIgnoreCase("Harvest of Pulse") ||

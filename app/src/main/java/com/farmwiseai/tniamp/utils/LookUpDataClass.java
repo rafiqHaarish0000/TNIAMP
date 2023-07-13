@@ -3,9 +3,28 @@ package com.farmwiseai.tniamp.utils;
 public class LookUpDataClass {
     private String intervention1;
     private String intervention2;
-    private String intervention3 ;
+    private String intervention3;
     private String componentValue = null;
     private String subComponentValue = null;
+    private String stageValue = null;
+    private String stagelastvalue = null;
+    private String intervention4 = null;
+
+    public String getStageValue() {
+        return stageValue;
+    }
+
+    public void setStageValue(String stageValue) {
+        this.stageValue = stageValue;
+    }
+
+    public String getStagelastvalue() {
+        return stagelastvalue;
+    }
+
+    public void setStagelastvalue(String stagelastvalue) {
+        this.stagelastvalue = stagelastvalue;
+    }
 
     public String getComponentValue() {
         return componentValue;
@@ -30,8 +49,6 @@ public class LookUpDataClass {
     public void setIntervention4(String intervention4) {
         this.intervention4 = intervention4;
     }
-
-    private String intervention4 = null;
 
     public String getIntervention1() {
         return intervention1;

@@ -10,10 +10,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.farmwiseai.tniamp.Retrofit.BaseApi;
-import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -23,11 +20,8 @@ import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class TNAU_CallApi {
+    public LookUpDataClass lookUpDataClass;
     private Activity activity;
     private Context context;
     private List<ComponentData> componentList, stagesList, sub_componentList;
@@ -36,7 +30,7 @@ public class TNAU_CallApi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public TNAU_CallApi(Activity activity, Context context, List<ComponentData> componentList,
                         ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
@@ -68,6 +62,9 @@ public class TNAU_CallApi {
                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
                     positionValue = String.valueOf(componentList.get(i).getID());
                     subComponentSpinner.setVisibility(View.VISIBLE);
+                    compName = componentList.get(i).getName();
+                    subCompName = null;
+                    stageName = null;
                     String names = componentList.get(i).getName();
                     //subComponentSpinner.setVisibility(View.VISIBLE);
                     if (names.equals("Model Village")) {
@@ -110,7 +107,10 @@ public class TNAU_CallApi {
 
                     }
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
-                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
+                    // lookUpDataClass.setStagelastvalue(subCompName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
 
 
@@ -143,6 +143,8 @@ public class TNAU_CallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                 String names = sub_componentList.get(i).getName();
+                subCompName = sub_componentList.get(i).getName();
+                stageName = null;
                 //  thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     if (names.contains("Sowing")) {
@@ -185,7 +187,11 @@ public class TNAU_CallApi {
                     }
                     stagesDropDown(positionValue2, thirdSpinner, editText, varity, yield);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
-                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
+                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
+                    //   lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
                     Log.i(TAG, "posvalue2: " + positionValue2);
 
@@ -216,6 +222,7 @@ public class TNAU_CallApi {
                 try {
                     Log.i(TAG, "names: " + stagesList.get(i).getName());
                     String names = stagesList.get(i).getName();
+                    stageName = stagesList.get(i).getName();
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.contains("Planting")) {
@@ -233,6 +240,9 @@ public class TNAU_CallApi {
                     }
                     lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
                     lookUpDataClass.setIntervention4(stagesList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
 

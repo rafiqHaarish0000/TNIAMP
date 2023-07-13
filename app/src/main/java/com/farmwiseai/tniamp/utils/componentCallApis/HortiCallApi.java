@@ -61,9 +61,9 @@ public class HortiCallApi {
                 subComponentSpinner.setVisibility(View.VISIBLE);
 
                 try {
-                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
+
                     positionValue = String.valueOf(componentList.get(i).getID());
-                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
+
 
                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
                     String names = componentList.get(i).getName();
@@ -81,6 +81,7 @@ public class HortiCallApi {
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
+                        trainingLyt.setVisibility(View.GONE);
                     }else if(names.equalsIgnoreCase("Crop Diversification")){
                         subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner,datePicker, trainingLyt);
                         cropSpinner.setVisibility(View.VISIBLE);
@@ -105,6 +106,8 @@ public class HortiCallApi {
                         interventioNameLyt.setVisibility(View.GONE);
                         subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner ,datePicker, trainingLyt);
                     }
+                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
@@ -182,6 +185,7 @@ public class HortiCallApi {
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
                     e.printStackTrace();

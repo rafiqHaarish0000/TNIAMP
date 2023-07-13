@@ -795,10 +795,20 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-        if (componentValue.equalsIgnoreCase("Farmers Field School") || componentValue.equalsIgnoreCase(" IPM village-Vermicompost")) {
+        if (componentValue.equalsIgnoreCase("Farmers Field School")
+                || componentValue.equalsIgnoreCase(" IPM village-Vermicompost")||
+                componentValue.equalsIgnoreCase("Cono Weeding")||
+                componentValue.equalsIgnoreCase("Seed Village Group")) {
             agricultureBinding.varietyTxt.setVisibility(View.GONE);
             agricultureBinding.yieldTxt.setVisibility(View.GONE);
-        } else if (intervention4.equalsIgnoreCase("Harvest") || subComponentValue.equalsIgnoreCase("Harvest")) {
+        }else if(componentValue.equalsIgnoreCase("Maize")){
+            agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
+            agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);
+        }else if(subComponentValue.equalsIgnoreCase("Green Manure")){
+            agricultureBinding.varietyTxt.setVisibility(View.GONE);
+            agricultureBinding.yieldTxt.setVisibility(View.GONE);
+        }
+        else if (intervention4.equalsIgnoreCase("Harvest") || subComponentValue.equalsIgnoreCase("Harvest")) {
             agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);
         } else {

@@ -220,11 +220,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null||componentValue==null|| subComponentValue == null)
-        {
+                villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
-        }
-        else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -249,31 +247,29 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
                 horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            }else if(genderNameVal == null || catVal == null){
+            } else if (genderNameVal == null || catVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
                 return false;
             }
             return true;
-        }
-        else if(trainingLyt.getVisibility() == View.VISIBLE){
-            if(horticultureBinding.noOfParticipants.getText().toString().isEmpty()){
+        } else if (trainingLyt.getVisibility() == View.VISIBLE) {
+            if (horticultureBinding.noOfParticipants.getText().toString().isEmpty()) {
                 horticultureBinding.noOfParticipants.setError("Do not empty field");
                 return false;
-            }else if(horticultureBinding.maleOthers.getText().toString().isEmpty()){
+            } else if (horticultureBinding.maleOthers.getText().toString().isEmpty()) {
                 horticultureBinding.maleOthers.setError("Do not empty field");
                 return false;
-            }else if(horticultureBinding.maleNo.getText().toString().isEmpty()){
+            } else if (horticultureBinding.maleNo.getText().toString().isEmpty()) {
                 horticultureBinding.maleOthers.setError("Do not empty field");
                 return false;
-            }else if(horticultureBinding.femaleOthers.getText().toString().isEmpty()){
+            } else if (horticultureBinding.femaleOthers.getText().toString().isEmpty()) {
                 horticultureBinding.femaleOthers.setError("Do not empty field");
                 return false;
-            }else if(horticultureBinding.femaleNo.getText().toString().isEmpty()){
+            } else if (horticultureBinding.femaleNo.getText().toString().isEmpty()) {
                 horticultureBinding.femaleNo.setError("Do not empty field");
                 return false;
             }
-        }
-        else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
+        } else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
             if (horticultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 horticultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
@@ -753,9 +749,19 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
         intervention4 = lookUpDataClass.getIntervention4();
+
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-        if (componentValue.equalsIgnoreCase("Micro Irrigation") || componentValue.equalsIgnoreCase(" Shade Net") || componentValue.equalsIgnoreCase("Mulching")) {
+
+        if (componentValue.equalsIgnoreCase("Micro Irrigation")
+                || componentValue.equalsIgnoreCase(" Shade Net")
+                || componentValue.equalsIgnoreCase("Mulching")) {
+            horticultureBinding.varietyTxt.setVisibility(View.GONE);
+            horticultureBinding.yieldTxt.setVisibility(View.GONE);
+        } else if (subComponentValue.equalsIgnoreCase("Harvest")) {
+            horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);
+            horticultureBinding.yieldTxt.setVisibility(View.VISIBLE);
+        } else if (subComponentValue.equalsIgnoreCase("Distribution of Inputs")) {
             horticultureBinding.varietyTxt.setVisibility(View.GONE);
             horticultureBinding.yieldTxt.setVisibility(View.GONE);
         } else if (intervention4.equalsIgnoreCase("Harvest") ||

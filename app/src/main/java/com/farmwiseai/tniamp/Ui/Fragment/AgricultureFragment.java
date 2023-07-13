@@ -12,14 +12,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Base64;
@@ -33,6 +25,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
@@ -50,20 +49,20 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAgricultureBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
+import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.CustomToast;
 import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.LatLongPojo;
 import com.farmwiseai.tniamp.utils.LookUpDataClass;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 import com.farmwiseai.tniamp.utils.ValidationUtils;
-import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
-import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
-import com.farmwiseai.tniamp.utils.CommonFunction;
-import com.farmwiseai.tniamp.utils.CustomToast;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
+import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
+import com.farmwiseai.tniamp.utils.componentCallApis.AgriCallApi;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -77,35 +76,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AgricultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
-    private FragmentAgricultureBinding agricultureBinding;
-    private Context context;
-    private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName, mobileNumber;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    private List<ComponentData> componentDropDown;
-    private List<Sub_Basin_Data> sub_basin_DropDown;
-    private List<DistrictData> districtDropDown;
-    private List<BlockData> blockDropDown;
-    private List<VillageData> villageDataList;
-    private CharSequence myString = "0";
-    private CharSequence posValue = "0";
-    private ComponentAdapter adapter, adapter2;
-    private SubBasinAdapter subAdapter;
-    private DistrictAdapter districtAdapter;
-    private BlockAdapter blockAdapter;
-    private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
-            sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
-    private EditText datePicker;
-    private AgriCallApi agriCallApi;
     final Calendar myCalendar = Calendar.getInstance();
-    private boolean takePicture;
-    private int valueofPic = 0;
-    private int valueofPicCount = 0;
-    private GPSTracker gpsTracker;
-    private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList, interventionList;
-    private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
     public String intervention1 = null; //component
     public String intervention2 = null; //sub_componenet
     public String intervention3 = null; // stages
@@ -123,12 +96,39 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
     public BackPressListener backPressListener;
     DatePickerDialog picker;
-    private String villageValue, category1, firstImageBase64, secondImageBase64, interventionTypeVal;
     Agri_Request request;
-
     ArrayList<Agri_Request> offlineAgriRequest = new ArrayList<>();
+    private FragmentAgricultureBinding agricultureBinding;
+    private Context context;
+    private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName, mobileNumber;
+    private List<ComponentData> componentDropDown;
+    private List<Sub_Basin_Data> sub_basin_DropDown;
+    private List<DistrictData> districtDropDown;
+    private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
+    private CharSequence myString = "0";
+    private CharSequence posValue = "0";
+    private ComponentAdapter adapter, adapter2;
+    private SubBasinAdapter subAdapter;
+    private DistrictAdapter districtAdapter;
+    private BlockAdapter blockAdapter;
+    private VillageAdaapter villageAdaapter;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
+            sub_componentSpinner, stagesSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
+    private EditText datePicker;
+    private AgriCallApi agriCallApi;
+    private boolean takePicture;
+    private int valueofPic = 0;
+    private int valueofPicCount = 0;
+    private GPSTracker gpsTracker;
+    private CommonFunction mCommonFunction;
+    private List<String> phraseList, genderList, categoryList, interventionList;
+    private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
+    private String villageValue, category1, firstImageBase64, secondImageBase64, interventionTypeVal;
 
     @Override
     public void onAttach(Context context) {
@@ -224,6 +224,9 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stagesSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
@@ -792,9 +795,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
         intervention4 = lookUpDataClass.getIntervention4();
-
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+        stageValue = lookUpDataClass.getStageValue();
+        stageLastValue = lookUpDataClass.getStagelastvalue();
         if (componentValue.equalsIgnoreCase("Farmers Field School") || componentValue.equalsIgnoreCase(" IPM village-Vermicompost")) {
             agricultureBinding.varietyTxt.setVisibility(View.GONE);
             agricultureBinding.yieldTxt.setVisibility(View.GONE);

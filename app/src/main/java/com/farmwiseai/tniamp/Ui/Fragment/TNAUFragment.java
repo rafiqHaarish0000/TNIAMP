@@ -138,6 +138,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     TNAU_Request request;
     DatePickerDialog picker;
     String regex = "^[6-9][0-9]{9}$";
+    EditText varity, yeild;
 
     @Override
     public void onAttach(Context context) {
@@ -181,11 +182,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         stagesSpinner = tnauBinding.stagesTxt;
         datePicker = tnauBinding.dateTxt;
         hideLyt = tnauBinding.visibilityLyt;
-        EditText variety = tnauBinding.varietyTxt;
-        EditText yeild = tnauBinding.yieldTxt;
+        varity = tnauBinding.varietyTxt;
+        yeild = tnauBinding.yieldTxt;
 
         TNAUCallApi = new TNAU_CallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt, variety, yeild);
+        TNAUCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, hideLyt, varity, yeild);
       /*  LookUpDataClass lookUpDataClass = new LookUpDataClass();
         Log.i(TAG, "onSelectedInputs: "+lookUpDataClass.getIntervention1());
       */
@@ -691,22 +692,16 @@ mCommonFunction.hideProgress();
 
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-        if (componentValue.equalsIgnoreCase("Pesticide free village ")) {
-            tnauBinding.varietyTxt.setVisibility(View.GONE);
-            tnauBinding.yieldTxt.setVisibility(View.GONE);
 
-        } else if (intervention4.equalsIgnoreCase("Harvest") ||
-                intervention4.equalsIgnoreCase("Harvest of Pulse") ||
-                intervention4.equalsIgnoreCase("Harvest of Rice") ||
-                intervention4.equalsIgnoreCase("1st Harvest") ||
-                intervention4.equalsIgnoreCase("Last Harvest") || subComponentValue.equalsIgnoreCase("Harvest")) {
-            tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
-            tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
-        } else {
-            tnauBinding.varietyTxt.setVisibility(View.GONE);
-            tnauBinding.yieldTxt.setVisibility(View.GONE);
-        }
-
+//        if (intervention4.equalsIgnoreCase("Harvest") ||
+//                intervention4.equalsIgnoreCase("Harvest of Pulse") ||
+//                intervention4.equalsIgnoreCase("Harvest of Rice") ||
+//                intervention4.equalsIgnoreCase("1st Harvest") ||
+//                intervention4.equalsIgnoreCase("Last Harvest") ||
+//                subComponentValue.equalsIgnoreCase("Harvest")) {
+//            tnauBinding.varietyTxt.setVisibility(View.VISIBLE);
+//            tnauBinding.yieldTxt.setVisibility(View.VISIBLE);
+//        }
 
         Log.i(TAG, "getAllComponentValue: " + intervention1 + intervention2 + intervention3);
 

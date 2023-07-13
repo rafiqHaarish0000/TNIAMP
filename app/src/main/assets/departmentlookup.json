@@ -1,0 +1,56 @@
+[
+  {
+    "ID": 1,
+    "NAME": "TNAU",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 2,
+    "NAME": "Agriculture",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 3,
+    "NAME": "Horticulture",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 4,
+    "NAME": "AED",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 5,
+    "NAME": "Animal Husbandry",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 6,
+    "NAME": "WRD",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 7,
+    "NAME": "Marketing",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 8,
+    "NAME": "Fisheries",
+    "REVSION_NO": 1,
+    "revision_no": 1670665391
+  },
+  {
+    "ID": 9,
+    "NAME": "MDPU",
+    "REVSION_NO": 56666,
+    "revision_no": 1670665391
+  }
+]

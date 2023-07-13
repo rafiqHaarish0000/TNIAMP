@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:context=".view.ui.mainView.ui.fragment.survey_info.pager.validations.cce_survey.CCE_Survey_Activity">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_layout"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/head_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="Registration Form" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/departmentSp"
+                        style="@style/edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Department"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/sub_basin_txt"
+                        style="@style/edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/sub_basin"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/district_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/district"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/block_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="Block"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/village_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:dropDownWidth="2dp"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown"
+                        android:textSize="18sp"
+                        app:smsp_enableFloatingLabel="true"
+                        app:smsp_hint="@string/village"
+                        app:smsp_hintColor="@color/grey"
+                        app:smsp_multilineError="false" />
+
+                    <EditText
+                        android:id="@+id/name"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                        android:hint="Name"
+                        android:inputType="text" />
+                    <EditText
+                        android:id="@+id/mobilenumber"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="Mobile Number"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:singleLine="true" />
+                    <EditText
+                        android:id="@+id/email"
+                        style="@style/AppEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="E-mail ID"
+                        android:inputType="textEmailAddress" />
+                    <Button
+                        android:id="@+id/submission_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginEnd="18dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/submit"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</layout>

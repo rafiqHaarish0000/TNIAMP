@@ -90,7 +90,7 @@ public class ValidationUtils {
         }
     }
 
-    public boolean isValidEmail(String email) {
+    public static boolean isValidEmail(String email) {
        /* if (email == null) {
             return false;
         } else {

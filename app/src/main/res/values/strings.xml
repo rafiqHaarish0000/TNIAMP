@@ -121,7 +121,7 @@
     <string name="farmer_name">Farmer Name</string>
     <string name="date_of_sowing_planting">Date of Sowing/Planting</string>
     <string name="category">Category</string>
-    <string name="area_ha">Area(ha)</string>
+    <string name="area_ha">Area of Intervention(ha)</string>
     <string name="remarks">Remarks(Optional)</string>
     <string name="gender">Gender</string>
     <string name="near_by_tank_name">Near by Tank Name(Optional)</string>

@@ -45,7 +45,7 @@ public class WRDCallAPi {
     //first spinner phrase;
 
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner tankStageSpinner, Spinner stageSpinner, EditText wauTxt,
-                                   LinearLayout interventioNameLyt, EditText memTxt) {
+                                   LinearLayout interventioNameLyt, EditText memTxt, LinearLayout linTankInfo) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -70,6 +70,7 @@ public class WRDCallAPi {
                         interventioNameLyt.setVisibility(View.GONE);
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
+                        linTankInfo.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Others")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         tankStageSpinner.setVisibility(View.GONE);
@@ -77,6 +78,7 @@ public class WRDCallAPi {
                         interventioNameLyt.setVisibility(View.VISIBLE);
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
+                        linTankInfo.setVisibility(View.VISIBLE);
                     } else {
                         subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt, memTxt, interventioNameLyt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -84,6 +86,7 @@ public class WRDCallAPi {
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
+                        linTankInfo.setVisibility(View.VISIBLE);
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
 
@@ -138,6 +141,12 @@ public class WRDCallAPi {
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.GONE);
                         linIntervention.setVisibility(View.GONE);
+                    } else if (names.equalsIgnoreCase("Others")) {
+                        wauTxt.setVisibility(View.GONE);
+                        memTxt.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.GONE);
+                        fourthSpinner.setVisibility(View.GONE);
+                        linIntervention.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("CCWM")) {
                         stagesDropDown(positionValue2, fourthSpinner);
                         thirdSpinner.setVisibility(View.GONE);
@@ -149,13 +158,6 @@ public class WRDCallAPi {
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.GONE);
                         linIntervention.setVisibility(View.GONE);
-                    } else if (names.equalsIgnoreCase("Others")) {
-                        linIntervention.setVisibility(View.VISIBLE);
-                        wauTxt.setVisibility(View.GONE);
-                        memTxt.setVisibility(View.GONE);
-                        thirdSpinner.setVisibility(View.GONE);
-                        fourthSpinner.setVisibility(View.GONE);
-
                     } else {
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);

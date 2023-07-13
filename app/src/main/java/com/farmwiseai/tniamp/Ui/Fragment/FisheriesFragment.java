@@ -11,14 +11,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -31,9 +23,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.anurag.multiselectionspinner.MultiSelectionSpinnerDialog;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.anurag.multiselectionspinner.MultiSpinner;
-import com.farmwiseai.TestActivity;
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
@@ -76,16 +73,38 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FisheriesFragment extends Fragment implements View.OnClickListener, BackPressListener {
-    FragmentFisheriesBinding fisheriesBinding;
-    private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    private List<ComponentData> componentDropDown;
+    final Calendar myCalendar = Calendar.getInstance();
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
     public String intervention4; // stages
+    public BackPressListener backPressListener;
+    public String lat;
+    public String lon;
+    public EditText wauText, memberTxt;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
+    public String lessNameVal;
+    public String benNameVal;
+    public String benNameVal1;
+    public String benNameValfinal;
+    public String genderNameVal;
+    public String catNameVal;
+    public String speciesNameVal;
+    FragmentFisheriesBinding fisheriesBinding;
+    boolean[] selectedLanguage;
+    ArrayList<Integer> langList = new ArrayList<>();
+    String[] langArray = {"Catla", "Rahul", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
+    ArrayList<FishRequest> offlineMarkRequest = new ArrayList<>();
+    private Context context;
+    private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
+    private List<ComponentData> componentDropDown;
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
@@ -105,35 +124,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     private MultiSpinner multiSpinner1, multiSpinner2, multiSpinner3;
     private EditText datePicker;
     private FishCallApi fishCallApi;
-    final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
     private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
-    private LinearLayout layout1, layout2, layout3, layout4, otherLyt;
-    public BackPressListener backPressListener;
+    private LinearLayout layout1, layout2, layout3, layout4, otherLyt,linFishTankInfo;
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal,
             genderVal, catVal, lesseVal, benVal;
-    public String lat;
-    public String lon;
-    public EditText wauText, memberTxt;
-    public String subBasinValue = null;
-    public String districtValue = null;
-    public String blockValue = null;
-    public String villageName = null;
-    public String componentValue = null;
-    public String subComponentValue = null;
-    public String lessNameVal;
-    public String benNameVal;
-    public String benNameVal1;
-    public String benNameValfinal;
-    public String genderNameVal;
-    public String catNameVal;
-    public String speciesNameVal;
-    boolean[] selectedLanguage;
-    ArrayList<Integer> langList = new ArrayList<>();
-    String[] langArray = {"Catla", "Rahul", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
-    ArrayList<FishRequest> offlineMarkRequest = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -170,6 +167,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         beneficaryFinal = fisheriesBinding.beneFinal;
 
         otherLyt = fisheriesBinding.othersLayout;
+        linFishTankInfo = fisheriesBinding.linFishTankInfo;
         layout1 = fisheriesBinding.layout1;
         layout2 = fisheriesBinding.layout2;
         layout3 = fisheriesBinding.layout3;
@@ -177,7 +175,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         backPressListener = this;
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layout3, layout4, otherLyt, beneficaryFinal);
+        fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layout3, layout4, otherLyt, beneficaryFinal,linFishTankInfo);
 
         offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
@@ -198,15 +196,15 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         remarks = fisheriesBinding.remarksTxt.getText().toString();
 
-        Log.i(TAG, "modelVillage: "+componentValue);
+        Log.i(TAG, "modelVillage: " + componentValue);
 
-        if(componentValue != null){
-            if(componentValue.equalsIgnoreCase("Others"))
+        if (componentValue != null) {
+            if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
         }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null ||componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
@@ -218,15 +216,14 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         } else if (fisheriesBinding.nameofTankTXT.getText().toString().length() == 0) {
             fisheriesBinding.nameofTankTXT.setError("Do not empty field");
             return false;
-        }else if (fisheriesBinding.waterTxt.getText().toString().isEmpty()
+        } else if (fisheriesBinding.waterTxt.getText().toString().isEmpty()
                 || Double.valueOf(fisheriesBinding.waterTxt.getText().toString()) > 2.0) {
             fisheriesBinding.waterTxt.setError("Area Should be less than 2(ha)");
             return false;
         } else if (fisheriesBinding.seedStockTXt.getText().toString().length() == 0) {
             fisheriesBinding.seedStockTXt.setError("Do not empty field");
             return false;
-        }
-        else if(componentValue.equalsIgnoreCase("Model Village")){
+        } else if (componentValue.equalsIgnoreCase("Model Village")) {
             return true;
         }
 
@@ -257,14 +254,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             if (benNameVal1 == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
-            }else if(fisheriesBinding.speciesStockedTxt1.getText().toString().length() == 0){
+            } else if (fisheriesBinding.speciesStockedTxt1.getText().toString().length() == 0) {
                 fisheriesBinding.speciesStockedTxt1.setError("Do not empty field");
                 return false;
-            }
-            else if (fisheriesBinding.feedQuality1.getText().toString().isEmpty()) {
+            } else if (fisheriesBinding.feedQuality1.getText().toString().isEmpty()) {
                 fisheriesBinding.feedQuality1.setError("Do not empty field");
                 return false;
-            }else if (fisheriesBinding.num.getText().toString().isEmpty()) {
+            } else if (fisheriesBinding.num.getText().toString().isEmpty()) {
                 fisheriesBinding.num.setError("Do not empty field");
                 return false;
             }
@@ -276,33 +272,29 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (catNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
-            }
-            else if (fisheriesBinding.farmPond.getText().length() == 0) {
+            } else if (fisheriesBinding.farmPond.getText().length() == 0) {
                 fisheriesBinding.farmPond.setError("Do not empty field");
                 return false;
-            }else if (fisheriesBinding.beneName.getText().length() == 0) {
+            } else if (fisheriesBinding.beneName.getText().length() == 0) {
                 fisheriesBinding.beneName.setError("Do not empty field");
                 return false;
-            }else if (fisheriesBinding.surveyVal.getText().length() == 0) {
+            } else if (fisheriesBinding.surveyVal.getText().length() == 0) {
                 fisheriesBinding.surveyVal.setError("Do not empty field");
                 return false;
-            }else if (fisheriesBinding.mobileVal.getText().length() == 0 ||
+            } else if (fisheriesBinding.mobileVal.getText().length() == 0 ||
                     fisheriesBinding.mobileVal.length() < 10) {
                 fisheriesBinding.mobileVal.setError("Please enter the valid mobile number");
                 return false;
             } else if (!ValidationUtils.isValidMobileNumber(fisheriesBinding.mobileVal.getText().toString())) {
                 fisheriesBinding.mobileVal.setError("Please enter the valid mobile number");
                 return false;
-            }
-            else if (fisheriesBinding.feedQuality2.getText().length() == 0) {
+            } else if (fisheriesBinding.feedQuality2.getText().length() == 0) {
                 fisheriesBinding.feedQuality2.setError("Do not empty field");
                 return false;
-            }
-            else if (fisheriesBinding.numbOfSeeds.getText().length() == 0) {
+            } else if (fisheriesBinding.numbOfSeeds.getText().length() == 0) {
                 fisheriesBinding.numbOfSeeds.setError("Do not empty field");
                 return false;
-            }
-            else if (fisheriesBinding.speciesStockedTxt2.getText().length() == 0) {
+            } else if (fisheriesBinding.speciesStockedTxt2.getText().length() == 0) {
                 fisheriesBinding.speciesStockedTxt2.setError("Do not empty field");
                 return false;
             }
@@ -421,7 +413,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         //phase data
         phraseList = new ArrayList<>();
-      phraseList.add("Choose phase");
+        phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
@@ -721,12 +713,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
 
     private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            return false;
-        }
-        return true;
+        // Permission is not granted
+        return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
@@ -737,32 +725,30 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
 
-                    // main logic
-                } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            showMessageOKCancel("You need to allow access permissions",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermission();
-                                            }
+                // main logic
+            } else {
+                Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        showMessageOKCancel("You need to allow access permissions",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            requestPermission();
                                         }
-                                    });
-                        }
+                                    }
+                                });
                     }
                 }
-                break;
+            }
         }
     }
 
@@ -866,7 +852,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         request.setStatus("0");
 
 
-        if (mCommonFunction.isNetworkAvailable() == true) {
+        if (mCommonFunction.isNetworkAvailable()) {
             onlineDataUpload(request);
         } else {
             String offlineText = "";
@@ -905,7 +891,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             public void onResponse(Call<FishResponse> call, Response<FishResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getFisherylanddeptid());
-                    Log.i(TAG, "txt_value: " + txt_id.toString());
+                    Log.i(TAG, "txt_value: " + txt_id);
                     uploadSecondImage(txt_id);
 
                 } else {

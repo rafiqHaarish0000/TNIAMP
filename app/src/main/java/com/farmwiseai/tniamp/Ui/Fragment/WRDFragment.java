@@ -110,7 +110,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
-    private LinearLayout vis_lyt, iNames_lyt;
+    private LinearLayout vis_lyt, iNames_lyt,linTankInfo;
     public BackPressListener backPressListener;
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
     public String lat;
@@ -140,7 +140,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         wrdfragmentBinding.lengthTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         wrdfragmentBinding.lsPoint.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        wrdfragmentBinding.sliceNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+      //  wrdfragmentBinding.sliceNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         wrdfragmentBinding.popBackImage.setOnClickListener(this);
         wrdfragmentBinding.submissionBtn.setOnClickListener(this);
@@ -159,13 +159,14 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         tankStageSpinner = wrdfragmentBinding.taskStages;
         stageSpinner = wrdfragmentBinding.stagesTxt;
         iNames_lyt = wrdfragmentBinding.othersLayout;
+        linTankInfo=wrdfragmentBinding.linTankDetails;
         wauText = wrdfragmentBinding.nameOfWAU;
         memberTxt = wrdfragmentBinding.noOfMembers;
 
         backPressListener = this;
 
         wrdCallApi = new WRDCallAPi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner, stageSpinner, wauText, iNames_lyt, memberTxt);
+        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner, stageSpinner, wauText, iNames_lyt, memberTxt,linTankInfo);
 
         offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 

@@ -232,7 +232,10 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         date = tnauBinding.dateTxt.getText().toString();
         mobileNumber = tnauBinding.mobileNumbertxt.getText().toString().trim();
         //date = "11-09-2023";
-
+        if (componentValue != null) {
+            if (componentValue.equalsIgnoreCase("Others"))
+                subComponentValue = "Dummy data";
+        }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageValue == null || componentValue == null || subComponentValue == null) {

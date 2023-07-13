@@ -65,7 +65,7 @@ public class TNAU_CallApi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-                     Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
+                    Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
                     positionValue = String.valueOf(componentList.get(i).getID());
                     subComponentSpinner.setVisibility(View.VISIBLE);
                     String names = componentList.get(i).getName();
@@ -137,7 +137,7 @@ public class TNAU_CallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                 String names = sub_componentList.get(i).getName();
-              //  thirdSpinner.setVisibility(View.VISIBLE);
+                //  thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
@@ -162,10 +162,16 @@ public class TNAU_CallApi {
                     } else if (names.contains("Meetings")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
+                    } else if (names.contains("Foliar Spray")) {
+                        editText.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("CCWM")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
-                    }else {
+                    } else if (names.equalsIgnoreCase("Initial Convergence") || names.equalsIgnoreCase("Awareness Meeting") || names.equalsIgnoreCase("Entry Level Activity") || names.equalsIgnoreCase("Farmers Discussion (DSS)")) {
+                        editText.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.GONE);
+                    } else {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
                     }

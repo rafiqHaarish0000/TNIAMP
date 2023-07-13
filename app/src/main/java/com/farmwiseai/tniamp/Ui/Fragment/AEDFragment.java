@@ -184,7 +184,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
         //phase data
         phraseList = new ArrayList<>();
-      phraseList.add("Choose phase");
+        phraseList.add("Choose phase");
         phraseList.add("Phase 1");
         phraseList.add("Phase 2");
         phraseList.add("Phase 3");
@@ -350,7 +350,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     }
 
     // validation for all mandatory fields
-    private boolean fieldValidation(String farmerName, String category, String gender,
+    private boolean fieldValidation(String farmerName, String category, String gender1,
                                     String survey_no, String area, String near_tank, String remarks, String date, String intName, String mobileNumber) {
 
         farmerName = aedBinding.farmerTxt.getText().toString().trim();
@@ -366,9 +366,9 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 subComponentValue = "Dummy data";
         }
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null  || gender == null || category == null) {
+                villageName == null || componentValue == null || subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-//            return false;
+            return false;
         }
 
 
@@ -400,11 +400,18 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 aedBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
+        } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
+
+            Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
+            return false;
+
+        } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
+            Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
+            return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        }
-        else if (aedBinding.othersLayout.getVisibility() == View.VISIBLE) {
+        } else if (aedBinding.othersLayout.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
             if (aedBinding.inerventionNameTxt.getText().toString().isEmpty()) {
                 aedBinding.inerventionNameTxt.setError("field empty");
@@ -445,7 +452,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                     }
                 } else {
                     //do the code for save all data
-                    //   Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 

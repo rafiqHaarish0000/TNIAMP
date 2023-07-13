@@ -155,7 +155,6 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         catNameVal = null;
 
         mCommonFunction = new CommonFunction(getActivity());
-        animalBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         animalBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_animal, container, false);
         animalBinding.popBackImage.setOnClickListener(this);
@@ -163,6 +162,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         animalBinding.image1.setOnClickListener(this);
         animalBinding.image2.setOnClickListener(this);
         animalBinding.dateTxt.setOnClickListener(this);
+        animalBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         farmerName = animalBinding.farmerTxt.getText().toString();
         survey_no = animalBinding.surveyTxt.getText().toString();

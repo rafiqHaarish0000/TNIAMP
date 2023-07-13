@@ -229,10 +229,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
-            if (intName.isEmpty() || intName.length() == 0)
-                agricultureBinding.inerventionNameTxt.setError("field empty");
-            return false;
         } else if (seed_lyt.getVisibility() == View.VISIBLE) {
             if (nag.length() == 0) {
                 agricultureBinding.nameOfGroup.setError("field empty");
@@ -259,7 +255,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 }
             }
 
-        }else if (vis_lyt.getVisibility() == View.VISIBLE) {
+        } else if (vis_lyt.getVisibility() == View.VISIBLE) {
             if (farmerName.length() == 0 || farmerName.isEmpty()) {
                 agricultureBinding.farmerTxt.setError("Please enter farmer name");
                 return false;
@@ -298,6 +294,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 return false;
             }
 
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            if (agricultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty() || agricultureBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
+                agricultureBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+
+            return true;
         }
         return true;
     }

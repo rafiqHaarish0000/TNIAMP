@@ -152,12 +152,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         genderNameVal = null;
         catVal = null;
-        horticultureBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         mCommonFunction = new CommonFunction(getActivity());
 
         horticultureBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_horticulture, container, false);
 
+        horticultureBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         horticultureBinding.popBackImage.setOnClickListener(this);
         horticultureBinding.submissionBtn.setOnClickListener(this);

@@ -248,35 +248,45 @@
                             android:singleLine="false" />
                     </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/lengthTxt"
-                        style="@style/AppEdittext"
+                    <LinearLayout
+                        android:id="@+id/linTankDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:digits="1234567890."
-                        android:hint="@string/length_m"
-                        android:inputType="number"
-                        android:maxLength="7" />
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                    <EditText
-                        android:id="@+id/lsPoint"
-                        style="@style/AppEdittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:digits="1234567890."
-                        android:hint="@string/ls_point_number"
-                        android:inputType="number" />
+                        <EditText
+                            android:id="@+id/lengthTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:digits="1234567890."
+                            android:hint="@string/length_m"
+                            android:inputType="number"
+                            android:maxLength="7" />
 
-                    <EditText
-                        android:id="@+id/sliceNumber"
-                        style="@style/AppEdittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="@string/slice_number"
-                        android:inputType="number" />
+                        <EditText
+                            android:id="@+id/lsPoint"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:digits="1234567890."
+                            android:hint="@string/ls_point_number"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/sliceNumber"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="@string/slice_number"
+                            android:inputType="textVisiblePassword" />
+                    </LinearLayout>
 
                     <EditText
                         android:id="@+id/nameOfWAU"

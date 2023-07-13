@@ -403,7 +403,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             }
         } else if (otherLyt.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
-            if (marketingBinding.inerventionNameTxt.getText().toString().isEmpty()) {
+            if (marketingBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 marketingBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }

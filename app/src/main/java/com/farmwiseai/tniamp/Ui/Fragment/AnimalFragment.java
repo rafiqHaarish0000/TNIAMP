@@ -22,6 +22,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -154,6 +155,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         catNameVal = null;
 
         mCommonFunction = new CommonFunction(getActivity());
+        animalBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         animalBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_animal, container, false);
         animalBinding.popBackImage.setOnClickListener(this);
@@ -467,7 +469,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         }
         else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
-            if (animalBinding.inerventionNameTxt.getText().toString().isEmpty()) {
+            if (animalBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 animalBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }

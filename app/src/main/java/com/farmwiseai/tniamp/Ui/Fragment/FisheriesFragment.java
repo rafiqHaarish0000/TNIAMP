@@ -316,7 +316,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         }
         //other layout
         else if (otherLyt.getVisibility() == View.VISIBLE) {
-            if (fisheriesBinding.inerventionNameTxt.getText().toString().isEmpty()) {
+            if (fisheriesBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 fisheriesBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }

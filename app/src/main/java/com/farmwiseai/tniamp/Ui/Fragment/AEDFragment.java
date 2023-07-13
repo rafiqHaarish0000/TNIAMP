@@ -356,7 +356,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         area = aedBinding.areaTxt.getText().toString();
         near_tank = aedBinding.tankTxt.getText().toString();
         remarks = aedBinding.remarksTxt.getText().toString();
-        intName = aedBinding.inerventionNameTxt.getText().toString();
+        intName = aedBinding.inerventionNameTxt.getText().toString().trim();
         mobileNumber = aedBinding.mobileNumbertxt.getText().toString().trim();
 
         if (componentValue != null) {

@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -151,6 +152,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         genderNameVal = null;
         catVal = null;
+        horticultureBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         mCommonFunction = new CommonFunction(getActivity());
 
@@ -272,7 +274,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             }
         }
         else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
-            if (horticultureBinding.inerventionNameTxt.getText().toString().isEmpty()) {
+            if (horticultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 horticultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }

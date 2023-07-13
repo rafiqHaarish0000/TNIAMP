@@ -10,14 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Base64;
@@ -30,6 +22,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
@@ -45,7 +44,6 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAEDBinding;
-
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -75,36 +73,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AEDFragment extends Fragment implements View.OnClickListener, BackPressListener {
-    private Context context;
-    private FragmentAEDBinding aedBinding;
-    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, interventionName, mobileNumber;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    private List<ComponentData> componentDropDown;
-    private List<Sub_Basin_Data> sub_basin_DropDown = new ArrayList<>();
-    private List<DistrictData> districtDropDown = new ArrayList<>();
-    private List<BlockData> blockDropDown = new ArrayList<>();
-    private List<VillageData> villageDataList = new ArrayList<>();
-    private CharSequence myString = "0";
-    private CharSequence posValue = "0";
-    private ComponentAdapter adapter, adapter2;
-    private SubBasinAdapter subAdapter;
-    private DistrictAdapter districtAdapter;
-    private BlockAdapter blockAdapter;
-    private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
-            sub_componentSpinner, stageSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
-    private EditText datePicker;
-    private AEDCallApi aedCallApi;
     final Calendar myCalendar = Calendar.getInstance();
-    private boolean takePicture;
-    private int valueofPic = 0;
-    private int valueofPicCount = 0;
-    private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList, interventionList;
-    private GPSTracker gpsTracker;
-    private LinearLayout hideLyt, otherLayt, vis_lyt, iNames_lyt;
-    private double lati, longi;
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
@@ -130,9 +101,38 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
     ArrayList<AEDRequest> offlineAedRequest;
+    private Context context;
+    private FragmentAEDBinding aedBinding;
+    private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, interventionName, mobileNumber;
+    private List<ComponentData> componentDropDown;
+    private List<Sub_Basin_Data> sub_basin_DropDown = new ArrayList<>();
+    private List<DistrictData> districtDropDown = new ArrayList<>();
+    private List<BlockData> blockDropDown = new ArrayList<>();
+    private List<VillageData> villageDataList = new ArrayList<>();
+    private CharSequence myString = "0";
+    private CharSequence posValue = "0";
+    private ComponentAdapter adapter, adapter2;
+    private SubBasinAdapter subAdapter;
+    private DistrictAdapter districtAdapter;
+    private BlockAdapter blockAdapter;
+    private VillageAdaapter villageAdaapter;
+    private Spinner subBasinSpinner, districtSpinner, blockSpinner, componentSpinner,
+            sub_componentSpinner, stageSpinner, genderSpinner, categorySpinner, villageSpinner, interventionSpinner;
+    private EditText datePicker;
+    private AEDCallApi aedCallApi;
+    private boolean takePicture;
+    private int valueofPic = 0;
+    private int valueofPicCount = 0;
+    private CommonFunction mCommonFunction;
+    private List<String> phraseList, genderList, categoryList, interventionList;
+    private GPSTracker gpsTracker;
+    private LinearLayout hideLyt, otherLayt, vis_lyt, iNames_lyt;
+    private double lati, longi;
+    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -362,13 +362,19 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         intName = aedBinding.inerventionNameTxt.getText().toString().trim();
         mobileNumber = aedBinding.mobileNumbertxt.getText().toString().trim();
 
-        if (componentValue != null) {
+    /*    if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
-        }
+        }*/
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+            return false;
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stageSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -697,6 +703,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         intervention3 = lookUpDataClass.getIntervention3();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+        stageValue = lookUpDataClass.getStageValue();
+        stageLastValue = lookUpDataClass.getStagelastvalue();
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

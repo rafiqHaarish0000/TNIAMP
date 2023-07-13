@@ -10,10 +10,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.farmwiseai.tniamp.Retrofit.BaseApi;
-import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -23,11 +20,8 @@ import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class AnimalCallApi {
+    public LookUpDataClass lookUpDataClass;
     private Activity activity;
     private Context context;
     private List<ComponentData> componentList, stagesList, sub_componentList;
@@ -36,7 +30,7 @@ public class AnimalCallApi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public AnimalCallApi(Activity activity, Context context, List<ComponentData> componentList,
                          ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
@@ -70,10 +64,15 @@ public class AnimalCallApi {
                 positionValue = String.valueOf(componentList.get(i).getID());
                 Log.i(TAG, "onItemSelectedComponent: " + componentList.get(i).getID());
                 try {
+                    compName = componentList.get(i).getName();
+                    subCompName = null;
+                    stageName = null;
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
-                    positionValue = String.valueOf(componentList.get(i).getID());
-                    lookUpDataClass.setComponentValue(componentList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
+                    positionValue = String.valueOf(componentList.get(i).getID());
                     String names = componentList.get(i).getName();
                     if (names.contains("Model Village")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
@@ -167,7 +166,8 @@ public class AnimalCallApi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String names = sub_componentList.get(i).getName();
-
+                subCompName = sub_componentList.get(i).getName();
+                stageName = null;
                 thirdSpinner.setVisibility(View.VISIBLE);
 
                 try {
@@ -196,6 +196,9 @@ public class AnimalCallApi {
                     }
                     stagesDropDown(positionValue2, thirdSpinner, editText);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -222,9 +225,12 @@ public class AnimalCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     Log.i(TAG, "names: " + stagesList.get(i).getName());
-
+                    stageName = stagesList.get(i).getName();
                     String names = stagesList.get(i).getName();
                     lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     if (names.equalsIgnoreCase("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.contains("Planting")) {

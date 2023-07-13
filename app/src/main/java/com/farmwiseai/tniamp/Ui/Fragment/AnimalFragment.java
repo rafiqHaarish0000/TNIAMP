@@ -135,6 +135,8 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
     DatePickerDialog picker;
     private String villageValue, category1 = "", firstImageBase64, secondImageBase64, interventionTypeVal;
     private String genderValue, catNameVal;
@@ -395,15 +397,21 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         String mobileNumber = animalBinding.mobileNumber.getText().toString().trim();
 
-        if (componentValue != null) {
+       /* if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
-        }
+        }*/
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        }else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stagesSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        }  else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -799,7 +807,8 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         intervention3 = lookUpDataClass.getIntervention3();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-
+        stageValue = lookUpDataClass.getStageValue();
+        stageLastValue = lookUpDataClass.getStagelastvalue();
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 

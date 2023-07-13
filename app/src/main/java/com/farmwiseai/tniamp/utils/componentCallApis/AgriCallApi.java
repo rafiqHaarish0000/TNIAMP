@@ -73,7 +73,7 @@ public class AgriCallApi {
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
                         seedLyt.setVisibility(View.GONE);
-                       // trainingLyt.setVisibility(View.GONE);
+                        // trainingLyt.setVisibility(View.GONE);
 
                     } else if (names.equalsIgnoreCase("Model Village")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
@@ -88,28 +88,29 @@ public class AgriCallApi {
                         stageSpinner.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.VISIBLE);
                         interventioNameLyt.setVisibility(View.GONE);
-                      //  trainingLyt.setVisibility(View.GONE);
+
+                        //  trainingLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Farmers Field School")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
-                      //  trainingLyt.setVisibility(View.GONE);
+                        //  trainingLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("IPM village-Vermicompost")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
-                      //  trainingLyt.setVisibility(View.VISIBLE);
+                        //  trainingLyt.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("Cono Weeding")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
                         seedLyt.setVisibility(View.GONE);
-                      //  interventioNameLyt.setVisibility(View.GONE);
+                        //  interventioNameLyt.setVisibility(View.GONE);
 
                     } else {
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -117,7 +118,7 @@ public class AgriCallApi {
                         interventioNameLyt.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
-                    //    trainingLyt.setVisibility(View.GONE);
+                        //    trainingLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
                         Log.i(TAG, "itemSelected: " + String.valueOf(getAllComponentData.get(i).getID()));
                         //save data for offline data..

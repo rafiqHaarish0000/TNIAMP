@@ -765,7 +765,15 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         subComponentValue = lookUpDataClass.getSubComponentValue();
         stageValue = lookUpDataClass.getStageValue();
         stageLastValue = lookUpDataClass.getStagelastvalue();
-        if (componentValue.equalsIgnoreCase("Micro Irrigation") || componentValue.equalsIgnoreCase(" Shade Net") || componentValue.equalsIgnoreCase("Mulching")) {
+        if (componentValue.equalsIgnoreCase("Micro Irrigation")
+                || componentValue.equalsIgnoreCase(" Shade Net")
+                || componentValue.equalsIgnoreCase("Mulching")) {
+            horticultureBinding.varietyTxt.setVisibility(View.GONE);
+            horticultureBinding.yieldTxt.setVisibility(View.GONE);
+        } else if (subComponentValue.equalsIgnoreCase("Harvest")) {
+            horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);
+            horticultureBinding.yieldTxt.setVisibility(View.VISIBLE);
+        } else if (subComponentValue.equalsIgnoreCase("Distribution of Inputs")) {
             horticultureBinding.varietyTxt.setVisibility(View.GONE);
             horticultureBinding.yieldTxt.setVisibility(View.GONE);
         } else if (intervention4.equalsIgnoreCase("Harvest") ||

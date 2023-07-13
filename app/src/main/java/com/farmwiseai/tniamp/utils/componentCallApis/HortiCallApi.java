@@ -88,6 +88,7 @@ public class HortiCallApi {
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
+                        trainingLyt.setVisibility(View.GONE);
                     }else if(names.equalsIgnoreCase("Crop Diversification")){
                         subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner,datePicker, trainingLyt);
                         cropSpinner.setVisibility(View.GONE);

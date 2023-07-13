@@ -211,23 +211,26 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        } else if (fisheriesBinding.nodalTXt.getText().toString().length() == 0) {
-            fisheriesBinding.nodalTXt.setError("Do not empty field");
-            return false;
-        } else if (fisheriesBinding.nameofTankTXT.getText().toString().length() == 0) {
-            fisheriesBinding.nameofTankTXT.setError("Do not empty field");
-            return false;
-        } else if (fisheriesBinding.waterTxt.getText().toString().isEmpty()
-                || Double.valueOf(fisheriesBinding.waterTxt.getText().toString()) > 2.0) {
-            fisheriesBinding.waterTxt.setError("Area Should be less than 2(ha)");
-            return false;
-        } else if (fisheriesBinding.seedStockTXt.getText().toString().length() == 0) {
-            fisheriesBinding.seedStockTXt.setError("Do not empty field");
-            return false;
-        } else if (componentValue.equalsIgnoreCase("Model Village")) {
+        } else if (fisheriesBinding.linFishTankInfo.getVisibility() == View.VISIBLE) {
+            if (fisheriesBinding.nodalTXt.getText().toString().length() == 0) {
+                fisheriesBinding.nodalTXt.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.nameofTankTXT.getText().toString().length() == 0) {
+                fisheriesBinding.nameofTankTXT.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.waterTxt.getText().toString().isEmpty()
+                    || Double.valueOf(fisheriesBinding.waterTxt.getText().toString()) > 2.0) {
+                fisheriesBinding.waterTxt.setError("Area Should be less than 2(ha)");
+                return false;
+            } else if (fisheriesBinding.seedStockTXt.getText().toString().length() == 0) {
+                fisheriesBinding.seedStockTXt.setError("Do not empty field");
+                return false;
+            }
             return true;
         }
-
+        else if (componentValue.equalsIgnoreCase("Model Village")) {
+            return true;
+        }
         //layout 1
         else if (layout1.getVisibility() == View.VISIBLE) {
             if (lessNameVal == null) {
@@ -301,21 +304,14 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             }
             return true;
         }
-        //beneficary value
-        else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
-            if (benNameValfinal == null) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-                return false;
-            }
-            return true;
-        }
         //layout 5
         else if (fisheriesBinding.layout5.getVisibility() == View.VISIBLE) {
-            if (fisheriesBinding.volumeOfWater.getText().toString().isEmpty()) {
+
+            if (fisheriesBinding.volumeOfWater.getText().length() == 0) {
                 fisheriesBinding.volumeOfWater.setError("Do not empty field");
                 return false;
             } else if (fisheriesBinding.removeSeeds.getText().toString().isEmpty()) {
-                fisheriesBinding.volumeOfWater.setError("Do not empty field");
+                fisheriesBinding.removeSeeds.setError("Do not empty field");
                 return false;
             } else if (fisheriesBinding.addGift.getText().toString().isEmpty()) {
                 fisheriesBinding.addGift.setError("Do not empty field");
@@ -326,6 +322,15 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             }
             return true;
         }
+        //beneficary value
+        else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
+            if (benNameValfinal == null) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+                return false;
+            }
+            return true;
+        }
+
         //other layout
         else if (otherLyt.getVisibility() == View.VISIBLE) {
             if (fisheriesBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {

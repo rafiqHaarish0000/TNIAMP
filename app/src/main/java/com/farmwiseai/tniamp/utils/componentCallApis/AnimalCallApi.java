@@ -97,7 +97,7 @@ public class AnimalCallApi {
                         trainLyt.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
-                    } else if (names.equalsIgnoreCase(" Infertility Management") || names.equalsIgnoreCase("Artificial Insemination")) {
+                    } else if (names.equalsIgnoreCase("Infertility Management") || names.equalsIgnoreCase("Artificial Insemination")) {
                         subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
                         trainLyt.setVisibility(View.GONE);
                         noOfCalves.setVisibility(View.VISIBLE);

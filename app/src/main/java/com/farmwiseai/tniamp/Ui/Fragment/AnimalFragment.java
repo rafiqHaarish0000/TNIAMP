@@ -405,6 +405,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+        return false;
         }else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
@@ -453,19 +454,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                     animalBinding.otherNo.setError("field empty");
                     return false;
                 }
-            } else if (animalBinding.scStNO.getText().toString().isEmpty()) {
-                {
-                    animalBinding.scStNO.setError("field empty");
-                    return false;
-                }
             } else if (animalBinding.femaleOthers.getText().toString().isEmpty()) {
                 {
                     animalBinding.femaleOthers.setError("field empty");
-                    return false;
-                }
-            } else if (animalBinding.fScStNO.getText().toString().isEmpty()) {
-                {
-                    animalBinding.fScStNO.setError("field empty");
                     return false;
                 }
             }

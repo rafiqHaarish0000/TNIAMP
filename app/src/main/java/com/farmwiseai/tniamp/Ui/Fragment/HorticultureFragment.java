@@ -228,10 +228,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (stagesSpinner.getVisibility() == View.VISIBLE && stageLastValue == null) {
+        } else if (horticultureBinding.stagesTxt.getVisibility() == View.VISIBLE && stageLastValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (cropstagespinner.getVisibility() == View.VISIBLE && stageValue == null) {
+        } else if (horticultureBinding.cropStages.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {

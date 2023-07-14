@@ -301,9 +301,9 @@
                             <EditText
                                 android:id="@+id/sc_st_NO"
                                 style="@style/AppEdittext2"
-                                android:layout_width="120dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:hint="SC/ST No."
+                                android:hint="SC/ST No.(Optional)"
                                 android:inputType="number" />
                         </LinearLayout>
 
@@ -334,9 +334,9 @@
                             <EditText
                                 android:id="@+id/f_sc_st_NO"
                                 style="@style/AppEdittext2"
-                                android:layout_width="120dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:hint="SC/ST No."
+                                android:hint="SC/ST No.(Optional)"
                                 android:inputType="number" />
 
                         </LinearLayout>

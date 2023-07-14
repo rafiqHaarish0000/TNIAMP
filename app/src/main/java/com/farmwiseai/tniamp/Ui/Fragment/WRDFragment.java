@@ -219,16 +219,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         }  else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        } else if (lengthNumberTxt.length() == 0) {
-            wrdfragmentBinding.lengthTxt.setError("Please enter length number");
-            return false;
-        } else if (lsPointTxt.length() == 0) {
-            wrdfragmentBinding.lsPoint.setError("Please enter LS point number");
-            return false;
-        } else if (sliceNumberTxt.length() == 0) {
-            wrdfragmentBinding.sliceNumber.setError("Please enter sluice number");
-            return false;
-        } else if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE) {
+        }  else if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.nameOfWAU.getText().toString().isEmpty()) {
                 wrdfragmentBinding.nameOfWAU.setError("Do not empty field");
                 return false;
@@ -238,6 +229,19 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 wrdfragmentBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
+        }
+        else  if(wrdfragmentBinding.linTankDetails.getVisibility()==View.VISIBLE)
+        {
+             if (lengthNumberTxt.length() == 0) {
+            wrdfragmentBinding.lengthTxt.setError("Please enter length number");
+            return false;
+        } else if (lsPointTxt.length() == 0) {
+            wrdfragmentBinding.lsPoint.setError("Please enter LS point number");
+            return false;
+        } else if (sliceNumberTxt.length() == 0) {
+            wrdfragmentBinding.sliceNumber.setError("Please enter sluice number");
+            return false;
+        }
         }
         return true;
     }
@@ -551,7 +555,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
         request.setIntervention3(intervention3);
-        request.setIntervention4("38");
+        request.setIntervention4(intervention4);
         request.setLat(lat);
         request.setLength(wrdfragmentBinding.lengthTxt.getText().toString());
         request.setLon(lon);

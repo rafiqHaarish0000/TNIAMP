@@ -29,6 +29,7 @@ public class MobileValidationActivity extends BaseActivity {
     ActivityMobileValidationBinding binding;
     GenerateOTP generateOTP;
     CommonFunction commonFunction;
+    String phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,21 @@ public class MobileValidationActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(MobileValidationActivity.this, R.layout.activity_mobile_validation);
         commonFunction = new CommonFunction(MobileValidationActivity.this);
         setContentView(binding.getRoot());
+
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            phoneNumber = extras.getString("phone");
+            binding.mobileValues.setText(phoneNumber);
+        }
+
+
+//        if (binding.mobileValues.getText().toString().isEmpty()) {
+//
+//        } else if (binding.mobileValues.getText().toString().contains(phoneNumber)) {
+//
+//        } else {
+//            binding.mobileValues.setText(phoneNumber);
+//        }
 
         binding.mVerifyMobileNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +79,7 @@ public class MobileValidationActivity extends BaseActivity {
 //                                        commonFunction.showProgress();
                                         Intent i = new Intent(MobileValidationActivity.this, VerifyMobileNumberActivitiy.class);
                                         Bundle extras = new Bundle();
-                                     //   extras.putString("otp", generateOTP.getResponseMessage().getOtpDataId().toString());
+                                        //   extras.putString("otp", generateOTP.getResponseMessage().getOtpDataId().toString());
                                         extras.putString("phone", binding.mobileValues.getText().toString());
                                         i.putExtras(extras);
                                         startActivity(i);

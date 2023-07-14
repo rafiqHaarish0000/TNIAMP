@@ -10,6 +10,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.FishRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.MarkRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.RegisterRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.WRDRequest;
@@ -19,6 +20,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.FishResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.MarkResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.RegisterResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.WRDResponse;
@@ -102,6 +104,9 @@ public interface Interface_Api {
 
     @POST("fishery")
     Call<FishResponse> getFishRespone(@Body FishRequest fishRequest);
+
+    @POST("register")
+    Call<RegisterResponse> getRegisterResponse(@Body RegisterRequest registerRequest);
 
 }
 

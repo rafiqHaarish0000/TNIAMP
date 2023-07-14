@@ -224,7 +224,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
-            return  false;
+            return false;
         } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
@@ -259,8 +259,13 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (ValidationUtils.isValidMobileNumber(mobileNumber) == false) {
                 horticultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            } else if (genderNameVal == null || catVal == null) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
+
+                Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
+                return false;
+
+            } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
+                Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
                 return false;
             }
 
@@ -286,7 +291,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 horticultureBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
-            return true;
+
         }
 
 
@@ -315,19 +320,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, gender, survey_no, area, near_tank, remarks, dateField, intName, mobileNumber);
                 if (checkValidaiton) {
-                    try {
-                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                        } else {
-                            //  getLocation(view);
-                            gpsTracker = new GPSTracker(getContext());
-                            lat = String.valueOf(gpsTracker.getLatitude());
-                            lon = String.valueOf(gpsTracker.getLongitude());
-                            finalSubmission();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                  finalSubmission();
                 } else {
                     //  showToast(getActivity(), "Validation error");
                 }

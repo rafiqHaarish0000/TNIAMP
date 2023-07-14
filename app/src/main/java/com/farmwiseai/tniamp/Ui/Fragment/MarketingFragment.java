@@ -13,14 +13,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -33,6 +25,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
@@ -64,7 +63,6 @@ import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.MarketingCallApi;
 
-
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,15 +75,34 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MarketingFragment extends Fragment implements View.OnClickListener, BackPressListener {
-    FragmentMarketingBinding marketingBinding;
-    private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    private List<ComponentData> componentDropDown;
+    final Calendar myCalendar = Calendar.getInstance();
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
+    public BackPressListener backPressListener;
+    public String lat;
+    public String lon;
+    public EditText wauText, memberTxt;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
+    public String cropNameVal;
+    public String seasonNameVal;
+    public String catNameVal;
+    FragmentMarketingBinding marketingBinding;
+    //    public String seasonNameVal = null;
+    ArrayList<MarkRequest> offlineMarkRequest = new ArrayList<>();
+    DatePickerDialog picker;
+    private Context context;
+    private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
+    private List<ComponentData> componentDropDown;
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
@@ -105,33 +122,14 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             categorySpinnerExpos, villageSpinner, interventionSpinner, trainingSpinner, stageSpinner;
     private EditText datePicker;
     private MarketingCallApi marketingCallApi;
-    final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
     private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
     private LinearLayout layout1, layout2, layoutTrain, layoutExpo, otherLyt, newReqLayout, businessLyt;
-    public BackPressListener backPressListener;
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal,
             cropVal, seasonVal, trainingVal, catogoryVal, categoryExpoVal;
-    public String lat;
-    public String lon;
-    public EditText wauText, memberTxt;
-    public String subBasinValue = null;
-    public String districtValue = null;
-    public String blockValue = null;
-    public String villageName = null;
-    public String componentValue = null;
-    public String subComponentValue = null;
-    public String stageValue = null;
-    public String stageLastValue = null;
-    public String cropNameVal;
-    public String seasonNameVal;
-    public String catNameVal;
-    //    public String seasonNameVal = null;
-    ArrayList<MarkRequest> offlineMarkRequest = new ArrayList<>();
-    DatePickerDialog picker;
 
     @Override
     public void onAttach(Context context) {
@@ -207,14 +205,14 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-       return false;
-        }else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            return false;
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (stageSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        }  else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
@@ -437,19 +435,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 if (checkValidaiton) {
-                    try {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                        } else {
-                            //  getLocation(view);
-                            gpsTracker = new GPSTracker(getContext());
-                            lat = String.valueOf(gpsTracker.getLatitude());
-                            lon = String.valueOf(gpsTracker.getLongitude());
-                            finalSubmission();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    finalSubmission();
                 } else {
                     //do the code for save all data
                     //  Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
@@ -926,7 +912,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setSc_st_female_no("1");
         request.setVenue(marketingBinding.venue.getText().toString());
         request.setStatus("0");
-System.out.println(request);
+        System.out.println(request);
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);
 

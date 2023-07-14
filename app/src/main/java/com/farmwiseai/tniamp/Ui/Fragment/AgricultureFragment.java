@@ -325,19 +325,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName, mobileNumber);
                 if (checkValidaiton) {
-                    try {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                        } else {
-                            //  getLocation(view);
-                            gpsTracker = new GPSTracker(getContext());
-                            lat = String.valueOf(gpsTracker.getLatitude());
-                            lon = String.valueOf(gpsTracker.getLongitude());
-                            finalSubmission();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    finalSubmission();
                 } else {
                     //  showToast(getActivity(), "Validation error");
                 }

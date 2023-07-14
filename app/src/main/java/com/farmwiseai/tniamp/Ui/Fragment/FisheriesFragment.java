@@ -216,7 +216,14 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         } else if (stageSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        }  else if (otherLyt.getVisibility() == View.VISIBLE) {
+            if (fisheriesBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
+                fisheriesBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+        }
+
+        else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (fisheriesBinding.linFishTankInfo.getVisibility() == View.VISIBLE) {
@@ -234,12 +241,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 fisheriesBinding.seedStockTXt.setError("Do not empty field");
                 return false;
             }
-            return true;
-        } else if (componentValue.equalsIgnoreCase("Model Village")) {
-            return true;
-        }
-        //layout 1
-        else if (layout1.getVisibility() == View.VISIBLE) {
+
+        } else if (layout1.getVisibility() == View.VISIBLE) {
             if (lessNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
@@ -247,10 +250,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 fisheriesBinding.speciesStockedTxt.setError("Do not empty field");
                 return false;
             }
-            return true;
-        }
-        //layout 2
-        else if (layout2.getVisibility() == View.VISIBLE) {
+
+        } else if (layout2.getVisibility() == View.VISIBLE) {
             if (benNameVal == null || speciesNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
@@ -258,10 +259,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 fisheriesBinding.feedQuality.setError("Do not empty field");
                 return false;
             }
-            return true;
-        }
-        //layout 3
-        else if (layout3.getVisibility() == View.VISIBLE) {
+
+        } else if (layout3.getVisibility() == View.VISIBLE) {
             if (benNameVal1 == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
@@ -275,7 +274,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 fisheriesBinding.num.setError("Do not empty field");
                 return false;
             }
-            return true;
+
         } else if (layout4.getVisibility() == View.VISIBLE) {
             if (genderNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
@@ -309,7 +308,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 fisheriesBinding.speciesStockedTxt2.setError("Do not empty field");
                 return false;
             }
-            return true;
+
         }
         //layout 5
         else if (fisheriesBinding.layout5.getVisibility() == View.VISIBLE) {
@@ -327,7 +326,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 fisheriesBinding.farmPond1.setError("Do not empty field");
                 return false;
             }
-            return true;
+
         }
         //beneficary value
         else if (beneficaryFinal.getVisibility() == View.VISIBLE) {
@@ -335,18 +334,10 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             }
-            return true;
+
         }
 
         //other layout
-        else if (otherLyt.getVisibility() == View.VISIBLE) {
-            if (fisheriesBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
-                fisheriesBinding.inerventionNameTxt.setError("field empty");
-                return false;
-            }
-            return true;
-        }
-
 
         return true;
     }

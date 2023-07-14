@@ -210,31 +210,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (tankStageSpinner.getVisibility() == View.VISIBLE) {
-            if (stageValue == null) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
-                return false;
-            }
-
-        }else if (tankStageSpinner.getVisibility() != View.VISIBLE) {
-            if (stageValue == null) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
-                return false;
-            }
-return false;
-        }else if (stageSpinner.getVisibility() == View.VISIBLE) {
-            if (stageLastValue == null) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
-                return false;
-            }
-
-        }else if (stageSpinner.getVisibility() != View.VISIBLE) {
-            if (stageLastValue == null) {
-                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
-                return false;
-            }
-
-        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (wrdfragmentBinding.taskStages.getVisibility() == View.VISIBLE && stageValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stageSpinner.getVisibility() == View.VISIBLE && stageLastValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        }  else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (lengthNumberTxt.length() == 0) {

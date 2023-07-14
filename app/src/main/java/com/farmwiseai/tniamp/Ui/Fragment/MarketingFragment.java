@@ -124,6 +124,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
     public String cropNameVal;
     public String seasonNameVal;
     public String catNameVal;
@@ -197,15 +199,22 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         remarks = marketingBinding.remarksTxt.getText().toString();
 
-        if (componentValue != null) {
+       /* if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
-        }
+        }*/
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
+       return false;
+        }else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stageSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        }  else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         }
@@ -917,9 +926,10 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setSc_st_female_no("1");
         request.setVenue(marketingBinding.venue.getText().toString());
         request.setStatus("0");
-
+System.out.println(request);
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);
+
         } else {
             String offlineText = "";
             if (offlineMarkRequest == null) {
@@ -1018,6 +1028,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         intervention3 = lookUpDataClass.getIntervention3();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+        stageValue = lookUpDataClass.getStageValue();
+        stageLastValue = lookUpDataClass.getStagelastvalue();
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

@@ -551,7 +551,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
         request.setIntervention3(intervention3);
-        request.setIntervention4("");
+        request.setIntervention4("38");
         request.setLat(lat);
         request.setLength(wrdfragmentBinding.lengthTxt.getText().toString());
         request.setLon(lon);

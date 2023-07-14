@@ -450,7 +450,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Farm pond constructed by"
-                            android:inputType="number" />
+                            android:inputType="text" />
 
                         <EditText
                             android:id="@+id/beneName"
@@ -459,7 +459,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Beneficary Name"
-                            android:inputType="number" />
+                            android:inputType="text" />
 
                         <EditText
                             android:id="@+id/surveyVal"
@@ -468,7 +468,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Survey No."
-                            android:inputType="number" />
+                            android:inputType="text" />
 
                         <EditText
                             android:id="@+id/mobileVal"
@@ -576,6 +576,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Add GIFT Tilapia"
+                            android:visibility="gone"
                             android:inputType="number" />
                         <EditText
                             android:id="@+id/farmPond1"

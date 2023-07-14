@@ -213,6 +213,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         qop = agricultureBinding.quantityTxt.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString().trim();
         mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
+
       /*  if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
@@ -297,7 +298,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 return false;
             }
 
-        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+        } else if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
             if (agricultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty() || agricultureBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
                 agricultureBinding.inerventionNameTxt.setError("field empty");
                 return false;

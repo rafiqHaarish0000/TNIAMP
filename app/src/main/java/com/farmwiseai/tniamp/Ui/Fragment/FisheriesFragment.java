@@ -233,8 +233,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (fisheriesBinding.nameofTankTXT.getText().toString().length() == 0) {
                 fisheriesBinding.nameofTankTXT.setError("Do not empty field");
                 return false;
-            } else if (fisheriesBinding.waterTxt.getText().toString().isEmpty()
-                    || Double.valueOf(fisheriesBinding.waterTxt.getText().toString()) > 2.0) {
+            } else if (fisheriesBinding.waterTxt.getText().toString().isEmpty()) {
                 fisheriesBinding.waterTxt.setError("Area Should be less than 2(ha)");
                 return false;
             } else if (fisheriesBinding.seedStockTXt.getText().toString().length() == 0) {
@@ -318,9 +317,6 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 return false;
             } else if (fisheriesBinding.removeSeeds.getText().toString().isEmpty()) {
                 fisheriesBinding.removeSeeds.setError("Do not empty field");
-                return false;
-            } else if (fisheriesBinding.addGift.getText().toString().isEmpty()) {
-                fisheriesBinding.addGift.setError("Do not empty field");
                 return false;
             } else if (fisheriesBinding.farmPond1.getText().toString().isEmpty()) {
                 fisheriesBinding.farmPond1.setError("Do not empty field");

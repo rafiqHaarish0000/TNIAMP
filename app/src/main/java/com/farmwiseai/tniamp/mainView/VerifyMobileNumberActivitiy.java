@@ -126,5 +126,8 @@ ValidateOTP validateOTP;
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

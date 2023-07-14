@@ -1,73 +1,102 @@
 package com.farmwiseai.tniamp.Retrofit.DataClass.RequestData;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class RegisterRequest {
-    public String SERIAL_NO;
-    public int LINE_DEPT;
-    public int VILLAGE;
-    public String NAME;
-    public String MOBILE;
-    public String EMAIL;
-    public String CREATED_DATE;
-    public String lat;
-    public String lon;
-    public String version;
-    public int subbasin;
-    public int USER_STATUS;
 
-    public String getSERIAL_NO() {
-        return SERIAL_NO;
+
+    @SerializedName("SERIAL_NO")
+    @Expose
+    private String serialNo;
+    @SerializedName("LINE_DEPT")
+    @Expose
+    private String lineDept;
+    @SerializedName("VILLAGE")
+    @Expose
+    private String village;
+    @SerializedName("NAME")
+    @Expose
+    private String name;
+    @SerializedName("MOBILE")
+    @Expose
+    private String mobile;
+    @SerializedName("EMAIL")
+    @Expose
+    private String email;
+    @SerializedName("CREATED_DATE")
+    @Expose
+    private String createdDate;
+    @SerializedName("lat")
+    @Expose
+    private String lat;
+    @SerializedName("lon")
+    @Expose
+    private String lon;
+    @SerializedName("version")
+    @Expose
+    private String version;
+    @SerializedName("subbasin")
+    @Expose
+    private String subbasin;
+    @SerializedName("USER_STATUS")
+    @Expose
+    private String userStatus;
+
+    public String getSerialNo() {
+        return serialNo;
     }
 
-    public void setSERIAL_NO(String SERIAL_NO) {
-        this.SERIAL_NO = SERIAL_NO;
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
-    public int getLINE_DEPT() {
-        return LINE_DEPT;
+    public String getLineDept() {
+        return lineDept;
     }
 
-    public void setLINE_DEPT(int LINE_DEPT) {
-        this.LINE_DEPT = LINE_DEPT;
+    public void setLineDept(String lineDept) {
+        this.lineDept = lineDept;
     }
 
-    public int getVILLAGE() {
-        return VILLAGE;
+    public String getVillage() {
+        return village;
     }
 
-    public void setVILLAGE(int VILLAGE) {
-        this.VILLAGE = VILLAGE;
+    public void setVillage(String village) {
+        this.village = village;
     }
 
-    public String getNAME() {
-        return NAME;
+    public String getName() {
+        return name;
     }
 
-    public void setNAME(String NAME) {
-        this.NAME = NAME;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMOBILE() {
-        return MOBILE;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setMOBILE(String MOBILE) {
-        this.MOBILE = MOBILE;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
-    public String getEMAIL() {
-        return EMAIL;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEMAIL(String EMAIL) {
-        this.EMAIL = EMAIL;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getCREATED_DATE() {
-        return CREATED_DATE;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCREATED_DATE(String CREATED_DATE) {
-        this.CREATED_DATE = CREATED_DATE;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getLat() {
@@ -94,19 +123,21 @@ public class RegisterRequest {
         this.version = version;
     }
 
-    public int getSubbasin() {
+    public String getSubbasin() {
         return subbasin;
     }
 
-    public void setSubbasin(int subbasin) {
+    public void setSubbasin(String subbasin) {
         this.subbasin = subbasin;
     }
 
-    public int getUSER_STATUS() {
-        return USER_STATUS;
+    public String getUserStatus() {
+        return userStatus;
     }
 
-    public void setUSER_STATUS(int USER_STATUS) {
-        this.USER_STATUS = USER_STATUS;
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
     }
+
 }
+

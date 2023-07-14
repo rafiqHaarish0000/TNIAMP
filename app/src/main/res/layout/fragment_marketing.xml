@@ -466,7 +466,8 @@
                             android:layout_marginTop="12dp"
                             android:hint="@string/mobile_number"
                             android:inputType="number"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:maxLength="10"/>
 
                         <EditText
                             android:id="@+id/emailTxt"
@@ -474,7 +475,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Email" />
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"/>
 
                         <EditText
                             android:id="@+id/infrastructureTxt"

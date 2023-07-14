@@ -62,6 +62,8 @@ import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 import com.farmwiseai.tniamp.utils.componentCallApis.MarketingCallApi;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -918,8 +920,16 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setSc_st_female_no("1");
         request.setVenue(marketingBinding.venue.getText().toString());
         request.setStatus("0");
-        System.out.println(request);
+
         if (mCommonFunction.isNetworkAvailable() == true) {
+            ObjectMapper mapper = new ObjectMapper();
+            String json = null;
+            try {
+                json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(json);
             onlineDataUpload(request);
 
         } else {

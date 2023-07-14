@@ -213,11 +213,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         qop = agricultureBinding.quantityTxt.getText().toString();
         intName = agricultureBinding.inerventionNameTxt.getText().toString().trim();
         mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
-        if (componentValue != null) {
+      /*  if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
         }
-
+*/
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null
         ) {

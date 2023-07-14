@@ -13,14 +13,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Base64;
@@ -33,6 +25,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
@@ -76,16 +75,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WRDFragment extends Fragment implements View.OnClickListener, BackPressListener {
-    private FragmentWRDFRagmentBinding wrdfragmentBinding;
-    private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    private List<ComponentData> componentDropDown;
+    final Calendar myCalendar = Calendar.getInstance();
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3; // stages
     public String intervention4; // stages
+    public BackPressListener backPressListener;
+    public String lat;
+    public String lon;
+    public EditText wauText, memberTxt;
+    public String subBasinValue = null;
+    public String districtValue = null;
+    public String blockValue = null;
+    public String villageName = null;
+    public String componentValue = null;
+    public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
+    DatePickerDialog picker;
+    ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
+    private FragmentWRDFRagmentBinding wrdfragmentBinding;
+    private Context context;
+    private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
+    private List<ComponentData> componentDropDown;
     private List<Sub_Basin_Data> sub_basin_DropDown;
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
@@ -104,26 +118,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             sub_componentSpinner, tankStageSpinner, stageSpinner, villageSpinner, interventionSpinner;
     private EditText datePicker;
     private WRDCallAPi wrdCallApi;
-    final Calendar myCalendar = Calendar.getInstance();
     private boolean takePicture;
     private int valueofPic = 0;
     private int valueofPicCount = 0;
     private CommonFunction mCommonFunction;
     private List<String> phraseList, genderList, categoryList;
-    private LinearLayout vis_lyt, iNames_lyt,linTankInfo;
-    public BackPressListener backPressListener;
+    private LinearLayout vis_lyt, iNames_lyt, linTankInfo;
     private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
-    public String lat;
-    public String lon;
-    public EditText wauText, memberTxt;
-    public String subBasinValue = null;
-    public String districtValue = null;
-    public String blockValue = null;
-    public String villageName = null;
-    public String componentValue = null;
-    public String subComponentValue = null;
-    DatePickerDialog picker;
-    ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -140,7 +141,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         wrdfragmentBinding.lengthTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         wrdfragmentBinding.lsPoint.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-      //  wrdfragmentBinding.sliceNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        //  wrdfragmentBinding.sliceNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         wrdfragmentBinding.popBackImage.setOnClickListener(this);
         wrdfragmentBinding.submissionBtn.setOnClickListener(this);
@@ -159,14 +160,14 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         tankStageSpinner = wrdfragmentBinding.taskStages;
         stageSpinner = wrdfragmentBinding.stagesTxt;
         iNames_lyt = wrdfragmentBinding.othersLayout;
-        linTankInfo=wrdfragmentBinding.linTankDetails;
+        linTankInfo = wrdfragmentBinding.linTankDetails;
         wauText = wrdfragmentBinding.nameOfWAU;
         memberTxt = wrdfragmentBinding.noOfMembers;
 
         backPressListener = this;
 
         wrdCallApi = new WRDCallAPi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner, stageSpinner, wauText, iNames_lyt, memberTxt,linTankInfo);
+        wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner, stageSpinner, wauText, iNames_lyt, memberTxt, linTankInfo);
 
         offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
@@ -190,11 +191,11 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
 
 
-        if (componentValue != null) {
+      /*  if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
         }
-
+*/
         if (wrdfragmentBinding.noOfMembers.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.noOfMembers.getText().toString().isEmpty()) {
                 wrdfragmentBinding.noOfMembers.setError("Do not empty field");
@@ -203,8 +204,36 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
-            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+                villageName == null || componentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (tankStageSpinner.getVisibility() == View.VISIBLE) {
+            if (stageValue == null) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+                return false;
+            }
+
+        }else if (tankStageSpinner.getVisibility() != View.VISIBLE) {
+            if (stageValue == null) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+                return false;
+            }
+return false;
+        }else if (stageSpinner.getVisibility() == View.VISIBLE) {
+            if (stageLastValue == null) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+                return false;
+            }
+
+        }else if (stageSpinner.getVisibility() != View.VISIBLE) {
+            if (stageLastValue == null) {
+                mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+                return false;
+            }
+
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
@@ -671,6 +700,8 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         intervention3 = lookUpDataClass.getIntervention3();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+        stageValue = lookUpDataClass.getStageValue();
+        stageLastValue = lookUpDataClass.getStagelastvalue();
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }
 }

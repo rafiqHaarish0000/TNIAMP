@@ -21,6 +21,7 @@ import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import java.util.List;
 
 public class WRDCallAPi {
+    public LookUpDataClass lookUpDataClass;
     private Activity activity;
     private Context context;
     private List<ComponentData> getAllComponentData, stagesList, sub_componentList, tankStageList;
@@ -29,7 +30,7 @@ public class WRDCallAPi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public WRDCallAPi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
@@ -59,14 +60,22 @@ public class WRDCallAPi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
+                    compName = getAllComponentData.get(i).getName();
+                    subCompName = null;
+                    stageName = null;
+                    stageLastName = null;
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
-                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
+                    lookUpDataClass.setStagelastvalue(stageLastName);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
                     if (names.equals("Model Village")) {
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt, memTxt, interventioNameLyt);
                         tankStageSpinner.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
@@ -82,7 +91,8 @@ public class WRDCallAPi {
                     } else {
                         subComponenetDropDown(positionValue, subComponentSpinner, tankStageSpinner, stageSpinner, wauTxt, memTxt, interventioNameLyt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
-                        tankStageSpinner.setVisibility(View.VISIBLE);
+                        tankStageSpinner.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
                         wauTxt.setVisibility(View.GONE);
                         memTxt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
@@ -113,15 +123,21 @@ public class WRDCallAPi {
         adapters = new ComponentAdapter(context, sub_componentList);
         adapters.getFilter().filter(String.valueOf(posVal));
         secondSpinner.setAdapter(adapters);
-        thirdSpinner.setVisibility(View.VISIBLE);
+       // thirdSpinner.setVisibility(View.VISIBLE);
         secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                subCompName = sub_componentList.get(i).getName();
+                stageName = null;
+                stageLastName = null;
                 String names = sub_componentList.get(i).getName();
-                thirdSpinner.setVisibility(View.VISIBLE);
+             //   thirdSpinner.setVisibility(View.VISIBLE);
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
-                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
+                    lookUpDataClass.setStagelastvalue(stageLastName);
                     Log.i(TAG, "posvalue2: " + positionValue2);
 
                     if (names.equalsIgnoreCase("Formation of WUA")) {
@@ -148,7 +164,7 @@ public class WRDCallAPi {
                         fourthSpinner.setVisibility(View.GONE);
                         linIntervention.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("CCWM")) {
-                        stagesDropDown(positionValue2, fourthSpinner);
+                        stagesDropDown(positionValue2, thirdSpinner);
                         thirdSpinner.setVisibility(View.GONE);
                         fourthSpinner.setVisibility(View.VISIBLE);
                         linIntervention.setVisibility(View.GONE);
@@ -195,6 +211,8 @@ public class WRDCallAPi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
+                    stageName = tankStageList.get(i).getName();
+                    stageLastName = null;
                     positionValue2 = String.valueOf(tankStageList.get(i).getID());
                     String names = tankStageList.get(i).getName();
                     if (names.equalsIgnoreCase("Marking Boundary Line") ||
@@ -247,7 +265,13 @@ public class WRDCallAPi {
                         stagesDropDown(String.valueOf(tankStageList.get(i).getID()), fourthSpinner);
                         fourthSpinner.setVisibility(View.VISIBLE);
                     }
+                    lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
+                    lookUpDataClass.setStagelastvalue(stageLastName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
+
 
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -274,7 +298,14 @@ public class WRDCallAPi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-                    lookUpDataClass.setIntervention3(stagesList.get(i).getName());
+                    stageLastName = stagesList.get(i).getName();
+                   // stageLastName = null;
+
+                    lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+                    lookUpDataClass.setIntervention4(stagesList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
 

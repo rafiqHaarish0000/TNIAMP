@@ -20,6 +20,7 @@ import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 import java.util.List;
 
 public class FishCallApi {
+    public LookUpDataClass lookUpDataClass;
     private Activity activity;
     private Context context;
     private List<ComponentData> getAllComponentData, stagesList, sub_componentList, tankStageList;
@@ -28,7 +29,7 @@ public class FishCallApi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public FishCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
@@ -43,8 +44,8 @@ public class FishCallApi {
 
     //first spinner phrase;
 
-    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner , LinearLayout layoutComp1,
-                                   LinearLayout layoutComp2, LinearLayout layout3, LinearLayout layout4,LinearLayout layout5,
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, LinearLayout layoutComp1,
+                                   LinearLayout layoutComp2, LinearLayout layout3, LinearLayout layout4, LinearLayout layout5,
                                    LinearLayout otherLyt, Spinner beneficarySpinner, LinearLayout linFishTankInfo) {
 
         commonFunction = new CommonFunction(activity);
@@ -59,8 +60,13 @@ public class FishCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
+                    compName = getAllComponentData.get(i).getName();
+                    subCompName = null;
+                    stageName = null;
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
-                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
@@ -125,8 +131,8 @@ public class FishCallApi {
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
-                    }else if (names.equalsIgnoreCase("Aquaculture in farm ponds")
-                            ||names.equalsIgnoreCase("Earthern fish seed rearing and culture farm")) {
+                    } else if (names.equalsIgnoreCase("Aquaculture in farm ponds")
+                            || names.equalsIgnoreCase("Earthern fish seed rearing and culture farm")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.GONE);
@@ -139,8 +145,7 @@ public class FishCallApi {
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
-                    }
-                    else if (names.equalsIgnoreCase("Fish Kiosk")) {
+                    } else if (names.equalsIgnoreCase("Fish Kiosk")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.GONE);
@@ -153,7 +158,7 @@ public class FishCallApi {
                         beneficarySpinner.setVisibility(View.VISIBLE);
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
-                    }else if(names.equalsIgnoreCase("Fish culture in Modular tanks")){
+                    } else if (names.equalsIgnoreCase("Fish culture in Modular tanks")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner);
                         layout5.setVisibility(View.VISIBLE);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -165,8 +170,7 @@ public class FishCallApi {
                         stageSpinner.setVisibility(View.GONE);
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         otherLyt.setVisibility(View.GONE);
@@ -197,7 +201,7 @@ public class FishCallApi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner,Spinner stageSpinner) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner stageSpinner) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "fishlookup.json");
@@ -210,23 +214,25 @@ public class FishCallApi {
 
                 String names = sub_componentList.get(i).getName();
                 try {
+                    subCompName = sub_componentList.get(i).getName();
+                    stageName = null;
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
-                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
-                    Log.i(TAG, "posvalue2: " + positionValue2);
-                    if(names.equalsIgnoreCase("Long Seasonal tanks")||
-                    names.equalsIgnoreCase("Short Seasonal tanks")){
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);                    Log.i(TAG, "posvalue2: " + positionValue2);
+                    if (names.equalsIgnoreCase("Long Seasonal tanks") ||
+                            names.equalsIgnoreCase("Short Seasonal tanks")) {
                         stageSpinner.setVisibility(View.VISIBLE);
-                        stagesDropDown(positionValue2,stageSpinner);
-                    }else if(names.equalsIgnoreCase("CCWM")){
+                        stagesDropDown(positionValue2, stageSpinner);
+                    } else if (names.equalsIgnoreCase("CCWM")) {
                         stageSpinner.setVisibility(View.VISIBLE);
-                        stagesDropDown(positionValue2,stageSpinner);
-                    }else if (names.contains("Harvest")) {
+                        stagesDropDown(positionValue2, stageSpinner);
+                    } else if (names.contains("Harvest")) {
+                        stageSpinner.setVisibility(View.GONE);
+                    } else {
                         stageSpinner.setVisibility(View.GONE);
                     }
-                    else{
-                        stageSpinner.setVisibility(View.GONE);
-                    }
-                    stagesDropDown(positionValue2,stageSpinner);
+                    stagesDropDown(positionValue2, stageSpinner);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     backPressListener.onSelectedInputs(lookUpDataClass);
 
@@ -257,6 +263,10 @@ public class FishCallApi {
                 try {
                     Log.i(TAG, "names: " + stagesList.get(i).getName());
                     String names = stagesList.get(i).getName();
+                    stageName = stagesList.get(i).getName();
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {

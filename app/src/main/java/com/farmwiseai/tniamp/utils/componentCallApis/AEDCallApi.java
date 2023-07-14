@@ -37,6 +37,7 @@ public class AEDCallApi {
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
     public LookUpDataClass lookUpDataClass;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public AEDCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData,
                       ComponentAdapter adapters, ComponentAdapter componentAdapter, CharSequence positionValue,
@@ -66,9 +67,13 @@ public class AEDCallApi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
+                    compName = getAllComponentData.get(i).getName();
+                    subCompName = null;
+                    stageName = null;
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
-                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
-                    backPressListener.onSelectedInputs(lookUpDataClass);
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);                    backPressListener.onSelectedInputs(lookUpDataClass);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String name = getAllComponentData.get(i).getName();
                     if (name.equalsIgnoreCase("Model Village")) {
@@ -125,6 +130,8 @@ public class AEDCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String names = sub_componentList.get(i).getName();
                 try {
+                    subCompName = sub_componentList.get(i).getName();
+                    stageName = null;
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
                     lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     Log.i(TAG, "posvalue2: " + positionValue2);
@@ -136,6 +143,9 @@ public class AEDCallApi {
                         thirdSpinner.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
 //                                        stagesDropDown(positionValue2, thirdSpinner, editText);
                 } catch (Exception e) {
@@ -166,6 +176,13 @@ public class AEDCallApi {
                 try {
                     Log.i(TAG, "names: " + stagesList.get(i).getName());
                     String names = stagesList.get(i).getName();
+                    stageName = stagesList.get(i).getName();
+                    lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
+                    lookUpDataClass.setIntervention4(stagesList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 //                                        if (names.contains("Sowing")) {
 //                                            editText.setVisibility(View.VISIBLE);
 //                                        } else if (names.contains("Planting")) {

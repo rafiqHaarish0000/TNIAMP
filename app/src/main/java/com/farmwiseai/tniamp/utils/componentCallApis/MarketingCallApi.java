@@ -30,6 +30,7 @@ public class MarketingCallApi {
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
     public LookUpDataClass lookUpDataClass;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public MarketingCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
@@ -60,9 +61,13 @@ public class MarketingCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 subComponentSpinner.setVisibility(View.VISIBLE);
                 try {
+                    compName = getAllComponentData.get(i).getName();
+                    subCompName = null;
+                    stageName = null;
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
-                    lookUpDataClass.setComponentValue(getAllComponentData.get(i).getName());
-                    backPressListener.onSelectedInputs(lookUpDataClass);
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);                    backPressListener.onSelectedInputs(lookUpDataClass);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
                     if (names.equalsIgnoreCase("Model Village")) {
@@ -83,6 +88,8 @@ public class MarketingCallApi {
                         layoutTraining.setVisibility(View.GONE);
                         layoutExpo.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
+
                     } else if (names.equalsIgnoreCase("Farmer Producer Company")) {
                         subComponenetDropDown(positionValue, subComponentSpinner,stageSpinner ,layoutTraining, layoutExpo,newReqLayt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -92,6 +99,8 @@ public class MarketingCallApi {
                         layoutExpo.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
+
                     } else if (names.equalsIgnoreCase("Construction of Storage Godowns")) {
                         subComponenetDropDown(positionValue, subComponentSpinner,stageSpinner ,layoutTraining, layoutExpo,newReqLayt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -101,6 +110,8 @@ public class MarketingCallApi {
                         layoutExpo.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
+
                     } else if (names.equalsIgnoreCase("Institutional training & Exposure visit")) {
                         subComponenetDropDown(positionValue, subComponentSpinner,stageSpinner ,layoutTraining, layoutExpo,newReqLayt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -110,6 +121,8 @@ public class MarketingCallApi {
                         layoutTraining.setVisibility(View.GONE);
                         layoutExpo.setVisibility(View.GONE);
                         newReqLayt.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
+
                     } else {
                         subComponenetDropDown(positionValue, subComponentSpinner,stageSpinner ,layoutTraining, layoutExpo,newReqLayt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -151,7 +164,8 @@ public class MarketingCallApi {
         secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                subCompName = sub_componentList.get(i).getName();
+                stageName = null;
                 String names = sub_componentList.get(i).getName();
                 try {
                     positionValue2 = String.valueOf(sub_componentList.get(i).getID());
@@ -180,8 +194,9 @@ public class MarketingCallApi {
                         stageSpinner.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
-                    lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
-                    backPressListener.onSelectedInputs(lookUpDataClass);
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);                    backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -209,7 +224,12 @@ public class MarketingCallApi {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try{
+                    stageName = stagesList.get(i).getName();
+
                     lookUpDataClass.setIntervention3(stagesList.get(i).getName());
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStageValue(stageName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 }catch (Exception e){
 

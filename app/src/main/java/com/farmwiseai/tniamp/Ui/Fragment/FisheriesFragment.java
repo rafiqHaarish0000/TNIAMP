@@ -90,6 +90,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
     public String lessNameVal;
     public String benNameVal;
     public String benNameVal1;
@@ -199,14 +201,20 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         Log.i(TAG, "modelVillage: " + componentValue);
 
-        if (componentValue != null) {
+       /* if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
-        }
+        }*/
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
+            return false;
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stageSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
@@ -227,8 +235,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 return false;
             }
             return true;
-        }
-        else if (componentValue.equalsIgnoreCase("Model Village")) {
+        } else if (componentValue.equalsIgnoreCase("Model Village")) {
             return true;
         }
         //layout 1
@@ -977,6 +984,8 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         intervention3 = lookUpDataClass.getIntervention3();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
+        stageValue = lookUpDataClass.getStageValue();
+        stageLastValue = lookUpDataClass.getStagelastvalue();
 //        Log.i(TAG, "modelVillage: "+componentValue);
         Log.i(TAG, "getComponentData: " + intervention1 + intervention2 + intervention3);
     }

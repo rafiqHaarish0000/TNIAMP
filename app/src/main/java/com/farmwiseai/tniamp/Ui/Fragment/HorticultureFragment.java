@@ -76,38 +76,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HorticultureFragment extends Fragment implements View.OnClickListener, BackPressListener {
-    FragmentHorticultureBinding horticultureBinding;
-    private Context context;
-    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category1, survey_no, area, near_tank, remarks, dateField, mobileNumber;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private static final int pic_id = 123;
-    private List<ComponentData> componentDropDown;
-    private List<Sub_Basin_Data> sub_basin_DropDown;
-    private List<DistrictData> districtDropDown;
-    private List<BlockData> blockDropDown;
-    private List<VillageData> villageDataList;
-    private CharSequence myString = "0";
-    private CharSequence posValue = "0";
-    private ComponentAdapter adapter, adapter2;
-    private SubBasinAdapter subAdapter;
-    private DistrictAdapter districtAdapter;
-    private BlockAdapter blockAdapter;
-    private VillageAdaapter villageAdaapter;
-    private Spinner subBasinSpinner, districtSpinner,
-            blockSpinner, componentSpinner,
-            sub_componentSpinner, stagesSpinner,
-            genderSpinner, categorySpinner, villageSpinner, interventionSpinner, cropstagespinner;
-    private EditText datePicker;
-    private HortiCallApi hortiCallApi;
     final Calendar myCalendar = Calendar.getInstance();
-    private boolean takePicture;
-    private int valueofPic = 0;
-    private int valueofPicCount = 0;
-    private CommonFunction mCommonFunction;
-    private List<String> phraseList, genderList, categoryList, interventionList;
-    private LinearLayout vis_lyt, trainingLyt, iNames_lyt;
-    private GPSTracker gpsTracker;
-    private double lati, longi;
     public String intervention1; //component
     public String intervention2; //sub_componenet
     public String intervention3;
@@ -134,12 +105,43 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public String villageName = null;
     public String componentValue = null;
     public String subComponentValue = null;
+    public String stageValue = null;
+    public String stageLastValue = null;
     public String genderNameVal;
     public String catVal;
-    DatePickerDialog picker;
     public BackPressListener backPressListener;
-    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
+    FragmentHorticultureBinding horticultureBinding;
+    DatePickerDialog picker;
     ArrayList<HortiRequest> offlineHortiRequest = new ArrayList<>();
+    private Context context;
+    private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category1, survey_no, area, near_tank, remarks, dateField, mobileNumber;
+    private List<ComponentData> componentDropDown;
+    private List<Sub_Basin_Data> sub_basin_DropDown;
+    private List<DistrictData> districtDropDown;
+    private List<BlockData> blockDropDown;
+    private List<VillageData> villageDataList;
+    private CharSequence myString = "0";
+    private CharSequence posValue = "0";
+    private ComponentAdapter adapter, adapter2;
+    private SubBasinAdapter subAdapter;
+    private DistrictAdapter districtAdapter;
+    private BlockAdapter blockAdapter;
+    private VillageAdaapter villageAdaapter;
+    private Spinner subBasinSpinner, districtSpinner,
+            blockSpinner, componentSpinner,
+            sub_componentSpinner, stagesSpinner,
+            genderSpinner, categorySpinner, villageSpinner, interventionSpinner, cropstagespinner;
+    private EditText datePicker;
+    private HortiCallApi hortiCallApi;
+    private boolean takePicture;
+    private int valueofPic = 0;
+    private int valueofPicCount = 0;
+    private CommonFunction mCommonFunction;
+    private List<String> phraseList, genderList, categoryList, interventionList;
+    private LinearLayout vis_lyt, trainingLyt, iNames_lyt;
+    private GPSTracker gpsTracker;
+    private double lati, longi;
+    private String villageValue, firstImageBase64, secondImageBase64, interventionTypeVal;
 
     @Override
     public void onAttach(Context context) {
@@ -214,14 +216,24 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intName = horticultureBinding.inerventionNameTxt.getText().toString();
         mobileNumber = horticultureBinding.mobileNumbertxt.getText().toString().trim();
 
-        if (componentValue != null) {
+      /*  if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
-        }
+        }*/
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
-                villageName == null || componentValue == null || subComponentValue == null) {
+                villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return  false;
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (stagesSpinner.getVisibility() == View.VISIBLE && stageLastValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
+        } else if (cropstagespinner.getVisibility() == View.VISIBLE && stageValue == null) {
+            mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
+            return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
@@ -251,7 +263,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
                 return false;
             }
-            return true;
+
         } else if (trainingLyt.getVisibility() == View.VISIBLE) {
             if (horticultureBinding.noOfParticipants.getText().toString().isEmpty()) {
                 horticultureBinding.noOfParticipants.setError("Do not empty field");
@@ -749,10 +761,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
         intervention4 = lookUpDataClass.getIntervention4();
-
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
-
+        stageValue = lookUpDataClass.getStageValue();
+        stageLastValue = lookUpDataClass.getStagelastvalue();
         if (componentValue.equalsIgnoreCase("Micro Irrigation")
                 || componentValue.equalsIgnoreCase(" Shade Net")
                 || componentValue.equalsIgnoreCase("Mulching")) {

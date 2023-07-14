@@ -135,9 +135,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 //                mCommonFunction.mLoadCustomToast(RegistrationActivity.this,department);
                 sub_basin_DropDown = FetchDeptLookup.readSubBasin(RegistrationActivity.this, "sub_basin.json");
                 subAdapter = new SubBasinAdapter(RegistrationActivity.this, sub_basin_DropDown);
-                department = departmentList.get(i).getNAME();
+              /*  department = departmentList.get(i).getNAME();
                 myString = String.valueOf(1);
-                subAdapter.getFilter().filter(myString);
+                subAdapter.getFilter().filter(myString);*/
                 sub_basin.setAdapter(subAdapter);
             }
 

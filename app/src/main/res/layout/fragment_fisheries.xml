@@ -568,7 +568,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Remove number of seeds"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:visibility="gone"/>
                         <EditText
                             android:id="@+id/addGift"
                             style="@style/AppEdittext"

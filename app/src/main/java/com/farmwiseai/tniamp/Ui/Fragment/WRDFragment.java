@@ -277,19 +277,7 @@ return false;
                 boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, dateField);
 
                 if (checkValidaiton) {
-                    try {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                        } else {
-                            //  getLocation(view);
-                            gpsTracker = new GPSTracker(getContext());
-                            lat = String.valueOf(gpsTracker.getLatitude());
-                            lon = String.valueOf(gpsTracker.getLongitude());
-                            finalSubmission();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                  finalSubmission();
                 } else {
                     //do the code for save all data
                     // Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();

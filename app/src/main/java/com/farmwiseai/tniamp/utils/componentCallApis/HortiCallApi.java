@@ -59,7 +59,7 @@ public class HortiCallApi {
         componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                subComponentSpinner.setVisibility(View.VISIBLE);
+              //  subComponentSpinner.setVisibility(View.VISIBLE);
 
                 try {
                     compName = componentList.get(i).getName();
@@ -84,6 +84,7 @@ public class HortiCallApi {
 
                     } else if (names.equalsIgnoreCase("Model Village")) {
                         subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner ,datePicker, trainingLyt);
+                       subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
@@ -91,12 +92,14 @@ public class HortiCallApi {
                         trainingLyt.setVisibility(View.GONE);
                     }else if(names.equalsIgnoreCase("Crop Diversification")){
                         subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner,datePicker, trainingLyt);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.VISIBLE);
                         trainingLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                     }else if(names.equalsIgnoreCase("IEC/CB")){
                         subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner,datePicker, trainingLyt);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
                         trainingLyt.setVisibility(View.VISIBLE);
@@ -155,9 +158,11 @@ public class HortiCallApi {
                     if (names.equalsIgnoreCase("Training")) {
                         hideLayout.setVisibility(View.VISIBLE);
                         cropSpinner.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Exposure")) {
                         hideLayout.setVisibility(View.VISIBLE);
                         cropSpinner.setVisibility(View.GONE);
+                        stageSpinner.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Vegetables")
                             || names.equalsIgnoreCase("Fruits")
                             || names.equalsIgnoreCase("Spices")
@@ -165,7 +170,9 @@ public class HortiCallApi {
                             || names.equalsIgnoreCase("Plantation Crops")) {
                         hideLayout.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.VISIBLE);
-                        stageSpinner.setVisibility(View.VISIBLE);
+                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
+
+                        stageSpinner.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("SWIKC")
                             || names.equalsIgnoreCase("Water walk") ||
                             names.equalsIgnoreCase("PRA Excercise") ||
@@ -188,12 +195,11 @@ public class HortiCallApi {
                     }
                     else {
                         hideLayout.setVisibility(View.GONE);
-                        cropSpinner.setVisibility(View.GONE);
+                        cropSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
                     }
                     Log.i(TAG, "posvalue2: " + positionValue2);
-                    cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {

@@ -449,15 +449,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, gender, survey_no, area, near_tank, remarks, dateField, interventionName, mobileNumber);
                 if (checkValidaiton) {
-                    try {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                        } else {
-                            finalSubmission();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                   finalSubmission();
                 } else {
                     //do the code for save all data
                     //  Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();

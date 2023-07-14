@@ -508,19 +508,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                         category1, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop,
                         nop, mon, moo, fon, foo, intName);
                 if (checkValidaiton) {
-                    try {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                        } else {
-                            //  getLocation(view);
-                            gpsTracker = new GPSTracker(getContext());
-                            lat = String.valueOf(gpsTracker.getLatitude());
-                            lon = String.valueOf(gpsTracker.getLongitude());
-                            finalSubmission();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                finalSubmission();
                 } else {
                     //   mLoadCustomToast(getActivity(), "Server error");
                 }

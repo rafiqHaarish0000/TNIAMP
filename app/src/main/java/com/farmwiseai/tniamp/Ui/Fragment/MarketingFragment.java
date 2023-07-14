@@ -159,6 +159,9 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         marketingBinding.incorporationDateTxt.setOnClickListener(this);
         marketingBinding.inNumberDate.setOnClickListener(this);
         marketingBinding.DOCompletion.setOnClickListener(this);
+        marketingBinding.durationVisit.setOnClickListener(this);
+        marketingBinding.dateOfRealease.setOnClickListener(this);
+        marketingBinding.durationTrainigTxt.setOnClickListener(this);
 
 
         remarks = marketingBinding.remarksTxt.getText().toString();
@@ -495,6 +498,9 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.dateOfRealease:
                 dateFieldValidation(marketingBinding.dateOfRealease);
+                break;
+            case R.id.durationTrainigTxt:
+                dateFieldValidation(marketingBinding.durationTrainigTxt);
                 break;
 
         }

@@ -230,7 +230,12 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         } else if (stagesSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            if (agricultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty() || agricultureBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
+                agricultureBinding.inerventionNameTxt.setError("field empty");
+                return false;
+            }
+        }else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (seed_lyt.getVisibility() == View.VISIBLE) {

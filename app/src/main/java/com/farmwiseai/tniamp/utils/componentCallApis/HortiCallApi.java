@@ -23,7 +23,7 @@ import java.util.List;
 public class HortiCallApi {
     private Activity activity;
     private Context context;
-    private List<ComponentData> componentList, cropList,stageList,sub_componentList;
+    private List<ComponentData> componentList, cropList, stageList, sub_componentList;
     private ComponentAdapter adapters;
     private CharSequence positionValue;
     private CharSequence positionValue2;
@@ -59,13 +59,13 @@ public class HortiCallApi {
         componentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-              //  subComponentSpinner.setVisibility(View.VISIBLE);
+                //  subComponentSpinner.setVisibility(View.VISIBLE);
 
                 try {
                     compName = componentList.get(i).getName();
                     subCompName = null;
                     stageName = null;
-                    stageLastName=null;
+                    stageLastName = null;
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     positionValue = String.valueOf(componentList.get(i).getID());
                     lookUpDataClass.setComponentValue(compName);
@@ -83,29 +83,28 @@ public class HortiCallApi {
                         trainingLyt.setVisibility(View.GONE);
 
                     } else if (names.equalsIgnoreCase("Model Village")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner ,datePicker, trainingLyt);
-                       subComponentSpinner.setVisibility(View.VISIBLE);
+                        subComponenetDropDown(positionValue, subComponentSpinner, cropSpinner, stageSpinner, datePicker, trainingLyt);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
                         trainingLyt.setVisibility(View.GONE);
-                    }else if(names.equalsIgnoreCase("Crop Diversification")){
-                        subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner,datePicker, trainingLyt);
+                    } else if (names.equalsIgnoreCase("Crop Diversification")) {
+                        subComponenetDropDown(positionValue, subComponentSpinner, cropSpinner, stageSpinner, datePicker, trainingLyt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.VISIBLE);
                         trainingLyt.setVisibility(View.GONE);
                         interventioNameLyt.setVisibility(View.GONE);
-                    }else if(names.equalsIgnoreCase("IEC/CB")){
-                        subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner,datePicker, trainingLyt);
+                    } else if (names.equalsIgnoreCase("IEC/CB")) {
+                        subComponenetDropDown(positionValue, subComponentSpinner, cropSpinner, stageSpinner, datePicker, trainingLyt);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         cropSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
                         trainingLyt.setVisibility(View.VISIBLE);
                         interventioNameLyt.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         Log.i(TAG, "itemSelected: " + String.valueOf(componentList.get(i).getID()));
                         cropSpinner.setVisibility(View.GONE);
@@ -114,7 +113,7 @@ public class HortiCallApi {
                         trainingLyt.setVisibility(View.GONE);
                         visLyt.setVisibility(View.VISIBLE);
                         interventioNameLyt.setVisibility(View.GONE);
-                        subComponenetDropDown(positionValue, subComponentSpinner,cropSpinner,stageSpinner ,datePicker, trainingLyt);
+                        subComponenetDropDown(positionValue, subComponentSpinner, cropSpinner, stageSpinner, datePicker, trainingLyt);
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
 
@@ -134,7 +133,7 @@ public class HortiCallApi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner cropSpinner,Spinner stageSpinner ,EditText editText, LinearLayout hideLayout) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner cropSpinner, Spinner stageSpinner, EditText editText, LinearLayout hideLayout) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "hortilookup.json");
@@ -146,7 +145,7 @@ public class HortiCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 subCompName = sub_componentList.get(i).getName();
                 stageName = null;
-                stageLastName=null;
+                stageLastName = null;
                 String names = sub_componentList.get(i).getName();
                 lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                 lookUpDataClass.setComponentValue(compName);
@@ -170,8 +169,7 @@ public class HortiCallApi {
                             || names.equalsIgnoreCase("Plantation Crops")) {
                         hideLayout.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.VISIBLE);
-                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
-
+                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()), cropSpinner, stageSpinner, editText);
                         stageSpinner.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("SWIKC")
                             || names.equalsIgnoreCase("Water walk") ||
@@ -186,18 +184,17 @@ public class HortiCallApi {
                         editText.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
-                    }else if(names.equalsIgnoreCase("CCWM")){
+                    } else if (names.equalsIgnoreCase("CCWM")) {
                         stageSpinner.setVisibility(View.VISIBLE);
                         hideLayout.setVisibility(View.GONE);
                         cropSpinner.setVisibility(View.GONE);
-                        stagesDropDown(String.valueOf(sub_componentList.get(i).getID()),stageSpinner,editText);
+                        stagesDropDown(String.valueOf(sub_componentList.get(i).getID()), stageSpinner, editText);
 
-                    }
-                    else {
+                    } else {
                         hideLayout.setVisibility(View.GONE);
-                        cropSpinner.setVisibility(View.VISIBLE);
+                        cropSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
-                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()),cropSpinner,stageSpinner,editText);
+                        cropStageDropDown(String.valueOf(sub_componentList.get(i).getID()), cropSpinner, stageSpinner, editText);
                     }
                     Log.i(TAG, "posvalue2: " + positionValue2);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
@@ -218,7 +215,7 @@ public class HortiCallApi {
     }
 
 
-    public void cropStageDropDown(CharSequence stagePosVal, Spinner cropSpinner,Spinner stageSpinner,EditText editText) {
+    public void cropStageDropDown(CharSequence stagePosVal, Spinner cropSpinner, Spinner stageSpinner, EditText editText) {
 
         commonFunction = new CommonFunction(activity);
         cropList = FetchDeptLookup.readDataFromFile(context, "hortilookup.json");
@@ -232,8 +229,9 @@ public class HortiCallApi {
                     Log.i(TAG, "names: " + cropList.get(i).getName());
                     String names = cropList.get(i).getName();
                     stageName = cropList.get(i).getName();
-                    stageLastName=null;
-                    stagesDropDown(String.valueOf(cropList.get(i).getID()),stageSpinner,editText);
+                    stageLastName = null;
+                    stagesDropDown(String.valueOf(cropList.get(i).getID()), stageSpinner, editText);
+                    stageSpinner.setVisibility(View.VISIBLE);
                     lookUpDataClass.setIntervention3(String.valueOf(cropList.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
@@ -266,23 +264,29 @@ public class HortiCallApi {
                     String names = stageList.get(i).getName();
                     stageLastName = stageList.get(i).getName();
 
-                    if (names.equalsIgnoreCase("Date of Sowing")||
+                    if (names.equalsIgnoreCase("Date of Sowing") ||
                             names.equalsIgnoreCase("Date of Planting")
-                            ||names.equalsIgnoreCase("Date of Transplanting")) {
+                            || names.equalsIgnoreCase("Date of Transplanting")) {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("Planting")) {
                         editText.setVisibility(View.VISIBLE);
                     } else {
                         editText.setVisibility(View.GONE);
                     }
-                    lookUpDataClass.setIntervention3(String.valueOf(cropList.get(i).getID()));
                     lookUpDataClass.setIntervention4(stageList.get(i).getName());
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
-                    lookUpDataClass.setStageValue(stageName);
+                    if (stageName == null) {
+                        lookUpDataClass.setIntervention3("1");
+                        lookUpDataClass.setStageValue("stageName");
+                    } else {
+                        lookUpDataClass.setStageValue(stageName);
+                        lookUpDataClass.setIntervention3(String.valueOf(cropList.get(i).getID()));
+                    }
+                    lookUpDataClass.setStagelastvalue(stageLastName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
             }
@@ -295,8 +299,6 @@ public class HortiCallApi {
 
 
     }
-
-
 
 
 }

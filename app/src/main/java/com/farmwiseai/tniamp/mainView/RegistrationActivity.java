@@ -2,17 +2,25 @@ package com.farmwiseai.tniamp.mainView;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
@@ -25,9 +33,12 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.RegisterResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
+import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.ActivityRegistrationBinding;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.FetchDeptLookup;
+import com.farmwiseai.tniamp.utils.LatLongPojo;
+import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.ValidationUtils;
 import com.farmwiseai.tniamp.utils.adapters.BlockAdapter;
 import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
@@ -36,7 +47,10 @@ import com.farmwiseai.tniamp.utils.adapters.DistrictAdapter;
 import com.farmwiseai.tniamp.utils.adapters.SubBasinAdapter;
 import com.farmwiseai.tniamp.utils.adapters.VillageAdaapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -67,7 +81,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private CharSequence positionValue;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
-
+    private GPSTracker gpsTracker;
+    private static final int PERMISSION_REQUEST_CODE = 200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +90,26 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         setContentView(registrationBinding.getRoot());
         mCommonFunction = new CommonFunction(RegistrationActivity.this);
         registrationBinding.submissionBtn.setOnClickListener(this);
+        getLocation();
         checkAllDropDowns();
     }
+    private void getLocation() {
+        if (PermissionUtils.checkPermission(getApplicationContext()) == false) {
+            requestPermission();
+        }
+        gpsTracker = new GPSTracker(this);
+        try {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            } else {
+                gpsTracker.getLatitude();
+                gpsTracker.getLongitude();
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -131,13 +163,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         departmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                department = departmentSpinner.getSelectedItem().toString();
+                department = String.valueOf(departmentList.get(i).getID());
 //                mCommonFunction.mLoadCustomToast(RegistrationActivity.this,department);
                 sub_basin_DropDown = FetchDeptLookup.readSubBasin(RegistrationActivity.this, "sub_basin.json");
                 subAdapter = new SubBasinAdapter(RegistrationActivity.this, sub_basin_DropDown);
-                department = departmentList.get(i).getNAME();
+              /*  department = departmentList.get(i).getNAME();
                 myString = String.valueOf(1);
-                subAdapter.getFilter().filter(myString);
+                subAdapter.getFilter().filter(myString);*/
                 sub_basin.setAdapter(subAdapter);
             }
 
@@ -216,23 +248,33 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
     }
+    private String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
 
     private void finalSubmission() {
         try {
+
+
             if (mCommonFunction.isNetworkAvailable() == true) {
                 RegisterRequest registerRequest = new RegisterRequest();
-                registerRequest.setSERIAL_NO("");
-                registerRequest.setLINE_DEPT(1);
-                registerRequest.setVILLAGE(villageId);
-                registerRequest.setNAME(registrationBinding.name.getText().toString());
-                registerRequest.setMOBILE(registrationBinding.mobilenumber.getText().toString());
-                registerRequest.setEMAIL(registrationBinding.email.getText().toString());
-                registerRequest.setCREATED_DATE("");
-                registerRequest.setLat("");
-                registerRequest.setLon("");
+                registerRequest.setSerialNo("123po45pos67");
+                registerRequest.setLineDept(department);
+                registerRequest.setVillage(String.valueOf(villageId));
+                registerRequest.setName(registrationBinding.name.getText().toString().trim());
+                registerRequest.setMobile(registrationBinding.mobilenumber.getText().toString());
+                registerRequest.setEmail(registrationBinding.email.getText().toString());
+                registerRequest.setCreatedDate(getDateTime());
+                LatLongPojo latLongPojo = new LatLongPojo();
+                latLongPojo = PermissionUtils.getLocation(getApplicationContext());
+
+                registerRequest.setLat(latLongPojo.getLat());
+                registerRequest.setLon(latLongPojo.getLon());
                 registerRequest.setVersion("");
-                registerRequest.setSubbasin(subBasinId);
-                registerRequest.setUSER_STATUS(2);
+                registerRequest.setSubbasin(String.valueOf(subBasinId));
+                registerRequest.setUserStatus("1");
 
                 Interface_Api api = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<RegisterResponse> registerResponseCall = null;
@@ -248,19 +290,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             i.putExtras(extras);
                             startActivity(i);
                         } else {
-                            mCommonFunction.mLoadCustomToast(RegistrationActivity.this, "Server error,Please try again later.!");
+                            Toast.makeText(getApplicationContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                        mCommonFunction.mLoadCustomToast(RegistrationActivity.this, "502 Bad Gateway.!");
                     }
                 });
 
 
             } else {
-                mCommonFunction.mLoadCustomToast(this, "Internet connection lost, Please connect your network available.!");
+                mCommonFunction.mLoadCustomToast(this, "Please check your Internet connectivity!");
             }
         } catch (Exception e) {
 //            mCommonFunction.mLoadCustomToast(this, e.getMessage());
@@ -271,4 +312,47 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onBackPressed() {
         finish();
     }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+
+                    // main logic
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            showMessageOKCancel("You need to allow access permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermission();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }
+                break;
+        }
+    }
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION},
+                PERMISSION_REQUEST_CODE);
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(getApplicationContext())
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .create()
+                .show();
+    }
+
 }

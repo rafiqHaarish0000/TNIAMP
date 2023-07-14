@@ -131,7 +131,7 @@ public class TNAU_CallApi {
 
     //second spinner phrase;
     public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText,
-                                      EditText varity, EditText yield) {
+                                      EditText variety, EditText yield) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "lookup.json");
@@ -161,7 +161,10 @@ public class TNAU_CallApi {
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("First") || names.contains("Field")) {
                         thirdSpinner.setVisibility(View.GONE);
-                    } else if (names.contains("Harvest")) {
+                    } else if (names.contains("Harvest") || names.equalsIgnoreCase("Harvest of Pulse") ||
+                            names.equalsIgnoreCase("Harvest of Rice")) {
+                        variety.setVisibility(View.VISIBLE);
+                        yield.setVisibility(View.VISIBLE);
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
                     } else if (names.contains("Group formation")) {
@@ -185,7 +188,7 @@ public class TNAU_CallApi {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
                     }
-                    stagesDropDown(positionValue2, thirdSpinner, editText, varity, yield);
+                    stagesDropDown(positionValue2, thirdSpinner, editText, variety, yield);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);

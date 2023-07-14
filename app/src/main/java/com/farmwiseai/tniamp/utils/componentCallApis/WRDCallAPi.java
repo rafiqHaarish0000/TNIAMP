@@ -308,14 +308,18 @@ public class WRDCallAPi {
                         stageLastName = stagesList.get(i).getName();
                         // stageLastName = null;
 
-                        lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+                     //   lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
                         lookUpDataClass.setIntervention4(stagesList.get(i).getName());
                         lookUpDataClass.setComponentValue(compName);
                         lookUpDataClass.setSubComponentValue(subCompName);
                         if (stageName == null) {
                             lookUpDataClass.setStageValue("stageName");
+                            lookUpDataClass.setIntervention3("1");
+
                         } else {
                             lookUpDataClass.setStageValue("stageName");
+                            lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+
                         }
                         lookUpDataClass.setStagelastvalue(stageLastName);
                         backPressListener.onSelectedInputs(lookUpDataClass);

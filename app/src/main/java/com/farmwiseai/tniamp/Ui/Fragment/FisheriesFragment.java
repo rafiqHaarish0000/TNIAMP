@@ -159,15 +159,11 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         fisheriesBinding.submissionBtn.setOnClickListener(this);
         fisheriesBinding.image1.setOnClickListener(this);
         fisheriesBinding.image2.setOnClickListener(this);
-
         remarks = fisheriesBinding.remarksTxt.getText().toString();
-
-
         componentSpinner = fisheriesBinding.componentTxt;
         sub_componentSpinner = fisheriesBinding.subComponentsTxt;
         stageSpinner = fisheriesBinding.stagesTxt;
         beneficaryFinal = fisheriesBinding.beneFinal;
-
         otherLyt = fisheriesBinding.othersLayout;
         linFishTankInfo = fisheriesBinding.linFishTankInfo;
         layout1 = fisheriesBinding.layout1;

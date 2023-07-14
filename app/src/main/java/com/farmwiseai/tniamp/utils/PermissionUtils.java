@@ -64,7 +64,7 @@ public class PermissionUtils {
     public static void requestPermission(Activity context) {
 
         ActivityCompat.requestPermissions(context,
-                new String[]{Manifest.permission.CAMERA},
+                new String[]{Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION},
                 PERMISSION_REQUEST_CODE);
     }
 }

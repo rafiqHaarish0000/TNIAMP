@@ -165,7 +165,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         marketingBinding.dateOfRealease.setOnClickListener(this);
 
 
-        remarks = marketingBinding.remarksTxt.getText().toString();
+        remarks = marketingBinding.remarksTxt.getText().toString().trim();
 
 
         componentSpinner = marketingBinding.componentTxt;
@@ -199,7 +199,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     private boolean fieldValidation(String category,
                                     String remarks, String date) {
 
-        remarks = marketingBinding.remarksTxt.getText().toString();
+        remarks = marketingBinding.remarksTxt.getText().toString().trim();
 
        /* if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
@@ -231,63 +231,63 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         //layout 1
         else if (layout1.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
-            if (marketingBinding.numberFPC.getText().toString().isEmpty()) {
+            if (marketingBinding.numberFPC.getText().toString().trim().isEmpty()) {
                 marketingBinding.numberFPC.setError("field empty");
                 return false;
-            } else if (marketingBinding.inNumberDate.getText().toString().isEmpty()
+            } else if (marketingBinding.inNumberDate.getText().toString().trim().isEmpty()
                     || marketingBinding.inNumberDate.getText().length() == 0) {
                 marketingBinding.inNumberDate.setError("field empty");
                 return false;
-            } else if (marketingBinding.noVillage.getText().toString().isEmpty()) {
+            } else if (marketingBinding.noVillage.getText().toString().trim().isEmpty()) {
                 marketingBinding.noVillage.setError("field empty");
                 return false;
-            } else if (marketingBinding.noOfFigs.getText().toString().isEmpty()) {
+            } else if (marketingBinding.noOfFigs.getText().toString().trim().isEmpty()) {
                 marketingBinding.noOfFigs.setError("field empty");
                 return false;
-            } else if (marketingBinding.noOfMembers.getText().toString().isEmpty()) {
+            } else if (marketingBinding.noOfMembers.getText().toString().trim().isEmpty()) {
                 marketingBinding.noOfMembers.setError("field empty");
                 return false;
-            } else if (marketingBinding.maleOthers.getText().toString().isEmpty()) {
+            } else if (marketingBinding.maleOthers.getText().toString().trim().isEmpty()) {
                 marketingBinding.maleOthers.setError("field empty");
                 return false;
-            } else if (marketingBinding.maleNo.getText().toString().isEmpty()) {
+            } else if (marketingBinding.maleNo.getText().toString().trim().isEmpty()) {
                 marketingBinding.maleNo.setError("field empty");
                 return false;
-            } else if (marketingBinding.femaleOthers.getText().toString().isEmpty()) {
+            } else if (marketingBinding.femaleOthers.getText().toString().trim().isEmpty()) {
                 marketingBinding.femaleOthers.setError("field empty");
                 return false;
-            } else if (marketingBinding.femaleNo.getText().toString().isEmpty()) {
+            } else if (marketingBinding.femaleNo.getText().toString().trim().isEmpty()) {
                 marketingBinding.maleNo.setError("field empty");
                 return false;
             } else if (cropNameVal == null || seasonNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
-            } else if (marketingBinding.consultingAgency.getText().toString().isEmpty()) {
+            } else if (marketingBinding.consultingAgency.getText().toString().trim().isEmpty()) {
                 marketingBinding.consultingAgency.setError("field empty");
                 return false;
-            } else if (marketingBinding.incorporationNumber.getText().toString().isEmpty()) {
+            } else if (marketingBinding.incorporationNumber.getText().toString().trim().isEmpty()) {
                 marketingBinding.incorporationNumber.setError("field empty");
                 return false;
-            } else if (marketingBinding.incorporationDateTxt.getText().toString().isEmpty()) {
+            } else if (marketingBinding.incorporationDateTxt.getText().toString().trim().isEmpty()) {
                 marketingBinding.incorporationDateTxt.setError("field empty");
                 return false;
-            } else if (marketingBinding.locationConsultancyTxt.getText().toString().isEmpty()) {
+            } else if (marketingBinding.locationConsultancyTxt.getText().toString().trim().isEmpty()) {
                 marketingBinding.locationConsultancyTxt.setError("field empty");
                 return false;
-            } else if (marketingBinding.nameOfCeo.getText().toString().isEmpty()) {
+            } else if (marketingBinding.nameOfCeo.getText().toString().trim().isEmpty()) {
                 marketingBinding.nameOfCeo.setError("field empty");
                 return false;
-            } else if (marketingBinding.mobileNumber.getText().toString().isEmpty()
+            } else if (marketingBinding.mobileNumber.getText().toString().trim().isEmpty()
                     || marketingBinding.mobileNumber.length() < 10) {
                 marketingBinding.mobileNumber.setError("Please enter the valid mobile number");
                 return false;
-            } else if (!ValidationUtils.isValidMobileNumber(marketingBinding.mobileNumber.getText().toString())) {
+            } else if (!ValidationUtils.isValidMobileNumber(marketingBinding.mobileNumber.getText().toString().trim())) {
                 marketingBinding.mobileNumber.setError("Please enter the valid mobile number");
                 return false;
-            } else if (marketingBinding.emailTxt.getText().toString().isEmpty()) {
+            } else if (marketingBinding.emailTxt.getText().toString().trim().isEmpty()) {
                 marketingBinding.emailTxt.setError("field empty");
                 return false;
-            } else if (marketingBinding.infrastructureTxt.getText().toString().isEmpty()) {
+            } else if (marketingBinding.infrastructureTxt.getText().toString().trim().isEmpty()) {
                 marketingBinding.infrastructureTxt.setError("field empty");
                 return false;
             }
@@ -299,26 +299,26 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             if (catNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
-            } else if (marketingBinding.nameValue.getText().toString().isEmpty()) {
+            } else if (marketingBinding.nameValue.getText().toString().trim().isEmpty()) {
                 marketingBinding.nameValue.setError("field empty");
                 return false;
-            } else if (marketingBinding.capacity.getText().toString().isEmpty()) {
+            } else if (marketingBinding.capacity.getText().toString().trim().isEmpty()) {
                 marketingBinding.capacity.setError("field empty");
                 return false;
-            } else if (marketingBinding.DOCompletion.getText().toString().isEmpty() ||
+            } else if (marketingBinding.DOCompletion.getText().toString().trim().isEmpty() ||
                     marketingBinding.DOCompletion.getText().length() == 0) {
                 marketingBinding.DOCompletion.setError("field empty");
                 return false;
-            } else if (marketingBinding.QantityStoredTXT.getText().toString().isEmpty()) {
+            } else if (marketingBinding.QantityStoredTXT.getText().toString().trim().isEmpty()) {
                 marketingBinding.QantityStoredTXT.setError("field empty");
                 return false;
-            } else if (marketingBinding.noOfBeneficieries.getText().toString().isEmpty()) {
+            } else if (marketingBinding.noOfBeneficieries.getText().toString().trim().isEmpty()) {
                 marketingBinding.noOfBeneficieries.setError("field empty");
                 return false;
-            } else if (marketingBinding.govertShare.getText().toString().isEmpty()) {
+            } else if (marketingBinding.govertShare.getText().toString().trim().isEmpty()) {
                 marketingBinding.govertShare.setError("field empty");
                 return false;
-            } else if (marketingBinding.contributionTxt.getText().toString().isEmpty()) {
+            } else if (marketingBinding.contributionTxt.getText().toString().trim().isEmpty()) {
                 marketingBinding.contributionTxt.setError("field empty");
                 return false;
             }
@@ -326,32 +326,32 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         //training layout
         else if (marketingBinding.trainingLyt.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
-            if (marketingBinding.venue.getText().toString().isEmpty()) {
+            if (marketingBinding.venue.getText().toString().trim().isEmpty()) {
                 marketingBinding.venue.setError("field empty");
                 return false;
-            } else if (marketingBinding.durationTrainigTxt.getText().toString().isEmpty() ||
+            } else if (marketingBinding.durationTrainigTxt.getText().toString().trim().isEmpty() ||
                     marketingBinding.durationTrainigTxt.getText().length() == 0) {
                 marketingBinding.durationTrainigTxt.setError("field empty");
                 return false;
-            } else if (marketingBinding.noOftrainee.getText().toString().isEmpty()) {
+            } else if (marketingBinding.noOftrainee.getText().toString().trim().isEmpty()) {
                 marketingBinding.noOftrainee.setError("field empty");
                 return false;
-            } else if (marketingBinding.traineeOtherNo.getText().toString().isEmpty()) {
+            } else if (marketingBinding.traineeOtherNo.getText().toString().trim().isEmpty()) {
                 marketingBinding.traineeOtherNo.setError("field empty");
                 return false;
-            } else if (marketingBinding.traineeSCSTNO.getText().toString().isEmpty()) {
+            } else if (marketingBinding.traineeSCSTNO.getText().toString().trim().isEmpty()) {
                 marketingBinding.traineeSCSTNO.setError("field empty");
                 return false;
-            } else if (marketingBinding.traineeOtherNoF.getText().toString().isEmpty()) {
+            } else if (marketingBinding.traineeOtherNoF.getText().toString().trim().isEmpty()) {
                 marketingBinding.traineeOtherNoF.setError("field empty");
                 return false;
-            } else if (marketingBinding.traineeSCSTNOF.getText().toString().isEmpty()) {
+            } else if (marketingBinding.traineeSCSTNOF.getText().toString().trim().isEmpty()) {
                 marketingBinding.traineeSCSTNOF.setError("field empty");
                 return false;
-            } else if (marketingBinding.dateFrom.getText().toString().isEmpty()) {
+            } else if (marketingBinding.dateFrom1.getText().toString().trim().isEmpty()) {
                 marketingBinding.dateFrom.setError("field empty");
                 return false;
-            } else if (marketingBinding.dateTo.getText().toString().isEmpty()) {
+            } else if (marketingBinding.dateTo2.getText().toString().trim().isEmpty()) {
                 marketingBinding.dateTo.setError("field empty");
                 return false;
             }
@@ -359,29 +359,29 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         //exposure layout
         else if (marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
-            if (marketingBinding.nameHq.getText().toString().isEmpty()) {
+            if (marketingBinding.nameHq.getText().toString().trim().isEmpty()) {
                 marketingBinding.nameHq.setError("field empty");
                 return false;
-            } else if (marketingBinding.exposeNumber.getText().toString().isEmpty()) {
+            } else if (marketingBinding.exposeNumber.getText().toString().trim().isEmpty()) {
                 marketingBinding.exposeNumber.setError("field empty");
                 return false;
-            } else if (marketingBinding.durationVisit.getText().toString().isEmpty() ||
-                    marketingBinding.durationVisit.getText().toString().length() == 0) {
+            } else if (marketingBinding.durationVisit.getText().toString().trim().isEmpty() ||
+                    marketingBinding.durationVisit.getText().toString().trim().length() == 0) {
                 marketingBinding.durationVisit.setError("field empty");
                 return false;
-            } else if (marketingBinding.otherNoE.getText().toString().isEmpty()) {
+            } else if (marketingBinding.otherNoE.getText().toString().trim().isEmpty()) {
                 marketingBinding.otherNoE.setError("field empty");
                 return false;
-            } else if (marketingBinding.scStNOE.getText().toString().isEmpty()) {
+            } else if (marketingBinding.scStNOE.getText().toString().trim().isEmpty()) {
                 marketingBinding.scStNOE.setError("field empty");
                 return false;
-            } else if (marketingBinding.scStNOEF.getText().toString().isEmpty()) {
+            } else if (marketingBinding.scStNOEF.getText().toString().trim().isEmpty()) {
                 marketingBinding.scStNOEF.setError("field empty");
                 return false;
-            } else if (marketingBinding.country.getText().toString().isEmpty()) {
+            } else if (marketingBinding.country.getText().toString().trim().isEmpty()) {
                 marketingBinding.country.setError("field empty");
                 return false;
-            } else if (marketingBinding.places.getText().toString().isEmpty()) {
+            } else if (marketingBinding.places.getText().toString().trim().isEmpty()) {
                 marketingBinding.places.setError("field empty");
                 return false;
             }
@@ -389,26 +389,26 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         //newReqLayout
         else if (newReqLayout.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
-            if (marketingBinding.sINo.getText().toString().isEmpty()) {
+            if (marketingBinding.sINo.getText().toString().trim().isEmpty()) {
                 marketingBinding.sINo.setError("field empty");
                 return false;
-            } else if (marketingBinding.nameOfbene.getText().toString().isEmpty()) {
+            } else if (marketingBinding.nameOfbene.getText().toString().trim().isEmpty()) {
                 marketingBinding.nameOfbene.setError("field empty");
                 return false;
-            } else if (marketingBinding.villageName.getText().toString().isEmpty()) {
+            } else if (marketingBinding.villageName.getText().toString().trim().isEmpty()) {
                 marketingBinding.villageName.setError("field empty");
                 return false;
-            } else if (marketingBinding.nameOfProject.getText().toString().isEmpty()) {
+            } else if (marketingBinding.nameOfProject.getText().toString().trim().isEmpty()) {
                 marketingBinding.nameOfProject.setError("field empty");
                 return false;
-            } else if (marketingBinding.costOfProject.getText().toString().isEmpty()) {
+            } else if (marketingBinding.costOfProject.getText().toString().trim().isEmpty()) {
                 marketingBinding.costOfProject.setError("field empty");
                 return false;
-            } else if (marketingBinding.dateOfRealease.getText().toString().isEmpty()) {
+            } else if (marketingBinding.dateOfRealease.getText().toString().trim().isEmpty()) {
                 marketingBinding.dateOfRealease.setError("field empty");
                 return false;
-            } else if (marketingBinding.totalGrant.getText().toString().isEmpty() ||
-                    marketingBinding.totalGrant.getText().toString().length() == 0) {
+            } else if (marketingBinding.totalGrant.getText().toString().trim().isEmpty() ||
+                    marketingBinding.totalGrant.getText().toString().trim().length() == 0) {
                 marketingBinding.totalGrant.setError("field empty");
                 return false;
             }
@@ -861,7 +861,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
     private void getAllData() {
 
-        remarks = marketingBinding.remarksTxt.getText().toString();
+        remarks = marketingBinding.remarksTxt.getText().toString().trim();
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -878,8 +878,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setDate_of_completion("");
         request.setDate_to("");
         request.setEmail("");
-        request.setFemale_no1(marketingBinding.femaleNo.getText().toString());
-        request.setFemale_no2(marketingBinding.femaleNo.getText().toString());
+        request.setFemale_no1(marketingBinding.femaleNo.getText().toString().trim());
+        request.setFemale_no2(marketingBinding.femaleNo.getText().toString().trim());
         request.setFpc_name("");
         request.setGodown_category("");
         request.setGovt_share("");
@@ -887,9 +887,9 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setIntervention1(intervention1);
         request.setIntervention2(intervention2);
         request.setIntervention3(intervention3);
-        request.setMobile(marketingBinding.mobileNumber.getText().toString());
-        request.setName(marketingBinding.nameValue.getText().toString());
-        request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString());
+        request.setMobile(marketingBinding.mobileNumber.getText().toString().trim());
+        request.setName(marketingBinding.nameValue.getText().toString().trim());
+        request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString().trim());
         request.setCategory("");
         request.setNof_female("1");
         request.setNof_male("1");
@@ -914,7 +914,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setOthers_male_no("1");
         request.setSc_st_male_no("1");
         request.setSc_st_female_no("1");
-        request.setVenue(marketingBinding.venue.getText().toString());
+        request.setVenue(marketingBinding.venue.getText().toString().trim());
         request.setStatus("0");
 
         if (mCommonFunction.isNetworkAvailable() == true) {

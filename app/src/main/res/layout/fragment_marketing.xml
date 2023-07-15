@@ -419,7 +419,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Name of consulting agency" />
+                            android:hint="Name of consulting agency"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
 
                         <EditText
                             android:id="@+id/incorporationNumber"
@@ -448,7 +450,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Location of the Consulting agency" />
+                            android:hint="Location of the Consulting agency"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
 
                         <EditText
                             android:id="@+id/nameOfCeo"
@@ -456,7 +460,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Name of the CEO" />
+                            android:hint="Name of the CEO"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
 
                         <EditText
                             android:id="@+id/mobile_number"
@@ -484,7 +490,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Infrastructure available" />
+                            android:hint="Infrastructure available"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                     </LinearLayout>
                     <!--layout 2 construction of storage godowns-->
                     <LinearLayout
@@ -520,7 +528,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="@string/name" />
+                            android:hint="@string/name"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
 
                         <EditText
                             android:id="@+id/capacity"
@@ -528,7 +538,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Capacity(Mts)" />
+                            android:hint="Capacity(Mts)"
+                            android:inputType="number"/>
 
                         <EditText
                             android:id="@+id/DOCompletion"
@@ -549,7 +560,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:inputType="number"
-                            android:hint="Quantity stored (Mts)" />
+                            android:hint="Quantity stored (Mts)"
+                            />
 
                         <EditText
                             android:id="@+id/noOfBeneficieries"
@@ -575,7 +587,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Contribution" />
+                            android:hint="Contribution"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                     </LinearLayout>
                     <!--training layout-->
                     <LinearLayout
@@ -611,7 +625,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="@string/venue" />
+                            android:hint="@string/venue"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
 
                         <EditText
                             android:id="@+id/durationTrainigTxt"
@@ -637,7 +653,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="start"
-                                android:hint="No of Trainees" />
+                                android:hint="No of Trainees"
+                                android:inputType="number"/>
 
                             <TextView
 
@@ -787,7 +804,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Name (HQ/FPC)" />
+                            android:hint="Name (HQ/FPC)"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
 
                         <EditText
                             android:id="@+id/durationVisit"
@@ -795,7 +814,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Duration of Visit(Days)" />
+                            android:hint="Duration of Visit(Days)"
+                            android:inputType="number"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -812,7 +832,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="start"
-                                android:hint="Numbers" />
+                                android:hint="Numbers"
+                                android:inputType="number"
+
+                                />
 
                             <TextView
                                 style="@style/head_text"
@@ -909,7 +932,7 @@
                                     android:cursorVisible="false"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-                                    android:inputType="number" />
+                                    android:inputType="date" />
 
                                 <EditText
                                     android:id="@+id/dateTo"
@@ -932,7 +955,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                android:hint="Country/State Name" />
+                                android:hint="Country/State Name"
+                                android:inputType="text"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
 
                             <EditText
                                 android:id="@+id/places"
@@ -940,7 +965,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                android:hint="Places visited" />
+                                android:hint="Places visited"
+                                android:inputType="text"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                         </LinearLayout>
                     </LinearLayout>
                     <!--agri layout-->
@@ -960,7 +987,8 @@
                             style="@style/AppEdittext"
                             android:gravity="start"
                             android:layout_gravity="start"
-                            android:hint="SI.No"/>
+                            android:hint="SI.No"
+                            android:inputType="number"/>
                         <EditText
                             android:id="@+id/nameOfbene"
                             android:layout_width="match_parent"
@@ -968,7 +996,9 @@
                             style="@style/AppEdittext"
                             android:gravity="start"
                             android:layout_gravity="start"
-                            android:hint="Name of Beneficiriey"/>
+                            android:hint="Name of Beneficiriey"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                         <EditText
                             android:id="@+id/villageName"
                             android:layout_width="match_parent"
@@ -976,7 +1006,9 @@
                             style="@style/AppEdittext"
                             android:gravity="start"
                             android:layout_gravity="start"
-                            android:hint="Village"/>
+                            android:hint="Village"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                         <EditText
                             android:id="@+id/nameOfProject"
                             android:layout_width="match_parent"
@@ -984,7 +1016,9 @@
                             style="@style/AppEdittext"
                             android:gravity="start"
                             android:layout_gravity="start"
-                            android:hint="Name of the project"/>
+                            android:hint="Name of the project"
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
                         <EditText
                             android:id="@+id/costOfProject"
                             android:layout_width="match_parent"
@@ -992,7 +1026,8 @@
                             style="@style/AppEdittext"
                             android:gravity="start"
                             android:layout_gravity="start"
-                            android:hint="Cost of the project"/>
+                            android:hint="Cost of the project"
+                            android:inputType="number"/>
                         <EditText
                             android:id="@+id/dateOfRealease"
                             android:layout_width="match_parent"
@@ -1013,7 +1048,8 @@
                             android:gravity="start"
                             android:layout_gravity="start"
                             android:inputType="number"
-                            android:hint="Total Grant Amount"/>
+                            android:hint="Total Grant Amount"
+                            />
                     </LinearLayout>
 
 

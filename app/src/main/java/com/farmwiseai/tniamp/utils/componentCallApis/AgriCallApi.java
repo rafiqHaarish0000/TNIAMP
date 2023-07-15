@@ -73,6 +73,7 @@ public class AgriCallApi {
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.VISIBLE);
                         seedLyt.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
                         // trainingLyt.setVisibility(View.GONE);
 
                     } else if (names.equalsIgnoreCase("Model Village")) {

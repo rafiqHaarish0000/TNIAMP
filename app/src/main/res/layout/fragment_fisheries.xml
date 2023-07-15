@@ -450,7 +450,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Farm pond constructed by"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+                            />
 
                         <EditText
                             android:id="@+id/beneName"
@@ -459,7 +461,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Beneficary Name"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+                            />
 
                         <EditText
                             android:id="@+id/surveyVal"
@@ -468,7 +472,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Survey No."
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
+                            />
 
                         <EditText
                             android:id="@+id/mobileVal"
@@ -586,7 +592,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Farm pond constructed by"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+                            />
                     </LinearLayout>
 
                     <!--Last spinner-->

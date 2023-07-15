@@ -439,7 +439,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             }
-            return true;
+
 
         } else if (trainingLyt.getVisibility() == View.VISIBLE) {
 

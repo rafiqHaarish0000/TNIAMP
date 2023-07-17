@@ -185,11 +185,10 @@ public class WRDCallAPi {
                     }
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
-                    if(subCompName.equalsIgnoreCase("Others"))
-                    {
+                    if (subCompName.equalsIgnoreCase("Others")) {
                         lookUpDataClass.setStageValue("dummy value");
                         lookUpDataClass.setStagelastvalue("dummy value");
-                    }else {
+                    } else {
                         lookUpDataClass.setStageValue(stageName);
                         lookUpDataClass.setStagelastvalue(stageLastName);
                     }
@@ -233,15 +232,15 @@ public class WRDCallAPi {
                     String names = tankStageList.get(i).getName();
                     if (subCompName.equalsIgnoreCase("Tank Bund")) {
                         if (names.equalsIgnoreCase("Strengthening of Bund") ||
-                                names.equalsIgnoreCase("Model Sectioning of Bund") ||
-                                names.equalsIgnoreCase("Jungle Clearance")
-                            //   names.equalsIgnoreCase("Revetment")
-                        ) {
+                                names.equalsIgnoreCase("Model Sectioning of Bund")) {
                             stagesDropDown(String.valueOf(tankStageList.get(i).getID()), stageSpinner);
                             stageSpinner.setVisibility(View.VISIBLE);
+                        } else if (names.equalsIgnoreCase("Jungle Clearence") ||
+                                        names.equalsIgnoreCase("Revetment"))
+                        {
+                            stageSpinner.setVisibility(View.GONE);
                         }
-                    }
-                    if (compName.equalsIgnoreCase("Canal") || compName.equalsIgnoreCase("Channel")) {
+                    } else if (compName.equalsIgnoreCase("Canal") || compName.equalsIgnoreCase("Channel")) {
                         if (subCompName.equalsIgnoreCase("Desilting")) {
                             stageSpinner.setVisibility(View.GONE);
                         }

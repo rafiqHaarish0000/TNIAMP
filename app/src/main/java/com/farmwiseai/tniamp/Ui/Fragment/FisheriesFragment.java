@@ -102,7 +102,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     FragmentFisheriesBinding fisheriesBinding;
     boolean[] selectedLanguage;
     ArrayList<Integer> langList = new ArrayList<>();
-    String[] langArray = {"Catla", "Rohu", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
+    String[] langArray = {"Catla", "Rohu", "Mrigal", "Common carp", "Grass carp", "GIF Tilapia"};
     ArrayList<FishRequest> offlineMarkRequest = new ArrayList<>();
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
@@ -111,7 +111,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     private List<DistrictData> districtDropDown;
     private List<BlockData> blockDropDown;
     private List<VillageData> villageDataList;
-    private List<String> phraseList, interventionList, multiAdapterList, genderList, categoryList, lesseeList, speciesList, beneList;
+    private List<String> phraseList, interventionList, multiAdapterList, genderList, categoryList, lesseeList, speciesList, beneList,beneSecondlist;
     private VillageAdaapter villageAdaapter;
     private CharSequence myString = "0";
     private CharSequence posValue = "0";
@@ -437,6 +437,11 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         beneList.add("SHG");
         beneList.add("Others");
 
+        beneSecondlist = new ArrayList<>();
+        beneSecondlist.add("FCS");
+        beneSecondlist.add("WUA");
+        beneSecondlist.add("Others");
+
         //phase data
         phraseList = new ArrayList<>();
         phraseList.add("Choose phase");
@@ -585,7 +590,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-        fisheriesBinding.bene1.setItem(beneList);
+        fisheriesBinding.bene1.setItem(beneSecondlist);
         beneficarySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -600,7 +605,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-        fisheriesBinding.bene2.setItem(beneList);
+        fisheriesBinding.bene2.setItem(beneSecondlist);
         beneficarySpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

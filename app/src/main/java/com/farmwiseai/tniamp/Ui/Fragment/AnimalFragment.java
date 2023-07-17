@@ -401,22 +401,22 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         String mobileNumber = animalBinding.mobileNumber.getText().toString().trim();
 
-       /* if (componentValue != null) {
+       if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
-        }*/
+        }
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
-        return false;
-        }else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
+            return false;
+        } else if (sub_componentSpinner.getVisibility() == View.VISIBLE && subComponentValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (stagesSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        }  else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -464,13 +464,12 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                     return false;
                 }
             }
-        }else if(animalBinding.noOfCalves.getVisibility() == View.VISIBLE){
-            if(animalBinding.noOfCalves.getText().toString().isEmpty()){
+        } else if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE) {
+            if (animalBinding.noOfCalves.getText().toString().isEmpty()) {
                 animalBinding.noOfCalves.setError("field empty");
                 return false;
             }
-        }
-        else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
             if (animalBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 animalBinding.inerventionNameTxt.setError("field empty");
@@ -503,7 +502,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                         category1, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop,
                         nop, mon, moo, fon, foo, intName);
                 if (checkValidaiton) {
-                finalSubmission();
+                    finalSubmission();
                 } else {
                     //   mLoadCustomToast(getActivity(), "Server error");
                 }
@@ -632,26 +631,26 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setDate("");
         request.setStatus("0");
 
-        if(animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Calves")){
+        if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Calves")) {
             request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
-        }else {
+        } else {
             request.setNo_of_calves("0");
         }
-        if(animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Cows")){
+        if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Cows")) {
             request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
-        }else {
+        } else {
             request.setNo_of_cows("0");
         }
 
 
-        if(animalBinding.trainingLayout.getVisibility() == View.VISIBLE){
+        if (animalBinding.trainingLayout.getVisibility() == View.VISIBLE) {
             request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
             request.setOthers_female_no(animalBinding.femaleOthers.getText().toString());
             request.setOthers_male_no(animalBinding.otherNo.getText().toString());
             request.setSc_st_female_no(animalBinding.fScStNO.getText().toString());
             request.setSc_st_male_no(animalBinding.scStNO.getText().toString());
             request.setVenue(animalBinding.venue.getText().toString());
-        }else{
+        } else {
             request.setNo_of_farmers("0");
             request.setOthers_female_no("0");
             request.setOthers_male_no("0");
@@ -662,9 +661,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setMobile(animalBinding.mobileNumber.getText().toString());
         request.setIntervention_type("3");
 
-        if(animalBinding.othersLayout.getVisibility() == View.VISIBLE){
+        if (animalBinding.othersLayout.getVisibility() == View.VISIBLE) {
             request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
-        }else{
+        } else {
             request.setOther_intervention("");
         }
 
@@ -804,6 +803,10 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
         componentValue = lookUpDataClass.getComponentValue();
+        Log.i(TAG, "otherData: " + componentValue);
+        if (componentValue.equalsIgnoreCase("Others")) {
+            subComponentValue = "data";
+        }
         subComponentValue = lookUpDataClass.getSubComponentValue();
         stageValue = lookUpDataClass.getStageValue();
         stageLastValue = lookUpDataClass.getStagelastvalue();

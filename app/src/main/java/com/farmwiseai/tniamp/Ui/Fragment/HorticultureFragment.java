@@ -267,14 +267,19 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
                 Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
                 return false;
-            } else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
+            }else if (horticultureBinding.yieldTxt.getText().toString().isEmpty() && horticultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+                horticultureBinding.yieldTxt.setError("Please enter the yield");
+                return false;
+            } else if (horticultureBinding.varietyTxt.getText().toString().isEmpty() && horticultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+                horticultureBinding.varietyTxt.setError("Please enter the variety");
+                return false;
+            }  else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
                 if (horticultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                     horticultureBinding.inerventionNameTxt.setError("field empty");
                     return false;
                 }
 
             }
-
         } else if (trainingLyt.getVisibility() == View.VISIBLE) {
             if (horticultureBinding.noOfParticipants.getText().toString().isEmpty()) {
                 horticultureBinding.noOfParticipants.setError("Do not empty field");
@@ -293,6 +298,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 return false;
             }
         }
+
 
 
         return true;
@@ -635,31 +641,61 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         Log.i(TAG, "dataValue" + dateField);
 
         HortiRequest request = new HortiRequest();
+
         request.setVillage(villageValue);
         request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
-        request.setIntervention3(intervention3);
+
+        if(horticultureBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention2(intervention2);
+        }else {
+            request.setIntervention2("0");
+        }
+
+        if(horticultureBinding.stagesTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention3(intervention3);
+        }else {
+            request.setIntervention3("0");
+        }
+
         request.setFarmerName(farmerName);
         request.setGender(gender);
         request.setCategory(category1);
         request.setSurveyNo(survey_no);
         request.setArea(area);
-        request.setVariety(" ");
+
+        if (horticultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+            request.setVariety(horticultureBinding.varietyTxt.getText().toString());
+        } else {
+            request.setVariety("null");
+        }
+
         request.setImage1(firstImageBase64);
-        request.setYield(" ");
+
+        if (horticultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+            request.setYield(horticultureBinding.yieldTxt.getText().toString());
+        } else {
+            request.setYield("null");
+        }
+
         request.setRemarks(remarks);
         request.setCreatedBy("f55356773fce5b11");
         request.setCreatedDate("2020-02-12 11:02:02");
         request.setLat(lat);
         request.setLon(lon);
         request.setTankName(near_tank);
-        request.setTxnDate("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setTxnDate(mCommonFunction.getDateTime());
         request.setPhotoLat(lat);
         request.setPhotoLon(lon);
         request.setTxnId("20200212120446");
         request.setStatus("0");
         request.setInterventionType(interventionTypeVal);
-        request.setOtherIntervention(intName);
+
+        if(horticultureBinding.inerventionLyt.getVisibility()==View.VISIBLE){
+            request.setOtherIntervention(intName);
+        }else{
+            request.setOtherIntervention("null");
+        }
+
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);
         } else {
@@ -698,12 +734,16 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResponse(Call<HortiResponse> call, Response<HortiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String txt_id = String.valueOf(response.body().getResponseMessage().getHortiLandDeptId());
-                    Log.i(TAG, "txt_value: " + txt_id.toString());
-                    uploadSecondImage(txt_id);
+                    try {
+                        String txt_id = String.valueOf(response.body().getResponseMessage().getHortiLandDeptId());
+                        Log.i(TAG, "txt_value: " + txt_id.toString());
+                        uploadSecondImage(txt_id);
+                    }catch (Exception e){
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
                 } else {
-
+                    Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -456,6 +456,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         fisheriesBinding.phase1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                subBasinValue = null;
                 Log.i(TAG, "onPhraseSelected: " + phraseList.get(position));
                 sub_basin_DropDown = FetchDeptLookup.readSubBasin(context, "sub_basin.json");
                 subAdapter = new SubBasinAdapter(getContext(), sub_basin_DropDown);
@@ -475,6 +476,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         subBasinSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                districtValue = null;
                 districtDropDown = FetchDeptLookup.readDistrictData(context, "district.json");
                 posValue = String.valueOf(sub_basin_DropDown.get(i).getID());
                 subBasinValue = sub_basin_DropDown.get(i).getNAME();
@@ -493,6 +495,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                blockValue = null;
                 blockDropDown = FetchDeptLookup.readBlockData(context, "block.json");
                 posValue = String.valueOf(districtDropDown.get(i).getID());
                 districtValue = districtDropDown.get(i).getNAME();
@@ -511,6 +514,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         blockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                villageName = null;
                 villageDataList = FetchDeptLookup.readVillageData(context, "village.json");
                 posValue = String.valueOf(blockDropDown.get(i).getID());
                 blockValue = blockDropDown.get(i).getNAME();

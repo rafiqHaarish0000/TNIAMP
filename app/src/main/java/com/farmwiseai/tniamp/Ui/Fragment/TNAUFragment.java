@@ -759,16 +759,25 @@ mCommonFunction.hideProgress();
         request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
-        request.setVariety("null");
+        if (tnauBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+            request.setVariety(tnauBinding.varietyTxt.getText().toString());
+        } else {
+            request.setVariety("null");
+        }
         request.setImage1(firstImageBase64.trim());
-        request.setYield("null");
+        if (tnauBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+            request.setYield(tnauBinding.yieldTxt.getText().toString());
+        } else {
+            request.setYield("null");
+        }
+
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date(dateField);
         request.setLat(lat);
         request.setLon(lon);
         request.setTank_name(near_tank);
-        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setTxn_date(mCommonFunction.getDateTime());
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");

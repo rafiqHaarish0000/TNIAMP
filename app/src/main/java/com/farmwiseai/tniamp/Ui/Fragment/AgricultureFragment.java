@@ -640,6 +640,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     }
 
     private void getAllData() {
+        
         request = new Agri_Request();
         farmerName = agricultureBinding.farmerTxt.getText().toString();
         survey_no = agricultureBinding.surveyTxt.getText().toString();
@@ -657,35 +658,74 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         request.setVillage(villageValue);
         request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
-        request.setIntervention3(intervention3);
+
+        if (agricultureBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
+            request.setIntervention2(intervention2);
+        } else {
+            request.setIntervention2("0");
+        }
+
+
+        if (agricultureBinding.stagesTxt.getVisibility() == View.VISIBLE) {
+            request.setIntervention3(intervention3);
+        } else {
+            request.setIntervention3("0");
+        }
+
         request.setFarmerName(farmerName);
         request.setGender(gender);
         request.setCategory(category1);
         request.setSurveyNo(survey_no);
         request.setArea(area);
-        request.setVariety("");
+
+        if (agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+            request.setVariety(agricultureBinding.varietyTxt.getText().toString());
+        } else {
+            request.setVariety("null");
+        }
+
         request.setImage1(firstImageBase64.trim());
-        request.setYield("");
+
+        if (agricultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+            request.setYield(agricultureBinding.yieldTxt.getText().toString());
+        } else {
+            request.setYield("null");
+        }
+
         request.setRemarks(remarks);
         request.setCreatedBy("f55356773fce5b11");
         request.setCreatedDate(dateField);
         request.setLat(lat);
         request.setLon(lon);
         request.setTankName(near_tank);
-        request.setTxnDate("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setTxnDate(mCommonFunction.getDateTime());
         request.setPhotoLat(lat);
         request.setPhotoLon(lon);
         request.setTxnId("20200212120446");
         request.setDate("");
         request.setStatus("0");
         request.setInterventionType(interventionTypeVal);
-        request.setOtherIntervention(intName);
-        request.setGroupName(nag);
-        request.setDateCountOpen(dag);
-        request.setDateRevolvingFundRelease(darf);
-        request.setSeedAreaDecimal(seedra);
-        request.setQuantityProcured(qop);
+
+        if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
+            request.setOtherIntervention(intName);
+        } else {
+            request.setOtherIntervention("null");
+        }
+
+        if (agricultureBinding.seedGroupLyt.getVisibility() == View.VISIBLE) {
+            request.setGroupName(agricultureBinding.nameOfGroup.getText().toString());
+            request.setDateCountOpen(agricultureBinding.doaTxt.getText().toString());
+            request.setDateRevolvingFundRelease(agricultureBinding.dorfTxt.getText().toString());
+            request.setSeedAreaDecimal(agricultureBinding.areaRaisedTxt.getText().toString());
+            request.setQuantityProcured(agricultureBinding.quantityTxt.getText().toString());
+        } else {
+            request.setGroupName("null");
+            request.setDateCountOpen("null");
+            request.setDateRevolvingFundRelease("null");
+            request.setSeedAreaDecimal("0");
+            request.setQuantityProcured("0");
+        }
+
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);

@@ -102,7 +102,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     FragmentFisheriesBinding fisheriesBinding;
     boolean[] selectedLanguage;
     ArrayList<Integer> langList = new ArrayList<>();
-    String[] langArray = {"Catla", "Rahul", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
+    String[] langArray = {"Catla", "Rohu", "Mrigai", "Common carp", "Grass carp", "GIF Tilapia"};
     ArrayList<FishRequest> offlineMarkRequest = new ArrayList<>();
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
@@ -278,6 +278,12 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 return false;
             } else if (fisheriesBinding.numbOfSeeds.getText().length() == 0) {
                 fisheriesBinding.numbOfSeeds.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.numbOfSeedsHarvest.getText().length() == 0) {
+                fisheriesBinding.numbOfSeedsHarvest.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.quantityOfFishHar.getText().length() == 0) {
+                fisheriesBinding.quantityOfFishHar.setError("Do not empty field");
                 return false;
             } else if (fisheriesBinding.speciesStockedTxt2.getText().length() == 0) {
                 fisheriesBinding.speciesStockedTxt2.setError("Do not empty field");

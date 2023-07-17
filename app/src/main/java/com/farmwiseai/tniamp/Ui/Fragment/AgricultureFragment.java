@@ -9,7 +9,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,8 +27,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -102,6 +99,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     DatePickerDialog picker;
     Agri_Request request;
     ArrayList<Agri_Request> offlineAgriRequest = new ArrayList<>();
+    EditText variety, yield;
     private FragmentAgricultureBinding agricultureBinding;
     private Context context;
     private String farmerName, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName, mobileNumber;
@@ -178,6 +176,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         vis_lyt = agricultureBinding.visibilityLyt;
         seed_lyt = agricultureBinding.seedGroupLyt;
         iNames_lyt = agricultureBinding.othersLayout;
+        variety = agricultureBinding.varietyTxt;
+        yield = agricultureBinding.yieldTxt;
         backPressListener = this;
         offlineAgriRequest = SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
@@ -279,7 +279,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            }else if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
+            } else if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
                 if (agricultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty() || agricultureBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
                     agricultureBinding.inerventionNameTxt.setError("field empty");
                     return false;
@@ -304,7 +304,6 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             }
 
         }
-
 
 
         return true;
@@ -797,9 +796,12 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
             agricultureBinding.varietyTxt.setVisibility(View.GONE);
             agricultureBinding.yieldTxt.setVisibility(View.GONE);
-        } else if (componentValue.equalsIgnoreCase("Maize")) {
+        } else if (componentValue.equalsIgnoreCase("Maize") && subComponentValue.equalsIgnoreCase("Harvest")) {
             agricultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             agricultureBinding.yieldTxt.setVisibility(View.VISIBLE);
+        } else if (subComponentValue.equalsIgnoreCase("Sowing") || subComponentValue.equalsIgnoreCase("Milky Stage")) {
+            agricultureBinding.varietyTxt.setVisibility(View.GONE);
+            agricultureBinding.yieldTxt.setVisibility(View.GONE);
         } else if (subComponentValue.equalsIgnoreCase("Green Manure")) {
             agricultureBinding.varietyTxt.setVisibility(View.GONE);
             agricultureBinding.yieldTxt.setVisibility(View.GONE);

@@ -75,18 +75,25 @@ public class TNAU_CallApi {
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
                         yield.setVisibility(View.GONE);
-                    } else if (names.equalsIgnoreCase("GHG emission") ||
-                            names.equalsIgnoreCase("Pesticide free Village") ||
-                            names.equalsIgnoreCase("Area Expansion") ||
-                            names.equalsIgnoreCase("Model Village") ||
-                            names.equalsIgnoreCase("High Density Planting") ||
-                            names.equalsIgnoreCase("TNAU-special intervention")) {
+                    } else if (names.equalsIgnoreCase("GHG emission")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         datePicker.setVisibility(View.GONE);
                         variety.setVisibility(View.GONE);
                         yield.setVisibility(View.GONE);
-                    } else if (names.contains("Red gram promotion ")) {
+                    } /*else if(
+                    names.equalsIgnoreCase("Pesticide free Village") ||
+                            names.equalsIgnoreCase("Area Expansion") ||
+                            names.equalsIgnoreCase("Model Village") ||
+                            names.equalsIgnoreCase("High Density Planting") ||
+                            names.equalsIgnoreCase("TNAU-special intervention"))
+                    {
+                        stageSpinner.setVisibility(View.GONE);
+                        datePicker.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
+
+                    }*/ else if (names.contains("Red gram promotion ")) {
                         subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner, datePicker, variety, yield);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
@@ -232,7 +239,10 @@ public class TNAU_CallApi {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("Harvest") ||
                             names.equalsIgnoreCase("Harvest of Pulse") ||
-                            names.equalsIgnoreCase("Harvest of Rice")) {
+                            names.equalsIgnoreCase("Harvest of Rice") ||
+                            names.equalsIgnoreCase("1st Harvest") ||
+                            names.equalsIgnoreCase("Last Harvest")
+                    ) {
                         editText.setVisibility(View.GONE);
                         varitey.setVisibility(View.VISIBLE);
                         yield.setVisibility(View.VISIBLE);

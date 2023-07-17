@@ -7,13 +7,9 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.farmwiseai.tniamp.Retrofit.BaseApi;
-import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.utils.BackPressListener;
 import com.farmwiseai.tniamp.utils.CommonFunction;
@@ -23,20 +19,16 @@ import com.farmwiseai.tniamp.utils.adapters.ComponentAdapter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class AEDCallApi {
+    public LookUpDataClass lookUpDataClass;
     private Activity activity;
     private Context context;
-    private List<ComponentData> getAllComponentData, sub_componentList,stagesList;
+    private List<ComponentData> getAllComponentData, sub_componentList, stagesList;
     private ComponentAdapter adapters, componentAdapter;
     private CharSequence positionValue;
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    public LookUpDataClass lookUpDataClass;
     private String compName = null, subCompName = null, stageName = null, stageLastName = null;
 
     public AEDCallApi(Activity activity, Context context, List<ComponentData> getAllComponentData,
@@ -55,7 +47,7 @@ public class AEDCallApi {
 
     //first spinner phrase;
 
-    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner,Spinner thirdSpinner ,LinearLayout hideLyt, LinearLayout otherLyt) {
+    public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner thirdSpinner, LinearLayout hideLyt, LinearLayout otherLyt) {
 
         commonFunction = new CommonFunction(activity);
         getAllComponentData = FetchDeptLookup.readDataFromFile(context, "aedlookup.json");
@@ -73,22 +65,21 @@ public class AEDCallApi {
                     lookUpDataClass.setIntervention1(String.valueOf(getAllComponentData.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
-                    lookUpDataClass.setStageValue(stageName);                    backPressListener.onSelectedInputs(lookUpDataClass);
+                    lookUpDataClass.setStageValue(stageName);
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String name = getAllComponentData.get(i).getName();
                     if (name.equalsIgnoreCase("Model Village")) {
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner,thirdSpinner);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, thirdSpinner);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
-                    } else if (name.equalsIgnoreCase("Others")){
+                    } else if (name.equalsIgnoreCase("Others")) {
                         subComponentSpinner.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.VISIBLE);
 
-                    }
-                    else{
+                    } else {
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.VISIBLE);
                         otherLyt.setVisibility(View.GONE);
@@ -97,7 +88,7 @@ public class AEDCallApi {
                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner,thirdSpinner);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, thirdSpinner);
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
@@ -113,12 +104,10 @@ public class AEDCallApi {
         });
 
 
-
-
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(String posVal, Spinner secondSpinner,Spinner thirdSpinner) {
+    public void subComponenetDropDown(String posVal, Spinner secondSpinner, Spinner thirdSpinner) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "aedlookup.json");
@@ -139,7 +128,7 @@ public class AEDCallApi {
                         thirdSpinner.setVisibility(View.VISIBLE);
                         stagesDropDown(String.valueOf(sub_componentList.get(i).getID()), thirdSpinner);
 
-                    }else {
+                    } else {
                         thirdSpinner.setVisibility(View.GONE);
                     }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
@@ -159,7 +148,6 @@ public class AEDCallApi {
 
             }
         });
-
 
 
     }
@@ -203,7 +191,6 @@ public class AEDCallApi {
 
             }
         });
-
 
 
     }

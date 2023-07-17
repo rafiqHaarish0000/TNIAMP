@@ -546,7 +546,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="No.of Seeds"
+                            android:hint="No.of Seeds Stocked"
+                            android:inputType="number" />
+                        <EditText
+                            android:id="@+id/numbOfSeedsHarvest"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="No.of Seeds Harvest"
+                            android:inputType="number" />
+                        <EditText
+                            android:id="@+id/quantityOfFishHar"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Quantity of Fish Harvested(Kg)"
                             android:inputType="number" />
                     </LinearLayout>
                     <!--Layout 5-->

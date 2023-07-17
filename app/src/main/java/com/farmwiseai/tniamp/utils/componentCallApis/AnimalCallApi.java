@@ -71,7 +71,6 @@ public class AnimalCallApi {
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
                     lookUpDataClass.setStageValue(stageName);
-                    backPressListener.onSelectedInputs(lookUpDataClass);
                     positionValue = String.valueOf(componentList.get(i).getID());
                     String names = componentList.get(i).getName();
                     if (names.contains("Model Village")) {

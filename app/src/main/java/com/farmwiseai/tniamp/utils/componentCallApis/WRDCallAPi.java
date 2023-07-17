@@ -142,8 +142,7 @@ public class WRDCallAPi {
                         tankStageSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         linIntervention.setVisibility(View.VISIBLE);
-                    }
-                    else if (names.equalsIgnoreCase("Formation of WUA")) {
+                    } else if (names.equalsIgnoreCase("Formation of WUA")) {
                         tankStageSpinner.setVisibility(View.GONE);
                         stageSpinner.setVisibility(View.GONE);
                         wauTxt.setVisibility(View.VISIBLE);
@@ -186,8 +185,14 @@ public class WRDCallAPi {
                     }
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
-                    lookUpDataClass.setStageValue(stageName);
-                    lookUpDataClass.setStagelastvalue(stageLastName);
+                    if(subCompName.equalsIgnoreCase("Others"))
+                    {
+                        lookUpDataClass.setStageValue("dummy value");
+                        lookUpDataClass.setStagelastvalue("dummy value");
+                    }else {
+                        lookUpDataClass.setStageValue(stageName);
+                        lookUpDataClass.setStagelastvalue(stageLastName);
+                    }
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     backPressListener.onSelectedInputs(lookUpDataClass);
 
@@ -229,24 +234,30 @@ public class WRDCallAPi {
                     if (subCompName.equalsIgnoreCase("Tank Bund")) {
                         if (names.equalsIgnoreCase("Strengthening of Bund") ||
                                 names.equalsIgnoreCase("Model Sectioning of Bund") ||
-                                names.equalsIgnoreCase("Jungle Clearance") ||
-                                names.equalsIgnoreCase("Revetment")) {
+                                names.equalsIgnoreCase("Jungle Clearance")
+                            //   names.equalsIgnoreCase("Revetment")
+                        ) {
                             stagesDropDown(String.valueOf(tankStageList.get(i).getID()), stageSpinner);
                             stageSpinner.setVisibility(View.VISIBLE);
                         }
+                    }
+                    if (compName.equalsIgnoreCase("Canal") || compName.equalsIgnoreCase("Channel")) {
+                        if (subCompName.equalsIgnoreCase("Desilting")) {
+                            stageSpinner.setVisibility(View.GONE);
+                        }
                     } else if (names.equalsIgnoreCase("Marking Boundary Line") ||
                             names.equalsIgnoreCase("Earthwork") ||
+                            names.equalsIgnoreCase("Removing Weeds - Scrub Jungle") ||
                             names.equalsIgnoreCase("Foundation") ||
                             names.equalsIgnoreCase("Erection of Boundary Stone") ||
                             names.equalsIgnoreCase("Completion") ||
-                            names.equalsIgnoreCase("Sectioning - Profile Formation")
-                            || names.equalsIgnoreCase("Formwork for Wall") ||
+                            names.equalsIgnoreCase("Sectioning - Profile Formation") ||
+                            names.equalsIgnoreCase("Formwork for Wall") ||
                             names.equalsIgnoreCase("Concrete Work") ||
                             names.equalsIgnoreCase("Finishing") ||
                             names.equalsIgnoreCase("Casting Concrete Blocks") ||
                             names.equalsIgnoreCase("Fixing Concrete Blocks") ||
                             names.equalsIgnoreCase("Starting") ||
-                            names.equalsIgnoreCase("Removing Weeds - Scrub Jungle") ||
                             names.equalsIgnoreCase("Profile Formation") ||
                             names.equalsIgnoreCase("Raft Foundation") ||
                             names.equalsIgnoreCase("Revetment") ||
@@ -258,7 +269,6 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Jungle Clearance") ||
                             names.equalsIgnoreCase("Strengthening of Bund") ||
                             names.equalsIgnoreCase("Model Sectioning of Bund") ||
-                            names.equalsIgnoreCase("Removing the Slit") ||
                             names.equalsIgnoreCase("Formwork for Cut-off wall") ||
                             names.equalsIgnoreCase("Formwork") ||
                             names.equalsIgnoreCase("Formwork for BodyWall") ||
@@ -274,8 +284,12 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Steel grill cover") ||
                             names.equalsIgnoreCase("Before") ||
                             names.equalsIgnoreCase("After") ||
-                            names.equalsIgnoreCase("Jungle Clearence")
-                    ) {
+                            names.equalsIgnoreCase("Jungle Clearence") ||
+                            names.equalsIgnoreCase("Horizontal Shaft") ||
+                            names.equalsIgnoreCase("benching") ||
+                            names.equalsIgnoreCase("layer 1") ||
+                            names.equalsIgnoreCase("layer 2") ||
+                            names.equalsIgnoreCase("layer 3")) {
                         stageSpinner.setVisibility(View.GONE);
                     } else {
                         stagesDropDown(String.valueOf(tankStageList.get(i).getID()), stageSpinner);

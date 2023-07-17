@@ -598,29 +598,26 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
 
         request.setVillage(villageValue);
-        if (intervention1 != null) {
-            request.setIntervention1(intervention1);
-        } else {
-            request.setIntervention1("1");
-        }
-        if (intervention2 != null) {
+        request.setIntervention1(intervention1);
+
+        if (animalBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
         } else {
-            request.setIntervention2("2");
+            request.setIntervention2("0");
         }
-        if (intervention3 != null) {
+
+        if (animalBinding.stagesTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention3(intervention3);
         } else {
-            request.setIntervention3("3");
+            request.setIntervention3("0");
         }
+
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
-        request.setVariety(" ");
         request.setImage1(firstImageBase64.trim());
-        request.setYield("String");
         request.setRemarks(remarks);
         request.setFish_culture("null");
         request.setCreated_by("f55356773fce5b11");
@@ -628,31 +625,49 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setLat(lat);
         request.setLon(lon);
         request.setTank_name(near_tank);
-        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setTxn_date(mCommonFunction.getDateTime());
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate("");
         request.setStatus("0");
-        request.setNo_of_cows("1");
-        request.setNo_of_calves("1");
-        request.setNo_of_farmers("11");
-//        if (animalBinding.noOfFarmers.getText().toString().equalsIgnoreCase("")) {
-//            request.setNo_of_farmers("11");
-//
-//        } else {
-//            request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
-//
-//        }
-        request.setNo_of_farmers("1");
-        request.setMobile("");
-        request.setOthers_female_no("1");
-        request.setOthers_male_no("1");
-        request.setSc_st_female_no("1");
-        request.setSc_st_male_no("1");
-        request.setVenue("a");
+
+        if(animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Calves")){
+            request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
+        }else {
+            request.setNo_of_calves("0");
+        }
+        if(animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Cows")){
+            request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
+        }else {
+            request.setNo_of_cows("0");
+        }
+
+
+        if(animalBinding.trainingLayout.getVisibility() == View.VISIBLE){
+            request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
+            request.setOthers_female_no(animalBinding.femaleOthers.getText().toString());
+            request.setOthers_male_no(animalBinding.otherNo.getText().toString());
+            request.setSc_st_female_no(animalBinding.fScStNO.getText().toString());
+            request.setSc_st_male_no(animalBinding.scStNO.getText().toString());
+            request.setVenue(animalBinding.venue.getText().toString());
+        }else{
+            request.setNo_of_farmers("0");
+            request.setOthers_female_no("0");
+            request.setOthers_male_no("0");
+            request.setSc_st_female_no("0");
+            request.setSc_st_male_no("0");
+            request.setVenue("null");
+        }
+        request.setMobile(animalBinding.mobileNumber.getText().toString());
         request.setIntervention_type("3");
-        request.setOther_intervention("");
+
+        if(animalBinding.othersLayout.getVisibility() == View.VISIBLE){
+            request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
+        }else{
+            request.setOther_intervention("");
+        }
+
 
 //        ObjectMapper mapper = new ObjectMapper();
 //        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

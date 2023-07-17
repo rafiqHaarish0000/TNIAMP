@@ -576,30 +576,44 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         AEDRequest request = new AEDRequest();
         request.setVillage(village);
         request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
-        request.setIntervention3("65");
+
+        if(aedBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention2(intervention2);
+        }else{
+            request.setIntervention2("0");
+        }
+
+        if(aedBinding.stageTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention3(intervention3);
+        }else{
+            request.setIntervention3("0");
+        }
         request.setFarmer_name(farmerName);
         request.setGender(gender);
         request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
-        request.setVariety(" ");
         request.setImage1(firstImageBase64.trim());
-        request.setYield(" ");
         request.setRemarks(remarks);
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date(dateField);
         request.setLat(lat);
         request.setLon(lon);
         request.setTank_name(near_tank);
-        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+        request.setTxn_date(mCommonFunction.getDateTime());
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate(dateField);
         request.setStatus("0");
         request.setIntervention_type(interventionTypeVal);
-        request.setOther_intervention(interventionName);
+
+        if(aedBinding.othersLayout.getVisibility() == View.VISIBLE){
+            request.setOther_intervention(interventionName);
+        }else{
+            request.setOther_intervention("null");
+        }
+
         if (mCommonFunction.isNetworkAvailable() == true) {
             onlineDataUpload(request);
         } else {

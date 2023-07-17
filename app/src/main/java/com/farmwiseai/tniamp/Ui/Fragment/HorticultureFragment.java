@@ -267,6 +267,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
                 Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
                 return false;
+            } else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
+                if (horticultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
+                    horticultureBinding.inerventionNameTxt.setError("field empty");
+                    return false;
+                }
+
             }
 
         } else if (trainingLyt.getVisibility() == View.VISIBLE) {
@@ -286,12 +292,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 horticultureBinding.femaleNo.setError("Do not empty field");
                 return false;
             }
-        } else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
-            if (horticultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
-                horticultureBinding.inerventionNameTxt.setError("field empty");
-                return false;
-            }
-
         }
 
 
@@ -320,7 +320,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, gender, survey_no, area, near_tank, remarks, dateField, intName, mobileNumber);
                 if (checkValidaiton) {
-                  finalSubmission();
+                    finalSubmission();
                 } else {
                     //  showToast(getActivity(), "Validation error");
                 }

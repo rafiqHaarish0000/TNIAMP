@@ -396,7 +396,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         long maxTime = cldr.getTimeInMillis();
 
         // Move day as first day of the month
-        cldr.set(Calendar.DAY_OF_MONTH, 1);
+        cldr.set(Calendar.DAY_OF_MONTH, day);
         // Move "month" for previous one
         cldr.add(Calendar.MONTH, -1);
 

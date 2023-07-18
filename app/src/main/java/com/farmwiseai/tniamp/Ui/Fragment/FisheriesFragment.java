@@ -217,7 +217,31 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        } else if (layout1.getVisibility() == View.VISIBLE) {
+
+        }
+        else if (fisheriesBinding.linFishTankInfo.getVisibility() == View.VISIBLE) {
+            if (fisheriesBinding.nodalTXt.getText().toString().trim().length() == 0) {
+                fisheriesBinding.nodalTXt.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.nameofTankTXT.getText().toString().trim().length() == 0) {
+                fisheriesBinding.nameofTankTXT.setError("Do not empty field");
+                return false;
+            } else if (fisheriesBinding.waterTxt.getText().toString().trim().isEmpty()) {
+                fisheriesBinding.waterTxt.setError("Do not empty filed");
+                return false;
+            } else if (fisheriesBinding.seedStockTXt.getText().toString().trim().length() == 0) {
+                fisheriesBinding.seedStockTXt.setError("Do not empty field");
+                return false;
+            }else if (otherLyt.getVisibility() == View.VISIBLE) {
+                if (fisheriesBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
+                    fisheriesBinding.inerventionNameTxt.setError("field empty");
+                    return false;
+                }
+            }
+
+        }
+
+         if (layout1.getVisibility() == View.VISIBLE) {
             if (lessNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
@@ -302,26 +326,6 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 return false;
             }*/ else if (fisheriesBinding.farmPond1.getText().toString().trim().isEmpty()) {
                 fisheriesBinding.farmPond1.setError("Do not empty field");
-                return false;
-            }else if (otherLyt.getVisibility() == View.VISIBLE) {
-                if (fisheriesBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
-                    fisheriesBinding.inerventionNameTxt.setError("field empty");
-                    return false;
-                }
-            }
-
-        } else if (fisheriesBinding.linFishTankInfo.getVisibility() == View.VISIBLE) {
-            if (fisheriesBinding.nodalTXt.getText().toString().trim().length() == 0) {
-                fisheriesBinding.nodalTXt.setError("Do not empty field");
-                return false;
-            } else if (fisheriesBinding.nameofTankTXT.getText().toString().trim().length() == 0) {
-                fisheriesBinding.nameofTankTXT.setError("Do not empty field");
-                return false;
-            } else if (fisheriesBinding.waterTxt.getText().toString().trim().isEmpty()) {
-                fisheriesBinding.waterTxt.setError("Do not empty filed");
-                return false;
-            } else if (fisheriesBinding.seedStockTXt.getText().toString().trim().length() == 0) {
-                fisheriesBinding.seedStockTXt.setError("Do not empty field");
                 return false;
             }else if (otherLyt.getVisibility() == View.VISIBLE) {
                 if (fisheriesBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
@@ -729,9 +733,9 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                     }
                 }
                 // set text on textView
-                fisheriesBinding.speciesStockedTxt.setText(stringBuilder.toString());
-                fisheriesBinding.speciesStockedTxt1.setText(stringBuilder.toString());
-                fisheriesBinding.speciesStockedTxt2.setText(stringBuilder.toString());
+                fisheriesBinding.speciesStockedTxt.setText(stringBuilder.toString().trim());
+                fisheriesBinding.speciesStockedTxt1.setText(stringBuilder.toString().trim());
+                fisheriesBinding.speciesStockedTxt2.setText(stringBuilder.toString().trim());
             }
         });
 
@@ -853,37 +857,85 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         Log.i(TAG, "dataValue" + dateField);
 
         FishRequest request = new FishRequest();
+
         request.setBeneficiary("");
         request.setBeneficiary_name(benVal);
         request.setCreated_by("f55356773fce5b11");
         request.setCreated_date("2020-02-12 11:02:02");
-        request.setFeed_qty(fisheriesBinding.speciesStockedTxt.getText().toString().trim());
-        request.setHarvested("");
         request.setImage1(firstImageBase64.trim());
         request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
-        request.setIntervention3(intervention3);
-        request.setLessee(lesseVal);
+
+        if(fisheriesBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention2(intervention2);
+        }else{
+            request.setIntervention2("0");
+        }
+        if(fisheriesBinding.stagesTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention3(intervention3);
+        }else{
+            request.setIntervention3("0");
+        }
+
+        if(fisheriesBinding.layout1.getVisibility() ==View.VISIBLE){
+            request.setLessee(lesseVal);
+            request.setSpecies_stoked(fisheriesBinding.speciesStockedTxt.getText().toString().trim());
+        }else{
+            request.setLessee("0");
+            request.setSpecies_stoked("null");
+        }
+
         request.setLat(lat);
         request.setLon(lon);
-        request.setNo_of_stocks_req("");
+
         request.setNodal_officer(fisheriesBinding.nodalTXt.toString());
+        request.setTank_name(fisheriesBinding.nameofTankTXT.getText().toString().trim());
+        request.setWater_spread_area(fisheriesBinding.waterTxt.getText().toString());
+        request.setSeed_no(fisheriesBinding.seedStockTXt.getText().toString());
+
+        if(fisheriesBinding.layout2.getVisibility() == View.VISIBLE)
+        {
+            request.setFeed_qty(fisheriesBinding.feedQuality.getText().toString());
+        }
+        else if (fisheriesBinding.layout3.getVisibility()==View.VISIBLE)
+        {
+            request.setFeed_qty(fisheriesBinding.feedQuality1.getText().toString());
+        }
+        else if (fisheriesBinding.layout4.getVisibility()==View.VISIBLE)
+        {
+            request.setFeed_qty(fisheriesBinding.feedQuality2.getText().toString());
+            request.setCategory(catVal);
+            request.setGender(genderVal);
+            request.setMobile(fisheriesBinding.mobileVal.getText().toString());
+            request.setSurvey_no(fisheriesBinding.surveyVal.getText().toString());
+
+            request.setNo_of_stocks_req(fisheriesBinding.numbOfSeeds.getText().toString());
+            request.setHarvested(fisheriesBinding.numbOfSeedsHarvest.getText().toString());
+            request.setPond_constructed_by(fisheriesBinding.farmPond.getText().toString());
+            request.setQty_fish_harvested(fisheriesBinding.quantityOfFishHar.getText().toString());
+        }
+        else if(fisheriesBinding.layout5.getVisibility() == View.VISIBLE)
+        {
+            request.setPond_constructed_by(fisheriesBinding.farmPond1.getText().toString());
+        }
+        else {
+            request.setFeed_qty("0");
+            request.setCategory("null");
+            request.setGender("null");
+            request.setMobile("0");
+            request.setSurvey_no("0");
+
+            request.setNo_of_stocks_req("");
+            request.setHarvested("");
+            request.setPond_constructed_by("");
+            request.setQty_fish_harvested("");
+        }
+
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
-        request.setPond_constructed_by("");
-        request.setQty_fish_harvested("");
         request.setRemarks(remarks);
-        request.setSeed_no("");
-        request.setSpecies_stoked("");
-        request.setTank_name(fisheriesBinding.nameofTankTXT.getText().toString().trim());
         request.setTxn_date("WedFeb12202012:04:46GMT+0530(IndiaStandardTime)");
         request.setTxn_id("20200212120446");
         request.setVillage(villageValue);
-        request.setWater_spread_area("");
-        request.setCategory("");
-        request.setGender(genderVal);
-        request.setMobile("");
-        request.setSurvey_no("");
         request.setStatus("0");
 
 

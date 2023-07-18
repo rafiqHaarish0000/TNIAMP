@@ -873,52 +873,110 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         Log.i(TAG, "dataValue" + dateField);
 
         MarkRequest request = new MarkRequest();
-        request.setCapacity("");
-        request.setCategory2("");
+
+
         request.setCreated_by("25f488a755770e71");
         request.setCreated_date("2020-05-26 06:51:12");
-        request.setCrop(cropVal);
         request.setDate_from("2019-11-27");
-        request.setDate_of_completion("");
         request.setDate_to("");
-        request.setEmail("");
-        request.setFemale_no1(marketingBinding.femaleNo.getText().toString().trim());
-        request.setFemale_no2(marketingBinding.femaleNo.getText().toString().trim());
-        request.setFpc_name("");
-        request.setGodown_category("");
-        request.setGovt_share("");
-        request.setInfra_avail("");
+        request.setDate_of_completion("");
+
         request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
-        request.setIntervention3(intervention3);
-        request.setMobile(marketingBinding.mobileNumber.getText().toString().trim());
-        request.setName(marketingBinding.nameValue.getText().toString().trim());
-        request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString().trim());
-        request.setCategory("");
-        request.setNof_female("1");
-        request.setNof_male("1");
-        request.setNof_mem("1");
-        request.setNof_village(villageValue);
-        request.setNumber_trainees(trainingVal);
-        request.setTraining_name(trainingVal);
+
+        if(marketingBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention2(intervention2);
+        }else {
+            request.setIntervention2("0");
+        }
+        if(marketingBinding.stageTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention3(intervention3);
+        }else {
+            request.setIntervention3("0");
+        }
+
+        request.setIntervention4("");
+
+
+        //layout 1
+        if (marketingBinding.layout1.getVisibility() == View.VISIBLE) {
+            request.setNof_village(marketingBinding.noVillage.getText().toString());
+            request.setOthers_female_no(marketingBinding.femaleOthers.getText().toString());
+            request.setOthers_male_no(marketingBinding.maleOthers.getText().toString());
+            request.setSc_st_male_no(marketingBinding.maleNo.getText().toString());
+            request.setSc_st_female_no(marketingBinding.femaleNo.getText().toString());
+            request.setNof_mem(marketingBinding.noOfMembers.getText().toString());
+            request.setMobile(marketingBinding.mobileNumber.getText().toString().trim());
+            request.setName(marketingBinding.nameValue.getText().toString().trim());
+            request.setEmail(marketingBinding.emailTxt.getText().toString().trim());
+            request.setCrop(cropVal);
+            request.setInfra_avail(marketingBinding.infrastructureTxt.getText().toString());
+        } else {
+            request.setFpc_name("1");
+            request.setNof_village("1");
+            request.setOthers_female_no("1");
+            request.setOthers_male_no("1");
+            request.setSc_st_male_no("1");
+            request.setSc_st_female_no("1");
+            request.setNof_mem("1");
+            request.setMobile("1");
+            request.setName("");
+            request.setEmail("");
+            request.setCrop(cropVal);
+            request.setInfra_avail("");
+        }
+
+        if (marketingBinding.layout2.getVisibility() == View.VISIBLE) {
+            request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString().trim());
+            request.setGovt_share(marketingBinding.govertShare.getText().toString());
+            request.setCapacity(marketingBinding.capacity.getText().toString());
+            request.setGodown_category(catNameVal);
+        }else{
+            request.setNo_of_beneficeries("0");
+            request.setGovt_share("0");
+            request.setCapacity("0");
+            request.setGodown_category("");
+        }
+
+
+        if(marketingBinding.trainingLyt.getVisibility() == View.VISIBLE){
+            request.setNof_female(marketingBinding.traineeOtherNoF.getText().toString().trim());
+            request.setNof_male(marketingBinding.traineeOtherNo.getText().toString().trim());
+            request.setFemale_no1(marketingBinding.traineeOtherNoF.getText().toString().trim());
+            request.setFemale_no2(marketingBinding.traineeSCSTNOF.getText().toString().trim());
+            request.setVenue(marketingBinding.venue.getText().toString().trim());
+            request.setNumber_trainees(marketingBinding.noOftrainee.getText().toString());
+            request.setTraining_name(trainingVal);
+        }else{
+            request.setNof_female("1");
+            request.setNof_male("1");
+            request.setFemale_no1("1");
+            request.setFemale_no2("1");
+            request.setVenue("1");
+            request.setNumber_trainees("1");
+            request.setTraining_name("null");
+        }
+
+        if(marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE){
+            request.setFpc_name(marketingBinding.nameHq.getText().toString());
+            request.setCategory2(categoryExpoVal);
+
+        }else{
+            request.setFpc_name("null");
+            request.setCategory2("");
+        }
+
         request.setVillage(villageValue);
         request.setLat(lat);
         request.setLon(lon);
+
         request.setCategory(catogoryVal);
         request.setImage1(firstImageBase64.trim());
         request.setImage2(secondImageBase64.trim());
-        request.setIntervention4("");
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lat);
         request.setRemarks(remarks);
         request.setTxn_id("20191127172744");
         request.setDate("");
-        request.setNof_village("1");
-        request.setOthers_female_no("1");
-        request.setOthers_male_no("1");
-        request.setSc_st_male_no("1");
-        request.setSc_st_female_no("1");
-        request.setVenue(marketingBinding.venue.getText().toString().trim());
         request.setStatus("0");
 
         if (mCommonFunction.isNetworkAvailable() == true) {

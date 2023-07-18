@@ -503,7 +503,34 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         }
     }
+    private void dateOfSowing_Planting(EditText datePicker) {
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        long maxTime = cldr.getTimeInMillis();
 
+        // Move day as first day of the month
+        cldr.set(Calendar.DAY_OF_MONTH, 1);
+        // Move "month" for previous one
+        cldr.add(Calendar.MONTH, -1);
+
+        // Min = time after changes
+        long minTime = cldr.getTimeInMillis();
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(maxTime);
+        picker.getDatePicker().setMinDate(minTime);
+        picker.show();
+
+
+    }
     private void dateFieldValidation(EditText datePicker) {
 
         final Calendar cldr = Calendar.getInstance();

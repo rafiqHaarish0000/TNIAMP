@@ -560,25 +560,68 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         request.setCreated_date("2020-02-12 11:02:02");
         request.setImage1(firstImageBase64.trim());
         request.setIntervention1(intervention1);
-        request.setIntervention2(intervention2);
-        request.setIntervention3(intervention3);
-        request.setIntervention4(intervention4);
+
+        if(wrdfragmentBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention2(intervention2);
+        }else{
+            request.setIntervention2("0");
+        }
+
+        if(wrdfragmentBinding.taskStages.getVisibility() == View.VISIBLE){
+            request.setIntervention3(intervention3);
+        }else{
+            request.setIntervention3("0");
+        }
+
+        if(wrdfragmentBinding.stagesTxt.getVisibility() == View.VISIBLE){
+            request.setIntervention4(intervention4);
+        }else{
+            request.setIntervention4("0");
+        }
+
         request.setLat(lat);
-        request.setLength(wrdfragmentBinding.lengthTxt.getText().toString());
+
+        if(wrdfragmentBinding.linTankDetails.getVisibility() == View.VISIBLE){
+            request.setLength(wrdfragmentBinding.lengthTxt.getText().toString());
+            request.setLs_point(wrdfragmentBinding.lsPoint.getText().toString());
+            request.setSluice(wrdfragmentBinding.sliceNumber.getText().toString());
+        }else{
+            request.setLength("0");
+            request.setLs_point("0");
+            request.setSluice("0");
+        }
+
         request.setLon(lon);
-        request.setLs_point(wrdfragmentBinding.lsPoint.getText().toString());
+
         request.setRemarks(remarks);
-        request.setSluice(wrdfragmentBinding.sliceNumber.getText().toString());
-        request.setTxn_date("Wed Feb 12 2020 12:04:46 GMT+0530 (India Standard Time)");
+
+        request.setTxn_date(mCommonFunction.getDateTime());
         request.setTxn_id("20200212120446");
         request.setVillage(villageValue);
-        request.setNof_mem("");
-        request.setWua_name("");
+
+        if(wrdfragmentBinding.nameOfWAU.getVisibility() ==View.VISIBLE){
+            request.setWua_name(wrdfragmentBinding.nameOfWAU.getText().toString());
+        }else{
+            request.setWua_name("");
+        }
+
+        if(wrdfragmentBinding.noOfMembers.getVisibility() ==View.VISIBLE){
+            request.setNof_mem(wrdfragmentBinding.noOfMembers.getText().toString());
+        }else{
+            request.setNof_mem("");
+        }
+
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
         request.setStatus("0");
         request.setIntervention_type("3");
-        request.setOther_intervention(wrdfragmentBinding.inerventionNameTxt.getText().toString());
+
+        if(wrdfragmentBinding.othersLayout.getVisibility() ==View.VISIBLE){
+            request.setOther_intervention(wrdfragmentBinding.inerventionNameTxt.getText().toString());
+        }else{
+            request.setOther_intervention("null");
+        }
+
 
 
         if (mCommonFunction.isNetworkAvailable() == true) {

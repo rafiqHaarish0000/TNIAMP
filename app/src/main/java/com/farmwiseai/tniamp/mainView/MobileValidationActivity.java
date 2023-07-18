@@ -94,7 +94,7 @@ public class MobileValidationActivity extends BaseActivity {
 
                             @Override
                             public void onFailure(Call<GenerateOTP> call, Throwable t) {
-                                mLoadCustomToast(getParent(), "MobileNumber Not registered");
+                                mLoadCustomToast(getParent(), "Please check the internet connection.!");
 
                             }
                         });

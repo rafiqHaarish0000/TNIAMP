@@ -451,7 +451,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="Farm pond constructed by"
                             android:inputType="text"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             />
 
                         <EditText
@@ -462,7 +462,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="Beneficary Name"
                             android:inputType="text"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             />
 
                         <EditText
@@ -609,7 +609,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="Farm pond constructed by"
                             android:inputType="text"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             />
                     </LinearLayout>
 

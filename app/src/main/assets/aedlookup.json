@@ -25,7 +25,7 @@
   },
   {
     "ID": 5,
-    "Name": "Water walk",
+    "Name": "Community Water Walk",
     "PARENT_ID": 20,
     "revision_no": 1549215974
   },
@@ -111,6 +111,12 @@
     "ID": 20,
     "Name": "CCWM",
     "PARENT_ID": 2,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 21,
+    "Name": "Impact of sustainability",
+    "PARENT_ID": 0,
     "revision_no": 1549215974
   }
 ]

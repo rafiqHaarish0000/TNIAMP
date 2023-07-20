@@ -149,10 +149,10 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         wrdfragmentBinding.image2.setOnClickListener(this);
 
 
-        lengthValue = wrdfragmentBinding.lengthTxt.getText().toString();
-        lsPointValue = wrdfragmentBinding.lsPoint.getText().toString();
-        sliceNumberValue = wrdfragmentBinding.sliceNumber.getText().toString();
-        remarks = wrdfragmentBinding.remarksTxt.getText().toString();
+        lengthValue = wrdfragmentBinding.lengthTxt.getText().toString().trim();
+        lsPointValue = wrdfragmentBinding.lsPoint.getText().toString().trim();
+        sliceNumberValue = wrdfragmentBinding.sliceNumber.getText().toString().trim();
+        remarks = wrdfragmentBinding.remarksTxt.getText().toString().trim();
 
 
         componentSpinner = wrdfragmentBinding.componentTxt;
@@ -185,9 +185,9 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private boolean fieldValidation(String lengthNumberTxt, String category,
                                     String lsPointTxt, String sliceNumberTxt, String date) {
 
-        lengthNumberTxt = wrdfragmentBinding.lengthTxt.getText().toString();
-        lsPointTxt = wrdfragmentBinding.lsPoint.getText().toString();
-        sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString();
+        lengthNumberTxt = wrdfragmentBinding.lengthTxt.getText().toString().trim();
+        lsPointTxt = wrdfragmentBinding.lsPoint.getText().toString().trim();
+        sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString().trim();
 
 
 
@@ -196,12 +196,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 subComponentValue = "Dummy data";
         }
 */
-        if (wrdfragmentBinding.noOfMembers.getVisibility() == View.VISIBLE) {
-            if (wrdfragmentBinding.noOfMembers.getText().toString().isEmpty()) {
-                wrdfragmentBinding.noOfMembers.setError("Do not empty field");
-                return false;
-            }
-        }
+
 
         if (subBasinValue == null || districtValue == null || blockValue == null ||
                 villageName == null || componentValue == null) {
@@ -216,17 +211,10 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         } else if (stageSpinner.getVisibility() == View.VISIBLE && stageLastValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        }  else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
-        }  else if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE) {
-            if (wrdfragmentBinding.nameOfWAU.getText().toString().isEmpty()) {
-                wrdfragmentBinding.nameOfWAU.setError("Do not empty field");
-                return false;
-            }
-        }
-        else  if(wrdfragmentBinding.linTankDetails.getVisibility()==View.VISIBLE)
-        {
+        } else if (wrdfragmentBinding.linTankDetails.getVisibility() == View.VISIBLE) {
             if (lengthNumberTxt.length() == 0) {
                 wrdfragmentBinding.lengthTxt.setError("Please enter length number");
                 return false;
@@ -237,9 +225,19 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 wrdfragmentBinding.sliceNumber.setError("Please enter sluice number");
                 return false;
             }
+            else if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE) {
+                if (wrdfragmentBinding.nameOfWAU.getText().toString().trim().isEmpty()) {
+                    wrdfragmentBinding.nameOfWAU.setError("Do not empty field");
+                    return false;
+                }
+            }
+            else if (wrdfragmentBinding.noOfMembers.getVisibility() == View.VISIBLE) {
+                if (wrdfragmentBinding.noOfMembers.getText().toString().trim().isEmpty()) {
+                    wrdfragmentBinding.noOfMembers.setError("Do not empty field");
+                    return false;
+                }
         }
-
-         if (iNames_lyt.getVisibility() == View.VISIBLE) {
+        } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 wrdfragmentBinding.inerventionNameTxt.setError("field empty");
                 return false;
@@ -266,7 +264,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, dateField);
 
                 if (checkValidaiton) {
-                  finalSubmission();
+                    finalSubmission();
                 } else {
                     //do the code for save all data
                     // Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
@@ -547,7 +545,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
     private void getAllData() {
 
-        remarks = wrdfragmentBinding.remarksTxt.getText().toString();
+        remarks = wrdfragmentBinding.remarksTxt.getText().toString().trim();
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -561,31 +559,31 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         request.setImage1(firstImageBase64.trim());
         request.setIntervention1(intervention1);
 
-        if(wrdfragmentBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+        if (wrdfragmentBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
-        }else{
+        } else {
             request.setIntervention2("0");
         }
 
-        if(wrdfragmentBinding.taskStages.getVisibility() == View.VISIBLE){
+        if (wrdfragmentBinding.taskStages.getVisibility() == View.VISIBLE) {
             request.setIntervention3(intervention3);
-        }else{
+        } else {
             request.setIntervention3("0");
         }
 
-        if(wrdfragmentBinding.stagesTxt.getVisibility() == View.VISIBLE){
+        if (wrdfragmentBinding.stagesTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention4(intervention4);
-        }else{
+        } else {
             request.setIntervention4("0");
         }
 
         request.setLat(lat);
 
-        if(wrdfragmentBinding.linTankDetails.getVisibility() == View.VISIBLE){
-            request.setLength(wrdfragmentBinding.lengthTxt.getText().toString());
-            request.setLs_point(wrdfragmentBinding.lsPoint.getText().toString());
-            request.setSluice(wrdfragmentBinding.sliceNumber.getText().toString());
-        }else{
+        if (wrdfragmentBinding.linTankDetails.getVisibility() == View.VISIBLE) {
+            request.setLength(wrdfragmentBinding.lengthTxt.getText().toString().trim());
+            request.setLs_point(wrdfragmentBinding.lsPoint.getText().toString().trim());
+            request.setSluice(wrdfragmentBinding.sliceNumber.getText().toString().trim());
+        } else {
             request.setLength("0");
             request.setLs_point("0");
             request.setSluice("0");
@@ -599,15 +597,15 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         request.setTxn_id("20200212120446");
         request.setVillage(villageValue);
 
-        if(wrdfragmentBinding.nameOfWAU.getVisibility() ==View.VISIBLE){
-            request.setWua_name(wrdfragmentBinding.nameOfWAU.getText().toString());
-        }else{
+        if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE) {
+            request.setWua_name(wrdfragmentBinding.nameOfWAU.getText().toString().trim());
+        } else {
             request.setWua_name("");
         }
 
-        if(wrdfragmentBinding.noOfMembers.getVisibility() ==View.VISIBLE){
-            request.setNof_mem(wrdfragmentBinding.noOfMembers.getText().toString());
-        }else{
+        if (wrdfragmentBinding.noOfMembers.getVisibility() == View.VISIBLE) {
+            request.setNof_mem(wrdfragmentBinding.noOfMembers.getText().toString().trim());
+        } else {
             request.setNof_mem("");
         }
 
@@ -616,12 +614,11 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         request.setStatus("0");
         request.setIntervention_type("3");
 
-        if(wrdfragmentBinding.othersLayout.getVisibility() ==View.VISIBLE){
-            request.setOther_intervention(wrdfragmentBinding.inerventionNameTxt.getText().toString());
-        }else{
+        if (wrdfragmentBinding.othersLayout.getVisibility() == View.VISIBLE) {
+            request.setOther_intervention(wrdfragmentBinding.inerventionNameTxt.getText().toString().trim());
+        } else {
             request.setOther_intervention("null");
         }
-
 
 
         if (mCommonFunction.isNetworkAvailable() == true) {

@@ -31,7 +31,7 @@
   },
   {
     "ID": 6,
-    "Name": " Nutri Cereals",
+    "Name": "Nutri Cereals",
     "PARENT_ID": 0,
     "revision_no": 1549215974
   },
@@ -403,7 +403,7 @@
   },
   {
     "ID": 68,
-    "Name": "Water walk",
+    "Name": "Community Water Walk",
     "PARENT_ID": 66,
     "revision_no": 1549215974
   },

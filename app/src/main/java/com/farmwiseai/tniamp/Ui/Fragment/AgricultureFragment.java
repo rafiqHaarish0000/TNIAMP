@@ -148,6 +148,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         seedra = null;
         qop = null;
         agricultureBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        agricultureBinding.areaRaisedTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        agricultureBinding.quantityTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         agricultureBinding.popBackImage.setOnClickListener(this);
         agricultureBinding.submissionBtn.setOnClickListener(this);
@@ -279,12 +281,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            } else if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
-                if (agricultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty() || agricultureBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
-                    agricultureBinding.inerventionNameTxt.setError("field empty");
-                    return false;
-                }
-            } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
+            }  else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
 
                 Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
                 return false;
@@ -301,6 +298,12 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (agricultureBinding.varietyTxt.getText().toString().isEmpty() && agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 agricultureBinding.varietyTxt.setError("Please enter the variety");
                 return false;
+            }
+            else if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
+                if (agricultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty() || agricultureBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
+                    agricultureBinding.inerventionNameTxt.setError("field empty");
+                    return false;
+                }
             }
 
         }

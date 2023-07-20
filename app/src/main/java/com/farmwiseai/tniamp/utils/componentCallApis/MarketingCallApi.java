@@ -226,7 +226,7 @@ public class MarketingCallApi {
                 try {
                     stageName = stagesList.get(i).getName();
 
-                    lookUpDataClass.setIntervention3(stagesList.get(i).getName());
+                    lookUpDataClass.setIntervention3(String.valueOf(stagesList.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
                     lookUpDataClass.setStageValue(stageName);

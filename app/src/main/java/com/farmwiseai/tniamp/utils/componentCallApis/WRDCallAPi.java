@@ -247,6 +247,7 @@ public class WRDCallAPi {
                     } else if (names.equalsIgnoreCase("Marking Boundary Line") ||
                             names.equalsIgnoreCase("Earthwork") ||
                             names.equalsIgnoreCase("Removing Weeds - Scrub Jungle") ||
+                            names.equalsIgnoreCase("Removing the Slit") ||
                             names.equalsIgnoreCase("Foundation") ||
                             names.equalsIgnoreCase("Erection of Boundary Stone") ||
                             names.equalsIgnoreCase("Completion") ||

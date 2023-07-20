@@ -647,7 +647,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             request.setNo_of_calves("0");
         }
         if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Cows")) {
-            request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
+            request.setNo_of_cows(animalBinding.noOfCalves.getText().toString());
         } else {
             request.setNo_of_cows("0");
         }

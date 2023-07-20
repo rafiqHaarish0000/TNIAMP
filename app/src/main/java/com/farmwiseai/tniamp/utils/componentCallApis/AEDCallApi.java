@@ -79,6 +79,12 @@ public class AEDCallApi {
                         otherLyt.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.VISIBLE);
 
+                    } else if (name.equalsIgnoreCase("Impact of sustainability")) {
+                        subComponentSpinner.setVisibility(View.GONE);
+                        thirdSpinner.setVisibility(View.GONE);
+                        otherLyt.setVisibility(View.GONE);
+                        hideLyt.setVisibility(View.VISIBLE);
+
                     } else {
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         hideLyt.setVisibility(View.VISIBLE);

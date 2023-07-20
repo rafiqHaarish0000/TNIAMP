@@ -189,7 +189,8 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         lsPointTxt = wrdfragmentBinding.lsPoint.getText().toString().trim();
         sliceNumberTxt = wrdfragmentBinding.sliceNumber.getText().toString().trim();
 
-
+        String noOfMembers = wrdfragmentBinding.noOfMembers.getText().toString().trim();
+        String nameOfWAU = wrdfragmentBinding.nameOfWAU.getText().toString().trim();
 
       /*  if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
@@ -224,19 +225,15 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             } else if (sliceNumberTxt.length() == 0) {
                 wrdfragmentBinding.sliceNumber.setError("Please enter sluice number");
                 return false;
+            } else if (wrdfragmentBinding.noOfMembers.getVisibility() == View.VISIBLE && noOfMembers.length() == 0) {
+                wrdfragmentBinding.noOfMembers.setError("Do not empty field");
+                return false;
+
+            } else if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE && nameOfWAU.length() == 0) {
+                wrdfragmentBinding.nameOfWAU.setError("Do not empty field");
+                return false;
+
             }
-            else if (wrdfragmentBinding.nameOfWAU.getVisibility() == View.VISIBLE) {
-                if (wrdfragmentBinding.nameOfWAU.getText().toString().trim().isEmpty()) {
-                    wrdfragmentBinding.nameOfWAU.setError("Do not empty field");
-                    return false;
-                }
-            }
-            else if (wrdfragmentBinding.noOfMembers.getVisibility() == View.VISIBLE) {
-                if (wrdfragmentBinding.noOfMembers.getText().toString().trim().isEmpty()) {
-                    wrdfragmentBinding.noOfMembers.setError("Do not empty field");
-                    return false;
-                }
-        }
         } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                 wrdfragmentBinding.inerventionNameTxt.setError("field empty");

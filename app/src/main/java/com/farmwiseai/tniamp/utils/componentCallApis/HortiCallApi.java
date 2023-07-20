@@ -262,8 +262,21 @@ public class HortiCallApi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     String names = stageList.get(i).getName();
-                    stageLastName = stageList.get(i).getName();
+                    stageLastName = names;
+                  /*  String dummyStageName=stageName;
+                    if (dummyStageName != null) {
 
+                    } else {
+                        lookUpDataClass.setIntervention3("1");
+                        lookUpDataClass.setStageValue("stageName");
+
+                    }*/
+                 //   lookUpDataClass.setIntervention3(String.valueOf(cropList.get(i).getID()));
+                    lookUpDataClass.setStageValue(stageName);
+                    lookUpDataClass.setIntervention4(String.valueOf(stageList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStagelastvalue(stageLastName);
                     if (names.equalsIgnoreCase("Date of Sowing") ||
                             names.equalsIgnoreCase("Date of Planting")
                             || names.equalsIgnoreCase("Date of Transplanting")) {
@@ -273,20 +286,12 @@ public class HortiCallApi {
                     } else {
                         editText.setVisibility(View.GONE);
                     }
-                    lookUpDataClass.setIntervention4(stageList.get(i).getName());
-                    lookUpDataClass.setComponentValue(compName);
-                    lookUpDataClass.setSubComponentValue(subCompName);
-                    if (stageName == null) {
-                        lookUpDataClass.setIntervention3("1");
-                        lookUpDataClass.setStageValue("stageName");
-                    } else {
-                        lookUpDataClass.setStageValue(stageName);
-                        lookUpDataClass.setIntervention3(String.valueOf(cropList.get(i).getID()));
-                    }
-                    lookUpDataClass.setStagelastvalue(stageLastName);
+
+
+
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage().toString());
                 }
 
             }

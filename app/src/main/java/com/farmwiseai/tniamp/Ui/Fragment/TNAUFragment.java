@@ -164,12 +164,12 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         tnauBinding.dateTxt.setOnClickListener(this);
 
         offlineRequest = SharedPrefsUtils.getArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
-        farmerName = tnauBinding.farmerTxt.getText().toString();
-        survey_no = tnauBinding.surveyTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        near_tank = tnauBinding.tankTxt.getText().toString();
-        remarks = tnauBinding.remarksTxt.getText().toString();
-        dateField = tnauBinding.dateTxt.getText().toString();
+        farmerName = tnauBinding.farmerTxt.getText().toString().trim();
+        survey_no = tnauBinding.surveyTxt.getText().toString().trim();
+        area = tnauBinding.areaTxt.getText().toString().trim();
+        near_tank = tnauBinding.tankTxt.getText().toString().trim();
+        remarks = tnauBinding.remarksTxt.getText().toString().trim();
+        dateField = tnauBinding.dateTxt.getText().toString().trim();
         backPressListener = this;
         /*
         below component spinner is vary for all the department so please refer the callApi class
@@ -226,11 +226,11 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                                     String survey_no, String area, String near_tank, String remarks, String date, String mobileNumber) {
 
         farmerName = tnauBinding.farmerTxt.getText().toString().trim();
-        survey_no = tnauBinding.surveyTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        near_tank = tnauBinding.tankTxt.getText().toString();
-        remarks = tnauBinding.remarksTxt.getText().toString();
-        date = tnauBinding.dateTxt.getText().toString();
+        survey_no = tnauBinding.surveyTxt.getText().toString().trim();
+        area = tnauBinding.areaTxt.getText().toString().trim();
+        near_tank = tnauBinding.tankTxt.getText().toString().trim();
+        remarks = tnauBinding.remarksTxt.getText().toString().trim();
+        date = tnauBinding.dateTxt.getText().toString().trim();
         mobileNumber = tnauBinding.mobileNumbertxt.getText().toString().trim();
         //date = "11-09-2023";
        /* if (componentValue != null) {
@@ -299,10 +299,10 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
             } else if (date.isEmpty() && datePicker.getVisibility() == View.VISIBLE) {
                 tnauBinding.dateTxt.setError("Please select the date");
                 return false;
-            } else if (tnauBinding.yieldTxt.getText().toString().isEmpty() && tnauBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+            } else if (tnauBinding.yieldTxt.getText().toString().trim().isEmpty() && tnauBinding.yieldTxt.getVisibility() == View.VISIBLE) {
                 tnauBinding.yieldTxt.setError("Please enter the yield");
                 return false;
-            } else if (tnauBinding.varietyTxt.getText().toString().isEmpty() && tnauBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+            } else if (tnauBinding.varietyTxt.getText().toString().trim().isEmpty() && tnauBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 tnauBinding.varietyTxt.setError("Please enter the variety");
                 return false;
             }
@@ -746,13 +746,13 @@ mCommonFunction.hideProgress();
         Log.i(TAG, "base64: " + firstImageBase64.trim());
         Log.i(TAG, "base64: " + secondImageBase64);
 
-        farmerName = tnauBinding.farmerTxt.getText().toString();
-        survey_no = tnauBinding.surveyTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        area = tnauBinding.areaTxt.getText().toString();
-        remarks = tnauBinding.remarksTxt.getText().toString();
-        dateField = tnauBinding.dateTxt.getText().toString();
-        near_tank = tnauBinding.tankTxt.getText().toString();
+        farmerName = tnauBinding.farmerTxt.getText().toString().trim();
+        survey_no = tnauBinding.surveyTxt.getText().toString().trim();
+        area = tnauBinding.areaTxt.getText().toString().trim();
+        area = tnauBinding.areaTxt.getText().toString().trim();
+        remarks = tnauBinding.remarksTxt.getText().toString().trim();
+        dateField = tnauBinding.dateTxt.getText().toString().trim();
+        near_tank = tnauBinding.tankTxt.getText().toString().trim();
 
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
@@ -771,13 +771,13 @@ mCommonFunction.hideProgress();
         request.setSurvey_no(survey_no);
         request.setArea(area);
         if (tnauBinding.varietyTxt.getVisibility() == View.VISIBLE) {
-            request.setVariety(tnauBinding.varietyTxt.getText().toString());
+            request.setVariety(tnauBinding.varietyTxt.getText().toString().trim());
         } else {
             request.setVariety("null");
         }
         request.setImage1(firstImageBase64.trim());
         if (tnauBinding.yieldTxt.getVisibility() == View.VISIBLE) {
-            request.setYield(tnauBinding.yieldTxt.getText().toString());
+            request.setYield(tnauBinding.yieldTxt.getText().toString().trim());
         } else {
             request.setYield("null");
         }

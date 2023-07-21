@@ -158,19 +158,19 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         agricultureBinding.dateTxt.setOnClickListener(this);
         agricultureBinding.doaTxt.setOnClickListener(this);
         agricultureBinding.dorfTxt.setOnClickListener(this);
-        farmerName = agricultureBinding.farmerTxt.getText().toString();
-        survey_no = agricultureBinding.surveyTxt.getText().toString();
-        area = agricultureBinding.areaTxt.getText().toString();
-        near_tank = agricultureBinding.tankTxt.getText().toString();
-        remarks = agricultureBinding.remarksTxt.getText().toString();
-        dateField = agricultureBinding.dateTxt.getText().toString();
-        nag = agricultureBinding.nameOfGroup.getText().toString();
-        dag = agricultureBinding.doaTxt.getText().toString();
-        darf = agricultureBinding.dorfTxt.getText().toString();
-        seedra = agricultureBinding.areaRaisedTxt.getText().toString();
-        qop = agricultureBinding.quantityTxt.getText().toString();
-        intName = agricultureBinding.inerventionNameTxt.getText().toString();
-        mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
+        farmerName = agricultureBinding.farmerTxt.getText().toString().trim();
+        survey_no = agricultureBinding.surveyTxt.getText().toString().trim();
+        area = agricultureBinding.areaTxt.getText().toString().trim();
+        near_tank = agricultureBinding.tankTxt.getText().toString().trim();
+        remarks = agricultureBinding.remarksTxt.getText().toString().trim();
+        dateField = agricultureBinding.dateTxt.getText().toString().trim();
+        nag = agricultureBinding.nameOfGroup.getText().toString().trim();
+        dag = agricultureBinding.doaTxt.getText().toString().trim();
+        darf = agricultureBinding.dorfTxt.getText().toString().trim();
+        seedra = agricultureBinding.areaRaisedTxt.getText().toString().trim();
+        qop = agricultureBinding.quantityTxt.getText().toString().trim();
+        intName = agricultureBinding.inerventionNameTxt.getText().toString().trim();
+        mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString().trim();
         componentSpinner = agricultureBinding.componentTxt;
         sub_componentSpinner = agricultureBinding.subComponentsTxt;
         stagesSpinner = agricultureBinding.stagesTxt;
@@ -203,18 +203,18 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                                     String intName, String mobileNumber) {
 
         farmerName = agricultureBinding.farmerTxt.getText().toString().trim();
-        survey_no = agricultureBinding.surveyTxt.getText().toString();
-        area = agricultureBinding.areaTxt.getText().toString();
-        near_tank = agricultureBinding.tankTxt.getText().toString();
-        remarks = agricultureBinding.remarksTxt.getText().toString();
-        date = agricultureBinding.dateTxt.getText().toString();
-        nag = agricultureBinding.nameOfGroup.getText().toString();
-        dag = agricultureBinding.doaTxt.getText().toString();
-        dafr = agricultureBinding.dorfTxt.getText().toString();
-        seedra = agricultureBinding.areaRaisedTxt.getText().toString();
-        qop = agricultureBinding.quantityTxt.getText().toString();
+        survey_no = agricultureBinding.surveyTxt.getText().toString().trim();
+        area = agricultureBinding.areaTxt.getText().toString().trim();
+        near_tank = agricultureBinding.tankTxt.getText().toString().trim();
+        remarks = agricultureBinding.remarksTxt.getText().toString().trim();
+        date = agricultureBinding.dateTxt.getText().toString().trim();
+        nag = agricultureBinding.nameOfGroup.getText().toString().trim();
+        dag = agricultureBinding.doaTxt.getText().toString().trim();
+        dafr = agricultureBinding.dorfTxt.getText().toString().trim();
+        seedra = agricultureBinding.areaRaisedTxt.getText().toString().trim();
+        qop = agricultureBinding.quantityTxt.getText().toString().trim();
         intName = agricultureBinding.inerventionNameTxt.getText().toString().trim();
-        mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString();
+        mobileNumber = agricultureBinding.mobileNumbertxt.getText().toString().trim();
 
       /*  if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
@@ -292,10 +292,10 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (date.isEmpty() && datePicker.getVisibility() == View.VISIBLE) {
                 agricultureBinding.dateTxt.setError("Please select the date");
                 return false;
-            } else if (agricultureBinding.yieldTxt.getText().toString().isEmpty() && agricultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+            } else if (agricultureBinding.yieldTxt.getText().toString().trim().isEmpty() && agricultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
                 agricultureBinding.yieldTxt.setError("Please enter the yield");
                 return false;
-            } else if (agricultureBinding.varietyTxt.getText().toString().isEmpty() && agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+            } else if (agricultureBinding.varietyTxt.getText().toString().trim().isEmpty() && agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 agricultureBinding.varietyTxt.setError("Please enter the variety");
                 return false;
             }
@@ -672,13 +672,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private void getAllData() {
         
         request = new Agri_Request();
-        farmerName = agricultureBinding.farmerTxt.getText().toString();
-        survey_no = agricultureBinding.surveyTxt.getText().toString();
-        area = agricultureBinding.areaTxt.getText().toString();
-        area = agricultureBinding.areaTxt.getText().toString();
-        remarks = agricultureBinding.remarksTxt.getText().toString();
-        dateField = agricultureBinding.dateTxt.getText().toString();
-        near_tank = agricultureBinding.tankTxt.getText().toString();
+        farmerName = agricultureBinding.farmerTxt.getText().toString().trim();
+        survey_no = agricultureBinding.surveyTxt.getText().toString().trim();
+        area = agricultureBinding.areaTxt.getText().toString().trim();
+        area = agricultureBinding.areaTxt.getText().toString().trim();
+        remarks = agricultureBinding.remarksTxt.getText().toString().trim();
+        dateField = agricultureBinding.dateTxt.getText().toString().trim();
+        near_tank = agricultureBinding.tankTxt.getText().toString().trim();
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -709,7 +709,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setArea(area);
 
         if (agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
-            request.setVariety(agricultureBinding.varietyTxt.getText().toString());
+            request.setVariety(agricultureBinding.varietyTxt.getText().toString().trim());
         } else {
             request.setVariety("null");
         }
@@ -717,7 +717,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setImage1(firstImageBase64.trim());
 
         if (agricultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
-            request.setYield(agricultureBinding.yieldTxt.getText().toString());
+            request.setYield(agricultureBinding.yieldTxt.getText().toString().trim());
         } else {
             request.setYield("null");
         }
@@ -743,11 +743,11 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         }
 
         if (agricultureBinding.seedGroupLyt.getVisibility() == View.VISIBLE) {
-            request.setGroupName(agricultureBinding.nameOfGroup.getText().toString());
-            request.setDateCountOpen(agricultureBinding.doaTxt.getText().toString());
-            request.setDateRevolvingFundRelease(agricultureBinding.dorfTxt.getText().toString());
-            request.setSeedAreaDecimal(agricultureBinding.areaRaisedTxt.getText().toString());
-            request.setQuantityProcured(agricultureBinding.quantityTxt.getText().toString());
+            request.setGroupName(agricultureBinding.nameOfGroup.getText().toString().trim());
+            request.setDateCountOpen(agricultureBinding.doaTxt.getText().toString().trim());
+            request.setDateRevolvingFundRelease(agricultureBinding.dorfTxt.getText().toString().trim());
+            request.setSeedAreaDecimal(agricultureBinding.areaRaisedTxt.getText().toString().trim());
+            request.setQuantityProcured(agricultureBinding.quantityTxt.getText().toString().trim());
         } else {
             request.setGroupName("null");
             request.setDateCountOpen("null");

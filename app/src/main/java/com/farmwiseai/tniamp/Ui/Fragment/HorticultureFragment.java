@@ -169,11 +169,11 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
 
         farmerName = horticultureBinding.farmerTxt.getText().toString().trim();
-        survey_no = horticultureBinding.surveyTxt.getText().toString();
-        area = horticultureBinding.areaTxt.getText().toString();
-        near_tank = horticultureBinding.tankTxt.getText().toString();
-        remarks = horticultureBinding.remarksTxt.getText().toString();
-        dateField = horticultureBinding.dateTxt.getText().toString();
+        survey_no = horticultureBinding.surveyTxt.getText().toString().trim();
+        area = horticultureBinding.areaTxt.getText().toString().trim();
+        near_tank = horticultureBinding.tankTxt.getText().toString().trim();
+        remarks = horticultureBinding.remarksTxt.getText().toString().trim();
+        dateField = horticultureBinding.dateTxt.getText().toString().trim();
         backPressListener = this;
         componentSpinner = horticultureBinding.componentTxt;
         sub_componentSpinner = horticultureBinding.subComponentsTxt;
@@ -183,9 +183,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         datePicker = horticultureBinding.dateTxt;
         vis_lyt = horticultureBinding.visibilityLyt;
         trainingLyt = horticultureBinding.iecLayt;
-        intName = horticultureBinding.inerventionNameTxt.getText().toString();
+        intName = horticultureBinding.inerventionNameTxt.getText().toString().trim();
         iNames_lyt = horticultureBinding.inerventionLyt;
-        mobileNumber = horticultureBinding.mobileNumbertxt.getText().toString();
+        mobileNumber = horticultureBinding.mobileNumbertxt.getText().toString().trim();
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, cropstagespinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
 
@@ -208,12 +208,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                                     String survey_no, String area, String near_tank, String remarks, String date, String intName, String mobileNumber) {
 
         farmerName = horticultureBinding.farmerTxt.getText().toString().trim();
-        survey_no = horticultureBinding.surveyTxt.getText().toString();
-        area = horticultureBinding.areaTxt.getText().toString();
-        near_tank = horticultureBinding.tankTxt.getText().toString();
-        remarks = horticultureBinding.remarksTxt.getText().toString();
-        date = horticultureBinding.dateTxt.getText().toString();
-        intName = horticultureBinding.inerventionNameTxt.getText().toString();
+        survey_no = horticultureBinding.surveyTxt.getText().toString().trim();
+        area = horticultureBinding.areaTxt.getText().toString().trim();
+        near_tank = horticultureBinding.tankTxt.getText().toString().trim();
+        remarks = horticultureBinding.remarksTxt.getText().toString().trim();
+        date = horticultureBinding.dateTxt.getText().toString().trim();
+        intName = horticultureBinding.inerventionNameTxt.getText().toString().trim();
         mobileNumber = horticultureBinding.mobileNumbertxt.getText().toString().trim();
 
       /*  if (componentValue != null) {
@@ -267,10 +267,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
                 Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
                 return false;
-            }else if (horticultureBinding.yieldTxt.getText().toString().isEmpty() && horticultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+            }else if (horticultureBinding.yieldTxt.getText().toString().trim().isEmpty() && horticultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
                 horticultureBinding.yieldTxt.setError("Please enter the yield");
                 return false;
-            } else if (horticultureBinding.varietyTxt.getText().toString().isEmpty() && horticultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+            } else if (horticultureBinding.varietyTxt.getText().toString().trim().isEmpty() && horticultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 horticultureBinding.varietyTxt.setError("Please enter the variety");
                 return false;
             }  else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
@@ -281,19 +281,19 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
             }
         } else if (trainingLyt.getVisibility() == View.VISIBLE) {
-            if (horticultureBinding.noOfParticipants.getText().toString().isEmpty()) {
+            if (horticultureBinding.noOfParticipants.getText().toString().trim().isEmpty()) {
                 horticultureBinding.noOfParticipants.setError("Do not empty field");
                 return false;
-            } else if (horticultureBinding.maleOthers.getText().toString().isEmpty()) {
+            } else if (horticultureBinding.maleOthers.getText().toString().trim().isEmpty()) {
                 horticultureBinding.maleOthers.setError("Do not empty field");
                 return false;
-            } else if (horticultureBinding.maleNo.getText().toString().isEmpty()) {
+            } else if (horticultureBinding.maleNo.getText().toString().trim().isEmpty()) {
                 horticultureBinding.maleOthers.setError("Do not empty field");
                 return false;
-            } else if (horticultureBinding.femaleOthers.getText().toString().isEmpty()) {
+            } else if (horticultureBinding.femaleOthers.getText().toString().trim().isEmpty()) {
                 horticultureBinding.femaleOthers.setError("Do not empty field");
                 return false;
-            } else if (horticultureBinding.femaleNo.getText().toString().isEmpty()) {
+            } else if (horticultureBinding.femaleNo.getText().toString().trim().isEmpty()) {
                 horticultureBinding.femaleNo.setError("Do not empty field");
                 return false;
             }
@@ -550,15 +550,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         int day = cldr.get(Calendar.DAY_OF_MONTH);
         int month = cldr.get(Calendar.MONTH);
         int year = cldr.get(Calendar.YEAR);
-        long maxTime = cldr.getTimeInMillis();
-
-        // Move day as first day of the month
-        cldr.set(Calendar.DAY_OF_MONTH, day);
-        // Move "month" for previous one
-        cldr.add(Calendar.MONTH, -1);
-
-        // Min = time after changes
-        long minTime = cldr.getTimeInMillis();
         // date picker dialog
         picker = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
@@ -567,9 +558,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                         datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 }, year, month, day);
-        picker.getDatePicker().setMaxDate(maxTime);
-        picker.getDatePicker().setMinDate(minTime);
+        picker.getDatePicker().setMaxDate(System.currentTimeMillis());
         picker.show();
+
     }
 
 
@@ -637,12 +628,12 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
     private void getAllData() {
 
-        farmerName = horticultureBinding.farmerTxt.getText().toString();
-        survey_no = horticultureBinding.surveyTxt.getText().toString();
-        area = horticultureBinding.areaTxt.getText().toString();
-        area = horticultureBinding.areaTxt.getText().toString();
-        remarks = horticultureBinding.remarksTxt.getText().toString();
-        near_tank = horticultureBinding.tankTxt.getText().toString();
+        farmerName = horticultureBinding.farmerTxt.getText().toString().trim();
+        survey_no = horticultureBinding.surveyTxt.getText().toString().trim();
+        area = horticultureBinding.areaTxt.getText().toString().trim();
+        area = horticultureBinding.areaTxt.getText().toString().trim();
+        remarks = horticultureBinding.remarksTxt.getText().toString().trim();
+        near_tank = horticultureBinding.tankTxt.getText().toString().trim();
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -673,7 +664,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setArea(area);
 
         if (horticultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
-            request.setVariety(horticultureBinding.varietyTxt.getText().toString());
+            request.setVariety(horticultureBinding.varietyTxt.getText().toString().trim());
         } else {
             request.setVariety("null");
         }
@@ -681,7 +672,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setImage1(firstImageBase64);
 
         if (horticultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
-            request.setYield(horticultureBinding.yieldTxt.getText().toString());
+            request.setYield(horticultureBinding.yieldTxt.getText().toString().trim());
         } else {
             request.setYield("null");
         }

@@ -166,16 +166,16 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         animalBinding.dateTxt.setOnClickListener(this);
         animalBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-        farmerName = animalBinding.farmerTxt.getText().toString();
-        survey_no = animalBinding.surveyTxt.getText().toString();
-        near_tank = animalBinding.tankTxt.getText().toString();
-        remarks = animalBinding.remarksTxt.getText().toString();
-        dateField = animalBinding.dateTxt.getText().toString();
-        venue = animalBinding.venue.getText().toString();
-        mon = animalBinding.maleNo.getText().toString();
-        moo = animalBinding.scStNO.getText().toString();
-        fon = animalBinding.femaleNo.getText().toString();
-        foo = animalBinding.fScStNO.getText().toString();
+        farmerName = animalBinding.farmerTxt.getText().toString().trim();
+        survey_no = animalBinding.surveyTxt.getText().toString().trim();
+        near_tank = animalBinding.tankTxt.getText().toString().trim();
+        remarks = animalBinding.remarksTxt.getText().toString().trim();
+        dateField = animalBinding.dateTxt.getText().toString().trim();
+        venue = animalBinding.venue.getText().toString().trim();
+        mon = animalBinding.maleNo.getText().toString().trim();
+        moo = animalBinding.scStNO.getText().toString().trim();
+        fon = animalBinding.femaleNo.getText().toString().trim();
+        foo = animalBinding.fScStNO.getText().toString().trim();
 
         componentSpinner = animalBinding.componentTxt;
         sub_componentSpinner = animalBinding.subComponentsTxt;
@@ -387,17 +387,17 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                                     String moN, String mOO, String foN, String fOO, String intName) {
 
         farmerName = animalBinding.farmerTxt.getText().toString().trim();
-        survey_no = animalBinding.surveyTxt.getText().toString();
-        area = animalBinding.areaTxt.getText().toString();
-        near_tank = animalBinding.tankTxt.getText().toString();
-        remarks = animalBinding.remarksTxt.getText().toString();
-        date = animalBinding.dateTxt.getText().toString();
-        moN = animalBinding.maleNo.getText().toString();
-        mOO = animalBinding.scStNO.getText().toString();
-        foN = animalBinding.femaleNo.getText().toString();
-        fOO = animalBinding.fScStNO.getText().toString();
-        noFarmer = animalBinding.fScStNO.getText().toString();
-        venue = animalBinding.fScStNO.getText().toString();
+        survey_no = animalBinding.surveyTxt.getText().toString().trim();
+        area = animalBinding.areaTxt.getText().toString().trim();
+        near_tank = animalBinding.tankTxt.getText().toString().trim();
+        remarks = animalBinding.remarksTxt.getText().toString().trim();
+        date = animalBinding.dateTxt.getText().toString().trim();
+        moN = animalBinding.maleNo.getText().toString().trim();
+        mOO = animalBinding.scStNO.getText().toString().trim();
+        foN = animalBinding.femaleNo.getText().toString().trim();
+        fOO = animalBinding.fScStNO.getText().toString().trim();
+        noFarmer = animalBinding.fScStNO.getText().toString().trim();
+        venue = animalBinding.fScStNO.getText().toString().trim();
 
         String mobileNumber = animalBinding.mobileNumber.getText().toString().trim();
 
@@ -416,7 +416,10 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         } else if (stagesSpinner.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (datePicker.getVisibility() == View.VISIBLE && date.isEmpty()) {
+            animalBinding.dateTxt.setError("Please select Date");
+            return false;
+        }else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -447,25 +450,25 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         } else if (trainingLyt.getVisibility() == View.VISIBLE) {
 
-            if (animalBinding.noOfFarmers.getText().toString().isEmpty()) {
+            if (animalBinding.noOfFarmers.getText().toString().trim().isEmpty()) {
                 animalBinding.noOfFarmers.setError("field empty");
                 return false;
-            } else if (animalBinding.venue.getText().toString().isEmpty()) {
+            } else if (animalBinding.venue.getText().toString().trim().isEmpty()) {
                 animalBinding.venue.setError("field empty");
                 return false;
-            } else if (animalBinding.otherNo.getText().toString().isEmpty()) {
+            } else if (animalBinding.otherNo.getText().toString().trim().isEmpty()) {
                 {
                     animalBinding.otherNo.setError("field empty");
                     return false;
                 }
-            } else if (animalBinding.femaleOthers.getText().toString().isEmpty()) {
+            } else if (animalBinding.femaleOthers.getText().toString().trim().isEmpty()) {
                 {
                     animalBinding.femaleOthers.setError("field empty");
                     return false;
                 }
             }
         } else if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE) {
-            if (animalBinding.noOfCalves.getText().toString().isEmpty()) {
+            if (animalBinding.noOfCalves.getText().toString().trim().isEmpty()) {
                 animalBinding.noOfCalves.setError("field empty");
                 return false;
             }
@@ -592,13 +595,13 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
     private void getAllData() {
         request = new AnimalRequest();
-        farmerName = animalBinding.farmerTxt.getText().toString();
-        survey_no = animalBinding.surveyTxt.getText().toString();
-        area = animalBinding.areaTxt.getText().toString();
-        area = animalBinding.areaTxt.getText().toString();
-        remarks = animalBinding.remarksTxt.getText().toString();
-        dateField = animalBinding.dateTxt.getText().toString();
-        near_tank = animalBinding.tankTxt.getText().toString();
+        farmerName = animalBinding.farmerTxt.getText().toString().trim();
+        survey_no = animalBinding.surveyTxt.getText().toString().trim();
+        area = animalBinding.areaTxt.getText().toString().trim();
+        area = animalBinding.areaTxt.getText().toString().trim();
+        remarks = animalBinding.remarksTxt.getText().toString().trim();
+        dateField = animalBinding.dateTxt.getText().toString().trim();
+        near_tank = animalBinding.tankTxt.getText().toString().trim();
 
         String myFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -642,24 +645,34 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setStatus("0");
 
         if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Calves")) {
-            request.setNo_of_calves(animalBinding.noOfCalves.getText().toString());
+            request.setNo_of_calves(animalBinding.noOfCalves.getText().toString().trim());
         } else {
             request.setNo_of_calves("0");
         }
         if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Cows")) {
-            request.setNo_of_cows(animalBinding.noOfCalves.getText().toString());
+            request.setNo_of_cows(animalBinding.noOfCalves.getText().toString().trim());
         } else {
             request.setNo_of_cows("0");
         }
 
 
         if (animalBinding.trainingLayout.getVisibility() == View.VISIBLE) {
-            request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString());
-            request.setOthers_female_no(animalBinding.femaleOthers.getText().toString());
-            request.setOthers_male_no(animalBinding.otherNo.getText().toString());
-            request.setSc_st_female_no(animalBinding.fScStNO.getText().toString());
-            request.setSc_st_male_no(animalBinding.scStNO.getText().toString());
-            request.setVenue(animalBinding.venue.getText().toString());
+            request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString().trim());
+            request.setOthers_female_no(animalBinding.femaleOthers.getText().toString().trim());
+            request.setOthers_male_no(animalBinding.otherNo.getText().toString().trim());
+           if(animalBinding.fScStNO.getText().toString().trim().isEmpty())
+           {
+               request.setSc_st_female_no("11");
+           }else {
+               request.setSc_st_female_no(animalBinding.fScStNO.getText().toString().trim());
+           }
+            if(animalBinding.scStNO.getText().toString().trim().isEmpty())
+            {
+                request.setSc_st_male_no("11");
+            }else {
+                request.setSc_st_male_no(animalBinding.scStNO.getText().toString().trim());
+            }
+            request.setVenue(animalBinding.venue.getText().toString().trim());
         } else {
             request.setNo_of_farmers("0");
             request.setOthers_female_no("0");
@@ -668,11 +681,11 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             request.setSc_st_male_no("0");
             request.setVenue("null");
         }
-        request.setMobile(animalBinding.mobileNumber.getText().toString());
+        request.setMobile(animalBinding.mobileNumber.getText().toString().trim());
         request.setIntervention_type("3");
 
         if (animalBinding.othersLayout.getVisibility() == View.VISIBLE) {
-            request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString());
+            request.setOther_intervention(animalBinding.inerventionNameTxt.getText().toString().trim());
         } else {
             request.setOther_intervention("");
         }

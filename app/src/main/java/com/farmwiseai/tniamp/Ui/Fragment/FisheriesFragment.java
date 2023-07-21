@@ -342,7 +342,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (catNameValL5 == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
-            } else if (fisheriesBinding.feedQualityL5.getText().toString().length() == 0) {
+            } else if (fisheriesBinding.feedQualityL5.getText().toString().trim().length() == 0) {
                 fisheriesBinding.feedQualityL5.setError("Do not empty field");
                 return false;
             } else if (fisheriesBinding.speciesStockedTxt2L5.getText().toString().trim().isEmpty()) {
@@ -354,13 +354,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 if (fisheriesBinding.usedFeedQuantityL5.getText().length() == 0) {
                     fisheriesBinding.usedFeedQuantityL5.setError("Do not empty field");
                     return false;
-                } else if (fisheriesBinding.dayOfCultureL5.getText().toString().length() == 0) {
+                } else if (fisheriesBinding.dayOfCultureL5.getText().toString().trim().length() == 0) {
                     fisheriesBinding.dayOfCultureL5.setError("Do not empty field");
                     return false;
-                } else if (fisheriesBinding.quantityTxtL5.getText().toString().length() == 0) {
+                } else if (fisheriesBinding.quantityTxtL5.getText().toString().trim().length() == 0) {
                     fisheriesBinding.quantityTxtL5.setError("Do not empty field");
                     return false;
-                } else if (fisheriesBinding.revenueGeneratedL5.getText().toString().length() == 0) {
+                } else if (fisheriesBinding.revenueGeneratedL5.getText().toString().trim().length() == 0) {
                     fisheriesBinding.revenueGeneratedL5.setError("Do not empty field");
                     return false;
                 } else if (otherLyt.getVisibility() == View.VISIBLE) {
@@ -970,24 +970,24 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         request.setNodal_officer(fisheriesBinding.nodalTXt.toString());
         request.setTank_name(fisheriesBinding.nameofTankTXT.getText().toString().trim());
-        request.setWater_spread_area(fisheriesBinding.waterTxt.getText().toString());
-        request.setSeed_no(fisheriesBinding.seedStockTXt.getText().toString());
+        request.setWater_spread_area(fisheriesBinding.waterTxt.getText().toString().trim());
+        request.setSeed_no(fisheriesBinding.seedStockTXt.getText().toString().trim());
 
         if (fisheriesBinding.layout2.getVisibility() == View.VISIBLE) {
-            request.setFeed_qty(fisheriesBinding.feedQuality.getText().toString());
+            request.setFeed_qty(fisheriesBinding.feedQuality.getText().toString().trim());
         } else if (fisheriesBinding.layout3.getVisibility() == View.VISIBLE) {
-            request.setFeed_qty(fisheriesBinding.feedQuality1.getText().toString());
+            request.setFeed_qty(fisheriesBinding.feedQuality1.getText().toString().trim());
         } else if (fisheriesBinding.layout4.getVisibility() == View.VISIBLE) {
-            request.setFeed_qty(fisheriesBinding.feedQuality2.getText().toString());
+            request.setFeed_qty(fisheriesBinding.feedQuality2.getText().toString().trim());
             request.setCategory(catVal);
             request.setGender(genderVal);
-            request.setMobile(fisheriesBinding.mobileVal.getText().toString());
-            request.setSurvey_no(fisheriesBinding.surveyVal.getText().toString());
+            request.setMobile(fisheriesBinding.mobileVal.getText().toString().trim());
+            request.setSurvey_no(fisheriesBinding.surveyVal.getText().toString().trim());
 
-            request.setNo_of_stocks_req(fisheriesBinding.numbOfSeeds.getText().toString());
-            request.setHarvested(fisheriesBinding.numbOfSeedsHarvest.getText().toString());
-            request.setPond_constructed_by(fisheriesBinding.farmPond.getText().toString());
-            request.setQty_fish_harvested(fisheriesBinding.quantityOfFishHar.getText().toString());
+            request.setNo_of_stocks_req(fisheriesBinding.numbOfSeeds.getText().toString().trim());
+            request.setHarvested(fisheriesBinding.numbOfSeedsHarvest.getText().toString().trim());
+            request.setPond_constructed_by(fisheriesBinding.farmPond.getText().toString().trim());
+            request.setQty_fish_harvested(fisheriesBinding.quantityOfFishHar.getText().toString().trim());
         } else if (fisheriesBinding.layout5.getVisibility() == View.VISIBLE) {
             request.setPond_constructed_by("");
         } else {

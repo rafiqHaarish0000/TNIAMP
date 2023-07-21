@@ -284,8 +284,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             } else if (!ValidationUtils.isValidMobileNumber(marketingBinding.mobileNumber.getText().toString().trim())) {
                 marketingBinding.mobileNumber.setError("Please enter the valid mobile number");
                 return false;
-            } else if (marketingBinding.emailTxt.getText().toString().trim().isEmpty()) {
-                marketingBinding.emailTxt.setError("field empty");
+            } else if (marketingBinding.emailTxt.getText().toString().trim().isEmpty() || !ValidationUtils.isValidEmail(marketingBinding.emailTxt.getText().toString().trim())) {
+                marketingBinding.emailTxt.setError("Invalid Email Id");
                 return false;
             } else if (marketingBinding.infrastructureTxt.getText().toString().trim().isEmpty()) {
                 marketingBinding.infrastructureTxt.setError("field empty");
@@ -503,6 +503,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         }
     }
+
     private void dateOfSowing_Planting(EditText datePicker) {
         final Calendar cldr = Calendar.getInstance();
         int day = cldr.get(Calendar.DAY_OF_MONTH);
@@ -531,6 +532,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
 
     }
+
     private void dateFieldValidation(EditText datePicker) {
 
         final Calendar cldr = Calendar.getInstance();
@@ -910,14 +912,14 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         request.setIntervention1(intervention1);
 
-        if(marketingBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+        if (marketingBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
-        }else {
+        } else {
             request.setIntervention2("0");
         }
-        if(marketingBinding.stageTxt.getVisibility() == View.VISIBLE){
+        if (marketingBinding.stageTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention3(intervention3);
-        }else {
+        } else {
             request.setIntervention3("0");
         }
 
@@ -957,7 +959,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             request.setGovt_share(marketingBinding.govertShare.getText().toString());
             request.setCapacity(marketingBinding.capacity.getText().toString());
             request.setGodown_category(catNameVal);
-        }else{
+        } else {
             request.setNo_of_beneficeries("0");
             request.setGovt_share("0");
             request.setCapacity("0");
@@ -965,7 +967,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         }
 
 
-        if(marketingBinding.trainingLyt.getVisibility() == View.VISIBLE){
+        if (marketingBinding.trainingLyt.getVisibility() == View.VISIBLE) {
             request.setNof_female(marketingBinding.traineeOtherNoF.getText().toString().trim());
             request.setNof_male(marketingBinding.traineeOtherNo.getText().toString().trim());
             request.setFemale_no1(marketingBinding.traineeOtherNoF.getText().toString().trim());
@@ -973,7 +975,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             request.setVenue(marketingBinding.venue.getText().toString().trim());
             request.setNumber_trainees(marketingBinding.noOftrainee.getText().toString());
             request.setTraining_name(trainingVal);
-        }else{
+        } else {
             request.setNof_female("1");
             request.setNof_male("1");
             request.setFemale_no1("1");
@@ -983,11 +985,11 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             request.setTraining_name("null");
         }
 
-        if(marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE){
+        if (marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE) {
             request.setFpc_name(marketingBinding.nameHq.getText().toString());
             request.setCategory2(categoryExpoVal);
 
-        }else{
+        } else {
             request.setFpc_name("null");
             request.setCategory2("");
         }

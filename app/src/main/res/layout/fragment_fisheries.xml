@@ -723,6 +723,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:hint="Revenue generated"
+                            android:digits="1234567890."
+                            android:maxLength="5"
                             android:inputType="number" />
                     </LinearLayout>
 

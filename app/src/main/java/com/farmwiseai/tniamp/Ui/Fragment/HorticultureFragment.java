@@ -234,7 +234,10 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         } else if (horticultureBinding.cropStages.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (datePicker.getVisibility() == View.VISIBLE && date.isEmpty()) {
+            horticultureBinding.dateTxt.setError("Please select Date");
+            return false;
+        }else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -288,7 +291,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 horticultureBinding.maleOthers.setError("Do not empty field");
                 return false;
             } else if (horticultureBinding.maleNo.getText().toString().trim().isEmpty()) {
-                horticultureBinding.maleOthers.setError("Do not empty field");
+                horticultureBinding.maleNo.setError("Do not empty field");
                 return false;
             } else if (horticultureBinding.femaleOthers.getText().toString().trim().isEmpty()) {
                 horticultureBinding.femaleOthers.setError("Do not empty field");

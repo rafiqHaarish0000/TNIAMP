@@ -453,7 +453,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, gender, survey_no, area, near_tank, remarks, dateField, interventionName, mobileNumber);
                 if (checkValidaiton) {
-                   finalSubmission();
+                    finalSubmission();
                 } else {
                     //do the code for save all data
                     //  Toast.makeText(context, "Server error.!", Toast.LENGTH_SHORT).show();
@@ -577,15 +577,15 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setVillage(village);
         request.setIntervention1(intervention1);
 
-        if(aedBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+        if (aedBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
-        }else{
+        } else {
             request.setIntervention2("0");
         }
 
-        if(aedBinding.stageTxt.getVisibility() == View.VISIBLE){
+        if (aedBinding.stageTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention3(intervention3);
-        }else{
+        } else {
             request.setIntervention3("0");
         }
         request.setFarmer_name(farmerName);
@@ -608,13 +608,14 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setStatus("0");
         request.setIntervention_type(interventionTypeVal);
 
-        if(aedBinding.othersLayout.getVisibility() == View.VISIBLE){
+        if (aedBinding.othersLayout.getVisibility() == View.VISIBLE) {
             request.setOther_intervention(interventionName);
-        }else{
+        } else {
             request.setOther_intervention("null");
         }
 
         if (mCommonFunction.isNetworkAvailable() == true) {
+            mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
             String offlineText = "";
@@ -656,13 +657,14 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                     Log.i(TAG, "txt_value: " + txt_id.toString());
                     uploadSecondImage(txt_id);
                 } else {
-
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
+                    mCommonFunction.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<AEDResponse> call, Throwable t) {
-
+                mCommonFunction.dismiss();
             }
         });
 
@@ -696,10 +698,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
+                mCommonFunction.dismiss();
+
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });

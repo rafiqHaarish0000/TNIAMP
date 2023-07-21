@@ -758,6 +758,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
 
         if (mCommonFunction.isNetworkAvailable() == true) {
+            mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
             String offlineText = "";
@@ -842,10 +843,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
+                mCommonFunction.dismiss();
+
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });

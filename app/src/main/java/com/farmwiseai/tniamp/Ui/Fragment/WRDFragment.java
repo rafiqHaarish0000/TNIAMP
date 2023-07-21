@@ -619,6 +619,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
 
         if (mCommonFunction.isNetworkAvailable() == true) {
+            mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
             String offlineText = "";
@@ -662,12 +663,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
-
+                    mCommonFunction.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<WRDResponse> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });
@@ -701,10 +703,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
+                mCommonFunction.dismiss();
+
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });

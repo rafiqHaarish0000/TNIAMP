@@ -1013,6 +1013,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
 
         if (mCommonFunction.isNetworkAvailable()) {
+            mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
             String offlineText = "";
@@ -1055,14 +1056,14 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                     uploadSecondImage(txt_id);
 
                 } else {
-                    Toast.makeText(getContext(), "data getting error.!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
+                    mCommonFunction.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<FishResponse> call, Throwable t) {
-
+mCommonFunction.dismiss();
             }
         });
 
@@ -1095,10 +1096,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
+                mCommonFunction.dismiss();
+
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });

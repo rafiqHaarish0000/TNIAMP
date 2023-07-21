@@ -65,6 +65,7 @@ public class MobileValidationActivity extends BaseActivity {
 
                 } else {
                     try {
+                        commonFunction.showProgress();
                         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                         Call<GenerateOTP> userDataCall = null;
                         userDataCall = call.generateOTP(binding.mobileValues.getText().toString(), "Your TNIAMP OTP :  ", "4");
@@ -90,12 +91,13 @@ public class MobileValidationActivity extends BaseActivity {
                                     startActivity(i);
                                     finish();
                                 }
+                                commonFunction.dismiss();
                             }
 
                             @Override
                             public void onFailure(Call<GenerateOTP> call, Throwable t) {
                                 mLoadCustomToast(getParent(), "Please check the internet connection.!");
-
+commonFunction.dismiss();
                             }
                         });
 

@@ -17,6 +17,7 @@ import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.Ui.SplashScreenActivity;
 import com.farmwiseai.tniamp.databinding.ActivityVerifyMobileNumberActivitiyBinding;
 import com.farmwiseai.tniamp.utils.BaseActivity;
+import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.FetchDeptLookup;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
@@ -26,25 +27,28 @@ import retrofit2.Response;
 
 public class VerifyMobileNumberActivitiy extends BaseActivity {
     ActivityVerifyMobileNumberActivitiyBinding mBinding;
-String otpValue,phoneNumber;
-ValidateOTP validateOTP;
+    String otpValue, phoneNumber;
+    ValidateOTP validateOTP;
+    CommonFunction commonFunction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(VerifyMobileNumberActivitiy.this, R.layout.activity_verify_mobile_number_activitiy);
         Bundle extras = getIntent().getExtras();
-        phoneNumber= extras.getString("phone");
+        phoneNumber = extras.getString("phone");
+        commonFunction = new CommonFunction(VerifyMobileNumberActivitiy.this);
 
         setContentView(mBinding.getRoot());
-              mBinding.confirmOtp.setOnClickListener(new View.OnClickListener() {
+        mBinding.confirmOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!validationUtils_obj.isOTPNumber(mBinding.digitCodeValue.getText().toString())) {
 
                     mBinding.digitCodeValue.setError("otp is not found");
 
-                }else{
-                    validateOTP(phoneNumber,mBinding.digitCodeValue.getText().toString());
+                } else {
+                    validateOTP(phoneNumber, mBinding.digitCodeValue.getText().toString());
 
                 }
             }
@@ -58,32 +62,30 @@ ValidateOTP validateOTP;
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
 
-                }else{
+                } else {
                     ValidateOTP();
                 }
             }
         });
 
 
-
-
-
     }
 
-    private void validateOTP(String phoneNumber , String otpValue) {
+    private void validateOTP(String phoneNumber, String otpValue) {
         try {
+            commonFunction.showProgress();
             Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
             Call<ValidateOTP> userDataCall = null;
-            userDataCall = call.validateOTP(phoneNumber,otpValue);
+            userDataCall = call.validateOTP(phoneNumber, otpValue);
             userDataCall.enqueue(new Callback<ValidateOTP>() {
                 @Override
                 public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
                     if (response.body() != null) {
                         validateOTP = response.body();
                         Log.i(TAG, "onBody: " + response.code());
-                        String responsemsg=validateOTP.getResponseMessage().getResponse();
-                        if(responsemsg==null) {
-                            FetchDeptLookup.readDataFromFile(getApplicationContext(),"lookup.json");
+                        String responsemsg = validateOTP.getResponseMessage().getResponse();
+                        if (responsemsg == null) {
+                            FetchDeptLookup.readDataFromFile(getApplicationContext(), "lookup.json");
                             SharedPrefsUtils.putBoolean(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.LOGIN_SESSION, true);
                             SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN, validateOTP.getResponseMessage().getSerialNo().toString());
                             SharedPrefsUtils.putString(VerifyMobileNumberActivitiy.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS, validateOTP.getResponseMessage().getLineDept().toString());
@@ -92,20 +94,21 @@ ValidateOTP validateOTP;
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
                             finish();
-                        }else {
+                        } else {
                             mLoadCustomToast(getParent(), validateOTP.getResponseMessage().getResponse());
                         }
-                    }
-                    else {
+
+                    } else {
                         mLoadCustomToast(getParent(), "InValid OTP ");
 
                     }
+                    commonFunction.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<ValidateOTP> call, Throwable t) {
                     mLoadCustomToast(getParent(), "InValid OTP");
-
+                    commonFunction.dismiss();
                 }
             });
 
@@ -122,7 +125,7 @@ ValidateOTP validateOTP;
     }
 
     // get otp digit code for mobile number
-    private void ValidateOTP(){
+    private void ValidateOTP() {
 
     }
 

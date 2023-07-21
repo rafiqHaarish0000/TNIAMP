@@ -275,6 +275,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 registerRequest.setVersion("");
                 registerRequest.setSubbasin(String.valueOf(subBasinId));
                 registerRequest.setUserStatus("1");
+                mCommonFunction.showProgress();
 
                 Interface_Api api = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<RegisterResponse> registerResponseCall = null;
@@ -292,10 +293,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         } else {
                             Toast.makeText(getApplicationContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                         }
+                        mCommonFunction.dismiss();
                     }
 
                     @Override
                     public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                        mCommonFunction.dismiss();
                     }
                 });
 

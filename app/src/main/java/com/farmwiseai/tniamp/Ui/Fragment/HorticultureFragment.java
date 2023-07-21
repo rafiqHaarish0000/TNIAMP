@@ -237,7 +237,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         } else if (datePicker.getVisibility() == View.VISIBLE && date.isEmpty()) {
             horticultureBinding.dateTxt.setError("Please select Date");
             return false;
-        }else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -270,13 +270,13 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
                 Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
                 return false;
-            }else if (horticultureBinding.yieldTxt.getText().toString().trim().isEmpty() && horticultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+            } else if (horticultureBinding.yieldTxt.getText().toString().trim().isEmpty() && horticultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
                 horticultureBinding.yieldTxt.setError("Please enter the yield");
                 return false;
             } else if (horticultureBinding.varietyTxt.getText().toString().trim().isEmpty() && horticultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 horticultureBinding.varietyTxt.setError("Please enter the variety");
                 return false;
-            }  else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
+            } else if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
                 if (horticultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                     horticultureBinding.inerventionNameTxt.setError("field empty");
                     return false;
@@ -301,7 +301,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 return false;
             }
         }
-
 
 
         return true;
@@ -648,15 +647,15 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setVillage(villageValue);
         request.setIntervention1(intervention1);
 
-        if(horticultureBinding.subComponentsTxt.getVisibility() == View.VISIBLE){
+        if (horticultureBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
-        }else {
+        } else {
             request.setIntervention2("0");
         }
 
-        if(horticultureBinding.stagesTxt.getVisibility() == View.VISIBLE){
+        if (horticultureBinding.stagesTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention3(intervention3);
-        }else {
+        } else {
             request.setIntervention3("0");
         }
 
@@ -693,13 +692,14 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setStatus("0");
         request.setInterventionType(interventionTypeVal);
 
-        if(horticultureBinding.inerventionLyt.getVisibility()==View.VISIBLE){
+        if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {
             request.setOtherIntervention(intName);
-        }else{
+        } else {
             request.setOtherIntervention("null");
         }
 
         if (mCommonFunction.isNetworkAvailable() == true) {
+            mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
             String offlineText = "";
@@ -741,18 +741,19 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                         String txt_id = String.valueOf(response.body().getResponseMessage().getHortiLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
                         uploadSecondImage(txt_id);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
-                    Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
+                    mCommonFunction.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<HortiResponse> call, Throwable t) {
-
+                mCommonFunction.dismiss();
             }
         });
 
@@ -785,10 +786,13 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
+                mCommonFunction.dismiss();
+
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });

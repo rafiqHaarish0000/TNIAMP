@@ -795,6 +795,7 @@ mCommonFunction.hideProgress();
         request.setDate("");
         request.setStatus("0");
         if (mCommonFunction.isNetworkAvailable() == true) {
+            mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
             String offlineText = "";
@@ -844,11 +845,13 @@ mCommonFunction.hideProgress();
                     }
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
+                    mCommonFunction.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<TNAU_Response> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });
@@ -881,10 +884,13 @@ mCommonFunction.hideProgress();
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
+                mCommonFunction.dismiss();
+
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+                mCommonFunction.dismiss();
 
             }
         });

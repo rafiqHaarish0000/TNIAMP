@@ -47,368 +47,40 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class TestActivity extends AppCompatActivity implements LocationListener {
+public class TestActivity extends AppCompatActivity  {
     ActivityTestBinding testBinding;
-    List<ComponentData> spinnerPos1;
-    CharSequence myString = "0";
-    ComponentAdapter adapter, adapter2;
-    Spinner firstSpinner, secondSpinner, thirdSpinner;
-    EditText datePicker;
-    List<String> multiAdapterList;
-    List<String> listadapter2;
-    private TNAU_CallApi TNAUCallApi;
-    private static final int PERMISSION_REQUEST_CODE = 200;
-    private static final int pic_id = 123;
-    final Calendar myCalendar = Calendar.getInstance();
-    private boolean takePicture;
-    private int valueofPic;
-    private GPSTracker gpsTracker;
-    double lat, longi;
-    LocationManager locationManager;
-    boolean[] selectedLanguage;
-    ArrayList<Integer> langList = new ArrayList<>();
-    String[] langArray = {"Java", "C++", "Kotlin", "C", "Python", "Javascript"};
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         testBinding = DataBindingUtil.setContentView(TestActivity.this, R.layout.activity_test);
         setContentView(testBinding.getRoot());
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        firstSpinner = testBinding.phase1;
-        secondSpinner = testBinding.phase2;
-        thirdSpinner = testBinding.phase3;
-        datePicker = testBinding.sowingDatepicker;
-
-        selectedLanguage = new boolean[langArray.length];
-        testBinding.speciesStockedTxt.setOnClickListener(new View.OnClickListener() {
+        testBinding.imageView4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertMessageForSpicies(TestActivity.this, "Select Language", selectedLanguage, langArray, langList);}
-
-        });
-        testBinding.speciesStockedTxt2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertMessageForSpicies(TestActivity.this, "Select Language", selectedLanguage, langArray, langList);}
-
-        });
-
-
-        List<String> phraseList;
-        phraseList = new ArrayList<>();
-        phraseList.add("one");
-        phraseList.add("two");
-        testBinding.phase1.setItem(phraseList);
-
-//        String pharse = testBinding.phase1.getSelectedItem();
-        testBinding.clickable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (testBinding.phase1 != null && testBinding.phase1.getSelectedItem() != null) {
-                    Log.i(TAG, "spinnerValidate: " + "Success.!");
-                } else {
-                    Log.i(TAG, "spinnerValidate: " + "Please enter the empty field");
+                testBinding.notificationBadgeCount.setVisibility(View.VISIBLE);
+                count = count+1;
+                Log.i(TAG, "onClickNotificationBadger "+true);
+                if(count == 1){
+                    testBinding.notificationBadgeCount.setVisibility(View.VISIBLE);
+                    testBinding.imageView4.setImageDrawable(getResources().getDrawable(R.drawable.active_notification_icon));
+                }else {
+                    testBinding.notificationBadgeCount.setVisibility(View.GONE);
+                    testBinding.imageView4.setImageDrawable(getResources().getDrawable(R.drawable.notification));
+                    count = 0;
                 }
             }
         });
 
-
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                updateLabel();
-            }
-        };
-
-        testBinding.sowingDatepicker.setOnClickListener(new View.OnClickListener() {
+        testBinding.parenLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(TestActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                testBinding.notificationBadgeCount.setVisibility(View.GONE);
+                testBinding.imageView4.setImageDrawable(getResources().getDrawable(R.drawable.notification));
             }
         });
 
-
-        testBinding.image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                testBinding.image1.setSelected(true);
-                if (checkPermission()) {
-                    Log.i(TAG, "onClick: " + "granded.!");
-                    valueofPic = 1;
-                    takePicture = true;
-                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Start the activity with camera_intent, and request pic id
-                    startActivityForResult(camera_intent, pic_id);
-                } else {
-                    requestPermission();
-                }
-            }
-        });
-
-        testBinding.image2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkPermission()) {
-                    Log.i(TAG, "onClick: " + "granded.!");
-                    valueofPic = 2;
-                    takePicture = false;
-                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Start the activity with camera_intent, and request pic id
-                    startActivityForResult(camera_intent, pic_id);
-                } else {
-                    requestPermission();
-                }
-            }
-        });
-
-
-        testBinding.getLatLong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                gpsTracker = new GPSTracker(TestActivity.this);
-//                try {
-//                    if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-//                        ActivityCompat.requestPermissions(TestActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-//                    }else{
-//                        lat = gpsTracker.getLatitude();
-//                        longi = gpsTracker.getLongitude();
-//                        testBinding.latValue.setText(String.valueOf(lat));
-//                        testBinding.longValue.setText(String.valueOf(longi));
-//                    }
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-                try {
-                    if (ActivityCompat.checkSelfPermission(TestActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                            PackageManager.PERMISSION_GRANTED &&
-                            ActivityCompat.checkSelfPermission(TestActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                                    PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
-                    onLocationChanged(location);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-//        TNAUCallApi = new TNAU_CallApi(TestActivity.this,TestActivity.this, spinnerPos1, adapter, adapter2, myString, backPressListener);
-//        TNAUCallApi.firstSpinnerPhrase(firstSpinner, secondSpinner, thirdSpinner, datePicker);
-
-
-    }
-
-    private void alertMessageForSpicies(Context context, String title, boolean[] selectedLanguage, String[] items,
-                                        ArrayList<Integer> values) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        // set title
-        builder.setTitle(title);
-
-        // set dialog non cancelable
-        builder.setCancelable(false);
-
-        builder.setMultiChoiceItems(items, selectedLanguage, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                // check condition
-                if (b) {
-                    // when checkbox selected
-                    // Add position  in lang list
-                    values.add(i);
-                    // Sort array list
-                    Collections.sort(values);
-                } else {
-                    // when checkbox unselected
-                    // Remove position from langList
-                    values.remove(Integer.valueOf(i));
-                }
-            }
-        });
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // Initialize string builder
-                StringBuilder stringBuilder = new StringBuilder();
-                // use for loop
-                for (int j = 0; j < values.size(); j++) {
-                    // concat array value
-                    stringBuilder.append(items[values.get(j)]);
-                    // check condition
-                    if (j != values.size() - 1) {
-                        // When j value  not equal
-                        // to lang list size - 1
-                        // add comma
-                        stringBuilder.append(", ");
-                    }
-                }
-                // set text on textView
-                testBinding.speciesStockedTxt.setText(stringBuilder.toString());
-                testBinding.speciesStockedTxt2.setText(stringBuilder.toString());
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // dismiss dialog
-                dialogInterface.dismiss();
-            }
-        });
-        // show dialog
-        builder.show();
-    }
-
-
-
-    private void getLocation(View view) {
-        gpsTracker = new GPSTracker(TestActivity.this);
-        if (gpsTracker.canGetLocation()) {
-
-        } else {
-            gpsTracker.showSettingsAlert();
-        }
-    }
-
-    private void updateLabel() {
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        testBinding.sowingDatepicker.setText(dateFormat.format(myCalendar.getTime()));
-    }
-    //take pic and save it image view;
-
-
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            return false;
-        }
-        return true;
-    }
-
-    private void requestPermission() {
-
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CAMERA},
-                PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-
-                    // main logic
-                } else {
-                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            showMessageOKCancel("You need to allow access permissions",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermission();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                }
-                break;
-        }
-    }
-
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(TestActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == pic_id) {
-
-            if (takePicture && valueofPic == 1) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                testBinding.image1.setImageBitmap(photo);
-                // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo);
-            } else if (!takePicture && valueofPic == 2) {
-                Bitmap photo2 = (Bitmap) data.getExtras().get("data");
-                // Set the image in imageview for display
-                testBinding.image2.setImageBitmap(photo2);
-                // BitMap is data structure of image file which store the image in memory
-                getEncodedString(photo2);
-            }
-
-
-        }
-
-    }
-
-    private String getEncodedString(Bitmap bitmap) {
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-
-  /* or use below if you want 32 bit images
-
-   bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);*/
-
-        byte[] imageArr = os.toByteArray();
-
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
-
-
-    }
-
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        double lat = location.getLatitude();
-        double lon = location.getLongitude();
-        Log.i(TAG, "onLocationChanged: " + lat + lon);
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull List<Location> locations) {
-        LocationListener.super.onLocationChanged(locations);
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-        LocationListener.super.onProviderEnabled(provider);
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-        LocationListener.super.onProviderDisabled(provider);
     }
 }

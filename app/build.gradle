@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.farmwiseai.tniamp"
-        minSdk 21
+        minSdk 19
         targetSdk 33
         versionCode 1
         versionName "1.9"

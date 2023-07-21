@@ -220,68 +220,69 @@
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
                             android:layout_marginTop="2dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:gravity="top|start"
                             android:hint="@string/intervention_name"
+                            android:inputType="text"
                             android:lines="8"
+                            android:maxLength="100"
                             android:maxLines="10"
                             android:minLines="6"
-                            android:maxLength="100"
-                            android:inputType="text"
                             android:scrollbars="vertical"
-                            android:singleLine="false"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
+                            android:singleLine="false" />
                     </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/linFishTankInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
 
-                    <EditText
-                        android:id="@+id/nodalTXt"
-                        style="@style/AppEdittext"
+                    <LinearLayout
+                        android:id="@+id/linFishTankInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                        android:hint="Nodal officer"
-                        android:inputType="text" />
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                    <EditText
-                        android:id="@+id/nameofTankTXT"
-                        style="@style/AppEdittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                        android:hint="Name of the tank"
-                        android:inputType="text" />
+                        <EditText
+                            android:id="@+id/nodalTXt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Nodal officer"
+                            android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/waterTxt"
-                        style="@style/AppEdittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="Water spread area (EWSA-Ha)"
-                        android:digits="1234567890."
-                        android:inputType="number"
-                        android:maxLength="5"/>
+                        <EditText
+                            android:id="@+id/nameofTankTXT"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Name of the tank"
+                            android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/seedStockTXt"
-                        style="@style/AppEdittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="No.of seed stocked"
-                        android:inputType="number"
-                        android:digits="1234567890."
-                        android:maxLength="4"/>
-                </LinearLayout>
+                        <EditText
+                            android:id="@+id/waterTxt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:digits="1234567890."
+                            android:hint="Water spread area (EWSA-Ha)"
+                            android:inputType="number"
+                            android:maxLength="5" />
+
+                        <EditText
+                            android:id="@+id/seedStockTXt"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:digits="1234567890."
+                            android:hint="No.of seed stocked"
+                            android:inputType="number"
+                            android:maxLength="4" />
+                    </LinearLayout>
                     <!--Other layout-->
 
                     <!--Layout 1-->
@@ -449,10 +450,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Farm pond constructed by"
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            />
+                            android:hint="Farm pond constructed by"
+                            android:inputType="text" />
 
                         <EditText
                             android:id="@+id/beneName"
@@ -460,10 +460,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Beneficary Name"
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            />
+                            android:hint="Beneficary Name"
+                            android:inputType="text" />
 
                         <EditText
                             android:id="@+id/surveyVal"
@@ -471,10 +470,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Survey No."
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
-                            />
+                            android:hint="Survey No."
+                            android:inputType="text" />
 
                         <EditText
                             android:id="@+id/mobileVal"
@@ -548,6 +546,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="No.of Seeds Stocked"
                             android:inputType="number" />
+
                         <EditText
                             android:id="@+id/numbOfSeedsHarvest"
                             style="@style/AppEdittext"
@@ -556,6 +555,7 @@
                             android:layout_marginTop="12dp"
                             android:hint="No.of Seeds Harvest"
                             android:inputType="number" />
+
                         <EditText
                             android:id="@+id/quantityOfFishHar"
                             style="@style/AppEdittext"
@@ -573,8 +573,9 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="4dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <EditText
                             android:id="@+id/volumeOfWater"
                             style="@style/AppEdittext"
@@ -583,34 +584,146 @@
                             android:layout_marginTop="12dp"
                             android:hint="volume of water in (m3)"
                             android:inputType="number" />
+
                         <EditText
-                            android:id="@+id/removeSeeds"
+                            android:id="@+id/noOfSeedStockedL5"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Remove number of seeds"
-                            android:inputType="number"
-                            android:visibility="gone"/>
-                        <EditText
-                            android:id="@+id/addGift"
-                            style="@style/AppEdittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:hint="Add GIFT Tilapia"
-                            android:visibility="gone"
+                            android:hint="No Of Seed Stocked"
                             android:inputType="number" />
+
                         <EditText
-                            android:id="@+id/farmPond1"
+                            android:id="@+id/beneNameL5"
                             style="@style/AppEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:hint="Farm pond constructed by"
-                            android:inputType="text"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            />
+                            android:hint="Beneficary Name"
+                            android:inputType="text" />
+
+                        <EditText
+                            android:id="@+id/surveyValL5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ "
+                            android:hint="Survey No."
+                            android:inputType="text" />
+
+                        <EditText
+                            android:id="@+id/mobileValL5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Mobile Number"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:singleLine="true" />
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/gender_txtL5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="4dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="Gender"
+                            app:smsp_multilineError="false" />
+
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            android:id="@+id/categorySpinnerL5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="4dp"
+                            android:dropDownWidth="2dp"
+                            android:padding="8dp"
+                            android:spinnerMode="dropdown"
+                            android:textSize="18sp"
+                            app:smsp_enableFloatingLabel="true"
+                            app:smsp_hint="Category"
+                            app:smsp_multilineError="false" />
+
+                        <EditText
+                            android:id="@+id/speciesStockedTxt2L5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/drop_down"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="Species stocked"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/feedQualityL5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Feed Quantity"
+                            android:inputType="number" />
+                    </LinearLayout>
+                    <!--Layout 6-->
+                    <LinearLayout
+                        android:id="@+id/layout6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/usedFeedQuantityL5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Used Feed Quantity (Kg)"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/dayOfCultureL5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Days of culture"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/quantity_txtL5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Quantity of fish harvest (Kg)"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/revenueGeneratedL5"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Revenue generated"
+                            android:inputType="number" />
                     </LinearLayout>
 
                     <!--Last spinner-->

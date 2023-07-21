@@ -236,8 +236,7 @@ public class WRDCallAPi {
                             stagesDropDown(String.valueOf(tankStageList.get(i).getID()), stageSpinner);
                             stageSpinner.setVisibility(View.VISIBLE);
                         } else if (names.equalsIgnoreCase("Jungle Clearence") ||
-                                        names.equalsIgnoreCase("Revetment"))
-                        {
+                                names.equalsIgnoreCase("Revetment")) {
                             stageSpinner.setVisibility(View.GONE);
                         }
                     } else if (compName.equalsIgnoreCase("Canal") || compName.equalsIgnoreCase("Channel")) {
@@ -325,36 +324,43 @@ public class WRDCallAPi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     stageLastName = stagesList.get(i).getName();
+                    String stageId= String.valueOf(stagesList.get(i).getID());
                     // stageLastName = null;
 
                     //   lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
-                    lookUpDataClass.setIntervention4(stagesList.get(i).getName());
-                    lookUpDataClass.setComponentValue(compName);
-                    lookUpDataClass.setSubComponentValue(subCompName);
-                    if (stageName == null) {
+                    if (lookUpDataClass.getComponentValue().equalsIgnoreCase("ModelVillage")) {
+
                         lookUpDataClass.setStageValue("stageName");
                         lookUpDataClass.setIntervention3("1");
+                        lookUpDataClass.setStagelastvalue(stageLastName);
+                        lookUpDataClass.setIntervention4(String.valueOf(stagesList.get(i).getID()));
+
 
                     } else {
-                        lookUpDataClass.setStageValue("stageName");
+
+                        lookUpDataClass.setStagelastvalue(stageLastName);
+                        lookUpDataClass.setStageValue(stageName);
                         lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+                        lookUpDataClass.setIntervention4(stageId);
 
                     }
-                    lookUpDataClass.setStagelastvalue(stageLastName);
-                    backPressListener.onSelectedInputs(lookUpDataClass);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+ backPressListener.onSelectedInputs(lookUpDataClass);
+            } catch(
+            Exception e)
+
+            {
+                e.printStackTrace();
             }
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        @Override
+        public void onNothingSelected (AdapterView < ? > adapterView){
 
-            }
-        });
+        }
+    });
 
 
-    }
+}
 
 
 }

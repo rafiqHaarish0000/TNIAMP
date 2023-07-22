@@ -259,6 +259,8 @@ public class TNAU_CallApi {
                         yield.setVisibility(View.GONE);
                     } else if (names.contains("Planting")) {
                         editText.setVisibility(View.VISIBLE);
+                        varitey.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Harvest") ||
                             names.equalsIgnoreCase("Harvest of Pulse") ||
                             names.equalsIgnoreCase("Harvest of Rice") ||

@@ -259,7 +259,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     agricultureBinding.quantityTxt.setError("field empty");
                     return false;
                 }
-            }else if (vis_lyt.getVisibility() == View.VISIBLE) {
+            } else if (vis_lyt.getVisibility() == View.VISIBLE) {
                 if (farmerName.length() == 0 || farmerName.isEmpty()) {
                     agricultureBinding.farmerTxt.setError("Please enter farmer name");
                     return false;
@@ -319,7 +319,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
                 agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
                 return false;
-            }  else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
+            } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
 
                 Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
                 return false;
@@ -336,8 +336,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             } else if (agricultureBinding.varietyTxt.getText().toString().trim().isEmpty() && agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
                 agricultureBinding.varietyTxt.setError("Please enter the variety");
                 return false;
-            }
-            else if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
+            } else if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {
                 if (agricultureBinding.inerventionNameTxt.getText().toString().trim().isEmpty() || agricultureBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
                     agricultureBinding.inerventionNameTxt.setError("field empty");
                     return false;
@@ -625,6 +624,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
 
     }
+
     private void dateFieldValidation(EditText datePicker) {
 
         final Calendar cldr = Calendar.getInstance();
@@ -708,7 +708,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     }
 
     private void getAllData() {
-        
+
         request = new Agri_Request();
         farmerName = agricultureBinding.farmerTxt.getText().toString().trim();
         survey_no = agricultureBinding.surveyTxt.getText().toString().trim();
@@ -844,12 +844,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     }
                 } else {
                     Toast.makeText(getContext(), "data error.!", Toast.LENGTH_SHORT).show();
+                    mCommonFunction.hideProgress();
                 }
             }
 
             @Override
             public void onFailure(Call<AgriResponse> call, Throwable t) {
-
+                mCommonFunction.hideProgress();
             }
         });
     }
@@ -858,7 +859,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
 
         SecondImageRequest request = new SecondImageRequest();
         request.setDepartment_id("2");
-        request.setImg2(secondImageBase64.trim());
+        request.setImg2(secondImageBase64);
         request.setID(txt_id);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);

@@ -42,6 +42,7 @@ import com.farmwiseai.tniamp.Ui.Fragment.WRDFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
+import com.farmwiseai.tniamp.utils.BaseActivity;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.OfflineDataSyncFile;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
@@ -53,7 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
+public class DashboardActivity extends BaseActivity implements View.OnClickListener {
     ActivityDashboardBinding binding;
     CommonFunction mCommonFunction;
     String username, lineDeptId;
@@ -64,7 +65,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     GetUserCountData getUserCountData;
     String notifiCount;
-
+    Bundle extras ;
     int count = 0;
 
     @Override
@@ -91,26 +92,25 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.logoutIcon.setOnClickListener(this);
         binding.imageView4.setOnClickListener(this);
         binding.frameLayout.setOnClickListener(this);
-
+         extras = getIntent().getExtras();
+        if(extras!=null) {
+            binding.countValText.setText(extras.getString("count"));
+        }
         this.runOnUiThread(new Runnable() {
             public void run() {
-                //   Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
 
-                //   getUserCount();
-                //syncOfflineData();
+              //  syncOfflineData();
             }
         });
     }
 
-    @Override
-    protected void onStart() {
-        getUserCount();
-        super.onStart();
-    }
 
     private void getUserCount() {
         try {
             mCommonFunction.showProgress();
+            if(extras!=null) {
+                binding.countValText.setText("No of Offline Data: "+extras.getString("count"));
+            }
             Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
             Call<GetUserCountData> userDataCall = null;
             userDataCall = call.getUserCount(SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN), SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.USER_DETAILS));
@@ -136,7 +136,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
                 @Override
                 public void onFailure(Call<GetUserCountData> call, Throwable t) {
-                    mLoadCustomToast(getParent(), "InValid OTP");
                     mCommonFunction.hideProgress();
                 }
             });
@@ -153,7 +152,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     private void syncOfflineData() {
         if (mCommonFunction.isNetworkAvailable()) {
-            String count = OfflineDataSyncFile.offLineCount(SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.USER_DETAILS));
+            String count = OfflineDataSyncFile.offLineCount(lineDeptId);
+            // String count = OfflineDataSyncFile.offLineCount(SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.USER_DETAILS));
             if (Integer.parseInt(count) > 0) {
                 MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
                 myAsyncTasks.execute();
@@ -316,6 +316,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             //notification count onclick events
             case R.id.imageView4:
+                getUserCount();
                 binding.notificationBadgeCount.setVisibility(View.VISIBLE);
                 count = count + 1;
                 Log.i(TAG, "onClickNotificationBadger " + true);
@@ -423,7 +424,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             // implement API in background and store the response in current variable
             String current = "";
             try {
-                if (lineDeptId == "9") {
+                if (lineDeptId == "1") {
                     ArrayList<TNAU_Request> tnauRequests = SharedPrefsUtils.getArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
                     ArrayList<String> tnauImageReq = SharedPrefsUtils.getArrayListImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
 
@@ -524,13 +525,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected void onPostExecute(String s) {
-            mCommonFunction.dismiss();
-            Log.d("data", s.toString());
-            // dismiss the progress dialog after receiving data from API
 
+            Log.d("data", s);
+            // dismiss the progress dialog after receiving data from API
+            mCommonFunction.hideProgress();
             try {
                 if (s.equalsIgnoreCase("success"))
                     getUserCount();
+                SharedPrefsUtils.clearStringPrefs(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
             } catch (Exception e) {
                 e.printStackTrace();

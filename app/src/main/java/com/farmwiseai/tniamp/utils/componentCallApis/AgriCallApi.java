@@ -99,7 +99,8 @@ public class AgriCallApi {
                         interventioNameLyt.setVisibility(View.GONE);
                         //  trainingLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("IPM village-Vermicompost")) {
-                        subComponentSpinner.setVisibility(View.GONE);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker);
+                        subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         hideLyt.setVisibility(View.GONE);
                         seedLyt.setVisibility(View.GONE);
@@ -131,7 +132,7 @@ public class AgriCallApi {
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
                     lookUpDataClass.setStageValue(stageName);
-                   backPressListener.onSelectedInputs(lookUpDataClass);
+                    backPressListener.onSelectedInputs(lookUpDataClass);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -208,7 +209,7 @@ public class AgriCallApi {
                         stagesDropDown(positionValue2, thirdSpinner, editText);
 
                     }
-                 //   lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
+                    //   lookUpDataClass.setSubComponentValue(sub_componentList.get(i).getName());
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);

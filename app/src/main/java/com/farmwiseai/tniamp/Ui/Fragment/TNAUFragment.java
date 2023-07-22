@@ -106,6 +106,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String stagelastvalue = null;
     public BackPressListener backPressListener;
     ArrayList<TNAU_Request> offlineRequest = new ArrayList<>();
+    ArrayList<String> offlineImageRequest = new ArrayList<>();
     TNAU_Request request;
     DatePickerDialog picker;
     String regex = "^[6-9][0-9]{9}$";
@@ -802,13 +803,20 @@ mCommonFunction.hideProgress();
             String offlineText = "";
             if (offlineRequest == null) {
                 offlineRequest = new ArrayList<>();
+                offlineImageRequest = new ArrayList<>();
                 offlineRequest.add(request);
+                offlineImageRequest.add(secondImageBase64);
                 SharedPrefsUtils.saveArrayList(context, offlineRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                SharedPrefsUtils.saveArrayListImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
                 offlineText = "Data saved successfully in offline data";
 
             } else if (offlineRequest.size() < 5) {
                 offlineRequest.add(request);
+                offlineImageRequest.add(secondImageBase64);
                 SharedPrefsUtils.saveArrayList(context, offlineRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                SharedPrefsUtils.saveArrayListImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
                 offlineText = "Data saved successfully in offline data";
 
             } else {
@@ -818,7 +826,7 @@ mCommonFunction.hideProgress();
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 //                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class,offlineRequest.size());
                 }
             });
         }

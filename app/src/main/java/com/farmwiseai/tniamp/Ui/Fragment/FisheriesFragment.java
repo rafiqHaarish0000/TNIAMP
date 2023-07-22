@@ -304,10 +304,10 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (fisheriesBinding.numbOfSeeds.getText().length() == 0) {
                 fisheriesBinding.numbOfSeeds.setError("Do not empty field");
                 return false;
-            } else if (fisheriesBinding.numbOfSeedsHarvest.getText().length() == 0) {
+            } else if (fisheriesBinding.numbOfSeedsHarvest.getVisibility()==View.VISIBLE&& fisheriesBinding.numbOfSeedsHarvest.getText().length() == 0) {
                 fisheriesBinding.numbOfSeedsHarvest.setError("Do not empty field");
                 return false;
-            } else if (fisheriesBinding.quantityOfFishHar.getText().length() == 0) {
+            } else if (fisheriesBinding.quantityOfFishHar.getVisibility()==View.VISIBLE&& fisheriesBinding.quantityOfFishHar.getText().length() == 0) {
                 fisheriesBinding.quantityOfFishHar.setError("Do not empty field");
                 return false;
             } else if (fisheriesBinding.speciesStockedTxt2.getText().length() == 0) {

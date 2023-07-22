@@ -124,7 +124,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             sub_componentSpinner, stageSpinner, beneficarySpinner, beneficaryFinal, beneficarySpinner1, specicesSpinner1,
             categorySpinner, villageSpinner, interventionSpinner, specicesSpinner2, lesseeSpinner, genderSpinner, genderSpinnerL5, categorySpinnerL5;
     private MultiSpinner multiSpinner1, multiSpinner2, multiSpinner3;
-    private EditText datePicker,seedHarvest,quantityHarvest;
+    private EditText datePicker,seedHarvest,quantityHarvest,quantityOfHarvestIrrigationTanks;
     private FishCallApi fishCallApi;
     private boolean takePicture;
     private int valueofPic = 0;
@@ -176,11 +176,12 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         layout6 = fisheriesBinding.layout6;
         seedHarvest = fisheriesBinding.numbOfSeedsHarvest;
         quantityHarvest = fisheriesBinding.quantityOfFishHar;
+        quantityOfHarvestIrrigationTanks = fisheriesBinding.quantityOfFishHarL1;
 
         backPressListener = this;
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2,
-                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo,seedHarvest,quantityHarvest);
+                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo,seedHarvest,quantityHarvest,quantityOfHarvestIrrigationTanks);
 
         offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
@@ -248,6 +249,11 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             if (lessNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
+            } else if (fisheriesBinding.quantityOfFishHarL1.getVisibility() == View.VISIBLE) {
+                if (fisheriesBinding.quantityOfFishHarL1.getText().toString().length() == 0){
+                    fisheriesBinding.quantityOfFishHarL1.setError("Do not empty field");
+                    return false;
+                }
             } else if (fisheriesBinding.speciesStockedTxt.getText().toString().trim().length() == 0) {
                 fisheriesBinding.speciesStockedTxt.setError("Do not empty field");
                 return false;

@@ -4,6 +4,7 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.BlockData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ComponentData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.DistrictData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.GenerateOTP;
+import com.farmwiseai.tniamp.Retrofit.DataClass.GetUserCountData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
@@ -107,6 +108,8 @@ public interface Interface_Api {
 
     @POST("register")
     Call<RegisterResponse> getRegisterResponse(@Body RegisterRequest registerRequest);
+    @GET("individualusercount?")
+    Call<GetUserCountData> getUserCount(@Query("user_name") String user_name, @Query("department_type") String department_type);
 
 }
 

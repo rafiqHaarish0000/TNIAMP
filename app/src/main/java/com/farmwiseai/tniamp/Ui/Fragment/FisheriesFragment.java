@@ -1058,13 +1058,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
-                    mCommonFunction.dismiss();
+                    mCommonFunction.hideProgress();
                 }
             }
 
             @Override
             public void onFailure(Call<FishResponse> call, Throwable t) {
-mCommonFunction.dismiss();
+mCommonFunction.hideProgress();
             }
         });
 
@@ -1097,13 +1097,13 @@ mCommonFunction.dismiss();
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
-                mCommonFunction.dismiss();
+                mCommonFunction.hideProgress();
 
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
-                mCommonFunction.dismiss();
+                mCommonFunction.hideProgress();
 
             }
         });

@@ -293,12 +293,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         } else {
                             Toast.makeText(getApplicationContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                         }
-                        mCommonFunction.dismiss();
+                        mCommonFunction.hideProgress();
                     }
 
                     @Override
                     public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                        mCommonFunction.dismiss();
+                        mCommonFunction.hideProgress();
                     }
                 });
 

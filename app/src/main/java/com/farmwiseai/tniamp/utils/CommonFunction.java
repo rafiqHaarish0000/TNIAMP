@@ -18,7 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.farmwiseai.tniamp.Ui.ActivityNoInternet;
 import com.farmwiseai.tniamp.R;
@@ -27,9 +26,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Handler;
 
 import dmax.dialog.SpotsDialog;
 
@@ -118,16 +114,17 @@ public class CommonFunction
             progressView.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             progressView.setCancelable(false);
             progressView.setContentView(view);
-            ProgressBar rotateImage = progressView.findViewById(R.id.progress_bar);
+            ImageView rotateImage = progressView.findViewById(R.id.rotate_image);
             startRotatingImage(rotateImage, mActivity);
             progressView.show();
+
 
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }
     }
 
-    private static void startRotatingImage(ProgressBar rotateImage, Context context) {
+    private static void startRotatingImage(ImageView rotateImage, Context context) {
         Animation startRotateAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate);
         rotateImage.startAnimation(startRotateAnimation);
     }
@@ -140,13 +137,7 @@ public class CommonFunction
     public void hideProgress() {
         try {
             if (progressView != null)
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        progressView.dismiss();
-                    }
-                },1500);
-
+                progressView.dismiss();
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }
@@ -176,7 +167,7 @@ public class CommonFunction
         {
             if ((mDialog != null) && mDialog.isShowing())
             {
-                mDialog.cancel();
+                mDialog.dismiss();
             }
         }
         catch (final IllegalArgumentException e)

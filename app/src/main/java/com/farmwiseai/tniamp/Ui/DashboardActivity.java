@@ -59,8 +59,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding = DataBindingUtil.setContentView(DashboardActivity.this, R.layout.activity_dashboard);
         setContentView(binding.getRoot());
         username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
-        lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-        lineDeptId = "9";
+        //lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
+       lineDeptId = "9";
         binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);

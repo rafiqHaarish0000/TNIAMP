@@ -658,13 +658,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                     uploadSecondImage(txt_id);
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
-                    mCommonFunction.dismiss();
+                    mCommonFunction.hideProgress();
                 }
             }
 
             @Override
             public void onFailure(Call<AEDResponse> call, Throwable t) {
-                mCommonFunction.dismiss();
+                mCommonFunction.hideProgress();
             }
         });
 
@@ -698,13 +698,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                 }
-                mCommonFunction.dismiss();
+                mCommonFunction.hideProgress();
 
             }
 
             @Override
             public void onFailure(Call<SecondImageResponse> call, Throwable t) {
-                mCommonFunction.dismiss();
+                mCommonFunction.hideProgress();
 
             }
         });

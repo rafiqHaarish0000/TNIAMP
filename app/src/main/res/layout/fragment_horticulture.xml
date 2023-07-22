@@ -460,7 +460,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:maxLength="4"
                             android:visibility="gone"
                             android:hint="Yield(kg/ha)" />

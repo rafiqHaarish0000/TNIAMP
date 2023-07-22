@@ -27,6 +27,8 @@ import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.GetUserCountData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.Fragment.AEDFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AboutFragment;
@@ -40,15 +42,12 @@ import com.farmwiseai.tniamp.Ui.Fragment.WRDFragment;
 import com.farmwiseai.tniamp.databinding.ActivityDashboardBinding;
 import com.farmwiseai.tniamp.mainView.GPSTracker;
 import com.farmwiseai.tniamp.mainView.MobileValidationActivity;
-import com.farmwiseai.tniamp.mainView.VerifyMobileNumberActivitiy;
 import com.farmwiseai.tniamp.utils.CommonFunction;
 import com.farmwiseai.tniamp.utils.OfflineDataSyncFile;
 import com.farmwiseai.tniamp.utils.PermissionUtils;
 import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,22 +91,21 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.logoutIcon.setOnClickListener(this);
         binding.imageView4.setOnClickListener(this);
         binding.frameLayout.setOnClickListener(this);
-/*
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                syncOfflineData();
-            }
 
-
-        }, 2000);
-*/
         this.runOnUiThread(new Runnable() {
             public void run() {
                 //   Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
-                syncOfflineData();
+
+                //   getUserCount();
+                //syncOfflineData();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        getUserCount();
+        super.onStart();
     }
 
     private void getUserCount() {
@@ -125,15 +123,13 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                         String responsemsg = getUserCountData.getResponseMessage().getGeoTagCount().toString();
                         if (responsemsg != null) {
                             notifiCount = getUserCountData.getResponseMessage().getGeoTagCount().toString();
-                           binding.sentTxt.setText("No of data submit: "+notifiCount);
-                          //  mLoadCustomToast(getParent(), notifiCount);
+                            binding.sentTxt.setText("No of data submit: " + notifiCount);
+                            //  mLoadCustomToast(getParent(), notifiCount);
 
                         } else {
                             mLoadCustomToast(getParent(), getUserCountData.getResponseMessage().getResponse().toString());
                         }
 
-                    } else {
-                        mLoadCustomToast(getParent(), "Please submit Valid Data! ");
                     }
                     mCommonFunction.hideProgress();
                 }
@@ -157,8 +153,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     private void syncOfflineData() {
         if (mCommonFunction.isNetworkAvailable()) {
-            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-            myAsyncTasks.execute();
+            String count = OfflineDataSyncFile.offLineCount(SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.USER_DETAILS));
+            if (Integer.parseInt(count) > 0) {
+                MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                myAsyncTasks.execute();
+            }
         }
     }
 
@@ -266,11 +265,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    @Override
-    protected void onStart() {
-         getUserCount();
-        super.onStart();
-    }
 
     private void setAddFragment(Fragment addFragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -357,30 +351,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 .show();
     }
 
-    private void checkOfflineDataPresent() {
-        if (mCommonFunction.isNetworkAvailable() == true) {
-            //data should send to api and notification should be cleared accordingly
-            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
-            if (checkDataIsPresentOrNot.length() != 0) {
-                showMessageOKCancel("Please update the offline data", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //fetch all data to backend api and clear sharedpref
-                        binding.notificationBadge.setVisibility(View.VISIBLE);
-                        SharedPrefsUtils.clearAllPrefs(DashboardActivity.this);
-                        dialogInterface.dismiss();
-                    }
-                });
-            } else {
-                binding.notificationBadge.setVisibility(View.GONE);
-            }
-        } else {
-            String checkDataIsPresentOrNot = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
-            if (checkDataIsPresentOrNot.length() != 0) {
-                binding.notificationBadge.setVisibility(View.VISIBLE);
-            }
-        }
-    }
 
     private void getLocation() {
         if (PermissionUtils.checkPermission(getApplicationContext()) == false) {
@@ -444,10 +414,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         protected void onPreExecute() {
             super.onPreExecute();
             // display a progress dialog for good user experiance
-            progressDialog = new ProgressDialog(DashboardActivity.this);
-            progressDialog.setMessage("Please Wait Data sync is In progress");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            mCommonFunction.showProgress();
         }
 
         @Override
@@ -456,13 +423,96 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             // implement API in background and store the response in current variable
             String current = "";
             try {
-                ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
-                if (aedRequests != null && aedRequests.size() > 0) {
-                    for (int i = 0; i < aedRequests.size(); i++) {
-                        current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i));
-                    }
-                    // return the data to onPostExecute method
+                if (lineDeptId == "9") {
+                    ArrayList<TNAU_Request> tnauRequests = SharedPrefsUtils.getArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> tnauImageReq = SharedPrefsUtils.getArrayListImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
 
+                    if (tnauRequests != null && tnauRequests.size() > 0) {
+                        for (int i = 0; i < tnauRequests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataTnauUpload(tnauRequests.get(i), tnauImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else if (lineDeptId == "2") {
+                    ArrayList<Agri_Request> agri_requests = SharedPrefsUtils.getAgriArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> agriImageReq = SharedPrefsUtils.getArrayListagriImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
+                    if (agri_requests != null && agri_requests.size() > 0) {
+                        for (int i = 0; i < agri_requests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataAgriUpload(agri_requests.get(i), agriImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else if (lineDeptId == "3") {
+                    ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> aedImageReq = SharedPrefsUtils.getArrayListagriImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
+                    if (aedRequests != null && aedRequests.size() > 0) {
+                        for (int i = 0; i < aedRequests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else if (lineDeptId == "4") {
+                    ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> aedImageReq = SharedPrefsUtils.getArrayListagriImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
+                    if (aedRequests != null && aedRequests.size() > 0) {
+                        for (int i = 0; i < aedRequests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else if (lineDeptId == "5") {
+                    ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> aedImageReq = SharedPrefsUtils.getArrayListagriImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
+                    if (aedRequests != null && aedRequests.size() > 0) {
+                        for (int i = 0; i < aedRequests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else if (lineDeptId == "6") {
+                    ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> aedImageReq = SharedPrefsUtils.getArrayListagriImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
+                    if (aedRequests != null && aedRequests.size() > 0) {
+                        for (int i = 0; i < aedRequests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else if (lineDeptId == "7") {
+                    ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> aedImageReq = SharedPrefsUtils.getArrayListagriImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
+                    if (aedRequests != null && aedRequests.size() > 0) {
+                        for (int i = 0; i < aedRequests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else if (lineDeptId == "8") {
+                    ArrayList<AEDRequest> aedRequests = SharedPrefsUtils.getAEDArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                    ArrayList<String> aedImageReq = SharedPrefsUtils.getArrayListagriImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
+                    if (aedRequests != null && aedRequests.size() > 0) {
+                        for (int i = 0; i < aedRequests.size(); i++) {
+                            current = OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i));
+                        }
+                        // return the data to onPostExecute method
+
+                    }
+                } else {
+//Todo
                 }
 
             } catch (Exception e) {
@@ -474,14 +524,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected void onPostExecute(String s) {
-
+            mCommonFunction.dismiss();
             Log.d("data", s.toString());
             // dismiss the progress dialog after receiving data from API
 
             try {
                 if (s.equalsIgnoreCase("success"))
-                    binding.notificationCount.setVisibility(View.GONE);
-                progressDialog.dismiss();
+                    getUserCount();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

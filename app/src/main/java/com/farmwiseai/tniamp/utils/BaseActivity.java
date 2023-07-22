@@ -20,6 +20,7 @@ public class BaseActivity extends AppCompatActivity {
     public DatabindingPOJO mObjdatabindingPOJO;
 
     public ValidationUtils validationUtils_obj;
+    public OfflineDataSyncFile offlineDataSyncFile;
     public CommonFunction obj_commonfunction;
 
     private ConnectivityReceiver MyReceiver = null;
@@ -36,6 +37,8 @@ public class BaseActivity extends AppCompatActivity {
 
         validationUtils_obj = new ValidationUtils(BaseActivity.this);
         obj_commonfunction = new CommonFunction(BaseActivity.this);
+        offlineDataSyncFile = new OfflineDataSyncFile(BaseActivity.this);
+
         MyReceiver = new ConnectivityReceiver();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

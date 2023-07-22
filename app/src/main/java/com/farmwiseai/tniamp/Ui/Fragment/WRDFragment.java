@@ -233,6 +233,11 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 wrdfragmentBinding.nameOfWAU.setError("Do not empty field");
                 return false;
 
+            }else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+                if (wrdfragmentBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
+                    wrdfragmentBinding.inerventionNameTxt.setError("field empty");
+                    return false;
+                }
             }
         } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
             if (wrdfragmentBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {

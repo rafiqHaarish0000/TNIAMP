@@ -259,6 +259,44 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                     agricultureBinding.quantityTxt.setError("field empty");
                     return false;
                 }
+            }else if (vis_lyt.getVisibility() == View.VISIBLE) {
+                if (farmerName.length() == 0 || farmerName.isEmpty()) {
+                    agricultureBinding.farmerTxt.setError("Please enter farmer name");
+                    return false;
+                } else if (survey_no.length() == 0) {
+                    agricultureBinding.surveyTxt.setError("Please enter survey no");
+                    return false;
+                } else if (area.length() == 0) {
+                    agricultureBinding.areaTxt.setError("Please enter area");
+                    return false;
+                } else if (Double.valueOf(area) > 2.0) {
+                    agricultureBinding.areaTxt.setError("Area Should be less than 2(ha)");
+                    return false;
+                } else if (mobileNumber.isEmpty() || mobileNumber.length() < 10) {
+
+                    agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                    return false;
+                } else if (!ValidationUtils.isValidMobileNumber(mobileNumber)) {
+                    agricultureBinding.mobileNumbertxt.setError("Please enter the valid mobile number");
+                    return false;
+                } else if (gender == null && genderSpinner.getVisibility() == View.VISIBLE) {
+
+                    Toast.makeText(getActivity(), "Please select Gender", Toast.LENGTH_LONG).show();
+                    return false;
+
+                } else if (category1 == null && categorySpinner.getVisibility() == View.VISIBLE) {
+                    Toast.makeText(getActivity(), "Please select Category", Toast.LENGTH_LONG).show();
+                    return false;
+                } else if (date.isEmpty() && datePicker.getVisibility() == View.VISIBLE) {
+                    agricultureBinding.dateTxt.setError("Please select the date");
+                    return false;
+                } else if (agricultureBinding.yieldTxt.getText().toString().trim().isEmpty() && agricultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
+                    agricultureBinding.yieldTxt.setError("Please enter the yield");
+                    return false;
+                } else if (agricultureBinding.varietyTxt.getText().toString().trim().isEmpty() && agricultureBinding.varietyTxt.getVisibility() == View.VISIBLE) {
+                    agricultureBinding.varietyTxt.setError("Please enter the variety");
+                    return false;
+                }
             }
 
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {

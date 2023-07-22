@@ -607,7 +607,7 @@
   },
   {
     "ID": 102,
-    "Name": "Water walk",
+    "Name": "Community Water Walk",
     "PARENT_ID": 100,
     "revision_no": 1549215974
   },
@@ -890,7 +890,7 @@
   {
     "ID": 150,
     "Name": "Portable micro overhead sprinkler",
-    "PARENT_ID": 149,
+    "PARENT_ID": 4,
     "revision_no": null
   },
   {

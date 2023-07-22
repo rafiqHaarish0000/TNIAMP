@@ -49,7 +49,7 @@
   },
   {
     "ID": 9,
-    "Name": " Shade Net",
+    "Name": "Shade Net",
     "PARENT_ID": 0,
     "revision_no": 1549215974
   },
@@ -673,7 +673,7 @@
   },
   {
     "ID": 122,
-    "Name": "Water walk",
+    "Name": "Community Water Walk",
     "PARENT_ID": 120,
     "revision_no": 1549215974
   },

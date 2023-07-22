@@ -109,7 +109,7 @@
   },
   {
     "ID": 19,
-    "Name": " IPM village-Vermicompost",
+    "Name": "IPM village-Vermicompost",
     "PARENT_ID": 0,
     "revision_no": 1549215974
   },
@@ -426,12 +426,6 @@
     "revision_no": 1549215974
   },
   {
-    "ID": 72,
-    "Name": "Others",
-    "PARENT_ID": 0,
-    "revision_no": 1549215974
-  },
-  {
     "ID": 73,
     "Name": "Seed Village Group",
     "PARENT_ID": 0,
@@ -465,6 +459,12 @@
     "ID": 80,
     "Name": "CCMG",
     "PARENT_ID": 66,
+    "revision_no": 1549215974
+  },
+  {
+    "ID": 82,
+    "Name": "Others",
+    "PARENT_ID": 0,
     "revision_no": 1549215974
   }
 ]

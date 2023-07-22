@@ -223,7 +223,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         //other layout
         else if (otherLyt.getVisibility() == View.VISIBLE) {
             Log.i(TAG, "businessPlan: " + true);
-            if (marketingBinding.inerventionNameTxt.getText().length() == 0) {
+            if (marketingBinding.inerventionNameTxt.getText().toString().trim().length() == 0) {
                 marketingBinding.inerventionNameTxt.setError("field empty");
                 return false;
             }
@@ -235,7 +235,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.numberFPC.setError("field empty");
                 return false;
             } else if (marketingBinding.inNumberDate.getText().toString().trim().isEmpty()
-                    || marketingBinding.inNumberDate.getText().length() == 0) {
+                    || marketingBinding.inNumberDate.getText().toString().trim().length() == 0) {
                 marketingBinding.inNumberDate.setError("field empty");
                 return false;
             } else if (marketingBinding.noVillage.getText().toString().trim().isEmpty()) {
@@ -306,7 +306,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.capacity.setError("field empty");
                 return false;
             } else if (marketingBinding.DOCompletion.getText().toString().trim().isEmpty() ||
-                    marketingBinding.DOCompletion.getText().length() == 0) {
+                    marketingBinding.DOCompletion.getText().toString().trim().length() == 0) {
                 marketingBinding.DOCompletion.setError("field empty");
                 return false;
             } else if (marketingBinding.QantityStoredTXT.getText().toString().trim().isEmpty()) {
@@ -330,7 +330,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.venue.setError("field empty");
                 return false;
             } else if (marketingBinding.durationTrainigTxt.getText().toString().trim().isEmpty() ||
-                    marketingBinding.durationTrainigTxt.getText().length() == 0) {
+                    marketingBinding.durationTrainigTxt.getText().toString().trim().length() == 0) {
                 marketingBinding.durationTrainigTxt.setError("field empty");
                 return false;
             } else if (marketingBinding.noOftrainee.getText().toString().trim().isEmpty()) {

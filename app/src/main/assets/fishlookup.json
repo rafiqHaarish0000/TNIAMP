@@ -157,7 +157,7 @@
   },
   {
     "ID": 29,
-    "Name": "Water walk",
+    "Name": "Community Water Walk",
     "PARENT_ID": 27,
     "revision_no": 1549215974
   },
@@ -211,26 +211,26 @@
   },
   {
     "ID": 39,
-    "Name": "Others",
+    "Name": "Fish culture in Modular tanks",
     "PARENT_ID": 0,
     "revision_no": 1549215974
   },
   {
     "ID": 40,
-    "Name": "Fish culture in Modular tanks",
+    "Name": "Others",
     "PARENT_ID": 0,
     "revision_no": 1549215974
   },
   {
     "ID": 41,
     "Name": "Stocking",
-    "PARENT_ID": 40,
+    "PARENT_ID": 39,
     "revision_no": 1549215974
   },
   {
     "ID": 42,
     "Name": "Harvest",
-    "PARENT_ID": 40,
+    "PARENT_ID": 39,
     "revision_no": 1549215974
   }
 ]

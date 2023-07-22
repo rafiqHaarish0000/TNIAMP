@@ -551,7 +551,8 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         WRDRequest request = new WRDRequest();
 
-        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
+
         request.setCreated_date("2020-02-12 11:02:02");
         request.setImage1(firstImageBase64.trim());
         request.setIntervention1(intervention1);

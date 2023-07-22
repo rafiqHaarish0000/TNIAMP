@@ -723,7 +723,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         }
 
         request.setRemarks(remarks);
-        request.setCreatedBy("f55356773fce5b11");
+        request.setCreatedBy(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreatedDate(dateField);
         request.setLat(lat);
         request.setLon(lon);

@@ -632,7 +632,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setImage1(firstImageBase64.trim());
         request.setRemarks(remarks);
         request.setFish_culture("null");
-        request.setCreated_by("f55356773fce5b11");
+        request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreated_date(dateField);
         request.setLat(lat);
         request.setLon(lon);

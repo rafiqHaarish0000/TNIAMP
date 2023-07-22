@@ -904,7 +904,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         MarkRequest request = new MarkRequest();
 
 
-        request.setCreated_by("25f488a755770e71");
+        request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
+
         request.setCreated_date("2020-05-26 06:51:12");
         request.setDate_from("2019-11-27");
         request.setDate_to("");

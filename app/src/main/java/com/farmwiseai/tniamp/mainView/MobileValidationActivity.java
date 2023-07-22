@@ -39,7 +39,7 @@ public class MobileValidationActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         Bundle extras = getIntent().getExtras();
-        if(extras!=null){
+        if (extras != null) {
             phoneNumber = extras.getString("phone");
             binding.mobileValues.setText(phoneNumber);
         }
@@ -91,13 +91,13 @@ public class MobileValidationActivity extends BaseActivity {
                                     startActivity(i);
                                     finish();
                                 }
-                                commonFunction.dismiss();
+                                commonFunction.hideProgress();
                             }
 
                             @Override
                             public void onFailure(Call<GenerateOTP> call, Throwable t) {
                                 mLoadCustomToast(getParent(), "Please check the internet connection.!");
-commonFunction.dismiss();
+                                commonFunction.hideProgress();
                             }
                         });
 

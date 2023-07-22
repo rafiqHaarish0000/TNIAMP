@@ -1,5 +1,7 @@
 package com.farmwiseai.tniamp.Ui;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -53,6 +55,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private static final int PERMISSION_REQUEST_CODE = 200;
     ProgressDialog progressDialog;
 
+    int count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +79,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         binding.navFish.setOnClickListener(this);
         binding.aboutImage.setOnClickListener(this);
         binding.logoutIcon.setOnClickListener(this);
+        binding.imageView4.setOnClickListener(this);
+        binding.frameLayout.setOnClickListener(this);
 /*
         new Timer().schedule(new TimerTask() {
             @Override
@@ -253,6 +259,24 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     }
                 });
                 break;
+            //notification count onclick events
+            case R.id.imageView4:
+                binding.notificationBadgeCount.setVisibility(View.VISIBLE);
+                count = count + 1;
+                Log.i(TAG, "onClickNotificationBadger " + true);
+                if (count == 1) {
+                    binding.notificationBadgeCount.setVisibility(View.VISIBLE);
+                    binding.imageView4.setImageDrawable(getResources().getDrawable(R.drawable.active_notification_icon));
+                } else {
+                    binding.notificationBadgeCount.setVisibility(View.GONE);
+                    binding.imageView4.setImageDrawable(getResources().getDrawable(R.drawable.notification));
+                    count = 0;
+                }
+                break;
+            case R.id.frameLayout:
+                binding.notificationBadgeCount.setVisibility(View.GONE);
+                binding.imageView4.setImageDrawable(getResources().getDrawable(R.drawable.notification));
+                break;
         }
     }
 
@@ -422,4 +446,4 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             super.onBackPressed();
         }
     }
-    }
+}

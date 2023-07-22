@@ -12,9 +12,9 @@ public class GetUserCountData {
     @SerializedName("response")
     @Expose
     private String response;
-    @SerializedName("response message")
+    @SerializedName("responseMessage")
     @Expose
-    private List<ResponseMessage> responseMessage;
+    private Response.ResponseMessage responseMessage;
 
     public String getStatusCode() {
         return statusCode;
@@ -32,16 +32,16 @@ public class GetUserCountData {
         this.response = response;
     }
 
-    public List<ResponseMessage> getResponseMessage() {
+    public Response.ResponseMessage getResponseMessage() {
         return responseMessage;
     }
 
-    public void setResponseMessage(List<ResponseMessage> responseMessage) {
+    public void setResponseMessage(Response.ResponseMessage responseMessage) {
         this.responseMessage = responseMessage;
     }
 
-
-    public class ResponseMessage {
+}
+     class Response {
 
         @SerializedName("geo_tag_count")
         @Expose
@@ -55,5 +55,20 @@ public class GetUserCountData {
             this.geoTagCount = geoTagCount;
         }
 
+
+         class ResponseMessage {
+
+            @SerializedName("Response")
+            @Expose
+            private Response response;
+
+            public Response getResponse() {
+                return response;
+            }
+
+            public void setResponse(Response response) {
+                this.response = response;
+            }
+        }
     }
-}
+

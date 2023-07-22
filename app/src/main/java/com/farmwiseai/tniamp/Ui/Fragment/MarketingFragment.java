@@ -200,7 +200,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                                     String remarks, String date) {
 
         remarks = marketingBinding.remarksTxt.getText().toString().trim();
-
+        String traningDatefrom = marketingBinding.dateFrom1.getText().toString().trim();
+        String traningDateTo = marketingBinding.dateTo2.getText().toString().trim();
        /* if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
@@ -349,10 +350,10 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 marketingBinding.traineeSCSTNOF.setError("field empty");
                 return false;
             } else if (marketingBinding.dateFrom1.getText().toString().trim().isEmpty()) {
-                marketingBinding.dateFrom.setError("field empty");
+                marketingBinding.dateFrom1.setError("field empty");
                 return false;
             } else if (marketingBinding.dateTo2.getText().toString().trim().isEmpty()) {
-                marketingBinding.dateTo.setError("field empty");
+                marketingBinding.dateTo2.setError("field empty");
                 return false;
             }
         }
@@ -378,7 +379,13 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             } else if (marketingBinding.scStNOEF.getText().toString().trim().isEmpty()) {
                 marketingBinding.scStNOEF.setError("field empty");
                 return false;
-            } else if (marketingBinding.country.getText().toString().trim().isEmpty()) {
+            } else if (marketingBinding.dateFrom.getText().toString().trim().isEmpty()) {
+                marketingBinding.dateFrom.setError("field empty");
+                return false;
+            } else if (marketingBinding.dateTo.getText().toString().trim().isEmpty()) {
+                marketingBinding.dateTo.setError("field empty");
+                return false;
+            }else if (marketingBinding.country.getText().toString().trim().isEmpty()) {
                 marketingBinding.country.setError("field empty");
                 return false;
             } else if (marketingBinding.places.getText().toString().trim().isEmpty()) {
@@ -1035,7 +1042,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 offlineText = "Data saved successfully in offline data";
 
             } else {
-                offlineText = "You reached the offline Store Data limit please Sync !";
+                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
             showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
                 @Override

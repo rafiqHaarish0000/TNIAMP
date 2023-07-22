@@ -3802,5 +3802,179 @@
     "NAME": "Walajah",
     "DISTRICT_ID": 162,
     "REVISION_NO": 1675023602
+  },
+  {
+    "ID": 923,
+    "NAME": "chennimalai",
+    "DISTRICT_ID": 15,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 924,
+    "NAME": "Kodumudi",
+    "DISTRICT_ID": 15,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 925,
+    "NAME": "Modakurichi",
+    "DISTRICT_ID": 15,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 926,
+    "NAME": "Jayamkondam",
+    "DISTRICT_ID": 22,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 927,
+    "NAME": "Chithamur",
+    "DISTRICT_ID": 138,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 928,
+    "NAME": "Thalavadi",
+    "DISTRICT_ID": 15,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 929,
+    "NAME": "Pudupalayam",
+    "DISTRICT_ID": 51,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 930,
+    "NAME": "Kadayam",
+    "DISTRICT_ID": 148,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 931,
+    "NAME": "Sirkali",
+    "DISTRICT_ID": 60,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 932,
+    "NAME": "Thiruvidaimaruthur",
+    "DISTRICT_ID": 61,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 933,
+    "NAME": "Mayiladuthurai",
+    "DISTRICT_ID": 60,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 934,
+    "NAME": "Sankarapuram",
+    "DISTRICT_ID": 63,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 935,
+    "NAME": "Kalrayanhills",
+    "DISTRICT_ID": 63,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 936,
+    "NAME": "Rishivandiyam",
+    "DISTRICT_ID": 63,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 937,
+    "NAME": "Thiagadurugam",
+    "DISTRICT_ID": 63,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 938,
+    "NAME": "Ulundurpet",
+    "DISTRICT_ID": 63,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 939,
+    "NAME": "Gingee",
+    "DISTRICT_ID": 63,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 940,
+    "NAME": "Trichy Corporation",
+    "DISTRICT_ID": 72,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 941,
+    "NAME": "Thathaingar pettai",
+    "DISTRICT_ID": 72,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 942,
+    "NAME": "Thiruverumbur",
+    "DISTRICT_ID": 72,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 943,
+    "NAME": "Budalur",
+    "DISTRICT_ID": 163,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 944,
+    "NAME": "Papanasam",
+    "DISTRICT_ID": 163,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 945,
+    "NAME": "Thiruvaiyaru",
+    "DISTRICT_ID": 163,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 946,
+    "NAME": "Nanguneri",
+    "DISTRICT_ID": 73,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 947,
+    "NAME": "Salem corporation",
+    "DISTRICT_ID": 80,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 948,
+    "NAME": "Kammapuram",
+    "DISTRICT_ID": 62,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 949,
+    "NAME": "Natham",
+    "DISTRICT_ID": 164,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 950,
+    "NAME": "Panruti",
+    "DISTRICT_ID": 62,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 951,
+    "NAME": "Walajah",
+    "DISTRICT_ID": 157,
+    "REVISION_NO": 1549215974
   }
 ]

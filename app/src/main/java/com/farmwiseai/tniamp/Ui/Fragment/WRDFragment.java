@@ -641,7 +641,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 offlineText = "Data saved successfully in offline data";
 
             } else {
-                offlineText = "You reached the offline Store Data limit please Sync !";
+                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
             showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
                 @Override

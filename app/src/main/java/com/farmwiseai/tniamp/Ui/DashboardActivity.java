@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +24,10 @@ import android.Manifest;
 import android.widget.Toast;
 
 import com.farmwiseai.tniamp.R;
+import com.farmwiseai.tniamp.Retrofit.BaseApi;
+import com.farmwiseai.tniamp.Retrofit.DataClass.GetUserCountData;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
+import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 import com.farmwiseai.tniamp.Ui.Fragment.AEDFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AboutFragment;
 import com.farmwiseai.tniamp.Ui.Fragment.AgricultureFragment;
@@ -46,6 +50,10 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityDashboardBinding binding;
     CommonFunction mCommonFunction;
@@ -54,6 +62,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private GPSTracker gpsTracker;
     private static final int PERMISSION_REQUEST_CODE = 200;
     ProgressDialog progressDialog;
+
+    GetUserCountData getUserCountData;
+    String notifiCount;
 
     int count = 0;
 
@@ -64,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         setContentView(binding.getRoot());
         username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
         //lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-       lineDeptId = "9";
+        lineDeptId = "9";
         binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
@@ -97,6 +108,51 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 syncOfflineData();
             }
         });
+    }
+
+    private void getUserCount() {
+        try {
+            mCommonFunction.showProgress();
+            Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+            Call<GetUserCountData> userDataCall = null;
+            userDataCall = call.getUserCount(SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN), SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.USER_DETAILS));
+            userDataCall.enqueue(new Callback<GetUserCountData>() {
+                @Override
+                public void onResponse(Call<GetUserCountData> call, Response<GetUserCountData> response) {
+                    if (response.body() != null) {
+                        getUserCountData = response.body();
+                        Log.i(TAG, "onBody: " + response.code());
+                        String responsemsg = getUserCountData.getResponseMessage().getGeoTagCount().toString();
+                        if (responsemsg != null) {
+                            notifiCount = getUserCountData.getResponseMessage().getGeoTagCount().toString();
+                           binding.sentTxt.setText("No of data submit: "+notifiCount);
+                          //  mLoadCustomToast(getParent(), notifiCount);
+
+                        } else {
+                            mLoadCustomToast(getParent(), getUserCountData.getResponseMessage().getResponse().toString());
+                        }
+
+                    } else {
+                        mLoadCustomToast(getParent(), "Please submit Valid Data! ");
+                    }
+                    mCommonFunction.hideProgress();
+                }
+
+                @Override
+                public void onFailure(Call<GetUserCountData> call, Throwable t) {
+                    mLoadCustomToast(getParent(), "InValid OTP");
+                    mCommonFunction.hideProgress();
+                }
+            });
+
+
+        } catch (Exception e) {
+            mLoadCustomToast(getParent(), "Exception Caught");
+        }
+    }
+
+    public void mLoadCustomToast(Activity mcontaxt, String message) {
+        Toast.makeText(DashboardActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void syncOfflineData() {
@@ -210,6 +266,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    @Override
+    protected void onStart() {
+         getUserCount();
+        super.onStart();
+    }
 
     private void setAddFragment(Fragment addFragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

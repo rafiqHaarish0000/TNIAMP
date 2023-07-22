@@ -882,12 +882,6 @@
     "revision_no": null
   },
   {
-    "ID": 149,
-    "Name": "Precision farming",
-    "PARENT_ID": 0,
-    "revision_no": null
-  },
-  {
     "ID": 150,
     "Name": "Portable micro overhead sprinkler",
     "PARENT_ID": 4,

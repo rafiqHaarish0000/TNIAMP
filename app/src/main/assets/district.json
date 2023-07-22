@@ -970,5 +970,17 @@
     "NAME": "Ranipet",
     "SUB_BASIN_ID": 44,
     "REVISION_NO": 1675023602
+  },
+  {
+    "ID": 163,
+    "NAME": "Thanjavur",
+    "SUB_BASIN_ID": 29,
+    "REVISION_NO": 1549215974
+  },
+  {
+    "ID": 164,
+    "NAME": "Dindigul",
+    "SUB_BASIN_ID": 34,
+    "REVISION_NO": 1549215974
   }
 ]

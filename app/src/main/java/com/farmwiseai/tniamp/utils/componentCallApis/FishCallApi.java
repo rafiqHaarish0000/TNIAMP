@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -46,7 +47,8 @@ public class FishCallApi {
 
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner, Spinner stageSpinner, LinearLayout layoutComp1,
                                    LinearLayout layoutComp2, LinearLayout layout3, LinearLayout layout4, LinearLayout layout5,LinearLayout layout6,
-                                   LinearLayout otherLyt, Spinner beneficarySpinner, LinearLayout linFishTankInfo) {
+                                   LinearLayout otherLyt, Spinner beneficarySpinner, LinearLayout linFishTankInfo,EditText seedHarvest,
+                                   EditText quantityHarvest) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -71,7 +73,7 @@ public class FishCallApi {
                     positionValue = String.valueOf(getAllComponentData.get(i).getID());
                     String names = getAllComponentData.get(i).getName();
                     if (names.equalsIgnoreCase("Model Village")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
@@ -96,7 +98,7 @@ public class FishCallApi {
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("Fish culture in irrigation tanks")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp1.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.GONE);
@@ -109,7 +111,7 @@ public class FishCallApi {
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
                     } else if (names.equalsIgnoreCase("Cage farming of fishes")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.VISIBLE);
                         layoutComp1.setVisibility(View.GONE);
@@ -123,7 +125,7 @@ public class FishCallApi {
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
                     } else if (names.equalsIgnoreCase("Fish seed rearing in cages")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.GONE);
                         layoutComp1.setVisibility(View.GONE);
@@ -138,7 +140,7 @@ public class FishCallApi {
 
                     } else if (names.equalsIgnoreCase("Aquaculture in farm ponds")
                             || names.equalsIgnoreCase("Earthern fish seed rearing and culture farm")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.GONE);
                         layoutComp1.setVisibility(View.GONE);
@@ -152,7 +154,7 @@ public class FishCallApi {
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
                     } else if (names.equalsIgnoreCase("Fish Kiosk")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         layoutComp2.setVisibility(View.GONE);
                         layoutComp1.setVisibility(View.GONE);
@@ -166,7 +168,7 @@ public class FishCallApi {
                         linFishTankInfo.setVisibility(View.VISIBLE);
 
                     } else if (names.equalsIgnoreCase("Fish culture in Modular tanks")) {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         layout5.setVisibility(View.VISIBLE);
                         layout6.setVisibility(View.VISIBLE);
                         subComponentSpinner.setVisibility(View.VISIBLE);
@@ -179,7 +181,7 @@ public class FishCallApi {
                         beneficarySpinner.setVisibility(View.GONE);
                         linFishTankInfo.setVisibility(View.GONE);
                     } else {
-                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6);
+                        subComponenetDropDown(positionValue, subComponentSpinner, stageSpinner,layout5,layout6,seedHarvest,quantityHarvest);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         otherLyt.setVisibility(View.GONE);
                         layoutComp1.setVisibility(View.GONE);
@@ -209,7 +211,9 @@ public class FishCallApi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner stageSpinner,LinearLayout layout5,LinearLayout layout6) {
+    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner,
+                                      Spinner stageSpinner,
+                                      LinearLayout layout5, LinearLayout layout6, EditText seedHarvest,EditText quantityHarvest) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "fishlookup.json");
@@ -234,11 +238,31 @@ public class FishCallApi {
                         if(names.equalsIgnoreCase("Stocking")){
                             layout5.setVisibility(View.VISIBLE);
                             layout6.setVisibility(View.GONE);
+                            seedHarvest.setVisibility(View.GONE);
+                            quantityHarvest.setVisibility(View.GONE);
                         } else if (names.equalsIgnoreCase("Harvest")) {
+                            seedHarvest.setVisibility(View.VISIBLE);
+                            quantityHarvest.setVisibility(View.VISIBLE);
                             layout5.setVisibility(View.VISIBLE);
                             layout6.setVisibility(View.VISIBLE);
                         }else{
                             layout6.setVisibility(View.GONE);
+                            seedHarvest.setVisibility(View.VISIBLE);
+                            quantityHarvest.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    if(compName.equalsIgnoreCase("Aquaculture in farm ponds") ||
+                            compName.equalsIgnoreCase("Earthern fish seed rearing and culture farm")){
+                        if(names.equalsIgnoreCase("Stocking")){
+                            seedHarvest.setVisibility(View.GONE);
+                            quantityHarvest.setVisibility(View.GONE);
+                        } else if (names.equalsIgnoreCase("Harvest")) {
+                            seedHarvest.setVisibility(View.VISIBLE);
+                            quantityHarvest.setVisibility(View.VISIBLE);
+                        }else{
+                            seedHarvest.setVisibility(View.VISIBLE);
+                            quantityHarvest.setVisibility(View.VISIBLE);
                         }
                     }
 

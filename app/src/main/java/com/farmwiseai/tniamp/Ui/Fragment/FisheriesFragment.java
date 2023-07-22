@@ -124,7 +124,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             sub_componentSpinner, stageSpinner, beneficarySpinner, beneficaryFinal, beneficarySpinner1, specicesSpinner1,
             categorySpinner, villageSpinner, interventionSpinner, specicesSpinner2, lesseeSpinner, genderSpinner, genderSpinnerL5, categorySpinnerL5;
     private MultiSpinner multiSpinner1, multiSpinner2, multiSpinner3;
-    private EditText datePicker;
+    private EditText datePicker,seedHarvest,quantityHarvest;
     private FishCallApi fishCallApi;
     private boolean takePicture;
     private int valueofPic = 0;
@@ -174,11 +174,13 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         layout4 = fisheriesBinding.layout4;
         layout5 = fisheriesBinding.layout5;
         layout6 = fisheriesBinding.layout6;
+        seedHarvest = fisheriesBinding.numbOfSeedsHarvest;
+        quantityHarvest = fisheriesBinding.quantityOfFishHar;
 
         backPressListener = this;
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2,
-                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo);
+                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo,seedHarvest,quantityHarvest);
 
         offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 

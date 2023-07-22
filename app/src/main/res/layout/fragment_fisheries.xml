@@ -324,6 +324,15 @@
                             app:smsp_enableFloatingLabel="true"
                             app:smsp_hint="Lessee"
                             app:smsp_multilineError="false" />
+                        <EditText
+                            android:id="@+id/quantityOfFishHarL1"
+                            style="@style/AppEdittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:visibility="gone"
+                            android:hint="Quantity of Fish Harvested(Kg)"
+                            android:inputType="number" />
                     </LinearLayout>
                     <!--Layout 2-->
                     <LinearLayout

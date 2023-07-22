@@ -75,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         setContentView(binding.getRoot());
         username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
         //lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-       lineDeptId = "9";
+        lineDeptId = "9";
         binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
@@ -109,7 +109,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
-  /*  private void getUserCount() {
+
+    private void getUserCount() {
         try {
             mCommonFunction.showProgress();
             Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -121,26 +122,26 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     if (response.body() != null) {
                         getUserCountData = response.body();
                         Log.i(TAG, "onBody: " + response.code());
-                        String responsemsg = String.valueOf(getUserCountData.getResponseMessage());
+                        String responsemsg = getUserCountData.getResponseMessage().getGeoTagCount().toString();
                         if (responsemsg != null) {
-                            notifiCount=responsemsg;
-                            mLoadCustomToast(getParent(), String.valueOf(getUserCountData.getResponseMessage().get(0).getGeoTagCount()));
+                            notifiCount = getUserCountData.getResponseMessage().getGeoTagCount().toString();
+                           binding.sentTxt.setText("No of data submit: "+notifiCount);
+                          //  mLoadCustomToast(getParent(), notifiCount);
 
                         } else {
-                            mLoadCustomToast(getParent(), String.valueOf(getUserCountData.getResponseMessage().get(0).getGeoTagCount()));
+                            mLoadCustomToast(getParent(), getUserCountData.getResponseMessage().getResponse().toString());
                         }
 
                     } else {
-                        mLoadCustomToast(getParent(),"Please submit Valid Data! ");
-
+                        mLoadCustomToast(getParent(), "Please submit Valid Data! ");
                     }
-                    mCommonFunction.dismiss();
+                    mCommonFunction.hideProgress();
                 }
 
                 @Override
                 public void onFailure(Call<GetUserCountData> call, Throwable t) {
                     mLoadCustomToast(getParent(), "InValid OTP");
-                    mCommonFunction.dismiss();
+                    mCommonFunction.hideProgress();
                 }
             });
 
@@ -148,7 +149,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         } catch (Exception e) {
             mLoadCustomToast(getParent(), "Exception Caught");
         }
-    }*/
+    }
+
     public void mLoadCustomToast(Activity mcontaxt, String message) {
         Toast.makeText(DashboardActivity.this, message, Toast.LENGTH_SHORT).show();
     }
@@ -266,7 +268,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onStart() {
-       // getUserCount();
+         getUserCount();
         super.onStart();
     }
 

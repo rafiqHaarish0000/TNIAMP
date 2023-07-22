@@ -168,7 +168,7 @@
                                 android:padding="8dp"
                                 android:text="No of offline data:"
                                 android:textColor="@color/color_accent"
-                                android:textSize="10dp" />
+                                android:textSize="16dp" />
                         </LinearLayout>
                         <ImageView
                             android:id="@+id/logout_icon"

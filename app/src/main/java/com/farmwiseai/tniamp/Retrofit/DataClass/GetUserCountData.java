@@ -6,69 +6,69 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class GetUserCountData {
-    @SerializedName("statusCode")
-    @Expose
-    private String statusCode;
-    @SerializedName("response")
-    @Expose
-    private String response;
-    @SerializedName("responseMessage")
-    @Expose
-    private Response.ResponseMessage responseMessage;
 
-    public String getStatusCode() {
-        return statusCode;
-    }
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
 
-    public String getResponse() {
-        return response;
-    }
-
-    public void setResponse(String response) {
-        this.response = response;
-    }
-
-    public Response.ResponseMessage getResponseMessage() {
-        return responseMessage;
-    }
-
-    public void setResponseMessage(Response.ResponseMessage responseMessage) {
-        this.responseMessage = responseMessage;
-    }
-
-}
-     class Response {
-
-        @SerializedName("geo_tag_count")
+        @SerializedName("statusCode")
         @Expose
-        private Integer geoTagCount;
+        private String statusCode;
+        @SerializedName("response")
+        @Expose
+        private String response;
+        @SerializedName("responseMessage")
+        @Expose
+        private ResponseMessage responseMessage;
 
-        public Integer getGeoTagCount() {
-            return geoTagCount;
+        public String getStatusCode() {
+            return statusCode;
         }
 
-        public void setGeoTagCount(Integer geoTagCount) {
-            this.geoTagCount = geoTagCount;
+        public void setStatusCode(String statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        public String getResponse() {
+            return response;
+        }
+
+        public void setResponse(String response) {
+            this.response = response;
+        }
+
+        public ResponseMessage getResponseMessage() {
+            return responseMessage;
+        }
+
+        public void setResponseMessage(ResponseMessage responseMessage) {
+            this.responseMessage = responseMessage;
         }
 
 
-         class ResponseMessage {
 
-            @SerializedName("Response")
-            @Expose
-            private Response response;
+   public  class ResponseMessage {
 
-            public Response getResponse() {
-                return response;
-            }
+       @SerializedName("geo_tag_count")
+       @Expose
+       private Integer geoTagCount;
 
-            public void setResponse(Response response) {
-                this.response = response;
-            }
-        }
+       public String getResponse() {
+           return response;
+       }
+
+       public void setResponse(String response) {
+           this.response = response;
+       }
+
+       @SerializedName("response")
+       @Expose
+       private String response;
+
+       public Integer getGeoTagCount() {
+           return geoTagCount;
+       }
+
+       public void setGeoTagCount(Integer geoTagCount) {
+           this.geoTagCount = geoTagCount;
+       }
+   }
     }
-

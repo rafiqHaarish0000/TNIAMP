@@ -1010,7 +1010,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         request.setTxn_date("WedFeb12202012:04:46GMT+0530(IndiaStandardTime)");
         request.setTxn_id("20200212120446");
         request.setVillage(villageValue);
-        request.setStatus("0");
+        request.setStatus("1");
 
 
         if (mCommonFunction.isNetworkAvailable()) {

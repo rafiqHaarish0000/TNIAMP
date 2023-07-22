@@ -1007,7 +1007,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setRemarks(remarks);
         request.setTxn_id("20191127172744");
         request.setDate("");
-        request.setStatus("0");
+        request.setStatus("1");
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             ObjectMapper mapper = new ObjectMapper();

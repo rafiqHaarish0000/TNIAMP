@@ -733,7 +733,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setPhotoLon(lon);
         request.setTxnId("20200212120446");
         request.setDate("");
-        request.setStatus("0");
+        request.setStatus("1");
         request.setInterventionType(interventionTypeVal);
 
         if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {

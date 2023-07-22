@@ -605,7 +605,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate(dateField);
-        request.setStatus("0");
+        request.setStatus("1");
         request.setIntervention_type(interventionTypeVal);
 
         if (aedBinding.othersLayout.getVisibility() == View.VISIBLE) {

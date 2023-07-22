@@ -642,7 +642,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate("");
-        request.setStatus("0");
+        request.setStatus("1");
 
         if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Calves")) {
             request.setNo_of_calves(animalBinding.noOfCalves.getText().toString().trim());

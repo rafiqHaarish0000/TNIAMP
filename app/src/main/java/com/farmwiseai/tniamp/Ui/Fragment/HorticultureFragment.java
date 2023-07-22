@@ -689,7 +689,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setPhotoLat(lat);
         request.setPhotoLon(lon);
         request.setTxnId("20200212120446");
-        request.setStatus("0");
+        request.setStatus("1");
         request.setInterventionType(interventionTypeVal);
 
         if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {

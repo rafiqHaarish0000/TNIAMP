@@ -157,17 +157,27 @@ public class TNAU_CallApi {
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("Planting")) {
                         editText.setVisibility(View.VISIBLE);
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("Installation")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("Milky")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("First") || names.contains("Field")) {
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("Harvest") || names.equalsIgnoreCase("Harvest of Pulse") ||
                             names.equalsIgnoreCase("Harvest of Rice")) {
                         variety.setVisibility(View.VISIBLE);
@@ -177,23 +187,33 @@ public class TNAU_CallApi {
                     } else if (names.contains("Group formation")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("Meetings")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("Foliar Spray")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("CCWM")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
-
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Initial Convergence") || names.equalsIgnoreCase("Awareness Meeting") || names.equalsIgnoreCase("Entry Level Activity") || names.equalsIgnoreCase("Farmers Discussion (DSS)")) {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.GONE);
-
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
+                        variety.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     }
                     stagesDropDown(positionValue2, thirdSpinner, editText, variety, yield);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
@@ -235,6 +255,8 @@ public class TNAU_CallApi {
                     stageName = stagesList.get(i).getName();
                     if (names.contains("Sowing")) {
                         editText.setVisibility(View.VISIBLE);
+                        varitey.setVisibility(View.GONE);
+                        yield.setVisibility(View.GONE);
                     } else if (names.contains("Planting")) {
                         editText.setVisibility(View.VISIBLE);
                     } else if (names.equalsIgnoreCase("Harvest") ||

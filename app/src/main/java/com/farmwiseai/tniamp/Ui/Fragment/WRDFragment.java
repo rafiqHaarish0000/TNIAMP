@@ -609,7 +609,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
-        request.setStatus("0");
+        request.setStatus("1");
         request.setIntervention_type("3");
 
         if (wrdfragmentBinding.othersLayout.getVisibility() == View.VISIBLE) {

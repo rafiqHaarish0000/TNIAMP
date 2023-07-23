@@ -272,7 +272,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 registerRequest.setLat(latLongPojo.getLat());
                 registerRequest.setLon(latLongPojo.getLon());
-                registerRequest.setVersion("");
+                registerRequest.setVersion("2");
                 registerRequest.setSubbasin(String.valueOf(subBasinId));
                 registerRequest.setUserStatus("1");
                 mCommonFunction.showProgress();

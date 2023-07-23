@@ -850,7 +850,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         @Override
         protected Void doInBackground(Void... params) {
           /*  try {
-                Thread.sleep(5000);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
@@ -957,7 +957,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                     }
 //Todo
                 }
-
+                Thread.sleep(30000);
             } catch (Exception e) {
                 e.printStackTrace();
                 //   return "Exception: " + e.getMessage();

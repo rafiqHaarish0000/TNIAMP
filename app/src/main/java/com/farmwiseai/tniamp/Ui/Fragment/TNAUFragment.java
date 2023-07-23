@@ -811,7 +811,7 @@ mCommonFunction.hideProgress();
 
                 offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineRequest.size() < 5) {
+            } else if (offlineRequest.size() < 10) {
                 offlineRequest.add(request);
                 offlineImageRequest.add(secondImageBase64);
                 SharedPrefsUtils.saveArrayList(context, offlineRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
@@ -872,7 +872,6 @@ mCommonFunction.hideProgress();
         request.setDepartment_id("1");
         request.setImg2(secondImageBase64);
         request.setID(txt_id);
-
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<SecondImageResponse> userDataCall = null;
         userDataCall = call.getSecondImageURL(request);

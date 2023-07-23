@@ -99,6 +99,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     DatePickerDialog picker;
     Agri_Request request;
     ArrayList<Agri_Request> offlineAgriRequest = new ArrayList<>();
+    ArrayList<String> offlineImageRequest = new ArrayList<>();
     EditText variety, yield;
     private FragmentAgricultureBinding agricultureBinding;
     private Context context;
@@ -181,7 +182,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         variety = agricultureBinding.varietyTxt;
         yield = agricultureBinding.yieldTxt;
         backPressListener = this;
-        offlineAgriRequest = SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+        offlineAgriRequest = SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
 
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, seed_lyt, iNames_lyt);
@@ -802,13 +803,18 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             String offlineText = "";
             if (offlineAgriRequest == null) {
                 offlineAgriRequest = new ArrayList<>();
+                offlineImageRequest= new ArrayList<>();
                 offlineAgriRequest.add(request);
-                SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveArrayListagriImage(context,offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
+                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+
                 offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineAgriRequest.size() < 5) {
+            } else if (offlineAgriRequest.size() < 10) {
                 offlineAgriRequest.add(request);
-                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                SharedPrefsUtils.saveArrayListagriImage(context,offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
+                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
                 offlineText = "Data saved successfully in offline data";
 
             } else {

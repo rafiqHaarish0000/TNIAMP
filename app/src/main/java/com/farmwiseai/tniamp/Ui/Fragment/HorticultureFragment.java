@@ -113,6 +113,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     FragmentHorticultureBinding horticultureBinding;
     DatePickerDialog picker;
     ArrayList<HortiRequest> offlineHortiRequest = new ArrayList<>();
+    ArrayList<String> offlineHortiImageRequest = new ArrayList<>();
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, farmerName, category1, survey_no, area, near_tank, remarks, dateField, mobileNumber;
     private List<ComponentData> componentDropDown;
@@ -189,7 +190,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         hortiCallApi = new HortiCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, cropstagespinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
 
-        offlineHortiRequest = SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+        offlineHortiRequest = SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
@@ -735,12 +736,19 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             if (offlineHortiRequest == null) {
                 offlineHortiRequest = new ArrayList<>();
                 offlineHortiRequest.add(request);
+                offlineHortiImageRequest = new ArrayList<>();
+                offlineHortiImageRequest.add(secondImageBase64);
                 SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                SharedPrefsUtils.saveArrayListHortiImage(context, offlineHortiImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
+
                 offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineHortiRequest.size() < 5) {
+            } else if (offlineHortiRequest.size() < 10) {
                 offlineHortiRequest.add(request);
-                SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineHortiImageRequest.add(secondImageBase64);
+
+                SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
+                SharedPrefsUtils.saveArrayListHortiImage(context, offlineHortiImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
                 offlineText = "Data saved successfully in offline data";
 
             } else {

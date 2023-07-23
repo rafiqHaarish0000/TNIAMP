@@ -141,6 +141,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private String villageValue, category1 = "", firstImageBase64, secondImageBase64, interventionTypeVal;
     private String genderValue, catNameVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
+    ArrayList<String> offlineARDImgRequest ;
 
     @Override
     public void onAttach(Context context) {
@@ -189,7 +190,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         backPressListener = this;
 
-        offlineARDRequest = SharedPrefsUtils.getARDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+        offlineARDRequest = SharedPrefsUtils.getARDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
 
 
         animalCallApi = new AnimalCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
@@ -713,12 +714,18 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             if (offlineARDRequest == null) {
                 offlineARDRequest = new ArrayList<>();
                 offlineARDRequest.add(request);
-                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineARDImgRequest = new ArrayList<>();
+                offlineARDImgRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
+                SharedPrefsUtils.saveArrayListAhdImage(context, offlineARDImgRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
+
                 offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineARDRequest.size() < 5) {
+            } else if (offlineARDRequest.size() < 10) {
                 offlineARDRequest.add(request);
-                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineARDImgRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
+                SharedPrefsUtils.saveArrayListAhdImage(context, offlineARDImgRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
                 offlineText = "Data saved successfully in offline data";
 
             } else {

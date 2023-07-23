@@ -8,8 +8,13 @@ import android.util.Log;
 import com.farmwiseai.tniamp.Retrofit.BaseApi;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AEDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.Agri_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.AnimalRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.FishRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.HortiRequest;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.MarkRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.SecondImageRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
+import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.WRDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
@@ -23,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OfflineDataSyncFile {
-    public CommonFunction mCommonFunction;
+    public static CommonFunction mCommonFunction;
     public static Context mContext;
     public static String callbackstring = "failure";
     static String returnvalue = "";
@@ -33,6 +38,7 @@ public class OfflineDataSyncFile {
     }
 
     public static String onlineDataTnauUpload(TNAU_Request request, String tnau_request) {
+        mCommonFunction.showProgress();
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<TNAU_Response> userDataCall = call.getTnauResponse(request);
         userDataCall.enqueue(new Callback<TNAU_Response>() {
@@ -53,7 +59,7 @@ public class OfflineDataSyncFile {
 
             @Override
             public void onFailure(Call<TNAU_Response> call, Throwable t) {
-
+                mCommonFunction.hideProgress();
             }
         });
         return callbackstring;
@@ -245,7 +251,8 @@ public class OfflineDataSyncFile {
     public static String uploadSecondImage(String txt_id, String secondImage) {
 
         SecondImageRequest request = new SecondImageRequest();
-        request.setDepartment_id(SharedPrefsUtils.getString(mContext, SharedPrefsUtils.PREF_KEY.USER_DETAILS));
+        //  request.setDepartment_id(SharedPrefsUtils.getString(mContext, SharedPrefsUtils.PREF_KEY.USER_DETAILS));
+        request.setDepartment_id("1");
         request.setImg2(secondImage);
         request.setID(txt_id);
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -277,16 +284,67 @@ public class OfflineDataSyncFile {
     public static String offLineCount(String deptId) {
         String count = String.valueOf(0);
         if (deptId == "1") {
-           ArrayList<TNAU_Request> offlineRequest = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+            ArrayList<TNAU_Request> offlineRequest = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
-            if (offlineRequest != null && offlineRequest.size() > 0)
-            {
-                int allCount=offlineRequest.size();
-                count=String.valueOf(allCount);
-           /* if(allCount<10)
-            {
-                count= String.valueOf(10-allCount);
-            }*/
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else if (deptId == "2") {
+            ArrayList<Agri_Request> offlineRequest = SharedPrefsUtils.getAgriArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else if (deptId == "3") {
+            ArrayList<HortiRequest> offlineRequest = SharedPrefsUtils.getHortiArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else if (deptId == "4") {
+            ArrayList<AEDRequest> offlineRequest = SharedPrefsUtils.getAEDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else if (deptId == "5") {
+            ArrayList<AnimalRequest> offlineRequest = SharedPrefsUtils.getARDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else if (deptId == "6") {
+            ArrayList<WRDRequest> offlineRequest = SharedPrefsUtils.getWrdArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else if (deptId == "7") {
+            ArrayList<MarkRequest> offlineRequest = SharedPrefsUtils.getMarkArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else if (deptId == "8") {
+            ArrayList<FishRequest> offlineRequest = SharedPrefsUtils.getFishArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            }
+        } else {
+            ArrayList<TNAU_Request> offlineRequest = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+
+            if (offlineRequest != null && offlineRequest.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
             }
         }
        /* if (deptId == "9") {

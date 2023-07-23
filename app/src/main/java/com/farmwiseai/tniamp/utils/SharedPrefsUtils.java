@@ -23,8 +23,16 @@ public class SharedPrefsUtils {
     public static enum PREF_KEY {
         ACCESS_TOKEN("access_token"), LOGIN_SESSION("login_session"),
         USER_DETAILS("user_details"), USER_NAME("user_name"),
+        ONLINE_DATA_COUNT("notifyCount"),
+        SAVED_OFFLINE_DATA("savedOfflineData"), OFFLINE_DATA("offlineData"),
+        OFFLINE_DATA_AGRI("offlineDataAgri"), SAVED_OFFLINE_DATA_AGRI("savedOfflineDataAgri"),
+        OFFLINE_DATA_AED("offlineDataAed"), SAVED_OFFLINE_DATA_AED("savedOfflineDataAed"),
+        OFFLINE_DATA_ANI("offlineDataAni"), SAVED_OFFLINE_DATA_ANI("savedOfflineDataAni"),
+        OFFLINE_DATA_HORTI("offlineDataHorti"), SAVED_OFFLINE_DATA_HORTI("savedOfflineDataHorti"),
+        OFFLINE_DATA_WRD("offlineDataWrd"), SAVED_OFFLINE_DATA_WRD("savedOfflineDataWrd"),
+        OFFLINE_DATA_MARKETING("offlineDataMarketing"), SAVED_OFFLINE_DATA_MARKETING("savedOfflineDataMarketing"),
+        OFFLINE_DATA_FISH("offlineDataFish"), SAVED_OFFLINE_DATA_FISH("savedOfflineDataFish");
 
-        SAVED_OFFLINE_DATA("savedOfflineData"), OFFLINE_DATA("offlineData");
 
         public final String KEY;
 
@@ -32,7 +40,6 @@ public class SharedPrefsUtils {
             this.KEY = key;
         }
     }
-
 
 
     public static void putString(Context context, PREF_KEY key, String value) {
@@ -257,7 +264,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -276,7 +283,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -295,7 +302,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -314,7 +321,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -333,7 +340,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -352,7 +359,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -371,7 +378,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
@@ -390,7 +397,7 @@ public class SharedPrefsUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key.KEY, null);
-        Type type = new TypeToken<ArrayList<TNAU_Request>>() {
+        Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         return gson.fromJson(json, type);
     }

@@ -105,6 +105,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public String stageLastValue = null;
     public BackPressListener backPressListener;
     ArrayList<AEDRequest> offlineAedRequest;
+    ArrayList<String> offlineImageAedRequest;
     private Context context;
     private FragmentAEDBinding aedBinding;
     private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, interventionName, mobileNumber;
@@ -158,7 +159,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         otherLayt = aedBinding.othersLayout;
         backPressListener = this;
         mobileNumber = aedBinding.mobileNumbertxt.getText().toString();
-        offlineAedRequest = SharedPrefsUtils.getAEDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+        offlineAedRequest = SharedPrefsUtils.getAEDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
         aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, hideLyt, otherLayt);
 
@@ -622,12 +623,18 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             if (offlineAedRequest == null) {
                 offlineAedRequest = new ArrayList<>();
                 offlineAedRequest.add(request);
-                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineImageAedRequest = new ArrayList<>();
+                offlineImageAedRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
+                SharedPrefsUtils.saveArrayListAedImage(context, offlineImageAedRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);
+
                 offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineAedRequest.size() < 5) {
+            } else if (offlineAedRequest.size() < 10) {
                 offlineAedRequest.add(request);
-                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineImageAedRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
+                SharedPrefsUtils.saveArrayListAedImage(context, offlineImageAedRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);
                 offlineText = "Data saved successfully in offline data";
 
             } else {

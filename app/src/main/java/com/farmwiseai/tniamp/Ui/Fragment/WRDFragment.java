@@ -96,6 +96,8 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     public String stageLastValue = null;
     DatePickerDialog picker;
     ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
+    ArrayList<String> offlineWRDImageRequest;
+
     private FragmentWRDFRagmentBinding wrdfragmentBinding;
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
@@ -169,7 +171,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         wrdCallApi = new WRDCallAPi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner, stageSpinner, wauText, iNames_lyt, memberTxt, linTankInfo);
 
-        offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+        offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
@@ -632,12 +634,17 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             if (offlineWRDRequest == null) {
                 offlineWRDRequest = new ArrayList<>();
                 offlineWRDRequest.add(request);
-                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineWRDImageRequest = new ArrayList<>();
+                offlineWRDImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
+                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
                 offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineWRDRequest.size() < 5) {
+            } else if (offlineWRDRequest.size() < 10) {
                 offlineWRDRequest.add(request);
-                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineWRDImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
+                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
                 offlineText = "Data saved successfully in offline data";
 
             } else {
@@ -685,7 +692,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     private void uploadSecondImage(String txt_id) {
 
         SecondImageRequest request = new SecondImageRequest();
-        request.setDepartment_id("3");
+        request.setDepartment_id("6");
         request.setImg2(secondImageBase64);
         request.setID(txt_id);
 

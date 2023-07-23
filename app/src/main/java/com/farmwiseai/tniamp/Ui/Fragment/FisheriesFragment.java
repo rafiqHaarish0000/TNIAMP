@@ -104,6 +104,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     ArrayList<Integer> langList = new ArrayList<>();
     String[] langArray = {"Catla", "Rohu", "Mrigal", "Common carp", "Grass carp", "GIF Tilapia"};
     ArrayList<FishRequest> offlineMarkRequest = new ArrayList<>();
+    ArrayList<String> offlineFishImageRequest = new ArrayList<>();
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
     private List<ComponentData> componentDropDown;
@@ -124,7 +125,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             sub_componentSpinner, stageSpinner, beneficarySpinner, beneficaryFinal, beneficarySpinner1, specicesSpinner1,
             categorySpinner, villageSpinner, interventionSpinner, specicesSpinner2, lesseeSpinner, genderSpinner, genderSpinnerL5, categorySpinnerL5;
     private MultiSpinner multiSpinner1, multiSpinner2, multiSpinner3;
-    private EditText datePicker,seedHarvest,quantityHarvest,quantityOfHarvestIrrigationTanks;
+    private EditText datePicker, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks;
     private FishCallApi fishCallApi;
     private boolean takePicture;
     private int valueofPic = 0;
@@ -181,9 +182,9 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         backPressListener = this;
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2,
-                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo,seedHarvest,quantityHarvest,quantityOfHarvestIrrigationTanks);
+                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks);
 
-        offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+        offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
@@ -250,7 +251,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
             } else if (fisheriesBinding.quantityOfFishHarL1.getVisibility() == View.VISIBLE) {
-                if (fisheriesBinding.quantityOfFishHarL1.getText().toString().length() == 0){
+                if (fisheriesBinding.quantityOfFishHarL1.getText().toString().length() == 0) {
                     fisheriesBinding.quantityOfFishHarL1.setError("Do not empty field");
                     return false;
                 }
@@ -312,10 +313,10 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (fisheriesBinding.numbOfSeeds.getText().length() == 0) {
                 fisheriesBinding.numbOfSeeds.setError("Do not empty field");
                 return false;
-            } else if (fisheriesBinding.numbOfSeedsHarvest.getVisibility()==View.VISIBLE&& fisheriesBinding.numbOfSeedsHarvest.getText().length() == 0) {
+            } else if (fisheriesBinding.numbOfSeedsHarvest.getVisibility() == View.VISIBLE && fisheriesBinding.numbOfSeedsHarvest.getText().length() == 0) {
                 fisheriesBinding.numbOfSeedsHarvest.setError("Do not empty field");
                 return false;
-            } else if (fisheriesBinding.quantityOfFishHar.getVisibility()==View.VISIBLE&& fisheriesBinding.quantityOfFishHar.getText().length() == 0) {
+            } else if (fisheriesBinding.quantityOfFishHar.getVisibility() == View.VISIBLE && fisheriesBinding.quantityOfFishHar.getText().length() == 0) {
                 fisheriesBinding.quantityOfFishHar.setError("Do not empty field");
                 return false;
             } else if (fisheriesBinding.speciesStockedTxt2.getText().length() == 0) {
@@ -356,8 +357,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (fisheriesBinding.speciesStockedTxt2L5.getText().toString().trim().isEmpty()) {
                 fisheriesBinding.speciesStockedTxt2L5.setError("Do not empty field");
                 return false;
-            }
-            else if (fisheriesBinding.layout6.getVisibility() == View.VISIBLE) {
+            } else if (fisheriesBinding.layout6.getVisibility() == View.VISIBLE) {
 
                 if (fisheriesBinding.usedFeedQuantityL5.getText().length() == 0) {
                     fisheriesBinding.usedFeedQuantityL5.setError("Do not empty field");
@@ -1029,12 +1029,18 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             if (offlineMarkRequest == null) {
                 offlineMarkRequest = new ArrayList<>();
                 offlineMarkRequest.add(request);
-                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineFishImageRequest = new ArrayList<>();
+                offlineFishImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+                SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
+
                 offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineMarkRequest.size() < 5) {
+            } else if (offlineMarkRequest.size() < 10) {
                 offlineMarkRequest.add(request);
-                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+                offlineFishImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+                SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
                 offlineText = "Data saved successfully in offline data";
 
             } else {
@@ -1072,7 +1078,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
             @Override
             public void onFailure(Call<FishResponse> call, Throwable t) {
-mCommonFunction.hideProgress();
+                mCommonFunction.hideProgress();
             }
         });
 

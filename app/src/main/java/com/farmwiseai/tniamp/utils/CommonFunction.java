@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.farmwiseai.tniamp.Ui.ActivityNoInternet;
 import com.farmwiseai.tniamp.R;
 
@@ -30,20 +32,20 @@ import java.util.Date;
 import dmax.dialog.SpotsDialog;
 
 
-public class CommonFunction
-{
-   // Context con;
+public class CommonFunction {
+    // Context con;
     private AlertDialog alertDialog;
     private Activity mActivity;
     protected Dialog progressView;
-  //  public Typeface tfregular,tfmedium,tflight,tfbold;
+    //  public Typeface tfregular,tfmedium,tflight,tfbold;
     Dialog dialog;
     AlertDialog mDialog;
+
     public CommonFunction(Activity cont) {
-      //  con = cont;
+        //  con = cont;
         mActivity = cont;
 
-      //  tfregular = ResourcesCompat.getFont(mActivity, R.font.opensans_regular);
+        //  tfregular = ResourcesCompat.getFont(mActivity, R.font.opensans_regular);
 
 
     }
@@ -61,8 +63,7 @@ public class CommonFunction
 
     // checking internet connection
 
-    public boolean isNetworkAvailable()
-    {
+    public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         assert connectivityManager != null;
@@ -78,23 +79,29 @@ public class CommonFunction
     }
 
 
-    public void navigationNoInternet()
-    {
+    public void navigationNoInternet() {
         Intent intent = new Intent(mActivity, ActivityNoInternet.class);
         mActivity.startActivity(intent);
     }
 
 
     // Navication between Classes
-    public void navigation(Context currentactivityname, Class<?> nextactivityname)
-    {
-        Intent i = new Intent(currentactivityname,nextactivityname);
+    public void navigation(Context currentactivityname, Class<?> nextactivityname, int size) {
+        Intent i = new Intent(currentactivityname, nextactivityname);
+        Bundle extras = new Bundle();
+        //   extras.putString("otp", generateOTP.getResponseMessage().getOtpDataId().toString());
+        extras.putString("count", String.valueOf(size));
+        i.putExtras(extras);
+        currentactivityname.startActivity(i);
+    }
+
+    public void navigation(Context currentactivityname, Class<?> nextactivityname) {
+        Intent i = new Intent(currentactivityname, nextactivityname);
         currentactivityname.startActivity(i);
     }
 
     // Get Device id
-    public String getDeviceId(Context context)
-    {
+    public String getDeviceId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
@@ -117,8 +124,6 @@ public class CommonFunction
             ImageView rotateImage = progressView.findViewById(R.id.rotate_image);
             startRotatingImage(rotateImage, mActivity);
             progressView.show();
-
-
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }
@@ -159,47 +164,32 @@ public class CommonFunction
     }
 
 
+    public void dismiss() {
 
-    public void dismiss()
-    {
-
-        try
-        {
-            if ((mDialog != null) && mDialog.isShowing())
-            {
+        try {
+            if ((mDialog != null) && mDialog.isShowing()) {
                 mDialog.dismiss();
             }
-        }
-        catch (final IllegalArgumentException e)
-        {
+        } catch (final IllegalArgumentException e) {
             // Handle or log or ignore
-        }
-        catch (final Exception e)
-        {
+        } catch (final Exception e) {
             // Handle or log or ignore
-        }
-        finally
-        {
+        } finally {
             mDialog = null;
         }
     }
 
 
-
-
-
-    public static String removeFirstChar(String mGetValue,int mSubstringvalue){
+    public static String removeFirstChar(String mGetValue, int mSubstringvalue) {
         return mGetValue.substring(mSubstringvalue).trim();
     }
 
 
-
-    public String OnDateFormatChangeRegistration(String GetDate)
-    {
+    public String OnDateFormatChangeRegistration(String GetDate) {
         String mConvertDate = "";
 
         try {
-            Date date=new SimpleDateFormat("yyyy-MM-dd").parse(GetDate);
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(GetDate);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             mConvertDate = dateFormat.format(date);
         } catch (ParseException e) {
@@ -209,12 +199,11 @@ public class CommonFunction
         return mConvertDate;
     }
 
-    public String OnDateFormatChange(String GetDate)
-    {
+    public String OnDateFormatChange(String GetDate) {
         String mConvertDate = "";
 
         try {
-            Date date=new SimpleDateFormat("yyyy-MM-dd").parse(GetDate);
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(GetDate);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             mConvertDate = dateFormat.format(date);
         } catch (ParseException e) {
@@ -225,24 +214,20 @@ public class CommonFunction
     }
 
 
-    public void showTextViewsAsMandatory ( TextView... tvs )
-    {
-        for ( TextView tv : tvs )
-        {
-            String text = tv.getText ().toString ();
+    public void showTextViewsAsMandatory(TextView... tvs) {
+        for (TextView tv : tvs) {
+            String text = tv.getText().toString();
 
-            tv.setText ( Html.fromHtml ( text +"<font color=\"#ff0000\">" + " *" + "</font>" ) );
+            tv.setText(Html.fromHtml(text + "<font color=\"#ff0000\">" + " *" + "</font>"));
         }
     }
 
 
-    public void showEditTextAsMandatory ( EditText... tvs )
-    {
-        for ( EditText tv : tvs )
-        {
-            String text = tv.getHint ().toString ();
+    public void showEditTextAsMandatory(EditText... tvs) {
+        for (EditText tv : tvs) {
+            String text = tv.getHint().toString();
 
-            tv.setHint ( Html.fromHtml ( text +"<font color=\"#ff0000\">" + " *" + "</font>" ) );
+            tv.setHint(Html.fromHtml(text + "<font color=\"#ff0000\">" + " *" + "</font>"));
         }
     }
 

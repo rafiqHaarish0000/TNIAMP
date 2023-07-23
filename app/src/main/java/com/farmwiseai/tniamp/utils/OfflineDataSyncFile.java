@@ -16,6 +16,8 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -273,8 +275,21 @@ public class OfflineDataSyncFile {
     }
 
     public static String offLineCount(String deptId) {
-        String count = String.valueOf(10);
-        if (deptId == "9") {
+        String count = String.valueOf(0);
+        if (deptId == "1") {
+           ArrayList<TNAU_Request> offlineRequest = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+
+            if (offlineRequest != null && offlineRequest.size() > 0)
+            {
+                int allCount=offlineRequest.size();
+                count=String.valueOf(allCount);
+           /* if(allCount<10)
+            {
+                count= String.valueOf(10-allCount);
+            }*/
+            }
+        }
+       /* if (deptId == "9") {
             int allCount = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size() +
                     SharedPrefsUtils.getAgriArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size() +
                     SharedPrefsUtils.getAEDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size()
@@ -286,7 +301,7 @@ public class OfflineDataSyncFile {
             if (allCount < 10) {
                 count = String.valueOf(10 - allCount);
             }
-        }
+        }*/
         return count;
     }
 

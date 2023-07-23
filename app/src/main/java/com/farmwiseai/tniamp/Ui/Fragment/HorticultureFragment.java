@@ -364,7 +364,8 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
 
             case R.id.date_txt:
-                dateFieldValidation(horticultureBinding.dateTxt);
+               // dateFieldValidation(horticultureBinding.dateTxt);
+                dateOfSowing_Planting(horticultureBinding.dateTxt);
                 break;
 
         }
@@ -565,6 +566,34 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
     }
 
+    private void dateOfSowing_Planting(EditText datePicker) {
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        long maxTime = cldr.getTimeInMillis();
+
+        // Move day as first day of the month
+        cldr.set(Calendar.DAY_OF_MONTH, day);
+        // Move "month" for previous one
+        cldr.add(Calendar.MONTH, -1);
+
+        // Min = time after changes
+        long minTime = cldr.getTimeInMillis();
+        // date picker dialog
+        picker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        picker.getDatePicker().setMaxDate(maxTime);
+        picker.getDatePicker().setMinDate(minTime);
+        picker.show();
+
+
+    }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getContext())
@@ -820,9 +849,9 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         } else if (subComponentValue.equalsIgnoreCase("Distribution of Inputs")) {
             horticultureBinding.varietyTxt.setVisibility(View.GONE);
             horticultureBinding.yieldTxt.setVisibility(View.GONE);
-        } else if (intervention4.equalsIgnoreCase("Harvest") ||
-                intervention4.equalsIgnoreCase("1st Harvest") ||
-                intervention4.equalsIgnoreCase("Last Harvest")) {
+        } else if (stageLastValue.equalsIgnoreCase("Harvest") ||
+                stageLastValue.equalsIgnoreCase("1st Harvest") ||
+                stageLastValue.equalsIgnoreCase("Last Harvest")) {
             horticultureBinding.varietyTxt.setVisibility(View.VISIBLE);
             horticultureBinding.yieldTxt.setVisibility(View.VISIBLE);
         } else {

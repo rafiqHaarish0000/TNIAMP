@@ -30,7 +30,7 @@ public class WRDCallAPi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null, intervention3 = null;
 
     public WRDCallAPi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
@@ -222,8 +222,9 @@ public class WRDCallAPi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     stageName = tankStageList.get(i).getName();
+                    intervention3 = String.valueOf(tankStageList.get(i).getID());
                     stageLastName = null;
-                    lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+                    lookUpDataClass.setIntervention3(intervention3);
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
                     lookUpDataClass.setStageValue(stageName);
@@ -314,7 +315,6 @@ public class WRDCallAPi {
     public void stagesDropDown(CharSequence stagePosVal, Spinner stageSpinner) {
 
         commonFunction = new CommonFunction(activity);
-
         stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
         adapters = new ComponentAdapter(context, stagesList);
         adapters.getFilter().filter(stagePosVal);
@@ -324,43 +324,36 @@ public class WRDCallAPi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     stageLastName = stagesList.get(i).getName();
-                    String stageId= String.valueOf(stagesList.get(i).getID());
                     // stageLastName = null;
 
                     //   lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
-                    if (lookUpDataClass.getComponentValue().equalsIgnoreCase("ModelVillage")) {
-
+                    lookUpDataClass.setIntervention4(String.valueOf(stagesList.get(i).getID()));
+                    lookUpDataClass.setComponentValue(compName);
+                    lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStagelastvalue(stageLastName);
+                    if (stageName == null) {
                         lookUpDataClass.setStageValue("stageName");
                         lookUpDataClass.setIntervention3("1");
-                        lookUpDataClass.setStagelastvalue(stageLastName);
-                        lookUpDataClass.setIntervention4(String.valueOf(stagesList.get(i).getID()));
-
 
                     } else {
-
-                        lookUpDataClass.setStagelastvalue(stageLastName);
                         lookUpDataClass.setStageValue(stageName);
-                        lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
-                        lookUpDataClass.setIntervention4(stageId);
+                        lookUpDataClass.setIntervention3(intervention3);
 
                     }
- backPressListener.onSelectedInputs(lookUpDataClass);
-            } catch(
-            Exception e)
-
-            {
-                e.printStackTrace();
+                    backPressListener.onSelectedInputs(lookUpDataClass);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
 
-        @Override
-        public void onNothingSelected (AdapterView < ? > adapterView){
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-        }
-    });
+            }
+        });
 
 
-}
+    }
 
 
 }

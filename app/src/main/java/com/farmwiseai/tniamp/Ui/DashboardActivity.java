@@ -99,7 +99,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         this.runOnUiThread(new Runnable() {
             public void run() {
 
-                syncOfflineData();
+             //   syncOfflineData();
             }
         });
     }
@@ -171,7 +171,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void syncOfflineLogic() {
-        String current="";
+        mCommonFunction.showProgress();
+        String current = "";
         try {
             if (lineDeptId == "1") {
                 ArrayList<TNAU_Request> tnauRequests = SharedPrefsUtils.getArrayList(getApplicationContext(), SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
@@ -179,12 +180,11 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                 if (tnauRequests != null && tnauRequests.size() > 0) {
                     for (int i = 0; i < tnauRequests.size(); i++) {
-                     current=  OfflineDataSyncFile.onlineDataTnauUpload(tnauRequests.get(i), tnauImageReq.get(i));
+                        current = OfflineDataSyncFile.onlineDataTnauUpload(tnauRequests.get(i), tnauImageReq.get(i));
                     }
-                   if(current.equalsIgnoreCase("Success"))
-                   {
-                       mLoadCustomToast(getParent(),"Data sync Successfully!");
-                   }
+                    if (current.equalsIgnoreCase("Success")) {
+                        mLoadCustomToast(getParent(), "Data sync Successfully!");
+                    }
 
                 }
             } else if (lineDeptId == "2") {
@@ -270,12 +270,12 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                 if (tnauRequests != null && tnauRequests.size() > 0) {
                     for (int i = 0; i < tnauRequests.size(); i++) {
-                        current=  OfflineDataSyncFile.onlineDataTnauUpload(tnauRequests.get(i), tnauImageReq.get(i));
+                        current = OfflineDataSyncFile.onlineDataTnauUpload(tnauRequests.get(i), tnauImageReq.get(i));
                     }
-                    if(current.equalsIgnoreCase("Success"))
-                    {
-                        mLoadCustomToast(getParent(),"Data sync Successfully!");
+                    if (current.equalsIgnoreCase("Success")) {
+                        mLoadCustomToast(getParent(), "Data sync Successfully!");
                     }
+                    mCommonFunction.hideProgress();
                     // return the data to onPostExecute method
 
                 }

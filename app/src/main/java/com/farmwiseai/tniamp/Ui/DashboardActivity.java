@@ -101,6 +101,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             public void run() {
 
               //  syncOfflineData();
+                OfflineDataSynProgressDialog dataSynProgressDialog = new OfflineDataSynProgressDialog(DashboardActivity.this);
+                dataSynProgressDialog.execute();
             }
         });
     }
@@ -647,7 +649,7 @@ class OfflineDataSynProgressDialog extends AsyncTask<Void,Void,Void>{
 
     @Override
     protected void onPreExecute() {
-        dialog.setMessage("Please wait until data syncing..");
+        dialog.setMessage("Please wait until data sync...");
         dialog.show();
     }
 

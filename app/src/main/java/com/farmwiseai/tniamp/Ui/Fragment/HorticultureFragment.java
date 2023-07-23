@@ -366,7 +366,6 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             case R.id.date_txt:
                // dateFieldValidation(horticultureBinding.dateTxt);
                 dateOfSowing_Planting(horticultureBinding.dateTxt);
-
                 break;
 
         }

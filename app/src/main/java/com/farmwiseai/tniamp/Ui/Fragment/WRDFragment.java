@@ -209,7 +209,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         } else if (wrdfragmentBinding.taskStages.getVisibility() == View.VISIBLE && stageValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
-        } else if (stageSpinner.getVisibility() == View.VISIBLE && stageLastValue == null) {
+        } else if (wrdfragmentBinding.stagesTxt.getVisibility() == View.VISIBLE && stageLastValue == null) {
             mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fields.!");
             return false;
         } else if (valueofPicCount == 0 || valueofPicCount < 2) {
@@ -727,6 +727,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         intervention1 = lookUpDataClass.getIntervention1();
         intervention2 = lookUpDataClass.getIntervention2();
         intervention3 = lookUpDataClass.getIntervention3();
+        intervention4 = lookUpDataClass.getIntervention4();
         componentValue = lookUpDataClass.getComponentValue();
         subComponentValue = lookUpDataClass.getSubComponentValue();
         stageValue = lookUpDataClass.getStageValue();

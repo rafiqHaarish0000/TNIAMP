@@ -30,7 +30,7 @@ public class WRDCallAPi {
     private CharSequence positionValue2;
     private CommonFunction commonFunction;
     private BackPressListener backPressListener;
-    private String compName = null, subCompName = null, stageName = null, stageLastName = null;
+    private String compName = null, subCompName = null, stageName = null, stageLastName = null, intervention3 = null;
 
     public WRDCallAPi(Activity activity, Context context, List<ComponentData> getAllComponentData, ComponentAdapter adapters, CharSequence positionValue, BackPressListener backPressListener) {
         this.context = context;
@@ -222,8 +222,9 @@ public class WRDCallAPi {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     stageName = tankStageList.get(i).getName();
+                    intervention3 = String.valueOf(tankStageList.get(i).getID());
                     stageLastName = null;
-                    lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+                    lookUpDataClass.setIntervention3(intervention3);
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
                     lookUpDataClass.setStageValue(stageName);
@@ -236,8 +237,7 @@ public class WRDCallAPi {
                             stagesDropDown(String.valueOf(tankStageList.get(i).getID()), stageSpinner);
                             stageSpinner.setVisibility(View.VISIBLE);
                         } else if (names.equalsIgnoreCase("Jungle Clearence") ||
-                                        names.equalsIgnoreCase("Revetment"))
-                        {
+                                names.equalsIgnoreCase("Revetment")) {
                             stageSpinner.setVisibility(View.GONE);
                         }
                     } else if (compName.equalsIgnoreCase("Canal") || compName.equalsIgnoreCase("Channel")) {
@@ -315,7 +315,6 @@ public class WRDCallAPi {
     public void stagesDropDown(CharSequence stagePosVal, Spinner stageSpinner) {
 
         commonFunction = new CommonFunction(activity);
-
         stagesList = FetchDeptLookup.readDataFromFile(context, "wrdlookup.json");
         adapters = new ComponentAdapter(context, stagesList);
         adapters.getFilter().filter(stagePosVal);
@@ -328,19 +327,19 @@ public class WRDCallAPi {
                     // stageLastName = null;
 
                     //   lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
-                    lookUpDataClass.setIntervention4(stagesList.get(i).getName());
+                    lookUpDataClass.setIntervention4(String.valueOf(stagesList.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
+                    lookUpDataClass.setStagelastvalue(stageLastName);
                     if (stageName == null) {
                         lookUpDataClass.setStageValue("stageName");
                         lookUpDataClass.setIntervention3("1");
 
                     } else {
-                        lookUpDataClass.setStageValue("stageName");
-                        lookUpDataClass.setIntervention3(String.valueOf(tankStageList.get(i).getID()));
+                        lookUpDataClass.setStageValue(stageName);
+                        lookUpDataClass.setIntervention3(intervention3);
 
                     }
-                    lookUpDataClass.setStagelastvalue(stageLastName);
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
                     e.printStackTrace();

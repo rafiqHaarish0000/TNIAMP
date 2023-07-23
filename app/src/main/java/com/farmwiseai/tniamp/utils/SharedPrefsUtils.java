@@ -97,7 +97,7 @@ public class SharedPrefsUtils {
 
     public static void clearStringPrefs(Context context, PREF_KEY key) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPref.edit().remove(key.KEY).commit();
+        sharedPref.edit().remove(key.KEY).apply();
     }
 
 

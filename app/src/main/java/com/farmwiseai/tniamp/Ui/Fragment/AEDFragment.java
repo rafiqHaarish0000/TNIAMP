@@ -660,7 +660,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             @Override
             public void onResponse(Call<AEDResponse> call, Response<AEDResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String txt_id = String.valueOf(response.body().getTnauLandDeptId());
+                    String txt_id = String.valueOf(response.body().getResponseMessage().getAedLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
                     uploadSecondImage(txt_id);
                 } else {

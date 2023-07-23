@@ -2,6 +2,7 @@ package com.farmwiseai.tniamp.utils;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -17,8 +18,13 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.TNAU_Request;
 import com.farmwiseai.tniamp.Retrofit.DataClass.RequestData.WRDRequest;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AEDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AgriResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.AnimalResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.FishResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.HortiResponse;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.MarkResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.SecondImageResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.TNAU_Response;
+import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.WRDResponse;
 import com.farmwiseai.tniamp.Retrofit.Interface_Api;
 
 import java.util.ArrayList;
@@ -37,8 +43,8 @@ public class OfflineDataSyncFile {
         this.mContext = mContext;
     }
 
-    public static String onlineDataTnauUpload(TNAU_Request request, String tnau_request) {
-        mCommonFunction.showProgress();
+    public static void onlineDataTnauUpload(TNAU_Request request, String tnau_request) {
+
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<TNAU_Response> userDataCall = call.getTnauResponse(request);
         userDataCall.enqueue(new Callback<TNAU_Response>() {
@@ -48,7 +54,7 @@ public class OfflineDataSyncFile {
                     try {
                         String txt_id = String.valueOf(response.body().getResponseMessage().getTnauLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
-                        callbackstring = uploadSecondImage(txt_id, tnau_request);
+                        uploadSecondImagetest(txt_id, tnau_request);
                     } catch (Exception e) {
 
                     }
@@ -62,7 +68,7 @@ public class OfflineDataSyncFile {
                 mCommonFunction.hideProgress();
             }
         });
-        return callbackstring;
+      //  return callbackstring;
     }
 
     public static String onlineDataAEDUpload(AEDRequest request, String aed_request) {
@@ -73,7 +79,7 @@ public class OfflineDataSyncFile {
             @Override
             public void onResponse(Call<AEDResponse> call, Response<AEDResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String txt_id = String.valueOf(response.body().getTnauLandDeptId());
+                    String txt_id = String.valueOf(response.body().getResponseMessage().getAedLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
                     callbackstring = uploadSecondImage(txt_id, aed_request);
                 }
@@ -116,7 +122,7 @@ public class OfflineDataSyncFile {
         return callbackstring;
     }
 
-  /*  public static String onlineDataHortiUpload(HortiRequest request) {
+    public static String onlineDataHortiUpload(HortiRequest request,String HortiImageReq) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<HortiResponse> userDataCall = null;
         userDataCall = call.getHortiResponse(request);
@@ -127,7 +133,7 @@ public class OfflineDataSyncFile {
                     try {
                         String txt_id = String.valueOf(response.body().getResponseMessage().getHortiLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
-                        callbackstring = uploadSecondImage(txt_id, tnau_request);
+                        callbackstring = uploadSecondImage(txt_id, HortiImageReq);
                     } catch (Exception e) {
 
                     }
@@ -145,7 +151,7 @@ public class OfflineDataSyncFile {
         return callbackstring;
     }
 
-    public static String onlineDataMarketingUpload(MarkRequest request) {
+    public static String onlineDataMarketingUpload(MarkRequest request,String markImgReq) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<MarkResponse> userDataCall = null;
         userDataCall = call.getMarkResponse(request);
@@ -155,7 +161,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getMarketinglanddeptid());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, tnau_request);
+                    callbackstring = uploadSecondImage(txt_id, markImgReq);
 
                 } else {
 
@@ -171,7 +177,7 @@ public class OfflineDataSyncFile {
         return callbackstring;
     }
 
-    public static String onlineDataWrdUpload(WRDRequest request) {
+    public static String onlineDataWrdUpload(WRDRequest request,String wrdImgReq) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<WRDResponse> userDataCall = null;
         userDataCall = call.getWRDResponse(request);
@@ -181,7 +187,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getWrdLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, tnau_request);
+                    callbackstring = uploadSecondImage(txt_id, wrdImgReq);
 
                 } else {
 
@@ -197,7 +203,7 @@ public class OfflineDataSyncFile {
         return callbackstring;
     }
 
-    public static String onlineDataAnimalUpload(AnimalRequest animalRequest) {
+    public static String onlineDataAnimalUpload(AnimalRequest animalRequest,String animImageReq) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AnimalResponse> userDataCall = null;
         userDataCall = call.getAnimalResponse(animalRequest);
@@ -207,7 +213,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getAnimallanddeptid());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, tnau_request);
+                    callbackstring = uploadSecondImage(txt_id, animImageReq);
 
                 } else {
 
@@ -223,7 +229,7 @@ public class OfflineDataSyncFile {
         return callbackstring;
     }
 
-    public static String onlineDataFisheriesUpload(FishRequest request) {
+    public static String onlineDataFisheriesUpload(FishRequest request,String fishImageReq) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<FishResponse> userDataCall = null;
         userDataCall = call.getFishRespone(request);
@@ -233,7 +239,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getFisherylanddeptid());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, tnau_request);
+                    callbackstring = uploadSecondImage(txt_id, fishImageReq);
 
                 } else {
 
@@ -246,7 +252,7 @@ public class OfflineDataSyncFile {
             }
         });
         return callbackstring;
-    }*/
+    }
 
     public static String uploadSecondImage(String txt_id, String secondImage) {
 
@@ -279,6 +285,39 @@ public class OfflineDataSyncFile {
             }
         });
         return returnvalue;
+    }
+    public static void uploadSecondImagetest(String txt_id, String secondImage) {
+
+        SecondImageRequest request = new SecondImageRequest();
+        //  request.setDepartment_id(SharedPrefsUtils.getString(mContext, SharedPrefsUtils.PREF_KEY.USER_DETAILS));
+        request.setDepartment_id("1");
+        request.setImg2(secondImage);
+        request.setID(txt_id);
+        Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
+        Call<SecondImageResponse> userDataCall = null;
+        userDataCall = call.getSecondImageURL(request);
+        userDataCall.enqueue(new Callback<SecondImageResponse>() {
+            @Override
+            public void onResponse(Call<SecondImageResponse> call, Response<SecondImageResponse> response) {
+                if (response.body() != null) {
+                    try {
+                        String successMessage = response.body().getResponse();
+                        Log.i(TAG, "onSuccessMsg" + successMessage);
+                        returnvalue = "success";
+                        mCommonFunction.mLoadCustomToast((Activity) mContext,successMessage);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        returnvalue = "failure";
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SecondImageResponse> call, Throwable t) {
+
+            }
+        });
+       // return returnvalue;
     }
 
     public static String offLineCount(String deptId) {

@@ -10,9 +10,9 @@ public class AEDResponse {
     @SerializedName("response")
     @Expose
     private String response;
-    @SerializedName("aed_land_dept_id")
+    @SerializedName("responseMessage")
     @Expose
-    private Integer tnauLandDeptId;
+    private ResponseMessage responseMessage;
 
     public String getStatusCode() {
         return statusCode;
@@ -30,11 +30,28 @@ public class AEDResponse {
         this.response = response;
     }
 
-    public Integer getTnauLandDeptId() {
-        return tnauLandDeptId;
+    public ResponseMessage getResponseMessage() {
+        return responseMessage;
     }
 
-    public void setTnauLandDeptId(Integer tnauLandDeptId) {
-        this.tnauLandDeptId = tnauLandDeptId;
+    public void setResponseMessage(ResponseMessage responseMessage) {
+        this.responseMessage = responseMessage;
+    }
+
+
+    public class ResponseMessage {
+
+        @SerializedName("aed_land_dept_id")
+        @Expose
+        private Integer aedLandDeptId;
+
+        public Integer getAedLandDeptId() {
+            return aedLandDeptId;
+        }
+
+        public void setAedLandDeptId(Integer aedLandDeptId) {
+            this.aedLandDeptId = aedLandDeptId;
+        }
+
     }
 }

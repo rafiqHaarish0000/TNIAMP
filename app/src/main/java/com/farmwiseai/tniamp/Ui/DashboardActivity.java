@@ -100,7 +100,9 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         this.runOnUiThread(new Runnable() {
             public void run() {
 
-                //   syncOfflineData();
+              //  syncOfflineData();
+                OfflineDataSynProgressDialog dataSynProgressDialog = new OfflineDataSynProgressDialog(DashboardActivity.this);
+                dataSynProgressDialog.execute();
             }
         });
     }
@@ -761,5 +763,37 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             finish();
             super.onBackPressed();
         }
+    }
+}
+//offline data sync progress dialog
+class OfflineDataSynProgressDialog extends AsyncTask<Void,Void,Void>{
+    private ProgressDialog dialog;
+
+    public OfflineDataSynProgressDialog(DashboardActivity activity) {
+        dialog = new ProgressDialog(activity);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        dialog.setMessage("Please wait until data sync...");
+        dialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

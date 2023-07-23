@@ -81,7 +81,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         setContentView(binding.getRoot());
         username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
         lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-        //  lineDeptId = "1";
+        //  lineDeptId = "2";
         binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
@@ -347,7 +347,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     @SuppressLint("NewApi")
     private void showDept(String lineDeptId) {
-        if (lineDeptId == "1") {
+        if (lineDeptId.equalsIgnoreCase("1")) {
             binding.naviTnau.setEnabled(true);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -365,9 +365,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
             binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
             binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
-
-
-        } else if (lineDeptId == "2") {
+        } else if (lineDeptId.equalsIgnoreCase("2")) {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(true);
             binding.naviHorti.setEnabled(false);
@@ -386,7 +384,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
             binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
-        } else if (lineDeptId == "3") {
+        } else if (lineDeptId.equalsIgnoreCase("3")) {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(true);
@@ -405,7 +403,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
             binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
-        } else if (lineDeptId == "4") {
+        } else if (lineDeptId.equalsIgnoreCase("4")) {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -425,7 +423,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
 
-        } else if (lineDeptId == "5") {
+        } else if (lineDeptId.equalsIgnoreCase("5")) {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -444,7 +442,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
             binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
-        } else if (lineDeptId == "6") {
+        } else if (lineDeptId.equalsIgnoreCase("6")) {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -464,7 +462,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
 
-        } else if (lineDeptId == "7") {
+        } else if (lineDeptId.equalsIgnoreCase("7")) {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -483,7 +481,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
             binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
-        } else if (lineDeptId == "8") {
+        } else if (lineDeptId.equalsIgnoreCase("8")) {
             binding.naviTnau.setEnabled(false);
             binding.naviAgri.setEnabled(false);
             binding.naviHorti.setEnabled(false);
@@ -842,7 +840,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         protected void onPostExecute(Void result) {
             if (dialog.isShowing()) {
                 dialog.dismiss();
-                mLoadCustomToast(getParent(), " Data Synced successfully");
+                //  mLoadCustomToast(getParent(), " Data Synced successfully");
                 clearDataSync(lineDeptId);
             }
         }

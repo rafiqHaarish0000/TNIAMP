@@ -4,6 +4,7 @@
     <color name="color_accent">#005D10</color>
     <color name="black">#000000</color>
     <color name="grey">#A0A0A0</color>
+    <color name="transparent">#eae9ee</color>
     <color name="tint">#444343</color>
     <color name="white">#FFFFFF</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#000000</color>

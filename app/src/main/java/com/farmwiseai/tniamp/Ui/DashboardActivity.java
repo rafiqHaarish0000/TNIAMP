@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -161,6 +162,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @SuppressLint("NewApi")
     private void showDept(String lineDeptId) {
         if (lineDeptId == "1") {
             binding.naviTnau.setEnabled(true);
@@ -171,6 +173,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviWrd.setEnabled(false);
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(false);
+
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
 
         } else if (lineDeptId == "2") {
@@ -183,6 +194,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(false);
 
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
         } else if (lineDeptId == "3") {
             binding.naviTnau.setEnabled(false);
@@ -194,6 +213,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(false);
 
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
         } else if (lineDeptId == "4") {
             binding.naviTnau.setEnabled(false);
@@ -204,6 +231,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviWrd.setEnabled(false);
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(false);
+
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
 
         } else if (lineDeptId == "5") {
@@ -216,6 +252,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(false);
 
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
         } else if (lineDeptId == "6") {
             binding.naviTnau.setEnabled(false);
@@ -226,6 +270,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviWrd.setEnabled(true);
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(false);
+
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
 
         } else if (lineDeptId == "7") {
@@ -238,6 +291,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviMarketing.setEnabled(true);
             binding.navFish.setEnabled(false);
 
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
 
         } else if (lineDeptId == "8") {
             binding.naviTnau.setEnabled(false);
@@ -248,6 +309,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.naviWrd.setEnabled(false);
             binding.naviMarketing.setEnabled(false);
             binding.navFish.setEnabled(true);
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.transparent));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
 
         } else {
             binding.naviTnau.setEnabled(true);
@@ -260,6 +329,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             binding.navFish.setEnabled(true);
             binding.aboutImage.setEnabled(true);
             binding.logoutIcon.setEnabled(true);
+            binding.naviTnau.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviAgri.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviHorti.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviAed.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviAnimal.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviWrd.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.naviMarketing.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
+            binding.navFish.setBackgroundTintList(this.getResources().getColorStateList(R.color.white));
 
         }
 

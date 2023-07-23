@@ -149,7 +149,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         qop = null;
         agricultureBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         agricultureBinding.areaRaisedTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        agricultureBinding.quantityTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+       // agricultureBinding.quantityTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         agricultureBinding.popBackImage.setOnClickListener(this);
         agricultureBinding.submissionBtn.setOnClickListener(this);

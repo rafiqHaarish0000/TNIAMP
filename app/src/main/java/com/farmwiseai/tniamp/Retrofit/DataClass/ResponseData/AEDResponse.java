@@ -10,7 +10,7 @@ public class AEDResponse {
     @SerializedName("response")
     @Expose
     private String response;
-    @SerializedName("tnau_land_dept_id")
+    @SerializedName("aed_land_dept_id")
     @Expose
     private Integer tnauLandDeptId;
 

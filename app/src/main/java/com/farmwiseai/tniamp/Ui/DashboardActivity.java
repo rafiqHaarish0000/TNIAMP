@@ -66,7 +66,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     GetUserCountData getUserCountData;
     String notifiCount;
-    Bundle extras ;
+    Bundle extras;
     int count = 0;
 
     @Override
@@ -75,8 +75,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(DashboardActivity.this, R.layout.activity_dashboard);
         setContentView(binding.getRoot());
         username = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_NAME);
-        //lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
-        lineDeptId = "9";
+        lineDeptId = SharedPrefsUtils.getString(DashboardActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
+        //  lineDeptId = "1";
         binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
@@ -100,7 +100,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         this.runOnUiThread(new Runnable() {
             public void run() {
 
-             //   syncOfflineData();
+                //   syncOfflineData();
             }
         });
     }

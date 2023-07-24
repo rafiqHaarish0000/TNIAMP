@@ -619,35 +619,36 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-            String offlineText = "";
-            if (offlineAedRequest == null) {
-                offlineAedRequest = new ArrayList<>();
-                offlineAedRequest.add(request);
-                offlineImageAedRequest = new ArrayList<>();
-                offlineImageAedRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
-                SharedPrefsUtils.saveArrayListAedImage(context, offlineImageAedRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);
+                String offlineText = "";
+                if (offlineAedRequest == null) {
+                    offlineAedRequest = new ArrayList<>();
+                    offlineAedRequest.add(request);
+                    offlineImageAedRequest = new ArrayList<>();
+                    offlineImageAedRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
+                    SharedPrefsUtils.saveArrayListAedImage(context, offlineImageAedRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);
 
-                offlineText = "Data saved successfully in offline data";
+                    offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineAedRequest.size() < 10) {
-                offlineAedRequest.add(request);
-                offlineImageAedRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
-                SharedPrefsUtils.saveArrayListAedImage(context, offlineImageAedRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);
-                offlineText = "Data saved successfully in offline data";
+                } else if (offlineAedRequest.size() < 10) {
+                    offlineAedRequest.add(request);
+                    offlineImageAedRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveAEDArrayList(context, offlineAedRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
+                    SharedPrefsUtils.saveArrayListAedImage(context, offlineImageAedRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);
+                    offlineText = "Data saved successfully in offline data";
 
-            } else {
-                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-            }
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                } else {
+                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
                 }
-            });
-        }
+                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    }
+                });
+            }
+
 
 
     }

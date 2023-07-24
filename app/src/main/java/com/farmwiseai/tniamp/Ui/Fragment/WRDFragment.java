@@ -630,34 +630,35 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-            String offlineText = "";
-            if (offlineWRDRequest == null) {
-                offlineWRDRequest = new ArrayList<>();
-                offlineWRDRequest.add(request);
-                offlineWRDImageRequest = new ArrayList<>();
-                offlineWRDImageRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
-                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
-                offlineText = "Data saved successfully in offline data";
+                String offlineText = "";
+                if (offlineWRDRequest == null) {
+                    offlineWRDRequest = new ArrayList<>();
+                    offlineWRDRequest.add(request);
+                    offlineWRDImageRequest = new ArrayList<>();
+                    offlineWRDImageRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
+                    SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
+                    offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineWRDRequest.size() < 10) {
-                offlineWRDRequest.add(request);
-                offlineWRDImageRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
-                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
-                offlineText = "Data saved successfully in offline data";
+                } else if (offlineWRDRequest.size() < 10) {
+                    offlineWRDRequest.add(request);
+                    offlineWRDImageRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
+                    SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
+                    offlineText = "Data saved successfully in offline data";
 
-            } else {
-                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-            }
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                } else {
+                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
                 }
-            });
-        }
+                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    }
+                });
+            }
+
 
 
     }

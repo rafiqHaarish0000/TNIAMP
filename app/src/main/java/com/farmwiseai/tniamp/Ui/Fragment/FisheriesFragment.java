@@ -1025,35 +1025,36 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-            String offlineText = "";
-            if (offlineMarkRequest == null) {
-                offlineMarkRequest = new ArrayList<>();
-                offlineMarkRequest.add(request);
-                offlineFishImageRequest = new ArrayList<>();
-                offlineFishImageRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
-                SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
+                String offlineText = "";
+                if (offlineMarkRequest == null) {
+                    offlineMarkRequest = new ArrayList<>();
+                    offlineMarkRequest.add(request);
+                    offlineFishImageRequest = new ArrayList<>();
+                    offlineFishImageRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+                    SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
 
-                offlineText = "Data saved successfully in offline data";
+                    offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineMarkRequest.size() < 10) {
-                offlineMarkRequest.add(request);
-                offlineFishImageRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
-                SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
-                offlineText = "Data saved successfully in offline data";
+                } else if (offlineMarkRequest.size() < 10) {
+                    offlineMarkRequest.add(request);
+                    offlineFishImageRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+                    SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
+                    offlineText = "Data saved successfully in offline data";
 
-            } else {
-                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-            }
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                } else {
+                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
                 }
-            });
-        }
+                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    }
+                });
+            }
+
 
 
     }

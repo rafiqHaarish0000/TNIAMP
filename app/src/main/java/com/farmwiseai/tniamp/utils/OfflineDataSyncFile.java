@@ -43,7 +43,7 @@ public class OfflineDataSyncFile {
         this.mContext = mContext;
     }
 
-    public static void onlineDataTnauUpload(TNAU_Request request, String tnau_request) {
+    public static void onlineDataTnauUpload(TNAU_Request request, String tnau_request, String lineDeptId) {
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<TNAU_Response> userDataCall = call.getTnauResponse(request);
@@ -54,7 +54,7 @@ public class OfflineDataSyncFile {
                     try {
                         String txt_id = String.valueOf(response.body().getResponseMessage().getTnauLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
-                        uploadSecondImagetest(txt_id, tnau_request);
+                        uploadSecondImagetest(txt_id, tnau_request, lineDeptId);
                     } catch (Exception e) {
 
                     }
@@ -68,10 +68,10 @@ public class OfflineDataSyncFile {
                 mCommonFunction.hideProgress();
             }
         });
-      //  return callbackstring;
+        //  return callbackstring;
     }
 
-    public static String onlineDataAEDUpload(AEDRequest request, String aed_request) {
+    public static void onlineDataAEDUpload(AEDRequest request, String aed_request, String lineDeptId) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AEDResponse> userDataCall = null;
         userDataCall = call.getAEDResponse(request);
@@ -81,7 +81,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getAedLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, aed_request);
+                    uploadSecondImagetest(txt_id, aed_request, lineDeptId);
                 }
             }
 
@@ -90,10 +90,10 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return callbackstring;
+
     }
 
-    public static String onlineDataAgriUpload(Agri_Request request, String agriImageReq) {
+    public static void onlineDataAgriUpload(Agri_Request request, String agriImageReq, String lineDeptId) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AgriResponse> userDataCall = null;
         userDataCall = call.getAgriResponse(request);
@@ -104,7 +104,7 @@ public class OfflineDataSyncFile {
                     try {
                         String txt_id = String.valueOf(response.body().getResponseMessage().getAgriLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
-                        callbackstring = uploadSecondImage(txt_id, agriImageReq);
+                        uploadSecondImagetest(txt_id, agriImageReq, lineDeptId);
 
                     } catch (Exception e) {
 
@@ -119,10 +119,10 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return callbackstring;
+
     }
 
-    public static String onlineDataHortiUpload(HortiRequest request,String HortiImageReq) {
+    public static void onlineDataHortiUpload(HortiRequest request, String HortiImageReq, String lineDeptId) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<HortiResponse> userDataCall = null;
         userDataCall = call.getHortiResponse(request);
@@ -133,7 +133,7 @@ public class OfflineDataSyncFile {
                     try {
                         String txt_id = String.valueOf(response.body().getResponseMessage().getHortiLandDeptId());
                         Log.i(TAG, "txt_value: " + txt_id.toString());
-                        callbackstring = uploadSecondImage(txt_id, HortiImageReq);
+                        uploadSecondImagetest(txt_id, HortiImageReq, lineDeptId);
                     } catch (Exception e) {
 
                     }
@@ -148,10 +148,10 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return callbackstring;
+
     }
 
-    public static String onlineDataMarketingUpload(MarkRequest request,String markImgReq) {
+    public static void onlineDataMarketingUpload(MarkRequest request, String markImgReq, String lineDeptId) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<MarkResponse> userDataCall = null;
         userDataCall = call.getMarkResponse(request);
@@ -161,7 +161,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getMarketinglanddeptid());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, markImgReq);
+                    uploadSecondImagetest(txt_id, markImgReq, lineDeptId);
 
                 } else {
 
@@ -174,10 +174,10 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return callbackstring;
+
     }
 
-    public static String onlineDataWrdUpload(WRDRequest request,String wrdImgReq) {
+    public static void onlineDataWrdUpload(WRDRequest request, String wrdImgReq, String lineDeptId) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<WRDResponse> userDataCall = null;
         userDataCall = call.getWRDResponse(request);
@@ -187,7 +187,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getWrdLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, wrdImgReq);
+                    uploadSecondImagetest(txt_id, wrdImgReq, lineDeptId);
 
                 } else {
 
@@ -200,10 +200,10 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return callbackstring;
+
     }
 
-    public static String onlineDataAnimalUpload(AnimalRequest animalRequest,String animImageReq) {
+    public static void onlineDataAnimalUpload(AnimalRequest animalRequest, String animImageReq, String lineDeptId) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<AnimalResponse> userDataCall = null;
         userDataCall = call.getAnimalResponse(animalRequest);
@@ -213,7 +213,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getAnimallanddeptid());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, animImageReq);
+                    uploadSecondImagetest(txt_id, animImageReq, lineDeptId);
 
                 } else {
 
@@ -226,10 +226,10 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return callbackstring;
+
     }
 
-    public static String onlineDataFisheriesUpload(FishRequest request,String fishImageReq) {
+    public static void onlineDataFisheriesUpload(FishRequest request, String fishImageReq, String lineDeptId) {
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
         Call<FishResponse> userDataCall = null;
         userDataCall = call.getFishRespone(request);
@@ -239,7 +239,7 @@ public class OfflineDataSyncFile {
                 if (response.isSuccessful() && response.body() != null) {
                     String txt_id = String.valueOf(response.body().getResponseMessage().getFisherylanddeptid());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
-                    callbackstring = uploadSecondImage(txt_id, fishImageReq);
+                    uploadSecondImagetest(txt_id, fishImageReq, lineDeptId);
 
                 } else {
 
@@ -251,10 +251,10 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return callbackstring;
+
     }
 
-    public static String uploadSecondImage(String txt_id, String secondImage) {
+    public static void uploadSecondImage(String txt_id, String secondImage) {
 
         SecondImageRequest request = new SecondImageRequest();
         //  request.setDepartment_id(SharedPrefsUtils.getString(mContext, SharedPrefsUtils.PREF_KEY.USER_DETAILS));
@@ -284,13 +284,14 @@ public class OfflineDataSyncFile {
 
             }
         });
-        return returnvalue;
+        //  return returnvalue;
     }
-    public static void uploadSecondImagetest(String txt_id, String secondImage) {
+
+    public static void uploadSecondImagetest(String txt_id, String secondImage, String lineDeptId) {
 
         SecondImageRequest request = new SecondImageRequest();
         //  request.setDepartment_id(SharedPrefsUtils.getString(mContext, SharedPrefsUtils.PREF_KEY.USER_DETAILS));
-        request.setDepartment_id("1");
+        request.setDepartment_id(lineDeptId);
         request.setImg2(secondImage);
         request.setID(txt_id);
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
@@ -304,7 +305,7 @@ public class OfflineDataSyncFile {
                         String successMessage = response.body().getResponse();
                         Log.i(TAG, "onSuccessMsg" + successMessage);
                         returnvalue = "success";
-                        mCommonFunction.mLoadCustomToast((Activity) mContext,successMessage);
+                        mCommonFunction.mLoadCustomToast((Activity) mContext, successMessage);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         returnvalue = "failure";
@@ -317,61 +318,61 @@ public class OfflineDataSyncFile {
 
             }
         });
-       // return returnvalue;
+        // return returnvalue;
     }
 
     public static String offLineCount(String deptId) {
         String count = String.valueOf(0);
-        if (deptId == "1") {
+        if (deptId.equalsIgnoreCase("1")) {
             ArrayList<TNAU_Request> offlineRequest = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
                 count = String.valueOf(allCount);
             }
-        } else if (deptId == "2") {
+        } else if (deptId.equalsIgnoreCase("2")) {
             ArrayList<Agri_Request> offlineRequest = SharedPrefsUtils.getAgriArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
                 count = String.valueOf(allCount);
             }
-        } else if (deptId == "3") {
+        } else if (deptId.equalsIgnoreCase("3")) {
             ArrayList<HortiRequest> offlineRequest = SharedPrefsUtils.getHortiArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
                 count = String.valueOf(allCount);
             }
-        } else if (deptId == "4") {
+        } else if (deptId.equalsIgnoreCase("4")) {
             ArrayList<AEDRequest> offlineRequest = SharedPrefsUtils.getAEDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
                 count = String.valueOf(allCount);
             }
-        } else if (deptId == "5") {
+        } else if (deptId.equalsIgnoreCase("5")) {
             ArrayList<AnimalRequest> offlineRequest = SharedPrefsUtils.getARDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
                 count = String.valueOf(allCount);
             }
-        } else if (deptId == "6") {
+        } else if (deptId.equalsIgnoreCase("6")) {
             ArrayList<WRDRequest> offlineRequest = SharedPrefsUtils.getWrdArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
                 count = String.valueOf(allCount);
             }
-        } else if (deptId == "7") {
+        } else if (deptId.equalsIgnoreCase("7")) {
             ArrayList<MarkRequest> offlineRequest = SharedPrefsUtils.getMarkArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
                 count = String.valueOf(allCount);
             }
-        } else if (deptId == "8") {
+        } else if (deptId.equalsIgnoreCase("8")) {
             ArrayList<FishRequest> offlineRequest = SharedPrefsUtils.getFishArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
@@ -380,21 +381,49 @@ public class OfflineDataSyncFile {
             }
         } else {
             ArrayList<TNAU_Request> offlineRequest = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+            ArrayList<Agri_Request> offlineRequest2 = SharedPrefsUtils.getAgriArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+            ArrayList<HortiRequest> offlineRequest3 = SharedPrefsUtils.getHortiArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
+            ArrayList<AEDRequest> offlineRequest4 = SharedPrefsUtils.getAEDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
+            ArrayList<AnimalRequest> offlineRequest5 = SharedPrefsUtils.getARDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
+            ArrayList<WRDRequest> offlineRequest6 = SharedPrefsUtils.getWrdArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
+            ArrayList<MarkRequest> offlineRequest7 = SharedPrefsUtils.getMarkArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
+            ArrayList<FishRequest> offlineRequest8 = SharedPrefsUtils.getFishArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
 
             if (offlineRequest != null && offlineRequest.size() > 0) {
                 int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            } else if (offlineRequest2 != null && offlineRequest2.size() > 0) {
+                int allCount = offlineRequest2.size();
+                count = String.valueOf(allCount);
+            } else if (offlineRequest3 != null && offlineRequest3.size() > 0) {
+                int allCount = offlineRequest3.size();
+                count = String.valueOf(allCount);
+            } else if (offlineRequest4 != null && offlineRequest4.size() > 0) {
+                int allCount = offlineRequest4.size();
+                count = String.valueOf(allCount);
+            } else if (offlineRequest5 != null && offlineRequest5.size() > 0) {
+                int allCount = offlineRequest5.size();
+                count = String.valueOf(allCount);
+            } else if (offlineRequest6 != null && offlineRequest6.size() > 0) {
+                int allCount = offlineRequest.size();
+                count = String.valueOf(allCount);
+            } else if (offlineRequest7 != null && offlineRequest7.size() > 0) {
+                int allCount = offlineRequest7.size();
+                count = String.valueOf(allCount);
+            } else if (offlineRequest8 != null && offlineRequest8.size() > 0) {
+                int allCount = offlineRequest8.size();
                 count = String.valueOf(allCount);
             }
         }
        /* if (deptId == "9") {
             int allCount = SharedPrefsUtils.getArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size() +
-                    SharedPrefsUtils.getAgriArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size() +
-                    SharedPrefsUtils.getAEDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size()
-                    + SharedPrefsUtils.getARDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size()
-                    + SharedPrefsUtils.getHortiArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size()
-                    + SharedPrefsUtils.getMarkArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size()
-                    + SharedPrefsUtils.getFishArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size()
-                    + SharedPrefsUtils.getWrdArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA).size();
+                    SharedPrefsUtils.getAgriArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI).size() +
+                    SharedPrefsUtils.getHortiArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI).size()
+                    + SharedPrefsUtils.getARDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI).size()
+                    + SharedPrefsUtils.getARDArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED).size()
+                    + SharedPrefsUtils.getMarkArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING).size()
+                    + SharedPrefsUtils.getFishArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH).size()
+                    + SharedPrefsUtils.getWrdArrayList(mContext, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD).size();
             if (allCount < 10) {
                 count = String.valueOf(10 - allCount);
             }

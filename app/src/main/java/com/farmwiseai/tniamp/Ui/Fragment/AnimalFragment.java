@@ -141,7 +141,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private String villageValue, category1 = "", firstImageBase64, secondImageBase64, interventionTypeVal;
     private String genderValue, catNameVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
-    ArrayList<String> offlineARDImgRequest ;
+    ArrayList<String> offlineARDImgRequest;
 
     @Override
     public void onAttach(Context context) {
@@ -402,7 +402,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         String mobileNumber = animalBinding.mobileNumber.getText().toString().trim();
 
-       if (componentValue != null) {
+        if (componentValue != null) {
             if (componentValue.equalsIgnoreCase("Others"))
                 subComponentValue = "Dummy data";
         }
@@ -420,7 +420,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         } else if (datePicker.getVisibility() == View.VISIBLE && date.isEmpty()) {
             animalBinding.dateTxt.setError("Please select Date");
             return false;
-        }else if (valueofPicCount == 0 || valueofPicCount < 2) {
+        } else if (valueofPicCount == 0 || valueofPicCount < 2) {
             mLoadCustomToast(getActivity(), "Image is empty, Please take 2 photos");
             return false;
         } else if (vis_lyt.getVisibility() == View.VISIBLE) {
@@ -661,16 +661,14 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             request.setNo_of_farmers(animalBinding.noOfFarmers.getText().toString().trim());
             request.setOthers_female_no(animalBinding.femaleOthers.getText().toString().trim());
             request.setOthers_male_no(animalBinding.otherNo.getText().toString().trim());
-           if(animalBinding.fScStNO.getText().toString().trim().isEmpty())
-           {
-               request.setSc_st_female_no("11");
-           }else {
-               request.setSc_st_female_no(animalBinding.fScStNO.getText().toString().trim());
-           }
-            if(animalBinding.scStNO.getText().toString().trim().isEmpty())
-            {
+            if (animalBinding.fScStNO.getText().toString().trim().isEmpty()) {
+                request.setSc_st_female_no("11");
+            } else {
+                request.setSc_st_female_no(animalBinding.fScStNO.getText().toString().trim());
+            }
+            if (animalBinding.scStNO.getText().toString().trim().isEmpty()) {
                 request.setSc_st_male_no("11");
-            }else {
+            } else {
                 request.setSc_st_male_no(animalBinding.scStNO.getText().toString().trim());
             }
             request.setVenue(animalBinding.venue.getText().toString().trim());
@@ -692,53 +690,40 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         }
 
 
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-//
-//        try {
-//            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
-//            request = new ObjectMapper().readValue(json, AnimalRequest.class);
-//            System.out.println(json);
-//
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
         if (mCommonFunction.isNetworkAvailable()) {
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-            String offlineText = "";
-            if (offlineARDRequest == null) {
-                offlineARDRequest = new ArrayList<>();
-                offlineARDRequest.add(request);
-                offlineARDImgRequest = new ArrayList<>();
-                offlineARDImgRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
-                SharedPrefsUtils.saveArrayListAhdImage(context, offlineARDImgRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
+                String offlineText = "";
+                if (offlineARDRequest == null) {
+                    offlineARDRequest = new ArrayList<>();
+                    offlineARDRequest.add(request);
+                    offlineARDImgRequest = new ArrayList<>();
+                    offlineARDImgRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
+                    SharedPrefsUtils.saveArrayListAhdImage(context, offlineARDImgRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
 
-                offlineText = "Data saved successfully in offline data";
+                    offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineARDRequest.size() < 10) {
-                offlineARDRequest.add(request);
-                offlineARDImgRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
-                SharedPrefsUtils.saveArrayListAhdImage(context, offlineARDImgRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
-                offlineText = "Data saved successfully in offline data";
+                } else if (offlineARDRequest.size() < 10) {
+                    offlineARDRequest.add(request);
+                    offlineARDImgRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
+                    SharedPrefsUtils.saveArrayListAhdImage(context, offlineARDImgRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
+                    offlineText = "Data saved successfully in offline data";
 
-            } else {
-                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-            }
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                } else {
+                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
                 }
-            });
-        }
+                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    }
+                });
+            }
+
 
 
     }
@@ -764,7 +749,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
             @Override
             public void onFailure(Call<AnimalResponse> call, Throwable t) {
-mCommonFunction.hideProgress();
+                mCommonFunction.hideProgress();
             }
         });
         /*userDataCall.enqueue(new Callback<AnimalResponse>() {

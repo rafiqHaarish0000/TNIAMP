@@ -149,8 +149,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         seedra = null;
         qop = null;
         agricultureBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-     //   agricultureBinding.areaRaisedTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-       // agricultureBinding.quantityTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        //   agricultureBinding.areaRaisedTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        // agricultureBinding.quantityTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         agricultureBinding.popBackImage.setOnClickListener(this);
         agricultureBinding.submissionBtn.setOnClickListener(this);
@@ -800,34 +800,35 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-            String offlineText = "";
-            if (offlineAgriRequest == null) {
-                offlineAgriRequest = new ArrayList<>();
-                offlineImageRequest= new ArrayList<>();
-                offlineAgriRequest.add(request);
-                offlineImageRequest.add(secondImageBase64);
-                SharedPrefsUtils.saveArrayListagriImage(context,offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
-                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+                String offlineText = "";
+                if (offlineAgriRequest == null) {
+                    offlineAgriRequest = new ArrayList<>();
+                    offlineImageRequest = new ArrayList<>();
+                    offlineAgriRequest.add(request);
+                    offlineImageRequest.add(secondImageBase64);
+                    SharedPrefsUtils.saveArrayListagriImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
+                    SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
 
-                offlineText = "Data saved successfully in offline data";
+                    offlineText = "Data saved successfully in offline data";
 
-            } else if (offlineAgriRequest.size() < 10) {
-                offlineAgriRequest.add(request);
-                SharedPrefsUtils.saveArrayListagriImage(context,offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
-                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
-                offlineText = "Data saved successfully in offline data";
+                } else if (offlineAgriRequest.size() < 10) {
+                    offlineAgriRequest.add(request);
+                    SharedPrefsUtils.saveArrayListagriImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
+                    SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+                    offlineText = "Data saved successfully in offline data";
 
-            } else {
-                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-            }
-            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                } else {
+                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
                 }
-            });
-        }
+                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                    }
+                });
+            }
+
 
 
     }

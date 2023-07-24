@@ -191,6 +191,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         hortiCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, cropstagespinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, iNames_lyt);
 
         offlineHortiRequest = SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
+        offlineHortiImageRequest = SharedPrefsUtils.getArrayListHortiImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());

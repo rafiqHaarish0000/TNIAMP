@@ -96,7 +96,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     public String stageLastValue = null;
     DatePickerDialog picker;
     ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
-    ArrayList<String> offlineWRDImageRequest;
+    ArrayList<String> offlineWRDImageRequest=new ArrayList<>();
 
     private FragmentWRDFRagmentBinding wrdfragmentBinding;
     private Context context;
@@ -172,6 +172,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         wrdCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, tankStageSpinner, stageSpinner, wauText, iNames_lyt, memberTxt, linTankInfo);
 
         offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
+        offlineWRDImageRequest = SharedPrefsUtils.getArrayListwrdImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
@@ -666,7 +667,6 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                     String txt_id = String.valueOf(response.body().getResponseMessage().getWrdLandDeptId());
                     Log.i(TAG, "txt_value: " + txt_id.toString());
                     uploadSecondImage(txt_id);
-
                 } else {
                     Toast.makeText(getContext(), "Please submit the valid data!", Toast.LENGTH_SHORT).show();
                     mCommonFunction.hideProgress();

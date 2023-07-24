@@ -183,6 +183,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         yield = agricultureBinding.yieldTxt;
         backPressListener = this;
         offlineAgriRequest = SharedPrefsUtils.getAgriArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+        offlineImageRequest = SharedPrefsUtils.getArrayListagriImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
 
         agriCallApi = new AgriCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         agriCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, vis_lyt, trainingLyt, seed_lyt, iNames_lyt);
@@ -800,35 +801,34 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-                String offlineText = "";
-                if (offlineAgriRequest == null) {
-                    offlineAgriRequest = new ArrayList<>();
-                    offlineImageRequest = new ArrayList<>();
-                    offlineAgriRequest.add(request);
-                    offlineImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveArrayListagriImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
-                    SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+            String offlineText = "";
+            if (offlineAgriRequest == null) {
+                offlineAgriRequest = new ArrayList<>();
+                offlineImageRequest = new ArrayList<>();
+                offlineAgriRequest.add(request);
+                offlineImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveArrayListagriImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
+                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
 
-                    offlineText = "Data saved successfully in offline data";
+                offlineText = "Data saved successfully in offline data";
 
-                } else if (offlineAgriRequest.size() < 10) {
-                    offlineAgriRequest.add(request);
-                    SharedPrefsUtils.saveArrayListagriImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
-                    SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
-                    offlineText = "Data saved successfully in offline data";
+            } else if (offlineAgriRequest.size() < 10) {
+                offlineAgriRequest.add(request);
+                SharedPrefsUtils.saveArrayListagriImage(context, offlineImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AGRI);
+                SharedPrefsUtils.saveAgriArrayList(context, offlineAgriRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AGRI);
+                offlineText = "Data saved successfully in offline data";
 
-                } else {
-                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-                }
-                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                    }
-                });
+            } else {
+                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
-
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
 
 
     }

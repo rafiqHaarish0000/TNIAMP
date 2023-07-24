@@ -165,6 +165,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         tnauBinding.dateTxt.setOnClickListener(this);
 
         offlineRequest = SharedPrefsUtils.getArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
+        offlineImageRequest = SharedPrefsUtils.getArrayListImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
+
         farmerName = tnauBinding.farmerTxt.getText().toString().trim();
         survey_no = tnauBinding.surveyTxt.getText().toString().trim();
         area = tnauBinding.areaTxt.getText().toString().trim();

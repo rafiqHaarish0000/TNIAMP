@@ -185,6 +185,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks);
 
         offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+        offlineFishImageRequest = SharedPrefsUtils.getArrayListFishImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());

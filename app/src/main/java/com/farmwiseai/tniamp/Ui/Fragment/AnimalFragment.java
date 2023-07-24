@@ -141,7 +141,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private String villageValue, category1 = "", firstImageBase64, secondImageBase64, interventionTypeVal;
     private String genderValue, catNameVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
-    ArrayList<String> offlineARDImgRequest;
+    ArrayList<String> offlineARDImgRequest=new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -191,8 +191,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         backPressListener = this;
 
         offlineARDRequest = SharedPrefsUtils.getARDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
-
-
+        offlineARDImgRequest = SharedPrefsUtils.getArrayListAhdImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
         animalCallApi = new AnimalCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         animalCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, calves, vis_lyt, trainingLyt, pregLyt, iNames_lyt);
         LatLongPojo latLongPojo = new LatLongPojo();
@@ -220,9 +219,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         villageSpinner = animalBinding.villageTxt;
         datePicker = animalBinding.dateTxt;
         interventionSpinner = animalBinding.inverntionTyper;
-
-
-        //phase data
+ //phase data
         phraseList = new ArrayList<>();
         phraseList.add("Choose phase");
         phraseList.add("Phase 1");

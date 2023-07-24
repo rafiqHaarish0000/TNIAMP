@@ -101,7 +101,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     FragmentMarketingBinding marketingBinding;
     //    public String seasonNameVal = null;
     ArrayList<MarkRequest> offlineMarkRequest = new ArrayList<>();
-    ArrayList<String>offlineMarkImageRequest;
+    ArrayList<String> offlineMarkImageRequest = new ArrayList<>();
     DatePickerDialog picker;
     private Context context;
     private String phases, sub_basin, district, block, village, component, sub_components, lengthValue, lsPointValue, sliceNumberValue, near_tank, remarks, dateField;
@@ -185,6 +185,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         marketingCallApi = new MarketingCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         marketingCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layoutTrain, layoutExpo, otherLyt, newReqLayout);
         offlineMarkRequest = SharedPrefsUtils.getMarkArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
+        offlineMarkImageRequest = SharedPrefsUtils.getArrayListMarkImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_MARKETING);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
@@ -386,7 +387,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             } else if (marketingBinding.dateTo.getText().toString().trim().isEmpty()) {
                 marketingBinding.dateTo.setError("field empty");
                 return false;
-            }else if (marketingBinding.country.getText().toString().trim().isEmpty()) {
+            } else if (marketingBinding.country.getText().toString().trim().isEmpty()) {
                 marketingBinding.country.setError("field empty");
                 return false;
             } else if (marketingBinding.places.getText().toString().trim().isEmpty()) {
@@ -1030,34 +1031,34 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             onlineDataUpload(request);
 
         } else {
-                String offlineText = "";
-                if (offlineMarkRequest == null) {
-                    offlineMarkRequest = new ArrayList<>();
-                    offlineMarkRequest.add(request);
-                    offlineMarkImageRequest = new ArrayList<>();
-                    offlineMarkImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveMarkArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
-                    SharedPrefsUtils.saveArrayListMarkImage(context, offlineMarkImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_MARKETING);
-                    offlineText = "Data saved successfully in offline data";
+            String offlineText = "";
+            if (offlineMarkRequest == null) {
+                offlineMarkRequest = new ArrayList<>();
+                offlineMarkRequest.add(request);
+                offlineMarkImageRequest = new ArrayList<>();
+                offlineMarkImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveMarkArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
+                SharedPrefsUtils.saveArrayListMarkImage(context, offlineMarkImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_MARKETING);
+                offlineText = "Data saved successfully in offline data";
 
-                } else if (offlineMarkRequest.size() < 10) {
-                    offlineMarkRequest.add(request);
-                    offlineMarkImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveMarkArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
-                    SharedPrefsUtils.saveArrayListMarkImage(context, offlineMarkImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_MARKETING);
-                    offlineText = "Data saved successfully in offline data";
+            } else if (offlineMarkRequest.size() < 10) {
+                offlineMarkRequest.add(request);
+                offlineMarkImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveMarkArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
+                SharedPrefsUtils.saveArrayListMarkImage(context, offlineMarkImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_MARKETING);
+                offlineText = "Data saved successfully in offline data";
 
-                } else {
-                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-                }
-                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                    }
-                });
+            } else {
+                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
     }
 
     private void onlineDataUpload(MarkRequest request) {

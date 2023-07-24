@@ -104,8 +104,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public String stageValue = null;
     public String stageLastValue = null;
     public BackPressListener backPressListener;
-    ArrayList<AEDRequest> offlineAedRequest;
-    ArrayList<String> offlineImageAedRequest;
+    ArrayList<AEDRequest> offlineAedRequest = new ArrayList<>();
+    ArrayList<String> offlineImageAedRequest = new ArrayList<>();
     private Context context;
     private FragmentAEDBinding aedBinding;
     private String farmerName, category1, survey_no, area, near_tank, remarks, dateField, village, interventionName, mobileNumber;
@@ -146,7 +146,6 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         aedBinding.submissionBtn.setOnClickListener(this);
         aedBinding.image1.setOnClickListener(this);
         aedBinding.image2.setOnClickListener(this);
-
         farmerName = aedBinding.farmerTxt.getText().toString();
         survey_no = aedBinding.surveyTxt.getText().toString();
         area = aedBinding.areaTxt.getText().toString();
@@ -160,23 +159,20 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         backPressListener = this;
         mobileNumber = aedBinding.mobileNumbertxt.getText().toString();
         offlineAedRequest = SharedPrefsUtils.getAEDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
+        offlineImageAedRequest = SharedPrefsUtils.getArrayListAedImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);
         aedCallApi = new AEDCallApi(getActivity(), getContext(), componentDropDown, adapter, adapter2, myString, backPressListener);
         aedCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, hideLyt, otherLayt);
-
         aedBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
         lat = latLongPojo.getLat();
         lon = latLongPojo.getLon();
         Log.i("data", lat + "," + lon);
         setAllDataValues();
-
         return aedBinding.getRoot();
     }
 
     private void setAllDataValues() {
-
         subBasinSpinner = aedBinding.subBasinTxt;
         districtSpinner = aedBinding.districtTxt;
         blockSpinner = aedBinding.blockTxt;
@@ -184,9 +180,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         categorySpinner = aedBinding.categoryTxt;
         villageSpinner = aedBinding.villageTxt;
         interventionSpinner = aedBinding.inverntionTyper;
-
-
-        //phase data
+ //phase data
         phraseList = new ArrayList<>();
         phraseList.add("Choose phase");
         phraseList.add("Phase 1");

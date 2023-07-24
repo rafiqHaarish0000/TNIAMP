@@ -692,7 +692,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                     ArrayList<String> tnauImageReq = SharedPrefsUtils.getArrayListImage(getApplicationContext(), SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);
                     if (tnauRequests != null && tnauRequests.size() > 0) {
                         for (int i = 0; i < tnauRequests.size(); i++) {
-                            OfflineDataSyncFile.onlineDataTnauUpload(tnauRequests.get(i), tnauImageReq.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataTnauUpload(tnauRequests.get(i), tnauImageReq.get(i), "1");
                         }
                         // return the data to onPostExecute method
 
@@ -702,7 +702,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                     if (agri_requests != null && agri_requests.size() > 0) {
                         for (int i = 0; i < agri_requests.size(); i++) {
-                            OfflineDataSyncFile.onlineDataAgriUpload(agri_requests.get(i), agriImageReq.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataAgriUpload(agri_requests.get(i), agriImageReq.get(i), "2");
                         }
                         // return the data to onPostExecute method
 
@@ -712,7 +712,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                     if (hortiRequests != null && hortiRequests.size() > 0) {
                         for (int i = 0; i < hortiRequests.size(); i++) {
-                            OfflineDataSyncFile.onlineDataHortiUpload(hortiRequests.get(i), hortiImageReq.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataHortiUpload(hortiRequests.get(i), hortiImageReq.get(i), "3");
                         }
                         // return the data to onPostExecute method
 
@@ -722,7 +722,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                     if (aedRequests != null && aedRequests.size() > 0) {
                         for (int i = 0; i < aedRequests.size(); i++) {
-                            OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataAEDUpload(aedRequests.get(i), aedImageReq.get(i), "4");
                         }
                         // return the data to onPostExecute method
 
@@ -732,7 +732,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                     if (aedRequests1 != null && aedRequests1.size() > 0) {
                         for (int i = 0; i < aedRequests1.size(); i++) {
-                            OfflineDataSyncFile.onlineDataAnimalUpload(aedRequests1.get(i), aedImageReq1.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataAnimalUpload(aedRequests1.get(i), aedImageReq1.get(i), "5");
                         }
                         // return the data to onPostExecute method
 
@@ -742,7 +742,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                     if (aedRequests2 != null && aedRequests2.size() > 0) {
                         for (int i = 0; i < aedRequests2.size(); i++) {
-                            OfflineDataSyncFile.onlineDataWrdUpload(aedRequests2.get(i), aedImageReq2.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataWrdUpload(aedRequests2.get(i), aedImageReq2.get(i), "6");
                         }
                         // return the data to onPostExecute method
 
@@ -752,7 +752,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                     if (aedRequests3 != null && aedRequests3.size() > 0) {
                         for (int i = 0; i < aedRequests3.size(); i++) {
-                            OfflineDataSyncFile.onlineDataMarketingUpload(aedRequests3.get(i), aedImageReq3.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataMarketingUpload(aedRequests3.get(i), aedImageReq3.get(i), "7");
                         }
                         // return the data to onPostExecute method
 
@@ -762,7 +762,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
                     if (aedRequests4 != null && aedRequests4.size() > 0) {
                         for (int i = 0; i < aedRequests4.size(); i++) {
-                            OfflineDataSyncFile.onlineDataFisheriesUpload(aedRequests4.get(i), aedImageReq4.get(i), lineDeptId);
+                            OfflineDataSyncFile.onlineDataFisheriesUpload(aedRequests4.get(i), aedImageReq4.get(i), "8");
                         }
                         // return the data to onPostExecute method
 

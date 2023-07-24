@@ -555,35 +555,27 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         dateField = dateFormat.format(myCalendar.getTime());
         Log.i(TAG, "dataValue" + dateField);
-
         WRDRequest request = new WRDRequest();
-
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
-
-        request.setCreated_date("2020-02-12 11:02:02");
+        request.setCreated_date(dateField);
         request.setImage1(firstImageBase64.trim());
         request.setIntervention1(intervention1);
-
         if (wrdfragmentBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
         } else {
             request.setIntervention2("0");
         }
-
         if (wrdfragmentBinding.taskStages.getVisibility() == View.VISIBLE) {
             request.setIntervention3(intervention3);
         } else {
             request.setIntervention3("0");
         }
-
         if (wrdfragmentBinding.stagesTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention4(intervention4);
         } else {
             request.setIntervention4("0");
         }
-
         request.setLat(lat);
-
         if (wrdfragmentBinding.linTankDetails.getVisibility() == View.VISIBLE) {
             request.setLength(wrdfragmentBinding.lengthTxt.getText().toString().trim());
             request.setLs_point(wrdfragmentBinding.lsPoint.getText().toString().trim());

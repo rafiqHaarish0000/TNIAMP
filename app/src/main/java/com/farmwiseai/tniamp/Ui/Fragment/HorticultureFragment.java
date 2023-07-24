@@ -711,7 +711,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
         request.setRemarks(remarks);
         request.setCreatedBy(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
-        request.setCreatedDate("2020-02-12 11:02:02");
+        request.setCreatedDate(dateField);
         request.setLat(lat);
         request.setLon(lon);
         request.setTankName(near_tank);

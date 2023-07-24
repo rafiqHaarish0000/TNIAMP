@@ -405,7 +405,7 @@ public class OfflineDataSyncFile {
                 int allCount = offlineRequest5.size();
                 count = String.valueOf(allCount);
             } else if (offlineRequest6 != null && offlineRequest6.size() > 0) {
-                int allCount = offlineRequest.size();
+                int allCount = offlineRequest6.size();
                 count = String.valueOf(allCount);
             } else if (offlineRequest7 != null && offlineRequest7.size() > 0) {
                 int allCount = offlineRequest7.size();

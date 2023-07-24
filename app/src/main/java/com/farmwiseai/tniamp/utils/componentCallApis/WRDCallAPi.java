@@ -236,7 +236,7 @@ public class WRDCallAPi {
                                 names.equalsIgnoreCase("Model Sectioning of Bund")) {
                             stagesDropDown(String.valueOf(tankStageList.get(i).getID()), stageSpinner);
                             stageSpinner.setVisibility(View.VISIBLE);
-                        } else if (names.equalsIgnoreCase("Jungle Clearence") ||
+                        } else if (names.equalsIgnoreCase("Jungle Clearance") ||
                                 names.equalsIgnoreCase("Revetment")) {
                             stageSpinner.setVisibility(View.GONE);
                         }
@@ -284,7 +284,7 @@ public class WRDCallAPi {
                             names.equalsIgnoreCase("Steel grill cover") ||
                             names.equalsIgnoreCase("Before") ||
                             names.equalsIgnoreCase("After") ||
-                            names.equalsIgnoreCase("Jungle Clearence") ||
+                            names.equalsIgnoreCase("Jungle Clearance") ||
                             names.equalsIgnoreCase("Horizontal Shaft") ||
                             names.equalsIgnoreCase("benching") ||
                             names.equalsIgnoreCase("layer 1") ||

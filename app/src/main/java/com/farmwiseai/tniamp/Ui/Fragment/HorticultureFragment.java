@@ -192,7 +192,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
         offlineHortiRequest = SharedPrefsUtils.getHortiArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
         offlineHortiImageRequest = SharedPrefsUtils.getArrayListHortiImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
-        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
+        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 1);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());

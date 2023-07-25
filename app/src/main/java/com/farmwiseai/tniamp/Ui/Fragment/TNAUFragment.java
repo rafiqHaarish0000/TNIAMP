@@ -163,7 +163,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
         tnauBinding.image1.setOnClickListener(this);
         tnauBinding.image2.setOnClickListener(this);
         tnauBinding.dateTxt.setOnClickListener(this);
-        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
+        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 1);
 
         offlineRequest = SharedPrefsUtils.getArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
         offlineImageRequest = SharedPrefsUtils.getArrayListImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA);

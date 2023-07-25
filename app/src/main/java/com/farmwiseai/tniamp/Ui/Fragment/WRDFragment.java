@@ -173,7 +173,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         offlineWRDRequest = SharedPrefsUtils.getWrdArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
         offlineWRDImageRequest = SharedPrefsUtils.getArrayListwrdImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
-        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
+        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 1);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());

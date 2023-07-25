@@ -86,8 +86,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
         getLocation();
-        doubleBackToExitPressed = SharedPrefsUtils.getInt(getApplicationContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED);
-
+        SharedPrefsUtils.putInt(getApplicationContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
         binding.naviTnau.setOnClickListener(this);
         binding.naviAgri.setOnClickListener(this);
         binding.naviHorti.setOnClickListener(this);
@@ -554,8 +553,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-
-        if (doubleBackToExitPressed < 1) {
+        doubleBackToExitPressed = SharedPrefsUtils.getInt(getApplicationContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED);
+        if (doubleBackToExitPressed == 1) {
             doubleBackToExitPressed++;
             SharedPrefsUtils.putInt(getApplicationContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED, doubleBackToExitPressed);
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);

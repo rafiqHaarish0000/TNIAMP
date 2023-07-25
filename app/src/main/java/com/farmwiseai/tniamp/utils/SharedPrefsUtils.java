@@ -52,7 +52,7 @@ public class SharedPrefsUtils {
 
     public static int getInt(Context context, PREF_KEY key) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        int value = sharedPref.getInt(key.KEY, 0);
+        int value = sharedPref.getInt(key.KEY, 1);
         return value;
     }
 

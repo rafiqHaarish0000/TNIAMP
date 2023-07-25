@@ -89,6 +89,7 @@ public class CommonFunction {
     public void navigation(Context currentactivityname, Class<?> nextactivityname, int size) {
         Intent i = new Intent(currentactivityname, nextactivityname);
         Bundle extras = new Bundle();
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //   extras.putString("otp", generateOTP.getResponseMessage().getOtpDataId().toString());
         extras.putString("count", String.valueOf(size));
         i.putExtras(extras);
@@ -97,7 +98,9 @@ public class CommonFunction {
 
     public void navigation(Context currentactivityname, Class<?> nextactivityname) {
         Intent i = new Intent(currentactivityname, nextactivityname);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         currentactivityname.startActivity(i);
+
     }
 
     // Get Device id

@@ -85,6 +85,16 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         binding.txtUserName.setText("Welcome " + username);
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
+
+        if(!PermissionUtils.isLocationEnabled(DashboardActivity.this)){
+            showMessageOKLocationPermission("Please Enable Location Services In Settings", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+        }
+
         getLocation();
         SharedPrefsUtils.putInt(getApplicationContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
         binding.naviTnau.setOnClickListener(this);
@@ -489,13 +499,20 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(DashboardActivity.this).setMessage(message).setPositiveButton("Yes", okListener).setNegativeButton("No", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(DashboardActivity.this).setMessage(message).setPositiveButton("Yes", okListener).
+                setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
                 dialogInterface.cancel();
             }
         }).setTitle("Logout").create().show();
+    }
+
+    private void showMessageOKLocationPermission(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(DashboardActivity.this).setMessage(message)
+                .setPositiveButton("Ok", okListener)
+                .setTitle("Allow Permission").create().show();
     }
 
 

@@ -125,7 +125,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             sub_componentSpinner, stageSpinner, beneficarySpinner, beneficaryFinal, beneficarySpinner1, specicesSpinner1,
             categorySpinner, villageSpinner, interventionSpinner, specicesSpinner2, lesseeSpinner, genderSpinner, genderSpinnerL5, categorySpinnerL5;
     private MultiSpinner multiSpinner1, multiSpinner2, multiSpinner3;
-    private EditText datePicker, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks;
+    private EditText datePicker, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks,qoHarvestL2;
     private FishCallApi fishCallApi;
     private boolean takePicture;
     private int valueofPic = 0;
@@ -178,11 +178,12 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         seedHarvest = fisheriesBinding.numbOfSeedsHarvest;
         quantityHarvest = fisheriesBinding.quantityOfFishHar;
         quantityOfHarvestIrrigationTanks = fisheriesBinding.quantityOfFishHarL1;
+        qoHarvestL2 = fisheriesBinding.quantityTxtL2;
 
         backPressListener = this;
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2,
-                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks);
+                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks,qoHarvestL2);
 
         offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
         offlineFishImageRequest = SharedPrefsUtils.getArrayListFishImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
@@ -268,6 +269,11 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (fisheriesBinding.feedQuality.getText().toString().trim().isEmpty()) {
                 fisheriesBinding.feedQuality.setError("Do not empty field");
                 return false;
+            } else if(fisheriesBinding.quantityTxtL2.getVisibility() == View.VISIBLE){
+                if (fisheriesBinding.quantityTxtL2.getText().length() == 0) {
+                    fisheriesBinding.quantityTxtL2.setError("Do not empty field");
+                    return false;
+                }
             }
 
         } else if (layout3.getVisibility() == View.VISIBLE) {

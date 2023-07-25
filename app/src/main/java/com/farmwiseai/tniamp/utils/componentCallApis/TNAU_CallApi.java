@@ -217,7 +217,7 @@ public class TNAU_CallApi {
                     }
                     stagesDropDown(positionValue2, thirdSpinner, editText, variety, yield);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
-                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
+//                    lookUpDataClass.setIntervention1(String.valueOf(componentList.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
                     lookUpDataClass.setStageValue(stageName);

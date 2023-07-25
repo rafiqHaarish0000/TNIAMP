@@ -186,6 +186,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         marketingCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2, layoutTrain, layoutExpo, otherLyt, newReqLayout);
         offlineMarkRequest = SharedPrefsUtils.getMarkArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_MARKETING);
         offlineMarkImageRequest = SharedPrefsUtils.getArrayListMarkImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_MARKETING);
+        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
 
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());

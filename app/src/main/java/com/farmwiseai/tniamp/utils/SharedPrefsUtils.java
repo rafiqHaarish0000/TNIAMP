@@ -22,7 +22,7 @@ public class SharedPrefsUtils {
 
     public static enum PREF_KEY {
         ACCESS_TOKEN("access_token"), LOGIN_SESSION("login_session"),
-        USER_DETAILS("user_details"), USER_NAME("user_name"),
+        USER_DETAILS("user_details"), USER_NAME("user_name"),BACK_PRESSED("back_pressed"),
         ONLINE_DATA_COUNT("notifyCount"),
         SAVED_OFFLINE_DATA("savedOfflineData"), OFFLINE_DATA("offlineData"),
         OFFLINE_DATA_AGRI("offlineDataAgri"), SAVED_OFFLINE_DATA_AGRI("savedOfflineDataAgri"),
@@ -39,6 +39,21 @@ public class SharedPrefsUtils {
         PREF_KEY(String key) {
             this.KEY = key;
         }
+    }
+
+    public static void putInt(Context context, PREF_KEY key, int value) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(key.KEY, value);
+
+        // Commit the edits!
+        editor.commit();
+    }
+
+    public static int getInt(Context context, PREF_KEY key) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        int value = sharedPref.getInt(key.KEY, 0);
+        return value;
     }
 
 

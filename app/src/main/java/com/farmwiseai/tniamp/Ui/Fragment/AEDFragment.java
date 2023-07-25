@@ -157,6 +157,8 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         hideLyt = aedBinding.visibilityLyt;
         otherLayt = aedBinding.othersLayout;
         backPressListener = this;
+        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
+
         mobileNumber = aedBinding.mobileNumbertxt.getText().toString();
         offlineAedRequest = SharedPrefsUtils.getAEDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_AED);
         offlineImageAedRequest = SharedPrefsUtils.getArrayListAedImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_AED);

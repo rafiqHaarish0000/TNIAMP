@@ -72,6 +72,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     String notifiCount;
     Bundle extras;
     int count = 0;
+    int doubleBackToExitPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         mCommonFunction = new CommonFunction(DashboardActivity.this);
         showDept(lineDeptId);
         getLocation();
+        doubleBackToExitPressed = SharedPrefsUtils.getInt(getApplicationContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED);
+
         binding.naviTnau.setOnClickListener(this);
         binding.naviAgri.setOnClickListener(this);
         binding.naviHorti.setOnClickListener(this);
@@ -549,13 +552,12 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     }
 
 
-    int doubleBackToExitPressed = 0;
-
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressed < 2) {
-            doubleBackToExitPressed++;
 
+        if (doubleBackToExitPressed < 1) {
+            doubleBackToExitPressed++;
+            SharedPrefsUtils.putInt(getApplicationContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED, doubleBackToExitPressed);
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

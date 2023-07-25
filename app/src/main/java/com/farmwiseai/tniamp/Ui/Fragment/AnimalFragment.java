@@ -166,6 +166,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         animalBinding.image2.setOnClickListener(this);
         animalBinding.dateTxt.setOnClickListener(this);
         animalBinding.areaTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        SharedPrefsUtils.putInt(context, SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 0);
 
         farmerName = animalBinding.farmerTxt.getText().toString().trim();
         survey_no = animalBinding.surveyTxt.getText().toString().trim();

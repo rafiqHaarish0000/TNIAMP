@@ -28,6 +28,8 @@ import com.farmwiseai.tniamp.Retrofit.DataClass.ResponseData.WRDResponse;
 import com.farmwiseai.tniamp.Retrofit.DataClass.Sub_Basin_Data;
 import com.farmwiseai.tniamp.Retrofit.DataClass.ValidateOTP;
 import com.farmwiseai.tniamp.Retrofit.DataClass.VillageData;
+import com.farmwiseai.tniamp.utils.LogIdRequest;
+import com.farmwiseai.tniamp.utils.LogIdResponse;
 
 import java.util.List;
 
@@ -110,6 +112,8 @@ public interface Interface_Api {
     Call<RegisterResponse> getRegisterResponse(@Body RegisterRequest registerRequest);
     @GET("individualusercount?")
     Call<GetUserCountData> getUserCount(@Query("user_name") String user_name, @Query("department_type") String department_type);
+    @POST("log_check")
+    Call<LogIdResponse> getLogCheckResponse(@Body LogIdRequest tnau_request);
 
 }
 

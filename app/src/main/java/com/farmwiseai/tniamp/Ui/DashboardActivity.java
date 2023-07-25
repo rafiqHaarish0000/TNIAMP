@@ -18,6 +18,8 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.Manifest;
@@ -90,6 +92,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             showMessageOKLocationPermission("Please Enable Location Services In Settings", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent location_Intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(location_Intent);
                     finish();
                 }
             });

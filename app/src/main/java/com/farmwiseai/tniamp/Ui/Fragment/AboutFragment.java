@@ -14,6 +14,7 @@ import com.farmwiseai.tniamp.R;
 import com.farmwiseai.tniamp.Ui.DashboardActivity;
 import com.farmwiseai.tniamp.databinding.FragmentAboutBinding;
 import com.farmwiseai.tniamp.utils.CommonFunction;
+import com.farmwiseai.tniamp.utils.SharedPrefsUtils;
 
 public class AboutFragment extends Fragment {
 FragmentAboutBinding aboutBinding;
@@ -25,6 +26,8 @@ CommonFunction commonFunction;
                              Bundle savedInstanceState) {
         commonFunction = new CommonFunction(getActivity());
         aboutBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false);
+        SharedPrefsUtils.putInt(getContext(), SharedPrefsUtils.PREF_KEY.BACK_PRESSED, 1);
+
         aboutBinding.popBackImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

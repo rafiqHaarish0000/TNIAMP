@@ -915,13 +915,24 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
 
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
-
         request.setCreated_date(dateField);
-        request.setDate_from("2019-11-27");
-        request.setDate_to("");
-        request.setDate_of_completion("");
-
+//        request.setDate_from(marketingBinding.dateFrom.getText().toString().trim());
+//        request.setDate_to(marketingBinding.dateTo.getText().toString().trim());
+//        request.setDate_of_completion(marketingBinding.DOCompletion.getText().toString());
+        request.setVillage(villageValue);
+        request.setLat(lat);
+        request.setLon(lon);
+        request.setCategory(catogoryVal);
+        request.setImage1(firstImageBase64);
+        request.setImage2(secondImageBase64);
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lat);
+        request.setRemarks(remarks);
+        request.setTxn_id("20191127172744");
+        request.setDate("");
+        request.setStatus("1");
         request.setIntervention1(intervention1);
+        request.setIntervention4("");
 
         if (marketingBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
@@ -934,90 +945,258 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
             request.setIntervention3("0");
         }
 
-        request.setIntervention4("");
-
-
         //layout 1
         if (marketingBinding.layout1.getVisibility() == View.VISIBLE) {
-            request.setNof_village(marketingBinding.noVillage.getText().toString());
-            request.setOthers_female_no(marketingBinding.femaleOthers.getText().toString());
-            request.setOthers_male_no(marketingBinding.maleOthers.getText().toString());
-            request.setSc_st_male_no(marketingBinding.maleNo.getText().toString());
-            request.setSc_st_female_no(marketingBinding.femaleNo.getText().toString());
-            request.setNof_mem(marketingBinding.noOfMembers.getText().toString());
-            request.setMobile(marketingBinding.mobileNumber.getText().toString().trim());
-            request.setName(marketingBinding.nameValue.getText().toString().trim());
-            request.setEmail(marketingBinding.emailTxt.getText().toString().trim());
-            request.setCrop(cropVal);
-            request.setInfra_avail(marketingBinding.infrastructureTxt.getText().toString());
-        } else {
-            request.setFpc_name("1");
-            request.setNof_village("1");
-            request.setOthers_female_no("1");
-            request.setOthers_male_no("1");
-            request.setSc_st_male_no("1");
-            request.setSc_st_female_no("1");
-            request.setNof_mem("1");
-            request.setMobile("1");
-            request.setName("");
-            request.setEmail("");
-            request.setCrop(cropVal);
-            request.setInfra_avail("");
+            if (marketingBinding.noVillage.getText().toString().trim().length() > 0) {
+                request.setNof_village(marketingBinding.noVillage.getText().toString());
+            } else {
+                request.setNof_village("");
+            }
+
+            if (marketingBinding.femaleOthers.getText().toString().trim().length() > 0) {
+                request.setOthers_female_no(marketingBinding.femaleOthers.getText().toString());
+            } else {
+                request.setOthers_female_no("");
+            }
+
+            if (marketingBinding.maleOthers.getText().toString().trim().length() > 0) {
+                request.setOthers_male_no(marketingBinding.maleOthers.getText().toString());
+            } else {
+                request.setOthers_male_no("");
+            }
+
+            if (marketingBinding.maleNo.getText().toString().trim().length() > 0) {
+                request.setSc_st_male_no(marketingBinding.maleNo.getText().toString());
+            } else {
+                request.setSc_st_male_no("");
+            }
+
+            if (marketingBinding.femaleNo.getText().toString().trim().length() > 0) {
+                request.setSc_st_female_no(marketingBinding.femaleNo.getText().toString());
+            } else {
+                request.setSc_st_female_no("");
+            }
+
+            if (marketingBinding.noOfMembers.getText().toString().trim().length() > 0) {
+                request.setNof_mem(marketingBinding.noOfMembers.getText().toString());
+            } else {
+                request.setNof_mem("");
+            }
+
+            if (marketingBinding.mobileNumber.getText().toString().trim().length() > 0) {
+                request.setMobile(marketingBinding.mobileNumber.getText().toString().trim());
+            } else {
+                request.setMobile("");
+            }
+
+            if (marketingBinding.nameValue.getText().toString().trim().length() > 0) {
+                request.setName(marketingBinding.nameValue.getText().toString().trim());
+            } else {
+                request.setName("");
+            }
+            if (marketingBinding.emailTxt.getText().toString().trim().length() > 0) {
+                request.setEmail(marketingBinding.emailTxt.getText().toString().trim());
+            } else {
+                request.setEmail("");
+            }
+            if (cropVal.length() > 0) {
+                request.setCrop(cropVal);
+            } else {
+                request.setCrop("");
+            }
+            if (marketingBinding.nameOfCeo.getText().toString().trim().length() > 0) {
+                request.setConsultancyceo(marketingBinding.nameOfCeo.getText().toString().trim());
+            } else {
+                request.setConsultancyceo("");
+            }
+            if (marketingBinding.locationConsultancyTxt.getText().toString().trim().length() > 0) {
+                request.setConsultancy_loc(marketingBinding.locationConsultancyTxt.getText().toString().trim());
+            } else {
+                request.setConsultancy_loc("");
+            }
+            if (marketingBinding.consultingAgency.getText().toString().trim().length() > 0) {
+                request.setConsultancy_name(marketingBinding.consultingAgency.getText().toString().trim());
+            } else {
+                request.setConsultancy_name("");
+            }
+            if (marketingBinding.infrastructureTxt.getText().toString().trim().length() > 0) {
+                request.setInfra_avail(marketingBinding.infrastructureTxt.getText().toString());
+            } else {
+                request.setInfra_avail("");
+            }
+            if (marketingBinding.numberFPC.getText().toString().trim().length() > 0) {
+                request.setFpc_name(marketingBinding.numberFPC.getText().toString().trim());
+            } else {
+                request.setFpc_name("");
+            }
+            if (marketingBinding.incorporationDateTxt.getText().toString().trim().length() > 0) {
+                request.setIncorp_date(marketingBinding.incorporationDateTxt.getText().toString().trim());
+            } else {
+                request.setIncorp_date("");
+            }
+            if (marketingBinding.incorporationDateTxt.getText().toString().trim().length() > 0) {
+                request.setIncorporation_date(marketingBinding.incorporationDateTxt.getText().toString().trim());
+            } else {
+                request.setIncorp_date("");
+            }
+            if (marketingBinding.incorporationNumber.getText().toString().trim().length() > 0) {
+                request.setIncorporation_num(marketingBinding.incorporationNumber.getText().toString().trim());
+            } else {
+                request.setIncorporation_num("");
+            }
+            if (marketingBinding.noOfMembers.getText().toString().trim().length() > 0) {
+                request.setNof_mem(marketingBinding.noOfMembers.getText().toString().trim());
+            } else {
+                request.setNof_mem("");
+            }
+            if (marketingBinding.noOfFigs.getText().toString().trim().length() > 0) {
+                request.setNooffigs(marketingBinding.noOfFigs.getText().toString().trim());
+            } else {
+                request.setNooffigs("");
+            }
+            if (seasonVal.length() > 0) {
+                request.setSeason(seasonVal);
+            } else {
+                request.setSeason("");
+            }
+        } else if (marketingBinding.layout2.getVisibility() == View.VISIBLE) {
+            if (marketingBinding.noOfBeneficieries.getText().toString().trim().length() > 0) {
+                request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString().trim());
+            } else {
+                request.setNo_of_beneficeries("");
+            }
+            if (marketingBinding.govertShare.getText().toString().trim().length() > 0) {
+                request.setGovt_share(marketingBinding.govertShare.getText().toString());
+            } else {
+                request.setGovt_share("");
+            }
+            if (marketingBinding.capacity.getText().toString().trim().length() > 0) {
+                request.setCapacity(marketingBinding.capacity.getText().toString());
+            } else {
+                request.setCapacity("");
+            }
+            if (catNameVal.length() > 0) {
+                request.setGodown_category(catNameVal);
+            } else {
+                request.setGodown_category("");
+            }
+            if (marketingBinding.nameValue.getText().toString().trim().length() > 0) {
+                request.setHq_name(marketingBinding.nameValue.getText().toString().trim());
+            } else {
+                request.setHq_name("");
+            }
+            if (marketingBinding.DOCompletion.getText().toString().trim().length() > 0) {
+                request.setDate_of_completion(marketingBinding.DOCompletion.getText().toString().trim());
+            } else {
+                request.setDate_of_completion("");
+            }
+            if (marketingBinding.contributionTxt.getText().toString().trim().length() > 0) {
+                request.setContribution(marketingBinding.contributionTxt.getText().toString().trim());
+            } else {
+                request.setContribution("");
+            }
+            if (marketingBinding.QantityStoredTXT.getText().toString().trim().length() > 0) {
+                request.setQuantity_stored(marketingBinding.QantityStoredTXT.getText().toString().trim());
+            } else {
+                request.setQuantity_stored("");
+            }
+
         }
 
-        if (marketingBinding.layout2.getVisibility() == View.VISIBLE) {
-            request.setNo_of_beneficeries(marketingBinding.noOfBeneficieries.getText().toString().trim());
-            request.setGovt_share(marketingBinding.govertShare.getText().toString());
-            request.setCapacity(marketingBinding.capacity.getText().toString());
-            request.setGodown_category(catNameVal);
-        } else {
-            request.setNo_of_beneficeries("0");
-            request.setGovt_share("0");
-            request.setCapacity("0");
-            request.setGodown_category("");
+        else if (marketingBinding.trainingLyt.getVisibility() == View.VISIBLE) {
+            if (marketingBinding.traineeOtherNoF.getText().toString().trim().length() > 0) {
+                request.setOthers_female_no(marketingBinding.traineeOtherNoF.getText().toString().trim());
+            } else {
+                request.setOthers_female_no("");
+            }
+
+            if (marketingBinding.traineeOtherNo.getText().toString().trim().length() > 0) {
+                request.setOthers_male_no(marketingBinding.traineeOtherNo.getText().toString().trim());
+            } else {
+                request.setOthers_male_no("");
+            }
+
+            if (marketingBinding.traineeSCSTNO.getText().toString().trim().length() > 0) {
+                request.setSc_st_male_no(marketingBinding.traineeSCSTNO.getText().toString().trim());
+            } else {
+                request.setSc_st_male_no("");
+            }
+
+            if (marketingBinding.traineeSCSTNOF.getText().toString().trim().length() > 0) {
+                request.setSc_st_female_no(marketingBinding.traineeSCSTNOF.getText().toString().trim());
+            } else {
+                request.setSc_st_female_no("");
+            }
+            if (marketingBinding.venue.getText().toString().trim().length() > 0) {
+                request.setVenue(marketingBinding.venue.getText().toString().trim().trim());
+            } else {
+                request.setVenue("");
+            }
+            if (marketingBinding.noOftrainee.getText().toString().trim().length() > 0) {
+                request.setNumber_trainees(marketingBinding.noOftrainee.getText().toString().trim());
+            } else {
+                request.setNumber_trainees("");
+            }
+            if (marketingBinding.durationTrainigTxt.getText().toString().trim().length() > 0) {
+                request.setTraining_duration(marketingBinding.durationTrainigTxt.getText().toString().trim());
+            } else {
+                request.setTraining_duration("");
+            }
+            if (trainingVal.length() > 0) {
+                request.setTraining_name(trainingVal);
+            } else {
+                request.setTraining_name("");
+            }
+            if (marketingBinding.dateTo2.getText().toString().trim().length() > 0) {
+                request.setDate_to(marketingBinding.dateTo2.getText().toString());
+            } else {
+                request.setDate_to("");
+            }
+            if (marketingBinding.dateFrom1.getText().toString().trim().length() > 0) {
+                request.setDate_from(marketingBinding.dateFrom1.getText().toString());
+            } else {
+                request.setDate_from("");
+            }
+            if (marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE) {
+                if (marketingBinding.nameHq.getText().toString().trim().length() < 0) {
+                    request.setHq_name(marketingBinding.nameHq.getText().toString());
+                } else {
+                    request.setHq_name("");
+                }
+                if (marketingBinding.exposeNumber.getText().toString().trim().length() < 0) {
+                    request.setNumbers(marketingBinding.exposeNumber.getText().toString());
+                } else {
+                    request.setNumbers("");
+                }
+                if (categoryExpoVal.length() < 0) {
+                    request.setCategory2(categoryExpoVal);
+                } else {
+                    request.setCategory2("");
+                }
+                if (marketingBinding.places.getText().toString().trim().length() < 0) {
+                    request.setPlace_visited(marketingBinding.places.getText().toString());
+                } else {
+                    request.setPlace_visited("");
+                }
+                if (marketingBinding.durationVisit.getText().toString().trim().length() < 0) {
+                    request.setVisit_duration(marketingBinding.durationVisit.getText().toString());
+                } else {
+                    request.setVisit_duration("");
+                }
+                if (marketingBinding.dateTo.getText().toString().trim().length() < 0) {
+                    request.setDate_to(marketingBinding.dateTo.getText().toString());
+                } else {
+                    request.setDate_to("");
+                }
+                if (marketingBinding.dateFrom.getText().toString().trim().length() < 0) {
+                    request.setDate_from(marketingBinding.dateFrom.getText().toString());
+                } else {
+                    request.setDate_from("");
+                }
+
+            }
         }
 
-
-        if (marketingBinding.trainingLyt.getVisibility() == View.VISIBLE) {
-            request.setNof_female(marketingBinding.traineeOtherNoF.getText().toString().trim());
-            request.setNof_male(marketingBinding.traineeOtherNo.getText().toString().trim());
-            request.setFemale_no1(marketingBinding.traineeOtherNoF.getText().toString().trim());
-            request.setFemale_no2(marketingBinding.traineeSCSTNOF.getText().toString().trim());
-            request.setVenue(marketingBinding.venue.getText().toString().trim());
-            request.setNumber_trainees(marketingBinding.noOftrainee.getText().toString());
-            request.setTraining_name(trainingVal);
-        } else {
-            request.setNof_female("1");
-            request.setNof_male("1");
-            request.setFemale_no1("1");
-            request.setFemale_no2("1");
-            request.setVenue("1");
-            request.setNumber_trainees("1");
-            request.setTraining_name("null");
-        }
-
-        if (marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE) {
-            request.setFpc_name(marketingBinding.nameHq.getText().toString());
-            request.setCategory2(categoryExpoVal);
-
-        } else {
-            request.setFpc_name("null");
-            request.setCategory2("");
-        }
-
-        request.setVillage(villageValue);
-        request.setLat(lat);
-        request.setLon(lon);
-
-        request.setCategory(catogoryVal);
-        request.setImage1(firstImageBase64);
-        request.setImage2(secondImageBase64);
-        request.setPhoto_lat(lat);
-        request.setPhoto_lon(lat);
-        request.setRemarks(remarks);
-        request.setTxn_id("20191127172744");
-        request.setDate("");
-        request.setStatus("1");
 
         if (mCommonFunction.isNetworkAvailable() == true) {
             ObjectMapper mapper = new ObjectMapper();

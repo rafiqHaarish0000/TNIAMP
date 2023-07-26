@@ -411,7 +411,8 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+ datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        datePicker.setError(null);
                     }
                 }, year, month, day);
         picker.getDatePicker().setMaxDate(maxTime);

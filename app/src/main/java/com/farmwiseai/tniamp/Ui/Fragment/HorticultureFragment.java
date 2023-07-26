@@ -199,10 +199,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         lat = latLongPojo.getLat();
         lon = latLongPojo.getLon();
         Log.i("data", lat + "," + lon);
-
         setAllDropDownData();
-
-
         return horticultureBinding.getRoot();
 
     }
@@ -367,7 +364,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
 
 
             case R.id.date_txt:
-               // dateFieldValidation(horticultureBinding.dateTxt);
+                // dateFieldValidation(horticultureBinding.dateTxt);
                 dateOfSowing_Planting(horticultureBinding.dateTxt);
                 break;
 
@@ -562,6 +559,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        datePicker.setError(null);
                     }
                 }, year, month, day);
         picker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -735,37 +733,34 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-                String offlineText = "";
-                if (offlineHortiRequest == null) {
-                    offlineHortiRequest = new ArrayList<>();
-                    offlineHortiRequest.add(request);
-                    offlineHortiImageRequest = new ArrayList<>();
-                    offlineHortiImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA);
-                    SharedPrefsUtils.saveArrayListHortiImage(context, offlineHortiImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
+            String offlineText = "";
+            if (offlineHortiRequest == null) {
+                offlineHortiRequest = new ArrayList<>();
+                offlineHortiRequest.add(request);
+                offlineHortiImageRequest = new ArrayList<>();
+                offlineHortiImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
+                SharedPrefsUtils.saveArrayListHortiImage(context, offlineHortiImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
+                offlineText = "Data saved successfully in offline data";
 
-                    offlineText = "Data saved successfully in offline data";
+            } else if (offlineHortiRequest.size() < 10) {
+                offlineHortiRequest.add(request);
+                offlineHortiImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
+                SharedPrefsUtils.saveArrayListHortiImage(context, offlineHortiImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
+                offlineText = "Data saved successfully in offline data";
 
-                } else if (offlineHortiRequest.size() < 10) {
-                    offlineHortiRequest.add(request);
-                    offlineHortiImageRequest.add(secondImageBase64);
-
-                    SharedPrefsUtils.saveHortiArrayList(context, offlineHortiRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_HORTI);
-                    SharedPrefsUtils.saveArrayListHortiImage(context, offlineHortiImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_HORTI);
-                    offlineText = "Data saved successfully in offline data";
-
-                } else {
-                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-                }
-                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                    }
-                });
+            } else {
+                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
-
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
 
 
     }

@@ -1,31 +1,41 @@
 package com.farmwiseai.tniamp.utils;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class LogIdRequest {
-    private String serial_no;
-    private String dept_id;
-    private String version_name;
+    @SerializedName("SERIAL_NO")
+    @Expose
+    private String serialNo;
+    @SerializedName("version")
+    @Expose
+    private String version;
+    @SerializedName("LINE_DEPT")
+    @Expose
+    private String lineDept;
 
-    public String getSerial_no() {
-        return serial_no;
+    public String getSerialNo() {
+        return serialNo;
     }
 
-    public void setSerial_no(String serial_no) {
-        this.serial_no = serial_no;
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
-    public String getDept_id() {
-        return dept_id;
+    public String getVersion() {
+        return version;
     }
 
-    public void setDept_id(String dept_id) {
-        this.dept_id = dept_id;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public String getVersion_name() {
-        return version_name;
+    public String getLineDept() {
+        return lineDept;
     }
 
-    public void setVersion_name(String version_name) {
-        this.version_name = version_name;
+    public void setLineDept(String lineDept) {
+        this.lineDept = lineDept;
     }
+
 }

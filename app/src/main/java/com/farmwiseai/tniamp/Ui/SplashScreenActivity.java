@@ -37,27 +37,28 @@ public class SplashScreenActivity extends AppCompatActivity {
         Boolean checkIsLogin = SharedPrefsUtils.getBoolean(SplashScreenActivity.this, SharedPrefsUtils.PREF_KEY.LOGIN_SESSION);
         commonFunction = new CommonFunction(SplashScreenActivity.this);
 
-        try {
-            versionName = this.getPackageManager()
-                    .getPackageInfo(this.getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        Log.i(TAG, "versionName: "+versionName);
+
 
         serial_no = SharedPrefsUtils.getString(SplashScreenActivity.this, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN);
         dept_id = SharedPrefsUtils.getString(SplashScreenActivity.this, SharedPrefsUtils.PREF_KEY.USER_DETAILS);
 
-        if(commonFunction.isNetworkAvailable()){
-
-//            if (serial_no != null && dept_id != null) {
-//                checkLogId(serial_no, versionName, dept_id);
-//            }
-        }
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                if(commonFunction.isNetworkAvailable()){
+                    try {
+                        versionName = getApplicationContext().getPackageManager()
+                                .getPackageInfo(getApplicationContext().getPackageName(), 0).versionName;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(TAG, "versionName: "+versionName);
+                    if (serial_no != null && dept_id != null) {
+                        checkLogId(serial_no, versionName, dept_id);
+                    }
+                }
+
                 if (checkIsLogin != null & checkIsLogin) {
                     Intent i = new Intent(SplashScreenActivity.this, DashboardActivity.class);
                     startActivity(i);
@@ -77,16 +78,16 @@ public class SplashScreenActivity extends AppCompatActivity {
             Call<LogIdResponse> userDataCall = null;
 
             LogIdRequest logIdRequest = new LogIdRequest();
-            logIdRequest.setSerial_no(serial_no);
-            logIdRequest.setVersion_name(version_name);
-            logIdRequest.setDept_id(dept_id);
+            logIdRequest.setSerialNo(serial_no);
+            logIdRequest.setVersion(version_name);
+            logIdRequest.setLineDept(dept_id);
             userDataCall = call.getLogCheckResponse(logIdRequest);
             userDataCall.enqueue(new Callback<LogIdResponse>() {
                 @Override
                 public void onResponse(Call<LogIdResponse> call, Response<LogIdResponse> response) {
                     if (response.body() != null) {
                         logCheckResponse = response.body();
-                        Log.i(TAG, "onBody: " + response.code());
+                        Log.i(TAG, "onBody: " + logCheckResponse.getStatus() +","+logCheckResponse.getId());
 
 
                     } else {

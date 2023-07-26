@@ -143,10 +143,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         } else {
             try {
                 mCommonFunction.showProgress();
-
                 binding.countValText.setText("No of Offline Data: " + OfflineDataSyncFile.offLineCount(lineDeptId));
-
-
                 Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);
                 Call<GetUserCountData> userDataCall = null;
                 userDataCall = call.getUserCount(SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN), SharedPrefsUtils.getString(getApplicationContext(), SharedPrefsUtils.PREF_KEY.USER_DETAILS));
@@ -505,12 +502,12 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(DashboardActivity.this).setMessage(message).setPositiveButton("Yes", okListener).
                 setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                dialogInterface.cancel();
-            }
-        }).setTitle("Logout").create().show();
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        dialogInterface.cancel();
+                    }
+                }).setTitle("TNIAMP").create().show();
     }
 
     private void showMessageOKLocationPermission(String message, DialogInterface.OnClickListener okListener) {

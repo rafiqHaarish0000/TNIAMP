@@ -121,7 +121,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text=": 14658" />
+                                android:text=": 14428" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -143,7 +143,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text=": 663" />
+                                android:text=": 655" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -165,7 +165,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text=": 164" />
+                                android:text=": 161" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -264,7 +264,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text=": 14658" />
+                                android:text=": 14428" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -286,7 +286,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text=": 663" />
+                                android:text=": 655" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -308,7 +308,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text=": 164" />
+                                android:text=": 161" />
                         </LinearLayout>
 
                         <LinearLayout

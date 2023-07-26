@@ -590,7 +590,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
-        request.setImage1(firstImageBase64.trim());
+        request.setImage1(firstImageBase64);
         request.setRemarks(remarks);
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreated_date(dateField);
@@ -677,7 +677,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
         SecondImageRequest request = new SecondImageRequest();
         request.setDepartment_id("4");
-        request.setImg2(secondImageBase64.trim());
+        request.setImg2(secondImageBase64);
         request.setID(txt_id);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);

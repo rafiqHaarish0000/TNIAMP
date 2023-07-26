@@ -755,7 +755,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             request.setVariety("null");
         }
 
-        request.setImage1(firstImageBase64.trim());
+        request.setImage1(firstImageBase64);
 
         if (agricultureBinding.yieldTxt.getVisibility() == View.VISIBLE) {
             request.setYield(agricultureBinding.yieldTxt.getText().toString().trim());

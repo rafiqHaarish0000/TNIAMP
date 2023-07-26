@@ -960,7 +960,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
 
         request.setCreated_date(dateField);
-        request.setImage1(firstImageBase64.trim());
+        request.setImage1(firstImageBase64);
         request.setIntervention1(intervention1);
 
         if (fisheriesBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {

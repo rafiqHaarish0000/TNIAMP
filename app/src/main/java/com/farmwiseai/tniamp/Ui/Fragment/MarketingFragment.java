@@ -1010,8 +1010,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setLon(lon);
 
         request.setCategory(catogoryVal);
-        request.setImage1(firstImageBase64.trim());
-        request.setImage2(secondImageBase64.trim());
+        request.setImage1(firstImageBase64);
+        request.setImage2(secondImageBase64);
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lat);
         request.setRemarks(remarks);

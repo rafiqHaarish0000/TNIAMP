@@ -564,6 +564,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        datePicker.setError(null);
                     }
                 }, year, month, day);
         picker.getDatePicker().setMaxDate(maxTime);
@@ -628,7 +629,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setCategory(category1);
         request.setSurvey_no(survey_no);
         request.setArea(area);
-        request.setImage1(firstImageBase64.trim());
+        request.setImage1(firstImageBase64);
         request.setRemarks(remarks);
         request.setFish_culture("null");
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
@@ -779,7 +780,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
 
         SecondImageRequest request = new SecondImageRequest();
         request.setDepartment_id("5");
-        request.setImg2(secondImageBase64.trim());
+        request.setImg2(secondImageBase64);
         request.setID(txt_id);
 
         Interface_Api call = BaseApi.getUrlApiCall().create(Interface_Api.class);

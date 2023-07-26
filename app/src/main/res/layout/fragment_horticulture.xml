@@ -230,7 +230,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:gravity="start"
-                            android:hint="No of Participants" />
+                            android:hint="No of Participants"
+                            android:inputType="number" />
 
                         <TextView
                             style="@style/head_text"

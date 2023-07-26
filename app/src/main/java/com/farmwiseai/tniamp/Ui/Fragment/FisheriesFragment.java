@@ -125,7 +125,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             sub_componentSpinner, stageSpinner, beneficarySpinner, beneficaryFinal, beneficarySpinner1, specicesSpinner1,
             categorySpinner, villageSpinner, interventionSpinner, specicesSpinner2, lesseeSpinner, genderSpinner, genderSpinnerL5, categorySpinnerL5;
     private MultiSpinner multiSpinner1, multiSpinner2, multiSpinner3;
-    private EditText datePicker, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks,qoHarvestL2;
+    private EditText datePicker, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks, qoHarvestL2;
     private FishCallApi fishCallApi;
     private boolean takePicture;
     private int valueofPic = 0;
@@ -183,7 +183,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         backPressListener = this;
         fishCallApi = new FishCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
         fishCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stageSpinner, layout1, layout2,
-                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks,qoHarvestL2);
+                layout3, layout4, layout5, layout6, otherLyt, beneficaryFinal, linFishTankInfo, seedHarvest, quantityHarvest, quantityOfHarvestIrrigationTanks, qoHarvestL2);
 
         offlineMarkRequest = SharedPrefsUtils.getFishArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
         offlineFishImageRequest = SharedPrefsUtils.getArrayListFishImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
@@ -270,7 +270,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             } else if (fisheriesBinding.feedQuality.getText().toString().trim().isEmpty()) {
                 fisheriesBinding.feedQuality.setError("Do not empty field");
                 return false;
-            } else if(fisheriesBinding.quantityTxtL2.getVisibility() == View.VISIBLE){
+            } else if (fisheriesBinding.quantityTxtL2.getVisibility() == View.VISIBLE) {
                 if (fisheriesBinding.quantityTxtL2.getText().length() == 0) {
                     fisheriesBinding.quantityTxtL2.setError("Do not empty field");
                     return false;
@@ -955,13 +955,21 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
         FishRequest request = new FishRequest();
 
-        request.setBeneficiary("");
-        request.setBeneficiary_name(benVal);
+//        request.setBeneficiary(benVal);
+//        request.setBeneficiary_name(benVal);
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
-
         request.setCreated_date(dateField);
         request.setImage1(firstImageBase64);
         request.setIntervention1(intervention1);
+        request.setLat(lat);
+        request.setLon(lon);
+        request.setPhoto_lat(lat);
+        request.setPhoto_lon(lon);
+        request.setRemarks(remarks);
+        request.setTxn_date("WedFeb12202012:04:46GMT+0530(IndiaStandardTime)");
+        request.setTxn_id("20200212120446");
+        request.setVillage(villageValue);
+        request.setStatus("1");
 
         if (fisheriesBinding.subComponentsTxt.getVisibility() == View.VISIBLE) {
             request.setIntervention2(intervention2);
@@ -974,95 +982,246 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
             request.setIntervention3("0");
         }
 
-        if (fisheriesBinding.layout1.getVisibility() == View.VISIBLE) {
-            request.setLessee(lesseVal);
-            request.setSpecies_stoked(fisheriesBinding.speciesStockedTxt.getText().toString().trim());
-        } else {
-            request.setLessee("0");
-            request.setSpecies_stoked("null");
+        if(fisheriesBinding.linFishTankInfo.getVisibility() == View.VISIBLE){
+
+            if (fisheriesBinding.nodalTXt.getText().toString().length() == 0) {
+                request.setNodal_officer("");
+            } else {
+                request.setNodal_officer(fisheriesBinding.nodalTXt.getText().toString().trim());
+            }
+            if (fisheriesBinding.nameofTankTXT.getText().toString().length() == 0) {
+                request.setTank_name("");
+            } else {
+                request.setTank_name(fisheriesBinding.nameofTankTXT.getText().toString().trim());
+            }
+            if (fisheriesBinding.waterTxt.getText().toString().length() == 0) {
+                request.setWater_spread_area("");
+            } else {
+                request.setWater_spread_area(fisheriesBinding.waterTxt.getText().toString().trim());
+            }
+            if (fisheriesBinding.seedStockTXt.getText().toString().length() == 0) {
+                request.setSeed_no("");
+            } else {
+                request.setSeed_no(fisheriesBinding.seedStockTXt.getText().toString().trim());
+            }
+
         }
 
-        request.setLat(lat);
-        request.setLon(lon);
+         if (fisheriesBinding.layout1.getVisibility() == View.VISIBLE) {
+            if (lesseVal.length() == 0) {
+                request.setLessee("");
+            } else {
+                request.setLessee(lesseVal);
+            }
+            if (fisheriesBinding.speciesStockedTxt.getText().toString().trim().length() == 0) {
+                request.setSpecies_stoked("");
+            } else {
+                request.setSpecies_stoked(fisheriesBinding.speciesStockedTxt.getText().toString().trim());
+            }
 
-        request.setNodal_officer(fisheriesBinding.nodalTXt.toString());
-        request.setTank_name(fisheriesBinding.nameofTankTXT.getText().toString().trim());
-        request.setWater_spread_area(fisheriesBinding.waterTxt.getText().toString().trim());
-        request.setSeed_no(fisheriesBinding.seedStockTXt.getText().toString().trim());
 
-        if (fisheriesBinding.layout2.getVisibility() == View.VISIBLE) {
-            request.setFeed_qty(fisheriesBinding.feedQuality.getText().toString().trim());
-        } else if (fisheriesBinding.layout3.getVisibility() == View.VISIBLE) {
-            request.setFeed_qty(fisheriesBinding.feedQuality1.getText().toString().trim());
-        } else if (fisheriesBinding.layout4.getVisibility() == View.VISIBLE) {
-            request.setFeed_qty(fisheriesBinding.feedQuality2.getText().toString().trim());
-            request.setCategory(catVal);
-            request.setGender(genderVal);
-            request.setMobile(fisheriesBinding.mobileVal.getText().toString().trim());
-            request.setSurvey_no(fisheriesBinding.surveyVal.getText().toString().trim());
-
-            request.setNo_of_stocks_req(fisheriesBinding.numbOfSeeds.getText().toString().trim());
-            request.setHarvested(fisheriesBinding.numbOfSeedsHarvest.getText().toString().trim());
-            request.setPond_constructed_by(fisheriesBinding.farmPond.getText().toString().trim());
-            request.setQty_fish_harvested(fisheriesBinding.quantityOfFishHar.getText().toString().trim());
-        } else if (fisheriesBinding.layout5.getVisibility() == View.VISIBLE) {
-            request.setPond_constructed_by("");
-        } else {
-            request.setFeed_qty("0");
-            request.setCategory("null");
-            request.setGender("null");
-            request.setMobile("0");
-            request.setSurvey_no("0");
-
-            request.setNo_of_stocks_req("");
-            request.setHarvested("");
-            request.setPond_constructed_by("");
-            request.setQty_fish_harvested("");
         }
+         else if (fisheriesBinding.layout2.getVisibility() == View.VISIBLE) {
+            if (fisheriesBinding.feedQuality.getText().toString().trim().length() == 0) {
+                request.setFeed_qty("");
+            } else {
+                request.setFeed_qty(fisheriesBinding.feedQuality.getText().toString().trim());
+            }
+            if (benNameVal.length() == 0) {
+                request.setBeneficiary("");
+            } else {
+                request.setBeneficiary(benNameVal);
+            }
+            if (fisheriesBinding.quantityTxtL2.getVisibility() == View.VISIBLE) {
+                if(fisheriesBinding.quantityTxtL2.getText().toString().length() == 0){
+                    request.setQty_fish_harvested("");
+                }else {
+                    request.setQty_fish_harvested(fisheriesBinding.quantityTxtL2.getText().toString().trim());
+                }
+            }
 
-        request.setPhoto_lat(lat);
-        request.setPhoto_lon(lon);
-        request.setRemarks(remarks);
-        request.setTxn_date("WedFeb12202012:04:46GMT+0530(IndiaStandardTime)");
-        request.setTxn_id("20200212120446");
-        request.setVillage(villageValue);
-        request.setStatus("1");
+        }
+         else if (fisheriesBinding.layout3.getVisibility() == View.VISIBLE) {
 
+            if (fisheriesBinding.speciesStockedTxt1.getText().toString().trim().length() == 0) {
+                request.setSpecies_stoked("");
+            } else {
+                request.setSpecies_stoked(fisheriesBinding.speciesStockedTxt1.getText().toString().trim());
+            }
+             if (fisheriesBinding.feedQuality1.getText().toString().length() == 0) {
+                 request.setFeed_qty("");
+             } else {
+                 request.setFeed_qty(fisheriesBinding.feedQuality1.getText().toString().trim());
+             }
+            if (benVal.length() == 0) {
+                request.setBeneficiary("");
+            } else {
+                request.setBeneficiary(benVal);
+            }
+
+        }
+         else if (fisheriesBinding.layout4.getVisibility() == View.VISIBLE) {
+
+            if (fisheriesBinding.farmPond.getText().toString().trim().length() == 0) {
+                request.setPond_constructed_by("");
+            } else {
+                request.setPond_constructed_by(fisheriesBinding.farmPond.getText().toString().trim());
+            }
+
+            if (fisheriesBinding.feedQuality2.getText().toString().length() == 0) {
+                request.setFeed_qty("");
+            } else {
+                request.setFeed_qty(fisheriesBinding.feedQuality2.getText().toString().trim());
+            }
+
+            if (catVal.length() == 0) {
+                request.setCategory("");
+            } else {
+                request.setCategory(catVal);
+            }
+
+            if (genderVal.length() == 0) {
+                request.setGender("");
+            } else {
+                request.setGender(genderVal);
+            }
+
+            if (fisheriesBinding.mobileVal.getText().toString().length() == 0) {
+                request.setMobile("");
+            } else {
+                request.setMobile(fisheriesBinding.mobileVal.getText().toString().trim());
+            }
+
+            if (fisheriesBinding.surveyVal.getText().toString().length() == 0) {
+                request.setSurvey_no("");
+            } else {
+                request.setSurvey_no(fisheriesBinding.surveyVal.getText().toString().trim());
+            }
+
+            if (fisheriesBinding.numbOfSeedsHarvest.getVisibility() == View.VISIBLE &&
+                    fisheriesBinding.quantityOfFishHar.getVisibility() == View.VISIBLE) {
+
+                if (fisheriesBinding.numbOfSeedsHarvest.getText().toString().trim().length() == 0) {
+                    request.setHarvested("");
+                } else {
+                    request.setHarvested(fisheriesBinding.numbOfSeedsHarvest.getText().toString().trim());
+                }
+                if (fisheriesBinding.quantityOfFishHar.getText().toString().trim().length() == 0) {
+                    request.setQty_fish_harvested("");
+                } else {
+                    request.setQty_fish_harvested(fisheriesBinding.quantityOfFishHar.getText().toString().trim());
+                }
+            }
+
+            if (fisheriesBinding.beneName.getText().toString().length() == 0) {
+                request.setBeneficiary_name("");
+            } else {
+                request.setBeneficiary_name(fisheriesBinding.beneName.getText().toString().trim());
+            }
+
+        }
+        //ben-final
+        else if (fisheriesBinding.beneFinal.getVisibility() == View.VISIBLE) {
+            if (benNameValfinal.length() == 0) {
+                request.setBeneficiary("");
+            } else {
+                request.setBeneficiary(benNameValfinal);
+            }
+        }
+        //layout 5
+        else if (fisheriesBinding.layout5.getVisibility() == View.VISIBLE) {
+
+            if (fisheriesBinding.noOfSeedStockedL5.getText().toString().trim().length() == 0) {
+                request.setSeed_no("");
+            } else {
+                request.setSeed_no(fisheriesBinding.noOfSeedStockedL5.getText().toString().trim());
+            }
+
+            if (fisheriesBinding.beneNameL5.getText().toString().trim().length() == 0) {
+                request.setBeneficiary_name("");
+            } else {
+                request.setBeneficiary_name(fisheriesBinding.beneNameL5.getText().toString().trim());
+            }
+            if (fisheriesBinding.beneNameL5.getText().toString().trim().length() == 0) {
+                request.setBeneficiary_name("");
+            } else {
+                request.setBeneficiary_name(fisheriesBinding.beneNameL5.getText().toString().trim());
+            }
+            if (fisheriesBinding.surveyValL5.getText().toString().trim().length() == 0) {
+                request.setSurvey_no("");
+            } else {
+                request.setSurvey_no(fisheriesBinding.surveyValL5.getText().toString().trim());
+            }
+            if (fisheriesBinding.mobileValL5.getText().toString().trim().length() == 0) {
+                request.setMobile("");
+            } else {
+                request.setMobile(fisheriesBinding.mobileValL5.getText().toString().trim());
+            }
+            if (genderNameValL5.length() == 0) {
+                request.setGender("");
+            } else {
+                request.setGender(genderNameValL5);
+            }
+            if (catNameValL5.length() == 0) {
+                request.setCategory("");
+            } else {
+                request.setCategory(catNameValL5);
+            }
+            if (fisheriesBinding.speciesStockedTxt2L5.getText().toString().trim().length() == 0) {
+                request.setSpecies_stoked("");
+            } else {
+                request.setSpecies_stoked(fisheriesBinding.speciesStockedTxt2L5.getText().toString().trim());
+            }
+            if (fisheriesBinding.feedQualityL5.getText().toString().length() == 0) {
+                request.setFeed_qty("");
+            } else {
+                request.setFeed_qty(fisheriesBinding.feedQualityL5.getText().toString().trim());
+            }
+
+            if(fisheriesBinding.layout6.getVisibility() == View.VISIBLE){
+                if(fisheriesBinding.quantityTxtL5.getText().toString().trim().length()==0){
+                    request.setQty_fish_harvested("");
+                }else{
+                    request.setQty_fish_harvested(fisheriesBinding.quantityTxtL5.getText().toString().trim());
+                }
+            }
+
+
+        }
 
         if (mCommonFunction.isNetworkAvailable()) {
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-                String offlineText = "";
-                if (offlineMarkRequest == null) {
-                    offlineMarkRequest = new ArrayList<>();
-                    offlineMarkRequest.add(request);
-                    offlineFishImageRequest = new ArrayList<>();
-                    offlineFishImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
-                    SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
+            String offlineText = "";
+            if (offlineMarkRequest == null) {
+                offlineMarkRequest = new ArrayList<>();
+                offlineMarkRequest.add(request);
+                offlineFishImageRequest = new ArrayList<>();
+                offlineFishImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+                SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
 
-                    offlineText = "Data saved successfully in offline data";
+                offlineText = "Data saved successfully in offline data";
 
-                } else if (offlineMarkRequest.size() < 10) {
-                    offlineMarkRequest.add(request);
-                    offlineFishImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
-                    SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
-                    offlineText = "Data saved successfully in offline data";
+            } else if (offlineMarkRequest.size() < 10) {
+                offlineMarkRequest.add(request);
+                offlineFishImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveFishArrayList(context, offlineMarkRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_FISH);
+                SharedPrefsUtils.saveArrayListFishImage(context, offlineFishImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_FISH);
+                offlineText = "Data saved successfully in offline data";
 
-                } else {
-                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-                }
-                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                    }
-                });
+            } else {
+                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
-
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
 
 
     }

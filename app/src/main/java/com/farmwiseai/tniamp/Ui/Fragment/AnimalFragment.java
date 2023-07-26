@@ -563,8 +563,9 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+ datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                         datePicker.setError(null);
+                       
                     }
                 }, year, month, day);
         picker.getDatePicker().setMaxDate(maxTime);
@@ -710,7 +711,6 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 SharedPrefsUtils.saveARDArrayList(context, offlineARDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
                 SharedPrefsUtils.saveArrayListAhdImage(context, offlineARDImgRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
                 offlineText = "Data saved successfully in offline data";
-
             } else {
                 offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
@@ -722,8 +722,6 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 }
             });
         }
-
-
     }
 
     private void onlineDataUpload(AnimalRequest animalRequest) {

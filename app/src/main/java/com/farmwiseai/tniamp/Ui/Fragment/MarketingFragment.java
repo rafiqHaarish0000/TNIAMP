@@ -533,7 +533,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
- datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                         datePicker.setError(null);
                     }
                 }, year, month, day);
@@ -555,7 +555,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
- datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                         datePicker.setError(null);
                     }
                 }, year, month, day);
@@ -1103,9 +1103,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 request.setQuantity_stored("");
             }
 
-        }
-
-        else if (marketingBinding.trainingLyt.getVisibility() == View.VISIBLE) {
+        } else if (marketingBinding.trainingLyt.getVisibility() == View.VISIBLE) {
             if (marketingBinding.traineeOtherNoF.getText().toString().trim().length() > 0) {
                 request.setOthers_female_no(marketingBinding.traineeOtherNoF.getText().toString().trim());
             } else {
@@ -1160,43 +1158,83 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 request.setDate_from("");
             }
             if (marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE) {
-                if (marketingBinding.nameHq.getText().toString().trim().length() < 0) {
-                    request.setHq_name(marketingBinding.nameHq.getText().toString());
-                } else {
+                if (marketingBinding.nameHq.getText().toString().trim().length() == 0) {
                     request.setHq_name("");
+                } else {
+                    request.setHq_name(marketingBinding.nameHq.getText().toString());
                 }
-                if (marketingBinding.exposeNumber.getText().toString().trim().length() < 0) {
+                if (marketingBinding.exposeNumber.getText().toString().trim().length() == 0) {
                     request.setNumbers(marketingBinding.exposeNumber.getText().toString());
                 } else {
                     request.setNumbers("");
                 }
-                if (categoryExpoVal.length() < 0) {
-                    request.setCategory2(categoryExpoVal);
-                } else {
+                if (categoryExpoVal.length() == 0) {
                     request.setCategory2("");
-                }
-                if (marketingBinding.places.getText().toString().trim().length() < 0) {
-                    request.setPlace_visited(marketingBinding.places.getText().toString());
                 } else {
+                    request.setCategory2(categoryExpoVal);
+                }
+                if (marketingBinding.places.getText().toString().trim().length() == 0) {
                     request.setPlace_visited("");
-                }
-                if (marketingBinding.durationVisit.getText().toString().trim().length() < 0) {
-                    request.setVisit_duration(marketingBinding.durationVisit.getText().toString());
                 } else {
+                    request.setPlace_visited(marketingBinding.places.getText().toString());
+                }
+                if (marketingBinding.durationVisit.getText().toString().trim().length() == 0) {
                     request.setVisit_duration("");
-                }
-                if (marketingBinding.dateTo.getText().toString().trim().length() < 0) {
-                    request.setDate_to(marketingBinding.dateTo.getText().toString());
                 } else {
+                    request.setVisit_duration(marketingBinding.durationVisit.getText().toString());
+                }
+                if (marketingBinding.dateTo.getText().toString().trim().length() == 0) {
                     request.setDate_to("");
-                }
-                if (marketingBinding.dateFrom.getText().toString().trim().length() < 0) {
-                    request.setDate_from(marketingBinding.dateFrom.getText().toString());
                 } else {
+                    request.setDate_to(marketingBinding.dateTo.getText().toString());
+                }
+                if (marketingBinding.dateFrom.getText().toString().trim().length() == 0) {
                     request.setDate_from("");
+                } else {
+                    request.setDate_from(marketingBinding.dateFrom.getText().toString());
                 }
 
             }
+
+        }
+        else if (marketingBinding.exposureVistlyt.getVisibility() == View.VISIBLE) {
+            String numbers = marketingBinding.exposeNumber.getText().toString();
+            if (marketingBinding.nameHq.getText().toString().trim().length() == 0) {
+                request.setHq_name("");
+            } else {
+                request.setHq_name(marketingBinding.nameHq.getText().toString());
+            }
+            if (numbers.length() == 0) {
+                request.setNumbers("");
+            } else {
+                request.setNumbers(marketingBinding.exposeNumber.getText().toString());
+            }
+            if (categoryExpoVal.length() == 0) {
+                request.setCategory2("");
+            } else {
+                request.setCategory2(categoryExpoVal);
+            }
+            if (marketingBinding.places.getText().toString().trim().length() == 0) {
+                request.setPlace_visited("");
+            } else {
+                request.setPlace_visited(marketingBinding.places.getText().toString());
+            }
+            if (marketingBinding.durationVisit.getText().toString().trim().length() == 0) {
+                request.setVisit_duration("");
+            } else {
+                request.setVisit_duration(marketingBinding.durationVisit.getText().toString());
+            }
+            if (marketingBinding.dateTo.getText().toString().trim().length() == 0) {
+                request.setDate_to("");
+            } else {
+                request.setDate_to(marketingBinding.dateTo.getText().toString());
+            }
+            if (marketingBinding.dateFrom.getText().toString().trim().length() == 0) {
+                request.setDate_from("");
+            } else {
+                request.setDate_from(marketingBinding.dateFrom.getText().toString());
+            }
+
         }
 
 

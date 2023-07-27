@@ -142,6 +142,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     private String genderValue, catNameVal;
     ArrayList<AnimalRequest> offlineARDRequest = new ArrayList<AnimalRequest>();
     ArrayList<String> offlineARDImgRequest = new ArrayList<>();
+    private EditText vareity,yeild;
 
     @Override
     public void onAttach(Context context) {
@@ -188,13 +189,15 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         EditText calves = animalBinding.noOfCalves;
         pregLyt = animalBinding.pregLyt;
         iNames_lyt = animalBinding.othersLayout;
+        vareity = animalBinding.varietyTxt;
+        yeild = animalBinding.yieldTxt;
 
         backPressListener = this;
 
         offlineARDRequest = SharedPrefsUtils.getARDArrayList(context, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_ANI);
         offlineARDImgRequest = SharedPrefsUtils.getArrayListAhdImage(context, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_ANI);
         animalCallApi = new AnimalCallApi(getActivity(), getContext(), componentDropDown, adapter, myString, backPressListener);
-        animalCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, calves, vis_lyt, trainingLyt, pregLyt, iNames_lyt);
+        animalCallApi.ComponentDropDowns(componentSpinner, sub_componentSpinner, stagesSpinner, datePicker, calves, vis_lyt, trainingLyt, pregLyt, iNames_lyt,vareity,yeild);
         LatLongPojo latLongPojo = new LatLongPojo();
         latLongPojo = PermissionUtils.getLocation(getContext());
         lat = latLongPojo.getLat();
@@ -444,6 +447,15 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             } else if (genderValue == null || catNameVal == null) {
                 mCommonFunction.mLoadCustomToast(getActivity(), "Please Enter All Mandatory Fiellds.!");
                 return false;
+            }
+            if(animalBinding.varietyTxt.getVisibility() == View.VISIBLE && animalBinding.yieldTxt.getVisibility()==View.VISIBLE){
+                if(animalBinding.varietyTxt.getText().toString().length() == 0){
+                    animalBinding.varietyTxt.setError("Please enter variety");
+                    return false;
+                } else if (animalBinding.yieldTxt.getText().toString().length()==0) {
+                    animalBinding.yieldTxt.setError("Please enter yield");
+                    return false;
+                }
             }
 
 

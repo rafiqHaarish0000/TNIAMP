@@ -48,7 +48,7 @@ public class AnimalCallApi {
     public void ComponentDropDowns(Spinner componentSpinner, Spinner subComponentSpinner,
                                    Spinner stageSpinner, EditText datePicker, EditText noOfCalves,
                                    LinearLayout visLyt, LinearLayout trainLyt, LinearLayout pregnancyLyt,
-                                   LinearLayout otherLyt) {
+                                   LinearLayout otherLyt,EditText variety,EditText yeild) {
 
         commonFunction = new CommonFunction(activity);
         positionValue = "0";
@@ -74,7 +74,7 @@ public class AnimalCallApi {
                     positionValue = String.valueOf(componentList.get(i).getID());
                     String names = componentList.get(i).getName();
                     if (names.contains("Model Village")) {
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt,variety,yeild);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
@@ -86,25 +86,25 @@ public class AnimalCallApi {
                         visLyt.setVisibility(View.GONE);
                         noOfCalves.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt,variety,yeild);
                         subComponentSpinner.setVisibility(View.VISIBLE);
 
                     } else if (names.equalsIgnoreCase("Calf Management") || names.equalsIgnoreCase("Mastitis Management")) {
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt,variety,yeild);
                         noOfCalves.setVisibility(View.VISIBLE);
                         noOfCalves.setHint("No of Calves");
                         trainLyt.setVisibility(View.GONE);
                         visLyt.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Infertility Management") || names.equalsIgnoreCase("Artificial Insemination")) {
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt,variety,yeild);
                         trainLyt.setVisibility(View.GONE);
                         noOfCalves.setVisibility(View.VISIBLE);
                         noOfCalves.setHint("No of Cows");
                         visLyt.setVisibility(View.GONE);
                         otherLyt.setVisibility(View.GONE);
                     } else if (names.equalsIgnoreCase("Fodder cultivation")) {
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt,variety,yeild);
                         subComponentSpinner.setVisibility(View.VISIBLE);
                         stageSpinner.setVisibility(View.VISIBLE);
                         visLyt.setVisibility(View.VISIBLE);
@@ -134,7 +134,7 @@ public class AnimalCallApi {
                         //save data for offline data..
 //                                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.COMPONENT,String.valueOf(getAllListOfTNAU.get(i).getName()));
 
-                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt);
+                        subComponenetDropDown(String.valueOf(positionValue), subComponentSpinner, stageSpinner, datePicker, pregnancyLyt,variety,yeild);
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {
@@ -154,7 +154,9 @@ public class AnimalCallApi {
     }
 
     //second spinner phrase;
-    public void subComponenetDropDown(CharSequence posVal, Spinner secondSpinner, Spinner thirdSpinner, EditText editText, LinearLayout pregnancyLyt) {
+    public void subComponenetDropDown(CharSequence posVal,
+                                      Spinner secondSpinner, Spinner thirdSpinner, EditText editText,
+                                      LinearLayout pregnancyLyt,EditText variety,EditText yeild) {
 
         commonFunction = new CommonFunction(activity);
         sub_componentList = FetchDeptLookup.readDataFromFile(context, "ahdlookup.json");
@@ -201,7 +203,7 @@ public class AnimalCallApi {
                         editText.setVisibility(View.GONE);
                         thirdSpinner.setVisibility(View.VISIBLE);
                     }
-                    stagesDropDown(positionValue2, thirdSpinner, editText);
+                    stagesDropDown(positionValue2, thirdSpinner, editText,variety,yeild);
                     lookUpDataClass.setIntervention2(String.valueOf(sub_componentList.get(i).getID()));
                     lookUpDataClass.setComponentValue(compName);
                     lookUpDataClass.setSubComponentValue(subCompName);
@@ -221,7 +223,7 @@ public class AnimalCallApi {
 
     }
 
-    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText) {
+    public void stagesDropDown(CharSequence stagePosVal, Spinner thirdSpinner, EditText editText,EditText variety,EditText yeild) {
         commonFunction = new CommonFunction(activity);
         stagesList = FetchDeptLookup.readDataFromFile(context, "ahdlookup.json");
         adapters = new ComponentAdapter(context, stagesList);
@@ -244,6 +246,15 @@ public class AnimalCallApi {
                         editText.setVisibility(View.VISIBLE);
                     } else {
                         editText.setVisibility(View.GONE);
+                    }
+                    if(compName.equalsIgnoreCase("Fodder cultivation")){
+                        if(names.equalsIgnoreCase("Vegetative")){
+                            variety.setVisibility(View.VISIBLE);
+                            yeild.setVisibility(View.VISIBLE);
+                        }else{
+                            variety.setVisibility(View.GONE);
+                            yeild.setVisibility(View.GONE);
+                        }
                     }
                     backPressListener.onSelectedInputs(lookUpDataClass);
                 } catch (Exception e) {

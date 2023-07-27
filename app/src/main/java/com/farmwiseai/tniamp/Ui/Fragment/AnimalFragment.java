@@ -692,6 +692,33 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
             request.setSc_st_male_no("0");
             request.setVenue("null");
         }
+
+        if(animalBinding.dateTxt.getVisibility() == View.VISIBLE){
+            if(animalBinding.dateTxt.getText().toString().length() == 0){
+                request.setDate("");
+            }else{
+                request.setDate(animalBinding.dateTxt.getText().toString().trim());
+            }
+
+        }
+        if(animalBinding.varietyTxt.getVisibility() == View.VISIBLE){
+            if(animalBinding.varietyTxt.getText().toString().length() == 0){
+                request.setVariety("");
+            }else{
+                request.setVariety(animalBinding.varietyTxt.getText().toString().trim());
+            }
+
+        }
+        if(animalBinding.yieldTxt.getVisibility() == View.VISIBLE){
+            if(animalBinding.yieldTxt.getText().toString().length() == 0){
+                request.setYield("");
+            }else{
+                request.setYield(animalBinding.yieldTxt.getText().toString().trim());
+            }
+
+        }
+
+
         request.setMobile(animalBinding.mobileNumber.getText().toString().trim());
         request.setIntervention_type("3");
 

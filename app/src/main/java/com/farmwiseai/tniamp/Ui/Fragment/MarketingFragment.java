@@ -912,11 +912,8 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         dateField = dateFormat.format(myCalendar.getTime());
         Log.i(TAG, "dataValue" + dateField);
-
         MarkRequest request = new MarkRequest();
-
-
-        request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
+  request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreated_date(dateField);
 //        request.setDate_from(marketingBinding.dateFrom.getText().toString().trim());
 //        request.setDate_to(marketingBinding.dateTo.getText().toString().trim());
@@ -928,7 +925,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setImage1(firstImageBase64);
         request.setImage2(secondImageBase64);
         request.setPhoto_lat(lat);
-        request.setPhoto_lon(lat);
+        request.setPhoto_lon(lon);
         request.setRemarks(remarks);
         request.setTxn_id("20191127172744");
         request.setDate("");

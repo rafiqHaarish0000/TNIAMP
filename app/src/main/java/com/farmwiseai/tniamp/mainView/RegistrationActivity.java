@@ -154,9 +154,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         village = registrationBinding.villageTxt;
 
         departmentList = FetchDeptLookup.readDepartmentData(RegistrationActivity.this, "departmentlookup.json");
-        positionValue = "1";
+//        positionValue = "1";
         adapters = new DepartmentAdapter(RegistrationActivity.this, departmentList);
-        adapters.getFilter().filter(positionValue);
+//        adapters.getFilter().filter(positionValue);
         departmentSpinner.setAdapter(adapters);
 
 

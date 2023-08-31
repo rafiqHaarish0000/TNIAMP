@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -86,6 +87,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
     public BackPressListener backPressListener;
     public String lat;
     public String lon;
+    private String remarksData;
     public EditText wauText, memberTxt;
     public String subBasinValue = null;
     public String districtValue = null;
@@ -198,6 +200,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         return marketingBinding.getRoot();
     }
+
 
     private boolean fieldValidation(String category,
                                     String remarks, String date) {
@@ -448,6 +451,7 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
                 boolean checkValidaiton = fieldValidation(near_tank, remarks, dateField);
 
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
+                checkTestData();
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -513,6 +517,21 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
 
         }
     }
+
+    private void checkTestData() {
+        marketingBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
+    }
+
 
     private void dateOfSowing_Planting(EditText datePicker) {
         final Calendar cldr = Calendar.getInstance();
@@ -926,10 +945,15 @@ public class MarketingFragment extends Fragment implements View.OnClickListener,
         request.setImage2(secondImageBase64);
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
         request.setTxn_id("20191127172744");
         request.setDate("");
         request.setStatus("1");
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
         request.setIntervention1(intervention1);
         request.setIntervention4("");
 

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -87,6 +88,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
     public String created_date;
     public String lat;
     public String lon;
+    private String remarksData;
     public String image1;
     public String tank_name;
     public String txn_date;
@@ -449,6 +451,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, gender, survey_no, area, near_tank, remarks, dateField, interventionName, mobileNumber);
+                checkTestData();
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -490,7 +493,19 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
 
         }
     }
-
+    private void checkTestData() {
+        aedBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
+    }
 
     // alert pop up
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
@@ -591,7 +606,7 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setImage1(firstImageBase64);
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreated_date(dateField);
         request.setLat(lat);
@@ -603,6 +618,13 @@ public class AEDFragment extends Fragment implements View.OnClickListener, BackP
         request.setTxn_id("20200212120446");
         request.setDate(dateField);
         request.setStatus("1");
+
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
+
         request.setIntervention_type(interventionTypeVal);
 
         if (aedBinding.othersLayout.getVisibility() == View.VISIBLE) {

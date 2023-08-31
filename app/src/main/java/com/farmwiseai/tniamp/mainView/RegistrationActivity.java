@@ -259,6 +259,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
             if (mCommonFunction.isNetworkAvailable() == true) {
+
                 RegisterRequest registerRequest = new RegisterRequest();
                 registerRequest.setSerialNo("123po45pos67");
                 registerRequest.setLineDept(department);

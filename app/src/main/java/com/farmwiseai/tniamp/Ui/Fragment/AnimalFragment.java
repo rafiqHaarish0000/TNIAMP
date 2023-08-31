@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -126,6 +127,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
     public String tank_name;
     public String date;
     public String status;
+    private String remarksData;
     public String venue;
     public String noFarmer;
     public BackPressListener backPressListener;
@@ -515,6 +517,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop,
                         nop, mon, moo, fon, foo, intName);
+                checkTestData();
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -553,6 +556,20 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
                 break;
 
         }
+    }
+
+    private void checkTestData() {
+        animalBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
     }
 
     private void dateFieldValidation(EditText datePicker) {
@@ -643,7 +660,7 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setSurvey_no(survey_no);
         request.setArea(area);
         request.setImage1(firstImageBase64);
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
         request.setFish_culture("null");
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreated_date(dateField);
@@ -655,6 +672,13 @@ public class AnimalFragment extends Fragment implements View.OnClickListener, Ba
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate("");
+
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
+
         request.setStatus("1");
 
         if (animalBinding.noOfCalves.getVisibility() == View.VISIBLE && animalBinding.noOfCalves.getHint().equals("No of Calves")) {

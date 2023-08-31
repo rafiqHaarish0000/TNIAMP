@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -84,6 +85,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
     public String intervention3;
     public String intervention4; // stages// stages
     public String farmer_name;
+    private String remarksData;
     public String gender;
     public String variety;
     public String yield;
@@ -202,6 +204,20 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         setAllDropDownData();
         return horticultureBinding.getRoot();
 
+    }
+
+    private void checkTestData() {
+        horticultureBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
     }
 
     private boolean fieldValidation(String farmerName, String category, String gender,
@@ -327,6 +343,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, gender, survey_no, area, near_tank, remarks, dateField, intName, mobileNumber);
+                checkTestData();
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -710,7 +727,7 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
             request.setYield("null");
         }
 
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
         request.setCreatedBy(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreatedDate(dateField);
         request.setLat(lat);
@@ -721,6 +738,13 @@ public class HorticultureFragment extends Fragment implements View.OnClickListen
         request.setPhotoLon(lon);
         request.setTxnId("20200212120446");
         request.setStatus("1");
+
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
+
         request.setInterventionType(interventionTypeVal);
 
         if (horticultureBinding.inerventionLyt.getVisibility() == View.VISIBLE) {

@@ -18,6 +18,7 @@ import java.util.List;
 
 public class DepartmentAdapter extends BaseAdapter {
     List<DepartmentData> data;
+
     public List<DepartmentData> SubjectListTemp;
     public List<DepartmentData> MainList;
     public DepartmentAdapter.SubjectDataFilter subjectDataFilter;

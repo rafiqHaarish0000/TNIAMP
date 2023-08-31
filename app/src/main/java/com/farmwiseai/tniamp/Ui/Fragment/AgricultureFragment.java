@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -128,6 +129,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
     private List<String> phraseList, genderList, categoryList, interventionList;
     private LinearLayout vis_lyt, trainingLyt, seed_lyt, iNames_lyt;
     private String villageValue, category1, firstImageBase64, secondImageBase64, interventionTypeVal;
+    private String remarksData;
 
     @Override
     public void onAttach(Context context) {
@@ -352,6 +354,19 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         return true;
     }
 
+    private void checkTestData() {
+        agricultureBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
+    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -368,6 +383,9 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(farmerName,
                         category1, survey_no, area, near_tank, remarks, dateField, nag, dag, darf, seedra, qop, intName, mobileNumber);
+
+                checkTestData();
+                Log.i(TAG, "isChecked "+remarksData);
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -410,6 +428,8 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             case R.id.dorf_txt:
                 dateFieldValidation(agricultureBinding.dorfTxt);
                 break;
+            case R.id.check_values:
+
 
         }
     }
@@ -618,7 +638,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
- datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                         datePicker.setError(null);
                     }
                 }, year, month, day);
@@ -640,7 +660,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
- datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                         datePicker.setError(null);
                     }
                 }, year, month, day);
@@ -765,7 +785,7 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
             request.setYield("null");
         }
 
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
         request.setCreatedBy(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
         request.setCreatedDate(dateField);
         request.setLat(lat);
@@ -777,6 +797,13 @@ public class AgricultureFragment extends Fragment implements View.OnClickListene
         request.setTxnId("20200212120446");
         request.setDate("");
         request.setStatus("1");
+
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
+
         request.setInterventionType(interventionTypeVal);
 
         if (agricultureBinding.othersLayout.getVisibility() == View.VISIBLE) {

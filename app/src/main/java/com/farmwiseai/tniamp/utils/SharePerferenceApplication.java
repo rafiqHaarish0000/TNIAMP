@@ -8,7 +8,6 @@ public class SharePerferenceApplication extends Application {
     @Override
     public void onCreate() {
 
-
         super.onCreate();
         _instance = this;
 

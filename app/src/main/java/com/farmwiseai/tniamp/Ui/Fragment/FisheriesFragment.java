@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -83,6 +84,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
     public BackPressListener backPressListener;
     public String lat;
     public String lon;
+    private String remarksData;
     public EditText wauText, memberTxt;
     public String subBasinValue = null;
     public String districtValue = null;
@@ -417,6 +419,7 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(near_tank, remarks, dateField);
+                checkTestData();
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -455,6 +458,19 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
                 break;
 
         }
+    }
+    private void checkTestData() {
+        fisheriesBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
     }
 
     private void setAllDropDownData() {
@@ -965,9 +981,16 @@ public class FisheriesFragment extends Fragment implements View.OnClickListener,
         request.setLon(lon);
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
         request.setTxn_date("WedFeb12202012:04:46GMT+0530(IndiaStandardTime)");
         request.setTxn_id("20200212120446");
+
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
+
         request.setVillage(villageValue);
         request.setStatus("1");
 

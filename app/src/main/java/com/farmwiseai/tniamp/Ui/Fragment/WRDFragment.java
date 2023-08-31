@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -85,6 +86,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     public BackPressListener backPressListener;
     public String lat;
     public String lon;
+    private String remarksData;
     public EditText wauText, memberTxt;
     public String subBasinValue = null;
     public String districtValue = null;
@@ -96,7 +98,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
     public String stageLastValue = null;
     DatePickerDialog picker;
     ArrayList<WRDRequest> offlineWRDRequest = new ArrayList<>();
-    ArrayList<String> offlineWRDImageRequest=new ArrayList<>();
+    ArrayList<String> offlineWRDImageRequest = new ArrayList<>();
 
     private FragmentWRDFRagmentBinding wrdfragmentBinding;
     private Context context;
@@ -237,7 +239,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 wrdfragmentBinding.nameOfWAU.setError("Do not empty field");
                 return false;
 
-            }else if (iNames_lyt.getVisibility() == View.VISIBLE) {
+            } else if (iNames_lyt.getVisibility() == View.VISIBLE) {
                 if (wrdfragmentBinding.inerventionNameTxt.getText().toString().trim().isEmpty()) {
                     wrdfragmentBinding.inerventionNameTxt.setError("field empty");
                     return false;
@@ -268,7 +270,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
             case R.id.submission_btn:
                 boolean checkValidaiton = fieldValidation(lengthValue, lsPointValue, sliceNumberValue, near_tank, dateField);
-
+                checkTestData();
                 if (checkValidaiton) {
                     finalSubmission();
                 } else {
@@ -306,6 +308,20 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
                 break;
 
         }
+    }
+
+    private void checkTestData() {
+        wrdfragmentBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
     }
 
 
@@ -590,7 +606,7 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
 
         request.setLon(lon);
 
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
 
         request.setTxn_date(mCommonFunction.getDateTime());
         request.setTxn_id("20200212120446");
@@ -611,6 +627,13 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
         request.setPhoto_lat(lat);
         request.setPhoto_lon(lon);
         request.setStatus("1");
+
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
+        
         request.setIntervention_type("3");
 
         if (wrdfragmentBinding.othersLayout.getVisibility() == View.VISIBLE) {
@@ -624,35 +647,34 @@ public class WRDFragment extends Fragment implements View.OnClickListener, BackP
             mCommonFunction.showProgress();
             onlineDataUpload(request);
         } else {
-                String offlineText = "";
-                if (offlineWRDRequest == null) {
-                    offlineWRDRequest = new ArrayList<>();
-                    offlineWRDRequest.add(request);
-                    offlineWRDImageRequest = new ArrayList<>();
-                    offlineWRDImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
-                    SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
-                    offlineText = "Data saved successfully in offline data";
+            String offlineText = "";
+            if (offlineWRDRequest == null) {
+                offlineWRDRequest = new ArrayList<>();
+                offlineWRDRequest.add(request);
+                offlineWRDImageRequest = new ArrayList<>();
+                offlineWRDImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
+                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
+                offlineText = "Data saved successfully in offline data";
 
-                } else if (offlineWRDRequest.size() < 10) {
-                    offlineWRDRequest.add(request);
-                    offlineWRDImageRequest.add(secondImageBase64);
-                    SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
-                    SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
-                    offlineText = "Data saved successfully in offline data";
+            } else if (offlineWRDRequest.size() < 10) {
+                offlineWRDRequest.add(request);
+                offlineWRDImageRequest.add(secondImageBase64);
+                SharedPrefsUtils.saveArrayListWrdImage(context, offlineWRDImageRequest, SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA_WRD);
+                SharedPrefsUtils.saveWRDArrayList(context, offlineWRDRequest, SharedPrefsUtils.PREF_KEY.OFFLINE_DATA_WRD);
+                offlineText = "Data saved successfully in offline data";
 
-                } else {
-                    offlineText = "You’ve reached the offline Data Limit,Please Sync!";
-                }
-                showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
-                        mCommonFunction.navigation(getActivity(), DashboardActivity.class);
-                    }
-                });
+            } else {
+                offlineText = "You’ve reached the offline Data Limit,Please Sync!";
             }
-
+            showMessageOKCancel(offlineText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    SharedPrefsUtils.putString(SharedPrefsUtils.PREF_KEY.SAVED_OFFLINE_DATA, offlineText);
+                    mCommonFunction.navigation(getActivity(), DashboardActivity.class);
+                }
+            });
+        }
 
 
     }

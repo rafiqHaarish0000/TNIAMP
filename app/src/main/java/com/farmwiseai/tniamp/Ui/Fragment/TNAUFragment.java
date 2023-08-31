@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -100,6 +101,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
     public String districtValue = null;
     public String blockValue = null;
     public String villageValue = null;
+    private String remarksData;
     public String componentValue = null;
     public String subComponentValue = null;
     public String stagevalue = null;
@@ -344,6 +346,7 @@ public class TNAUFragment extends Fragment implements View.OnClickListener, Back
                         category1, survey_no, area, near_tank, remarks, dateField, mobileNumber);
 
                 Log.i(TAG, "componentTxt: " + componentSpinner.getSelectedItem());
+                checkTestData();
                 if (checkValidaiton) {
 
                     finalSubmission();
@@ -638,6 +641,20 @@ mCommonFunction.hideProgress();
 
     }
 
+    private void checkTestData() {
+        tnauBinding.checkValues.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    remarksData = "Test Data";
+                } else {
+                    remarksData = "";
+                    Log.i(TAG, "onCheckedChanged: " + remarks);
+                }
+            }
+        });
+    }
+
     //calender updates
     private void updateLabel() {
         String myFormat = "MM/dd/yy";
@@ -787,7 +804,7 @@ mCommonFunction.hideProgress();
             request.setYield("null");
         }
 
-        request.setRemarks(remarks);
+//        request.setRemarks(remarks);
         request.setCreated_by(SharedPrefsUtils.getString(context, SharedPrefsUtils.PREF_KEY.ACCESS_TOKEN));
 
         request.setCreated_date(dateField);
@@ -799,6 +816,13 @@ mCommonFunction.hideProgress();
         request.setPhoto_lon(lon);
         request.setTxn_id("20200212120446");
         request.setDate("");
+
+        if(!remarksData.isEmpty()){
+            request.setRemarks(remarksData);
+        }else{
+            request.setRemarks(remarks);
+        }
+
         request.setStatus("1");
         if (mCommonFunction.isNetworkAvailable() == true) {
             mCommonFunction.showProgress();

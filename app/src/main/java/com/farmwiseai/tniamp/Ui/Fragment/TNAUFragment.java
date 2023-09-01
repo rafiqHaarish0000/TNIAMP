@@ -685,10 +685,12 @@ mCommonFunction.hideProgress();
                     // BitMap is data structure of image file which store the image in memory
                     Log.i(TAG, "base: " + getEncodedString(photo));
                     firstImageBase64 = getEncodedString(photo);
+
                 } else if (!takePicture && valueofPic == 2) {
                     Bitmap photo2 = (Bitmap) data.getExtras().get("data");
                     // Set the image in imageview for display
                     tnauBinding.image2.setImageBitmap(photo2);
+                    Log.i(TAG, "base: " + getEncodedString(photo2));
                     secondImageBase64 = getEncodedString(photo2);
                     // BitMap is data structure of image file which store the image in memory
                 }
